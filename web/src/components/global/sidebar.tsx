@@ -9,31 +9,36 @@ import {
 } from "lucide-react";
 import { Button } from "../ui/button";
 import { Separator } from "../ui/separator";
+import { Link } from "react-router-dom";
 
 export function Sidebar() {
     return (
         <Card className="h-screen rounded-none min-w-[20%] border-t-0">
             <CardContent className="pt-4 px-2 flex flex-col gap-2">
-                <Button className="h-12 px-3 w-full flex items-center justify-start gap-4" variant={'secondary'}>
-                    <div className="w-10 h-10 flex items-center justify-center rounded-xl">
-                        <span className="text-sm">
-                            <Home size={20} className="text-black" />
-                        </span>
-                    </div>
-                    <h2>
-                        Dashboard
-                    </h2>
-                </Button>
-                <Button className="h-12 px-3 w-full flex items-center justify-start gap-4" variant={'ghost'}>
-                    <div className="w-10 h-10 border flex items-center justify-center rounded-xl">
-                        <span className="text-sm">
-                            <Folder size={20} className="text-black" />
-                        </span>
-                    </div>
-                    <h2>
-                        Projects
-                    </h2>
-                </Button>
+                <Link to={'/dashboard'}>
+                    <Button className="h-12 px-3 w-full flex items-center justify-start gap-4" variant={'secondary'}>
+                        <div className="w-10 h-10 flex items-center justify-center rounded-xl">
+                            <span className="text-sm">
+                                <Home size={20} className="text-black" />
+                            </span>
+                        </div>
+                        <h2>
+                            Dashboard
+                        </h2>
+                    </Button>
+                </Link>
+                <Link to={'/projects'}>
+                    <Button className="h-12 px-3 w-full flex items-center justify-start gap-4" variant={'ghost'}>
+                        <div className="w-10 h-10 border flex items-center justify-center rounded-xl">
+                            <span className="text-sm">
+                                <Folder size={20} className="text-black" />
+                            </span>
+                        </div>
+                        <h2>
+                            Projects
+                        </h2>
+                    </Button>
+                </Link>
                 <Button className="h-12 px-3 w-full flex items-center justify-start gap-4" variant={'ghost'}>
                     <div className="w-10 h-10 border flex items-center justify-center rounded-xl">
                         <span className="text-sm">

@@ -1,18 +1,21 @@
 import { AuthLayout } from "@/layouts/authLayout";
 import { BaseLayout } from "@/layouts/baseLayout";
-import { Dashboard } from "@/pages/dashboard";
+import { Dashboard } from "@/pages/dashboard/dashboard";
 import { SignIn } from "@/pages/auth/signin";
 import { createBrowserRouter, Navigate } from "react-router-dom";
 import { SignUp } from "@/pages/auth/signup";
 import { NotFound } from "@/pages/errors/notFound";
 import { Forbidden } from "@/pages/errors/forbidden";
+import { Projects } from "@/pages/projects/projects";
 
 export const ROUTER = createBrowserRouter([
     {
         path: '',
         element: <BaseLayout />,
         children: [
-            { path: '', element: <Dashboard /> }
+            { path: '', element: <Navigate to={'/dashboard'} /> },
+            { path: 'dashboard', element: <Dashboard /> },
+            { path: 'projects', element: <Projects /> }
         ]
     },
     {
