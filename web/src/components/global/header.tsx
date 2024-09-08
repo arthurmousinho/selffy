@@ -18,7 +18,7 @@ export function Header() {
         <Card className="w-full rounded-none flex flex-row items-center justify-start h-[72px] py-0">
             <CardHeader className="flex items-center border-r min-w-[20%]">
                 <h1 className="text-primary font-bold text-3xl">
-                    Autony
+                    Selffy
                 </h1>
             </CardHeader>
             <CardContent className="w-full flex flex-row items-center justify-between p-0 px-4">

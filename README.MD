@@ -1,3 +1,3 @@
-# Autony
+# Selffy
 
 A self work management app
