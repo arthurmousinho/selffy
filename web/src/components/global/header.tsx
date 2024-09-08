@@ -1,4 +1,4 @@
-import { Cog, LogOut, UserRound } from "lucide-react";
+import { LogOut, Settings, UserRound } from "lucide-react";
 import { Avatar, AvatarFallback } from "../ui/avatar";
 import { Card, CardContent, CardHeader } from "../ui/card";
 import { Input } from "../ui/input";
@@ -10,13 +10,25 @@ import {
     DropdownMenu,
     DropdownMenuContent,
     DropdownMenuItem,
-    DropdownMenuLabel,
-    DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 export function Header() {
+
+    const location = useLocation();
+
+    function getTitle() {
+        const titles: any = {
+            '/dashboard': 'Dashboard',
+            '/projects': 'Projects',
+            '/notifications': 'Notifications',
+            '/profile': 'Profile',
+            '/settings': 'Settings',
+        };
+        return titles[location.pathname] || 'Welcome';
+    };
+
     return (
         <Card className="w-full rounded-none flex flex-row items-center justify-start h-[72px] py-0">
             <CardHeader className="flex items-center border-r min-w-[20%]">
@@ -29,7 +41,7 @@ export function Header() {
             </CardHeader>
             <CardContent className="w-full flex flex-row items-center justify-between p-0 px-4">
                 <h1 className="text-xl font-bold">
-                    Dashboard
+                    {getTitle()}
                 </h1>
                 <div className="flex flex-row items-center gap-6">
                     <Input
@@ -43,19 +55,29 @@ export function Header() {
                                 <AvatarFallback>AM</AvatarFallback>
                             </Avatar>
                         </DropdownMenuTrigger>
-                        <DropdownMenuContent className="mr-4">
-                            <DropdownMenuLabel>Arthur Mousinho</DropdownMenuLabel>
-                            <DropdownMenuSeparator />
-                            <DropdownMenuItem className="flex items-center gap-2 cursor-pointer">
-                                <UserRound size={15} />
+                        <DropdownMenuContent className="mr-4 w-[150px]">
+                            <DropdownMenuItem className="cursor-pointer flex items-center gap-2 p-2">
+                                <div className="w-10 h-10 border flex items-center justify-center rounded-xl">
+                                    <span className="text-sm">
+                                        <UserRound size={20} className="text-black" />
+                                    </span>
+                                </div>
                                 Profile
                             </DropdownMenuItem>
-                            <DropdownMenuItem className="flex items-center gap-2 cursor-pointer">
-                                <Cog size={15} />
+                            <DropdownMenuItem className="cursor-pointer flex items-center gap-2 p-2">
+                                <div className="w-10 h-10 border flex items-center justify-center rounded-xl">
+                                    <span className="text-sm">
+                                        <Settings size={20} className="text-black" />
+                                    </span>
+                                </div>
                                 Settings
                             </DropdownMenuItem>
-                            <DropdownMenuItem className="flex items-center gap-2 cursor-pointer text-red-400">
-                                <LogOut size={15} />
+                            <DropdownMenuItem className="cursor-pointer flex items-center gap-2 p-2">
+                                <div className="w-10 h-10 border flex items-center justify-center rounded-xl">
+                                    <span className="text-sm">
+                                        <LogOut size={20} className="text-black" />
+                                    </span>
+                                </div>
                                 Exit
                             </DropdownMenuItem>
                         </DropdownMenuContent>
