@@ -2,7 +2,7 @@ import { Header } from "@/components/global/header";
 import { Sidebar } from "@/components/global/sidebar";
 import { Outlet } from "react-router-dom";
 
-export function Layout() {
+export function BaseLayout() {
     return (
         <main className="flex flex-col h-screen">
             <Header />
