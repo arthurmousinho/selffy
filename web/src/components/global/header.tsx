@@ -4,6 +4,8 @@ import { Card, CardContent, CardHeader } from "../ui/card";
 import { Input } from "../ui/input";
 import { Separator } from "../ui/separator";
 
+import logo from "../../assets/brand/logo.svg"
+
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -12,25 +14,29 @@ import {
     DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { Link } from "react-router-dom";
 
 export function Header() {
     return (
         <Card className="w-full rounded-none flex flex-row items-center justify-start h-[72px] py-0">
             <CardHeader className="flex items-center border-r min-w-[20%]">
-                <h1 className="text-primary font-bold text-3xl">
-                    Selffy
-                </h1>
+                <Link to="/">
+                    <img
+                        src={logo}
+                        className="w-[150px]"
+                    />
+                </Link>
             </CardHeader>
             <CardContent className="w-full flex flex-row items-center justify-between p-0 px-4">
-                <h1 className="text-xl font-bold"> 
+                <h1 className="text-xl font-bold">
                     Dashboard
                 </h1>
-                <div className="flex flex-row items-center gap-6"> 
-                    <Input 
+                <div className="flex flex-row items-center gap-6">
+                    <Input
                         placeholder="Pesquisa rápida..."
                         className="w-[250px]"
                     />
-                    <Separator orientation="vertical" className="h-10"/>
+                    <Separator orientation="vertical" className="h-10" />
                     <DropdownMenu>
                         <DropdownMenuTrigger className="rounded-full">
                             <Avatar>
