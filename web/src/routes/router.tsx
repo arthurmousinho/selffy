@@ -8,6 +8,7 @@ import { NotFound } from "@/pages/errors/notFound";
 import { Forbidden } from "@/pages/errors/forbidden";
 import { Projects } from "@/pages/projects/projects";
 import { Notifications } from "@/pages/notifications/notifications";
+import { Settings } from "@/pages/settings/settings";
 
 export const ROUTER = createBrowserRouter([
     {
@@ -18,6 +19,7 @@ export const ROUTER = createBrowserRouter([
             { path: 'dashboard', element: <Dashboard /> },
             { path: 'projects', element: <Projects /> },
             { path: 'notifications', element: <Notifications /> },
+            { path: 'settings', element: <Settings /> },
         ]
     },
     {

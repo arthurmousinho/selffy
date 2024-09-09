@@ -8,7 +8,7 @@ export function BaseLayout() {
             <Header />
             <div className="flex flex-row flex-1 overflow-hidden">
                 <Sidebar />
-                <div className="flex-1 overflow-auto p-4">
+                <div className="flex-1 overflow-auto p-6">
                     <Outlet />
                 </div>
             </div>

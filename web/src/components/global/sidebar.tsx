@@ -5,7 +5,6 @@ import {
     Home,
     LogOut,
     Settings,
-    UserRound,
 } from "lucide-react";
 import { Button } from "../ui/button";
 import { Separator } from "../ui/separator";
@@ -15,7 +14,6 @@ const sidebarLinks = [
     { to: '/dashboard', label: 'Dashboard', icon: <Home size={20} className="text-black" /> },
     { to: '/projects', label: 'Projects', icon: <Folder size={20} className="text-black" /> },
     { to: '/notifications', label: 'Notifications', icon: <Bell size={20} className="text-black" /> },
-    { to: '/profile', label: 'Profile', icon: <UserRound size={20} className="text-black" /> },
     { to: '/settings', label: 'Settings', icon: <Settings size={20} className="text-black" /> },
     { to: '/auth/signin', label: 'Exit', icon: <LogOut size={20} className="text-black" /> },
 ];
