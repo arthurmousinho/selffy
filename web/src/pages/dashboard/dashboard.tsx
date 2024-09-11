@@ -1,4 +1,4 @@
-import { PulsatingDot } from "@/components/global/pulsantingDot";
+import { PulsatingDot } from "@/components/global/pulsanting-dot";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { CheckCircle, DollarSign, Folder } from "lucide-react";
 import { Bar, BarChart, CartesianGrid, XAxis, Area, AreaChart } from "recharts"

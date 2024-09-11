@@ -17,17 +17,22 @@ import { Link, useLocation } from "react-router-dom";
 export function Header() {
 
     const location = useLocation();
-
+    
     function getTitle() {
-        const titles: any = {
-            '/dashboard': 'Dashboard',
-            '/projects': 'Projects',
-            '/notifications': 'Notifications',
-            '/profile': 'Profile',
-            '/settings': 'Settings',
+        const pathname = location.pathname;
+        const firstRoute = pathname.split('/');
+        const mainRoute = `/${firstRoute[1]}`;
+      
+        const titles: { [key: string]: string } = {
+          '/dashboard': 'Dashboard',
+          '/projects': 'Projects',
+          '/notifications': 'Notifications',
+          '/profile': 'Profile',
+          '/settings': 'Settings',
         };
-        return titles[location.pathname] || 'Welcome';
-    };
+      
+        return titles[pathname] || titles[mainRoute];
+    }
 
     return (
         <Card className="w-full rounded-none flex flex-row items-center justify-start h-[72px] py-0">
