@@ -9,6 +9,7 @@ import { Forbidden } from "@/pages/errors/forbidden";
 import { Projects } from "@/pages/projects/projects";
 import { Notifications } from "@/pages/notifications/notifications";
 import { Settings } from "@/pages/settings/settings";
+import { ProjectDetails } from "@/pages/projects/project-details";
 
 export const ROUTER = createBrowserRouter([
     {
@@ -18,6 +19,7 @@ export const ROUTER = createBrowserRouter([
             { path: '', element: <Navigate to={'/dashboard'} /> },
             { path: 'dashboard', element: <Dashboard /> },
             { path: 'projects', element: <Projects /> },
+            { path: 'projects/:id', element: <ProjectDetails /> },
             { path: 'notifications', element: <Notifications /> },
             { path: 'settings', element: <Settings /> },
         ]
@@ -31,15 +33,15 @@ export const ROUTER = createBrowserRouter([
         ]
     },
     {
-        path: '/notfound', 
+        path: '/notfound',
         element: <NotFound />
     },
     {
-        path: '/forbidden', 
+        path: '/forbidden',
         element: <Forbidden />
     },
     {
-        path: '*', 
+        path: '*',
         element: <Navigate to={'/notfound'} />
     }
 ])

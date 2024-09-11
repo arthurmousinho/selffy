@@ -13,6 +13,7 @@ import {
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { CheckCircle, DollarSign, EllipsisVertical, Folder, Pencil, Pin, Trash } from "lucide-react";
+import { Link } from "react-router-dom";
 
 
 interface ProjectCardProps {
@@ -59,14 +60,16 @@ export function ProjectCard(props: ProjectCardProps) {
                         <EllipsisVertical size={20} className="text-muted-foreground" />
                     </DropdownMenuTrigger>
                     <DropdownMenuContent className="mr-12 w-[150px]">
-                        <DropdownMenuItem className="cursor-pointer flex items-center gap-2 p-2">
-                            <div className="w-10 h-10 border flex items-center justify-center rounded-xl">
-                                <span className="text-sm">
-                                    <Folder size={20} className="text-black" />
-                                </span>
-                            </div>
-                            Details
-                        </DropdownMenuItem>
+                        <Link to={'detail'}>
+                            <DropdownMenuItem className="cursor-pointer flex items-center gap-2 p-2">
+                                <div className="w-10 h-10 border flex items-center justify-center rounded-xl">
+                                    <span className="text-sm">
+                                        <Folder size={20} className="text-black" />
+                                    </span>
+                                </div>
+                                Details
+                            </DropdownMenuItem>
+                        </Link>
                         <DropdownMenuItem className="cursor-pointer flex items-center gap-2 p-2">
                             <div className="w-10 h-10 border flex items-center justify-center rounded-xl">
                                 <span className="text-sm">

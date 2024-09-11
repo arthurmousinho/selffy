@@ -12,12 +12,12 @@ import {
 export function Notifications() {
     return (
         <main className="space-y-4">
-            {/* Agrupamento de notificações de TODAY */}
+
             <Card>
                 <CardHeader className="flex flex-col gap-4">
                     <span className="text-sm text-muted-foreground">TODAY</span>
                     <div className="space-y-4">
-                        {/* Notificação 1 */}
+            
                         <div className="flex items-center justify-between gap-2">
                             <div className="flex items-center gap-2">
                                 <div className="w-10 h-10 bg-green-300 flex items-center justify-center rounded-xl">
@@ -41,7 +41,7 @@ export function Notifications() {
                             </TooltipProvider>
                         </div>
 
-                        {/* Notificação 2 */}
+            
                         <div className="flex items-center justify-between gap-2">
                             <div className="flex items-center gap-2">
                                 <div className="w-10 h-10 bg-blue-300 flex items-center justify-center rounded-xl">
@@ -65,7 +65,7 @@ export function Notifications() {
                             </TooltipProvider>
                         </div>
 
-                        {/* Notificação 3 */}
+            
                         <div className="flex items-center justify-between gap-2">
                             <div className="flex items-center gap-2">
                                 <div className="w-10 h-10 bg-yellow-300 flex items-center justify-center rounded-xl">
@@ -92,12 +92,12 @@ export function Notifications() {
                 </CardHeader>
             </Card>
 
-            {/* Agrupamento de notificações de YESTERDAY */}
+
             <Card>
                 <CardHeader className="flex flex-col gap-4">
                     <span className="text-sm text-muted-foreground">YESTERDAY</span>
                     <div className="space-y-4">
-                        {/* Notificação 1 */}
+            
                         <div className="flex items-center justify-between gap-2">
                             <div className="flex items-center gap-2">
                                 <div className="w-10 h-10 bg-red-300 flex items-center justify-center rounded-xl">
@@ -121,7 +121,7 @@ export function Notifications() {
                             </TooltipProvider>
                         </div>
 
-                        {/* Notificação 2 */}
+            
                         <div className="flex items-center justify-between gap-2">
                             <div className="flex items-center gap-2">
                                 <div className="w-10 h-10 bg-purple-300 flex items-center justify-center rounded-xl">
@@ -145,7 +145,7 @@ export function Notifications() {
                             </TooltipProvider>
                         </div>
 
-                        {/* Notificação 3 */}
+            
                         <div className="flex items-center justify-between gap-2">
                             <div className="flex items-center gap-2">
                                 <div className="w-10 h-10 bg-orange-300 flex items-center justify-center rounded-xl">
@@ -172,12 +172,11 @@ export function Notifications() {
                 </CardHeader>
             </Card>
 
-            {/* Agrupamento de notificações de TWO DAYS AGO */}
+
             <Card>
                 <CardHeader className="flex flex-col gap-4">
                     <span className="text-sm text-muted-foreground">TWO DAYS AGO</span>
                     <div className="space-y-4">
-                        {/* Notificação 1 */}
                         <div className="flex items-center justify-between gap-2">
                             <div className="flex items-center gap-2">
                                 <div className="w-10 h-10 bg-teal-300 flex items-center justify-center rounded-xl">
@@ -200,8 +199,6 @@ export function Notifications() {
                                 </Tooltip>
                             </TooltipProvider>
                         </div>
-
-                        {/* Notificação 2 */}
                         <div className="flex items-center justify-between gap-2">
                             <div className="flex items-center gap-2">
                                 <div className="w-10 h-10 bg-pink-300 flex items-center justify-center rounded-xl">
@@ -224,8 +221,6 @@ export function Notifications() {
                                 </Tooltip>
                             </TooltipProvider>
                         </div>
-
-                        {/* Notificação 3 */}
                         <div className="flex items-center justify-between gap-2">
                             <div className="flex items-center gap-2">
                                 <div className="w-10 h-10 bg-gray-300 flex items-center justify-center rounded-xl">
