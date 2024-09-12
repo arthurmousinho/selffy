@@ -21,7 +21,7 @@ export class User {
     private props: UserProps;
 
     constructor(
-        props: Replace<UserProps, { createdAt?: Date, type?: UserType, updatedAt?: Date }>,
+        props: Replace<UserProps, { id?: string, createdAt?: Date, type?: UserType, updatedAt?: Date }>,
         id?: string,
     ) {
         this._id = id ?? randomUUID();
