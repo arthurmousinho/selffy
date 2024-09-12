@@ -26,7 +26,7 @@ import {
 } from "@/components/ui/select"
 import { Label } from "@/components/ui/label";
 
-export function Users() {
+export function AdminUsers() {
 
     const users = [
         {

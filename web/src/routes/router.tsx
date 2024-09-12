@@ -11,7 +11,8 @@ import { Notifications } from "@/pages/notifications/notifications";
 import { Settings } from "@/pages/settings/settings";
 import { ProjectDetails } from "@/pages/projects/project-details";
 import { AdminLayout } from "@/layouts/adminLayout";
-import { Users } from "@/pages/admin/users";
+import { AdminUsers } from "@/pages/admin/admin-users";
+import { AdminDashboard } from "@/pages/admin/admin-dashboard";
 
 export const ROUTER = createBrowserRouter([
     {
@@ -30,7 +31,8 @@ export const ROUTER = createBrowserRouter([
         path: '/admin',
         element: <AdminLayout />,
         children: [
-            { path: 'users', element: <Users /> },
+            { path: 'dashboard', element: <AdminDashboard /> },
+            { path: 'users', element: <AdminUsers /> },
         ]
     },
     {
