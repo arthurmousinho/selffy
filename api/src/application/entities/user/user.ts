@@ -2,6 +2,8 @@ import { randomUUID } from "crypto";
 import { Replace } from "src/utils/replace";
 import { Project } from "../project/project";
 
+export type UserType = 'admin' | 'default';
+
 export interface UserProps {
     name: string;
     email: string;
@@ -9,6 +11,7 @@ export interface UserProps {
     roles: string[];
     createdAt: Date;
     projects: Project[];
+    type: UserType;
 }
 
 export class User {
@@ -17,13 +20,14 @@ export class User {
     private props: UserProps;
 
     constructor(
-        props: Replace<UserProps, { createdAt?: Date }>,
+        props: Replace<UserProps, { createdAt?: Date, type?: UserType }>,
         id?: string,
     ) {
         this._id = id ?? randomUUID();
         this.props = {
             ...props,
-            createdAt: props.createdAt ?? new Date()
+            createdAt: props.createdAt ?? new Date(),
+            type: props.type ?? 'default'
         };
     }
 
@@ -73,6 +77,14 @@ export class User {
 
     public addProject(project: any) {
         this.props.projects.push(project)
+    }
+    
+    public getType() {
+        return this.props.type
+    }
+
+    public setType(type: UserType) {
+        this.props.type = type
     }
 
 }

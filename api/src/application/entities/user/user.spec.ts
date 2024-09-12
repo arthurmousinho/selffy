@@ -8,7 +8,7 @@ describe('User', () => {
             email: 'john.doe@example.com',
             password: 'securepassword',
             roles: ['user.edit'],
-            projects: []
+            projects: [],
         });
         expect(user).toBeTruthy();
         expect(user.getName()).toBe('John Doe');
@@ -25,7 +25,7 @@ describe('User', () => {
             email: 'jane.doe@example.com',
             password: 'anotherpassword',
             roles: [],
-            projects: []
+            projects: [],
         });
         user.setName('Jane Smith');
         expect(user.getName()).toBe('Jane Smith');

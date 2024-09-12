@@ -47,7 +47,7 @@ describe('Project', () => {
         project.setTitle('Updated Project Title');
         
         expect(project.getTitle()).toBe('Updated Project Title');
-        expect(project.getSlug()).toBe('test-project'); // Slug não muda automaticamente
+        expect(project.getSlug()).toBe('test-project'); 
     });
 
     it('should allow adding tasks to the project', () => {
