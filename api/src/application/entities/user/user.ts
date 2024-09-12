@@ -1,5 +1,6 @@
 import { randomUUID } from "crypto";
 import { Replace } from "src/utils/replace";
+import { Project } from "../project/project";
 
 export interface UserProps {
     name: string;
@@ -7,7 +8,7 @@ export interface UserProps {
     password: string;
     roles: string[];
     createdAt: Date;
-    projects: any[];
+    projects: Project[];
 }
 
 export class User {
