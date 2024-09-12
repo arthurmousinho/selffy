@@ -11,7 +11,8 @@ describe('Task', () => {
             dueDate: new Date('2024-12-31'),
             priority: 'medium',
             projectId: randomUUID(),
-            createdAt: new Date()
+            createdAt: new Date(),
+            updatedAt: new Date()
         };
     });
 
@@ -28,7 +29,7 @@ describe('Task', () => {
         const task = new Task(taskProps);
 
         expect(task.getId()).toBeDefined();
-        expect(task.getId()).toHaveLength(36); 
+        expect(task.getId()).toHaveLength(36);
     });
 
     it('should allow setting a title', () => {
@@ -79,6 +80,17 @@ describe('Task', () => {
         const taskWithCreatedAt = new Task({ ...taskProps, createdAt: existingDate });
 
         expect(taskWithCreatedAt.getCreatedAt()).toEqual(existingDate);
+    });
+
+    it('should update the updatedAt property', () => {
+        const task = new Task(taskProps);
+        const initialUpdatedAt = task.getUpdatedAt();
+
+        jest.advanceTimersByTime(1000);
+        task.update()
+
+        expect(task.getUpdatedAt()).not.toEqual(initialUpdatedAt);
+        expect(task.getUpdatedAt()).toBeInstanceOf(Date);
     });
 
 });

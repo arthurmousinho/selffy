@@ -3,14 +3,14 @@ import { Replace } from "src/utils/replace";
 import { User } from "../user/user";
 import { Task } from "../task/task";
 
-export type ProjectStatus = 'in-progress' | 'finished';
+export type ProjectStatus = 'IN_PROGRESS' | 'FINISHED';
 
 export interface ProjectProps {
     title: string;
     description: string;
     revenue: number;
-    slug: string;
     createdAt: Date;
+    updatedAt: Date;
     tasks: Task[]
     status: ProjectStatus;
     owner: User;
@@ -22,24 +22,16 @@ export class Project {
     private props: ProjectProps;
 
     constructor(
-        props: Replace<ProjectProps, { createdAt?: Date, status?: ProjectStatus, slug?: string }>,
+        props: Replace<ProjectProps, { createdAt?: Date, status?: ProjectStatus, updatedAt?: Date;}>,
         id?: string,
     ) {
         this._id = id ?? randomUUID();
         this.props = {
             ...props,
-            status: 'in-progress',
-            slug: props.slug ?? '',
-            createdAt: props.createdAt ?? new Date()
+            status: 'IN_PROGRESS',
+            createdAt: props.createdAt ?? new Date(),
+            updatedAt: props.updatedAt ?? new Date()
         }
-
-        if (!props.slug) {
-            this.props.slug = this.generateSlug();
-        }
-    }
-
-    private generateSlug() {
-        return this.props.title.toLowerCase().replace(/ /g, '-');
     }
 
     public getId() {
@@ -70,16 +62,16 @@ export class Project {
         this.props.revenue = revenue;
     }
 
-    public getSlug() {
-        return this.props.slug;
-    }
-
-    public setSlug(slug: string) {
-        this.props.slug = slug;
-    }
-
     public getCreatedAt() {
         return this.props.createdAt;
+    }
+
+    public getUpdatedAt() {
+        return this.props.updatedAt;
+    }
+
+    public update() {
+        this.props.updatedAt = new Date();
     }
 
     public getTasks() {
@@ -100,7 +92,7 @@ export class Project {
     }
 
     public finishProject() {
-        this.props.status = 'finished';
+        this.props.status = 'FINISHED';
     }
 
     public getOwner() {

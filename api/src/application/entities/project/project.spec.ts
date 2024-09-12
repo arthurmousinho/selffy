@@ -19,10 +19,10 @@ describe('Project', () => {
             title: 'Test Project',
             description: 'A project for testing purposes',
             revenue: 1000,
-            slug: '',
             createdAt: new Date(),
+            updatedAt: new Date(),
             tasks: [],
-            status: 'in-progress',
+            status: 'IN_PROGRESS',
             owner: mockUser
         };
     });
@@ -32,22 +32,14 @@ describe('Project', () => {
 
         expect(project).toBeTruthy();
         expect(project.getTitle()).toBe('Test Project');
-        expect(project.getSlug()).toBe('test-project');
+        expect(project.getStatus()).toBe('IN_PROGRESS');
     });
 
-    it('should generate slug based on title if slug is not provided', () => {
-        projectProps.slug = ''; 
-        const project = new Project(projectProps);
-
-        expect(project.getSlug()).toBe('test-project');
-    });
-
-    it('should allow updating the project title and keep the slug', () => {
+    it('should allow updating the project title', () => {
         const project = new Project(projectProps);
         project.setTitle('Updated Project Title');
-        
+
         expect(project.getTitle()).toBe('Updated Project Title');
-        expect(project.getSlug()).toBe('test-project'); 
     });
 
     it('should allow adding tasks to the project', () => {
@@ -59,6 +51,7 @@ describe('Project', () => {
             dueDate: new Date(),
             priority: 'medium',
             projectId: project.getId(),
+            createdAt: new Date()
         });
 
         project.addTask(task);
@@ -90,7 +83,7 @@ describe('Project', () => {
         const project = new Project(projectProps);
         project.finishProject();
 
-        expect(project.getStatus()).toBe('finished');
+        expect(project.getStatus()).toBe('FINISHED');
     });
 
     it('should set and get the project owner', () => {
@@ -105,6 +98,16 @@ describe('Project', () => {
 
         project.setOwnerId(newOwner);
         expect(project.getOwner()).toBe(newOwner);
+    });
+
+    it('should update the updatedAt property', () => {
+        const project = new Project(projectProps);
+        const initialUpdatedAt = project.getUpdatedAt();
+
+        project.update();
+
+        expect(project.getUpdatedAt()).not.toBe(initialUpdatedAt);
+        expect(project.getUpdatedAt()).toBeInstanceOf(Date);
     });
 
 });

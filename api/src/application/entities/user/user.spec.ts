@@ -67,5 +67,21 @@ describe('User', () => {
         user.addProject(project);
         expect(user.getProjects()).toContain(project);
     });
+    
+    it('should correctly update the updatedAt property', () => {
+        const user = new User({
+            name: 'John Doe',
+            email: 'john.doe@example.com',
+            password: 'XXXXXXXXXXXXXX',
+            roles: [],
+            projects: []
+        });
+        const initialUpdatedAt = user.getUpdatedAt();
+
+        user.update();
+
+        expect(user.getUpdatedAt()).not.toBe(initialUpdatedAt);
+        expect(user.getUpdatedAt()).toBeInstanceOf(Date);
+    });
 
 });
