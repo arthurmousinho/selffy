@@ -10,6 +10,8 @@ import { Projects } from "@/pages/projects/projects";
 import { Notifications } from "@/pages/notifications/notifications";
 import { Settings } from "@/pages/settings/settings";
 import { ProjectDetails } from "@/pages/projects/project-details";
+import { AdminLayout } from "@/layouts/adminLayout";
+import { Users } from "@/pages/admin/users";
 
 export const ROUTER = createBrowserRouter([
     {
@@ -22,6 +24,13 @@ export const ROUTER = createBrowserRouter([
             { path: 'projects/:id', element: <ProjectDetails /> },
             { path: 'notifications', element: <Notifications /> },
             { path: 'settings', element: <Settings /> },
+        ]
+    },
+    {
+        path: '/admin',
+        element: <AdminLayout />,
+        children: [
+            { path: 'users', element: <Users /> },
         ]
     },
     {
