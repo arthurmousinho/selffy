@@ -2,6 +2,8 @@ import { randomUUID } from "crypto";
 import { Replace } from "src/utils/replace";
 import { User } from "../user/user";
 
+export type ProjectStatus = 'in-progress' | 'finished';
+
 export interface ProjectProps {
     title: string;
     description: string;
@@ -9,7 +11,7 @@ export interface ProjectProps {
     slug: string;
     createdAt: Date;
     tasks: any[]
-    status: string;
+    status: ProjectStatus;
     owner: User;
 }
 
@@ -19,14 +21,24 @@ export class Project {
     private props: ProjectProps;
 
     constructor(
-        props: Replace<ProjectProps, { createdAt?: Date }>,
+        props: Replace<ProjectProps, { createdAt?: Date, status?: ProjectStatus, slug?: string }>,
         id?: string,
     ) {
         this._id = id ?? randomUUID();
         this.props = {
             ...props,
+            status: 'in-progress',
+            slug: props.slug ?? '',
             createdAt: props.createdAt ?? new Date()
-        };
+        }
+
+        if (!props.slug) {
+            this.props.slug = this.generateSlug();
+        }
+    }
+
+    private generateSlug() {
+        return this.props.title.toLowerCase().replace(/ /g, '-');
     }
 
     public getId() {
@@ -92,8 +104,8 @@ export class Project {
         return this.props.status;
     }
 
-    public setStatus(status: string) {
-        this.props.status = status;
+    public finishProject() {
+        this.props.status = 'finished';
     }
 
     public getOwner() {

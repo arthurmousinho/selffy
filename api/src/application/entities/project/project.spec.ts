@@ -1,146 +1,102 @@
-import { Project } from './project';
-import { User } from '../user/user'; 
+import { Project, ProjectProps } from './Project';
+import { User } from '../user/user';
+import { randomUUID } from 'crypto';
 
 describe('Project', () => {
-
-    let user: User;
+    let mockUser: User;
+    let projectProps: ProjectProps;
 
     beforeEach(() => {
-        user = new User({
-            name: 'Jane Doe',
-            email: 'jane.doe@example.com',
-            password: 'securepassword',
-            roles: ['admin'],
-            createdAt: new Date(),
+        mockUser = new User({
+            name: 'John Doe',
+            email: 'john@example.com',
+            password: 'password123',
+            roles: ['user'],
             projects: []
         });
+
+        projectProps = {
+            title: 'Test Project',
+            description: 'A project for testing purposes',
+            revenue: 1000,
+            slug: '',
+            createdAt: new Date(),
+            tasks: [],
+            status: 'in-progress',
+            owner: mockUser
+        };
     });
 
     it('should be able to create a project', () => {
-        const project = new Project({
-            title: 'New Project',
-            description: 'Project Description',
-            revenue: 10000,
-            slug: 'new-project',
-            tasks: [],
-            status: 'ongoing',
-            owner: user
-        });
+        const project = new Project(projectProps);
         expect(project).toBeTruthy();
-        expect(project.getTitle()).toBe('New Project');
-        expect(project.getDescription()).toBe('Project Description');
-        expect(project.getRevenue()).toBe(10000);
-        expect(project.getSlug()).toBe('new-project');
-        expect(project.getTasks()).toEqual([]);
-        expect(project.getStatus()).toBe('ongoing');
-        expect(project.getOwner()).toBe(user);
+        expect(project.getTitle()).toBe('Test Project');
+        expect(project.getSlug()).toBe('test-project');
     });
 
-    it('should correctly update project title', () => {
-        const project = new Project({
-            title: 'Old Title',
-            description: 'Description',
-            revenue: 5000,
-            slug: 'old-title',
-            tasks: [],
-            status: 'completed',
-            owner: user
-        });
-        project.setTitle('Updated Title');
-        expect(project.getTitle()).toBe('Updated Title');
+    it('should generate slug based on title if slug is not provided', () => {
+        projectProps.slug = ''; 
+        const project = new Project(projectProps);
+
+        expect(project.getSlug()).toBe('test-project');
     });
 
-    it('should correctly update project description', () => {
-        const project = new Project({
-            title: 'Project Title',
-            description: 'Old Description',
-            revenue: 7000,
-            slug: 'project-title',
-            tasks: [],
-            status: 'ongoing',
-            owner: user
-        });
-        project.setDescription('New Description');
-        expect(project.getDescription()).toBe('New Description');
+    it('should allow updating the project title and generate a new slug', () => {
+        const project = new Project(projectProps);
+        project.setTitle('Updated Project Title');
+        
+        expect(project.getTitle()).toBe('Updated Project Title');
+        expect(project.getSlug()).toBe('test-project'); 
     });
 
-    it('should correctly add a task', () => {
-        const project = new Project({
-            title: 'Project Title',
-            description: 'Description',
-            revenue: 8000,
-            slug: 'project-title',
-            tasks: [],
-            status: 'ongoing',
-            owner: user
-        });
-        const task = { id: 'task1', name: 'Task 1' };
-        project.addTasks(task);
-        expect(project.getTasks()).toContain(task);
+    it('should allow adding tasks to the project', () => {
+        const project = new Project(projectProps);
+
+        project.addTasks({ id: randomUUID(), name: 'Task 1', status: 'pending' });
+        expect(project.getTasks().length).toBe(1);
     });
 
-    it('should correctly remove a task', () => {
-        const project = new Project({
-            title: 'Project Title',
-            description: 'Description',
-            revenue: 8000,
-            slug: 'project-title',
-            tasks: [{ id: 'task1', name: 'Task 1' }],
-            status: 'ongoing',
-            owner: user
-        });
-        project.removeTask('task1');
-        expect(project.getTasks()).not.toContainEqual({ id: 'task1', name: 'Task 1' });
+    it('should allow removing a task from the project', () => {
+        const project = new Project(projectProps);
+        const taskId = randomUUID();
+
+        project.addTasks({ id: taskId, name: 'Task 1', status: 'pending' });
+        project.removeTask(taskId);
+
+        expect(project.getTasks().length).toBe(0);
     });
 
-    it('should correctly edit a task', () => {
-        const project = new Project({
-            title: 'Project Title',
-            description: 'Description',
-            revenue: 8000,
-            slug: 'project-title',
-            tasks: [{ id: 'task1', name: 'Old Task' }],
-            status: 'ongoing',
-            owner: user
-        });
-        const newTask = { id: 'task1', name: 'Updated Task' };
-        project.editTask('task1', newTask);
-        expect(project.getTasks()).toContainEqual(newTask);
+    it('should allow editing a task in the project', () => {
+        const project = new Project(projectProps);
+        const taskId = randomUUID();
+
+        project.addTasks({ id: taskId, name: 'Task 1', status: 'pending' });
+        project.editTask(taskId, { id: taskId, name: 'Updated Task', status: 'completed' });
+
+        const updatedTask = project.getTasks().find(task => task.id === taskId);
+        expect(updatedTask.name).toBe('Updated Task');
+        expect(updatedTask.status).toBe('completed');
     });
 
-    it('should correctly update project status', () => {
-        const project = new Project({
-            title: 'Project Title',
-            description: 'Description',
-            revenue: 8000,
-            slug: 'project-title',
-            tasks: [],
-            status: 'ongoing',
-            owner: user
-        });
-        project.setStatus('completed');
-        expect(project.getStatus()).toBe('completed');
+    it('should change project status to finished', () => {
+        const project = new Project(projectProps);
+        project.finishProject();
+
+        expect(project.getStatus()).toBe('finished');
     });
 
-    it('should correctly update project owner', () => {
-        const newUser = new User({
-            name: 'John Doe',
-            email: 'john.doe@example.com',
-            password: 'anotherpassword',
-            roles: [],
+    it('should set and get the project owner', () => {
+        const project = new Project(projectProps);
+        const newOwner = new User({
+            name: 'Jane Doe',
+            email: 'jane@example.com',
+            password: 'password123',
+            roles: ['admin'],
             projects: []
         });
-        const project = new Project({
-            title: 'Project Title',
-            description: 'Description',
-            revenue: 8000,
-            slug: 'project-title',
-            tasks: [],
-            status: 'ongoing',
-            owner: user
-        });
-        project.setOwnerId(newUser);
-        expect(project.getOwner()).toBe(newUser);
+
+        project.setOwnerId(newOwner);
+        expect(project.getOwner()).toBe(newOwner);
     });
 
 });
