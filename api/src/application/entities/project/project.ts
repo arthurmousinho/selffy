@@ -1,6 +1,7 @@
 import { randomUUID } from "crypto";
 import { Replace } from "src/utils/replace";
 import { User } from "../user/user";
+import { Task } from "../task/task";
 
 export type ProjectStatus = 'in-progress' | 'finished';
 
@@ -10,7 +11,7 @@ export interface ProjectProps {
     revenue: number;
     slug: string;
     createdAt: Date;
-    tasks: any[]
+    tasks: Task[]
     status: ProjectStatus;
     owner: User;
 }
@@ -85,19 +86,13 @@ export class Project {
         return this.props.tasks;
     }
 
-    public addTasks(task: any) {
+    public addTask(task: Task) {
         this.props.tasks.push(task);
     }
 
-    public removeTask(taskId: string) {
-        this.props.tasks = this.props.tasks.filter(task => task.id !== taskId);
-    }
-
-    public editTask(taskId: string, newTask: any) {
-        const taskIndex = this.props.tasks.findIndex(task => task.id === taskId);
-        if (taskIndex !== -1) {
-            this.props.tasks[taskIndex] = newTask;
-        }
+    public removeTask(task: Task) {
+        const index = this.props.tasks.indexOf(task);
+        this.props.tasks.splice(index, 1);
     }
 
     public getStatus() {

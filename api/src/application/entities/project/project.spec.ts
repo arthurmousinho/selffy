@@ -1,6 +1,6 @@
-import { Project, ProjectProps } from './Project';
+import { Task } from '../task/task';
 import { User } from '../user/user';
-import { randomUUID } from 'crypto';
+import { Project, ProjectProps } from './Project';
 
 describe('Project', () => {
     let mockUser: User;
@@ -29,6 +29,7 @@ describe('Project', () => {
 
     it('should be able to create a project', () => {
         const project = new Project(projectProps);
+
         expect(project).toBeTruthy();
         expect(project.getTitle()).toBe('Test Project');
         expect(project.getSlug()).toBe('test-project');
@@ -41,41 +42,48 @@ describe('Project', () => {
         expect(project.getSlug()).toBe('test-project');
     });
 
-    it('should allow updating the project title and generate a new slug', () => {
+    it('should allow updating the project title and keep the slug', () => {
         const project = new Project(projectProps);
         project.setTitle('Updated Project Title');
         
         expect(project.getTitle()).toBe('Updated Project Title');
-        expect(project.getSlug()).toBe('test-project'); 
+        expect(project.getSlug()).toBe('test-project'); // Slug não muda automaticamente
     });
 
     it('should allow adding tasks to the project', () => {
         const project = new Project(projectProps);
 
-        project.addTasks({ id: randomUUID(), name: 'Task 1', status: 'pending' });
+        const task = new Task({
+            title: 'Task 1',
+            description: 'First task',
+            dueDate: new Date(),
+            priority: 'medium',
+            projectId: project.getId(),
+        });
+
+        project.addTask(task);
+
         expect(project.getTasks().length).toBe(1);
+        expect(project.getTasks()[0].getTitle()).toBe('Task 1');
     });
 
     it('should allow removing a task from the project', () => {
         const project = new Project(projectProps);
-        const taskId = randomUUID();
 
-        project.addTasks({ id: taskId, name: 'Task 1', status: 'pending' });
-        project.removeTask(taskId);
+        const task = new Task({
+            title: 'Task 1',
+            description: 'First task',
+            dueDate: new Date(),
+            priority: 'medium',
+            projectId: project.getId(),
+            createdAt: new Date()
+        });
 
+        project.addTask(task);
+        expect(project.getTasks().length).toBe(1);
+
+        project.removeTask(task);
         expect(project.getTasks().length).toBe(0);
-    });
-
-    it('should allow editing a task in the project', () => {
-        const project = new Project(projectProps);
-        const taskId = randomUUID();
-
-        project.addTasks({ id: taskId, name: 'Task 1', status: 'pending' });
-        project.editTask(taskId, { id: taskId, name: 'Updated Task', status: 'completed' });
-
-        const updatedTask = project.getTasks().find(task => task.id === taskId);
-        expect(updatedTask.name).toBe('Updated Task');
-        expect(updatedTask.status).toBe('completed');
     });
 
     it('should change project status to finished', () => {
