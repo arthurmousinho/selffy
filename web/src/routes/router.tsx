@@ -13,6 +13,7 @@ import { ProjectDetails } from "@/pages/projects/project-details";
 import { AdminLayout } from "@/layouts/adminLayout";
 import { AdminUsers } from "@/pages/admin/admin-users";
 import { AdminDashboard } from "@/pages/admin/admin-dashboard";
+import { Targets } from "@/pages/target/targets";
 
 export const ROUTER = createBrowserRouter([
     {
@@ -22,6 +23,7 @@ export const ROUTER = createBrowserRouter([
             { path: '', element: <Navigate to={'/dashboard'} /> },
             { path: 'dashboard', element: <Dashboard /> },
             { path: 'projects', element: <Projects /> },
+            { path: 'targets', element: <Targets /> },
             { path: 'projects/:id', element: <ProjectDetails /> },
             { path: 'notifications', element: <Notifications /> },
             { path: 'settings', element: <Settings /> },

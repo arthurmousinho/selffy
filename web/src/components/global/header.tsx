@@ -29,6 +29,7 @@ export function Header() {
           '/notifications': 'Notifications',
           '/profile': 'Profile',
           '/settings': 'Settings',
+          '/targets': 'Targets',
         };
       
         return titles[pathname] || titles[mainRoute];

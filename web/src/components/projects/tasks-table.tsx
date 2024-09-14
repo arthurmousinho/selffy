@@ -4,7 +4,7 @@ import {
     TableCell,
     TableRow,
 } from "@/components/ui/table"
-import { TaskBadge } from "./task-badge";
+import { TaskBadge } from "../tasks/task-badge";
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -23,7 +23,7 @@ import {
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import { Card, CardContent, CardHeader } from "../ui/card";
-interface Task {
+export interface Task {
     id: string;
     title: string;
     priority: "low" | "medium" | "high";

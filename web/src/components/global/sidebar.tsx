@@ -1,6 +1,7 @@
 import { Card, CardContent } from "../ui/card";
 import {
     Bell,
+    Crosshair,
     Folder,
     Home,
     LogOut,
@@ -13,6 +14,7 @@ import { NavLink } from "react-router-dom";
 const sidebarLinks = [
     { to: '/dashboard', label: 'Dashboard', icon: <Home size={20} className="text-black" /> },
     { to: '/projects', label: 'Projects', icon: <Folder size={20} className="text-black" /> },
+    { to: '/targets', label: 'Targets', icon: <Crosshair size={20} className="text-black" /> },
     { to: '/notifications', label: 'Notifications', icon: <Bell size={20} className="text-black" /> },
     { to: '/settings', label: 'Settings', icon: <Settings size={20} className="text-black" /> },
     { to: '/auth/signin', label: 'Exit', icon: <LogOut size={20} className="text-black" /> },
