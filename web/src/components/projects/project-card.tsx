@@ -12,8 +12,9 @@ import {
     DropdownMenuItem,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import { CheckCircle, DollarSign, EllipsisVertical, Folder, Pencil, Pin, Trash } from "lucide-react";
+import { CheckCircle, DollarSign, Folder, MoreVertical, Pencil, Pin, Trash } from "lucide-react";
 import { Link } from "react-router-dom";
+import { Button } from "../ui/button";
 
 
 interface ProjectCardProps {
@@ -43,23 +44,25 @@ export function ProjectCard(props: ProjectCardProps) {
 
     return (
         <Card>
-            <CardHeader className="w-full h-auto flex flex-row items-start justify-between">
+            <CardHeader className="w-full h-auto flex flex-row items-center justify-between border-b">
                 <header className="flex items-center gap-2">
                     <div
-                        className="w-10 h-10 flex items-center justify-center rounded-xl"
+                        className="w-12 h-12 flex items-center justify-center rounded-xl text-xl"
                         style={{ backgroundColor: props.color }}
                     >
                         {props.icon}
                     </div>
                     <h2 className="font-semibold">
                         {props.title}
-                    </h2>
+                    </h2>   
                 </header>
                 <DropdownMenu>
                     <DropdownMenuTrigger>
-                        <EllipsisVertical size={20} className="text-muted-foreground" />
+                        <Button variant={'outline'} className="text-muted-foreground">
+                            <MoreVertical size={20} />
+                        </Button>
                     </DropdownMenuTrigger>
-                    <DropdownMenuContent className="mr-12 w-[150px]">
+                    <DropdownMenuContent className="mr-16 w-[150px]">
                         <Link to={'detail'}>
                             <DropdownMenuItem className="cursor-pointer flex items-center gap-2 p-2">
                                 <div className="w-10 h-10 border flex items-center justify-center rounded-xl">
@@ -97,7 +100,7 @@ export function ProjectCard(props: ProjectCardProps) {
                     </DropdownMenuContent>
                 </DropdownMenu>
             </CardHeader>
-            <CardContent className="flex flex-row items-center gap-4">
+            <CardContent className="flex flex-row items-center gap-4 pt-4">
                 <ChartContainer config={chartConfig1} className="h-[320px] w-[70%]">
                     <AreaChart
                         accessibilityLayer
