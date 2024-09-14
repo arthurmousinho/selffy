@@ -1,4 +1,4 @@
-import { Task, TaskProps, TaskPriority } from './Task';
+import { Task, TaskProps } from './Task';
 import { randomUUID } from 'crypto';
 
 describe('Task', () => {
