@@ -98,8 +98,8 @@ export function AdminRoles() {
                         <TableRow>
                             <TableHead className="w-[100px]">ID</TableHead>
                             <TableHead>Key</TableHead>
-                            <TableHead className="text-left w-[100px]">CreatedAt</TableHead>
-                            <TableHead className="text-left w-[100px]">UpdatedAt</TableHead>
+                            <TableHead className="text-left">CreatedAt</TableHead>
+                            <TableHead className="text-left">UpdatedAt</TableHead>
                             <TableHead className="text-right">Options</TableHead>
                         </TableRow>
                     </TableHeader>
@@ -110,8 +110,8 @@ export function AdminRoles() {
                                     {role.id}
                                 </TableCell>
                                 <TableCell>{role.key}</TableCell>
-                                <TableCell className="max-w-[100px] truncate">{role.createdAt}</TableCell>
-                                <TableCell className="max-w-[100px] truncate">{role.updatedAt}</TableCell>
+                                <TableCell className="text-left">{role.createdAt}</TableCell>
+                                <TableCell className="text-left">{role.updatedAt}</TableCell>
                                 <TableCell className="text-right">
                                     <DropdownMenu>
                                         <DropdownMenuTrigger asChild>
