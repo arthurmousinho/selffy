@@ -29,7 +29,7 @@ export function Header() {
           '/notifications': 'Notifications',
           '/profile': 'Profile',
           '/settings': 'Settings',
-          '/targets': 'Targets',
+          '/priorities': 'Priorities',
         };
       
         return titles[pathname] || titles[mainRoute];
