@@ -3,16 +3,14 @@ import { Avatar, AvatarFallback } from "../ui/avatar";
 import { Card, CardContent, CardHeader } from "../ui/card";
 import { Input } from "../ui/input";
 import { Separator } from "../ui/separator";
-
-import logo from "../../assets/brand/logo.svg"
-
 import {
     DropdownMenu,
     DropdownMenuContent,
     DropdownMenuItem,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Link, useLocation } from "react-router-dom";
+import { useLocation } from "react-router-dom";
+import { Logo } from "./logo";
 
 export function Header() {
 
@@ -37,13 +35,8 @@ export function Header() {
 
     return (
         <Card className="w-full rounded-none flex flex-row items-center justify-start h-[72px] py-0">
-            <CardHeader className="flex items-center border-r min-w-[20%]">
-                <Link to="/">
-                    <img
-                        src={logo}
-                        className="w-[150px]"
-                    />
-                </Link>
+            <CardHeader className="flex items-start border-r min-w-[20%] px-4">
+                <Logo />
             </CardHeader>
             <CardContent className="w-full flex flex-row items-center justify-between p-0 px-4">
                 <h1 className="text-xl font-bold">
