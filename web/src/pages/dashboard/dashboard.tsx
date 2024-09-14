@@ -18,7 +18,7 @@ export function Dashboard() {
                 <WeekProductivityCard />
             </section>
             <section>
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-3 gap-4">
                     <InProgressProjectCard 
                         title="MyChaty"
                         icon="💬"
@@ -35,9 +35,19 @@ export function Dashboard() {
                         color="#fdba74"
                     />
                     <InProgressProjectCard 
+                        title="DevBooks"
+                        icon="📚"
+                        color="#67e8f9"
+                    />
+                    <InProgressProjectCard 
                         title="ExamChecker"
                         icon="💊"
                         color="#f9a8d4"
+                    />
+                    <InProgressProjectCard 
+                        title="Boleto Facil"
+                        icon="🤑"
+                        color="#fca5a5"
                     />
                 </div>
             </section>
