@@ -38,7 +38,7 @@ export function Header() {
             <CardHeader className="flex items-start border-r min-w-[20%] px-4">
                 <Logo />
             </CardHeader>
-            <CardContent className="w-full flex flex-row items-center justify-between p-0 px-4">
+            <CardContent className="w-full flex flex-row items-center justify-between p-0 px-6">
                 <h1 className="text-xl font-bold">
                     {getTitle()}
                 </h1>

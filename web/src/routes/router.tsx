@@ -1,5 +1,5 @@
-import { AuthLayout } from "@/layouts/authLayout";
-import { BaseLayout } from "@/layouts/baseLayout";
+import { AuthLayout } from "@/layouts/auth-layout";
+import { BaseLayout } from "@/layouts/base-layout";
 import { Dashboard } from "@/pages/dashboard/dashboard";
 import { SignIn } from "@/pages/auth/signin";
 import { createBrowserRouter, Navigate } from "react-router-dom";
@@ -10,10 +10,11 @@ import { Projects } from "@/pages/projects/projects";
 import { Notifications } from "@/pages/notifications/notifications";
 import { Settings } from "@/pages/settings/settings";
 import { ProjectDetails } from "@/pages/projects/project-details";
-import { AdminLayout } from "@/layouts/adminLayout";
+import { AdminLayout } from "@/layouts/admin-layout";
 import { AdminUsers } from "@/pages/admin/admin-users";
 import { AdminDashboard } from "@/pages/admin/admin-dashboard";
 import { Priorities } from "@/pages/priorities/priorities";
+import { AdminProjects } from "@/pages/admin/admin-projects";
 
 export const ROUTER = createBrowserRouter([
     {
@@ -35,6 +36,7 @@ export const ROUTER = createBrowserRouter([
         children: [
             { path: 'dashboard', element: <AdminDashboard /> },
             { path: 'users', element: <AdminUsers /> },
+            { path: 'projects', element: <AdminProjects /> },
         ]
     },
     {
