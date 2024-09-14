@@ -15,6 +15,7 @@ import { AdminUsers } from "@/pages/admin/admin-users";
 import { AdminDashboard } from "@/pages/admin/admin-dashboard";
 import { Priorities } from "@/pages/priorities/priorities";
 import { AdminProjects } from "@/pages/admin/admin-projects";
+import { AdminTasks } from "@/pages/admin/admin-tasks";
 
 export const ROUTER = createBrowserRouter([
     {
@@ -37,6 +38,7 @@ export const ROUTER = createBrowserRouter([
             { path: 'dashboard', element: <AdminDashboard /> },
             { path: 'users', element: <AdminUsers /> },
             { path: 'projects', element: <AdminProjects /> },
+            { path: 'tasks', element: <AdminTasks /> },
         ]
     },
     {
