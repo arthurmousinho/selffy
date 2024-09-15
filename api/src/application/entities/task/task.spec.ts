@@ -1,5 +1,4 @@
 import { makeTask } from '@test/factories/task.factory';
-import { Task, TaskProps } from './Task';
 import { randomUUID } from 'crypto';
 
 describe('Task', () => {

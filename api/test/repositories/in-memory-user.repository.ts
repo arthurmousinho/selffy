@@ -10,17 +10,23 @@ export class InMemoryUserRepository implements UserRepository {
     }
 
     public async findByEmail(email: string) {
-        const user = this.users.find(user => user.getEmail() === email);
+        const user = this.users.find(
+            (user) => user.getEmail() === email
+        );
         return user ?? null;
     }
 
     public async findByName(name: string) {
-        const user = this.users.find(user => user.getName() === name);
+        const user = this.users.find(
+            (user) => user.getName() === name
+        );
         return user ?? null;
     }
 
     public async findById(id: string) {
-        const user = this.users.find(user => user.getId() === id);
+        const user = this.users.find(
+            (user) => user.getId() === id
+        );
         return user;
     }
 
@@ -28,15 +34,19 @@ export class InMemoryUserRepository implements UserRepository {
         return this.users;
     }
 
-    public async update(user: any) {
-        const userIndex = this.users.findIndex(item => item.getId() === user.id);
+    public async update(user: User) {
+        const userIndex = this.users.findIndex(
+            (item) => item.getId() === user.getId()
+        );
         if (userIndex !== -1) {
             this.users[userIndex] = user;
         }
     }
 
     public async delete(id: string) {
-        const userIndex = this.users.findIndex(user => user.getId() === id);
+        const userIndex = this.users.findIndex(
+            (user) => user.getId() === id
+        );
         if (userIndex !== -1) {
             this.users.splice(userIndex, 1);
         }

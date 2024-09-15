@@ -2,21 +2,22 @@ import { Task } from "@application/entities/task/task";
 import { TaskRepository } from "@application/repositories/task.repository";
 
 export class InMemoryTaskRepository implements TaskRepository {
+    
     private tasks: Task[] = [];
 
-    public async create(task: any): Promise<any> {
+    public async create(task: any): Promise<void> {
         this.tasks.push(task);
-        return task;
     }
 
-    public async findAll(): Promise<any[]> {
+    public async findAll(): Promise<Task[]> {
         return this.tasks;
     }
 
-    public async findById(id: string): Promise<any> {
-        return this.tasks.find(
+    public async findById(id: string): Promise<Task | null> {
+        const task = this.tasks.find(
             (task) => task.getId() === id
         );
+        return task ?? null;
     }
     
     public async update(task: any): Promise<void> {
@@ -29,7 +30,9 @@ export class InMemoryTaskRepository implements TaskRepository {
     }
 
     public async delete(id: string) {
-        const index = this.tasks.findIndex(task => task.getId() === id);
+        const index = this.tasks.findIndex(
+            (task) => task.getId() === id
+        );
         if (index !== -1) {
             this.tasks.splice(index, 1);
         }

@@ -2,6 +2,8 @@ import { User } from "@application/entities/user/user";
 import { randomUUID } from "crypto";
 
 export function makeUser(): User {
+    const userId = randomUUID();
+
     const user = new User({
         name: 'New User',
         email: 'new@example.com',
@@ -9,7 +11,7 @@ export function makeUser(): User {
         roles: ['user.edit'],
         projects: [],
         type: 'DEFAULT'
-    }, randomUUID())
+    }, userId)
 
     return user;
 }
