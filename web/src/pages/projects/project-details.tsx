@@ -1,4 +1,4 @@
-import { TasksTable } from "@/components/projects/tasks-table";
+import { TasksTable } from "@/components/tasks/tasks-table"; 
 import { Button } from "@/components/ui/button";
 import { Card, CardHeader } from "@/components/ui/card";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger,  } from "@/components/ui/tooltip";

@@ -36,6 +36,7 @@ export const ROUTER = createBrowserRouter([
         path: '/admin',
         element: <AdminLayout />,
         children: [
+            { path: '', element: <Navigate to={'dashboard'} /> },
             { path: 'dashboard', element: <AdminDashboard /> },
             { path: 'users', element: <AdminUsers /> },
             { path: 'projects', element: <AdminProjects /> },
