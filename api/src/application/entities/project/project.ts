@@ -11,7 +11,9 @@ export interface ProjectProps {
     revenue: number;
     createdAt: Date;
     updatedAt: Date;
-    tasks: Task[]
+    icon: string;
+    color: string;
+    tasks: Task[];
     status: ProjectStatus;
     owner: User;
 }
@@ -22,7 +24,7 @@ export class Project {
     private props: ProjectProps;
 
     constructor(
-        props: Replace<ProjectProps, { createdAt?: Date, status?: ProjectStatus, updatedAt?: Date;}>,
+        props: Replace<ProjectProps, { createdAt?: Date, status?: ProjectStatus, updatedAt?: Date; }>,
         id?: string,
     ) {
         this._id = id ?? randomUUID();
@@ -72,6 +74,22 @@ export class Project {
 
     public update() {
         this.props.updatedAt = new Date();
+    }
+    
+    public getIcon() {
+        return this.props.icon;
+    }
+
+    public setIcon(icon: string) {
+        this.props.icon = icon;
+    }
+
+    public getColor() {
+        return this.props.color;
+    }
+
+    public setColor(color: string) {
+        this.props.color = color;
     }
 
     public getTasks() {

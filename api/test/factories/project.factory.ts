@@ -9,6 +9,8 @@ export function makeProject() {
         revenue: 1000,
         tasks: [],
         owner: makeUser(),
+        color: "#000000",
+        icon: "👍🏻"
     }, randomUUID());
     
     return project;

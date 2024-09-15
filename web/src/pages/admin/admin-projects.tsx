@@ -38,7 +38,9 @@ export function AdminProjects() {
             updatedAt: "2024-09-12T15:00:00Z",
             tasks: 2,
             status: "inProgress",
-            ownerId: "e87e328f-7f4a-4354-aeaa-c7039029ad3e"
+            ownerId: "e87e328f-7f4a-4354-aeaa-c7039029ad3e",
+            color: "#F3F3F3",
+            icon: "💬"
         },
         {
             id: "bb12a860-39fc-487b-a0a9-c7a159568b33",
@@ -49,7 +51,9 @@ export function AdminProjects() {
             updatedAt: "2024-09-12T11:45:00Z",
             tasks: 3,
             status: "inProgress",
-            ownerId: "e6b0383c-77cb-4f8b-8824-4ad3de77e1d5"
+            ownerId: "e6b0383c-77cb-4f8b-8824-4ad3de77e1d5",
+            color: "#F3F3F3",
+            icon: "💬"
         },
         {
             id: "6b5a47b8-d59b-4c9a-bf83-4f644431f8e7",
@@ -60,7 +64,9 @@ export function AdminProjects() {
             updatedAt: "2024-09-12T10:00:00Z",
             tasks: 5,
             status: "inProgress",
-            ownerId: "685d98b3-dbee-43de-be8a-b71377ce4124"
+            ownerId: "685d98b3-dbee-43de-be8a-b71377ce4124",
+            color: "#F3F3F3",
+            icon: "💬"
         },
         {
             id: "db3c6b78-9df4-4f27-a8e4-b3a83b7d6c92",
@@ -71,7 +77,9 @@ export function AdminProjects() {
             updatedAt: "2024-09-12T13:30:00Z",
             tasks: 4,
             status: "finished",
-            ownerId: "bd9abffa-9285-4313-a579-1b230b910ae5"
+            ownerId: "bd9abffa-9285-4313-a579-1b230b910ae5",
+            color: "#F3F3F3",
+            icon: "💬"
         },
         {
             id: "fd5a1d3e-92f2-48d4-9d6a-73b8c4c6f62f",
@@ -82,7 +90,9 @@ export function AdminProjects() {
             updatedAt: "2024-09-12T14:30:00Z",
             tasks: 6,
             status: "inProgress",
-            ownerId: "7017d797-1a3c-4f69-97a3-4ddea36a23fc"
+            ownerId: "7017d797-1a3c-4f69-97a3-4ddea36a23fc",
+            color: "#F3F3F3",
+            icon: "💬"
         }
     ];
 
@@ -130,75 +140,81 @@ export function AdminProjects() {
                             <TableHead className="text-left w-[100px]">UpdatedAt</TableHead>
                             <TableHead className="text-left">Tasks</TableHead>
                             <TableHead className="text-left">Status</TableHead>
+                            <TableHead className="text-left">Color</TableHead>
+                            <TableHead className="text-left">Icon</TableHead>
                             <TableHead className="text-left">Owner Id</TableHead>
                             <TableHead className="text-right">Options</TableHead>
                         </TableRow>
                     </TableHeader>
                     <TableBody>
-                        {projects.map((project) => (
-                            <TableRow key={project.id}>
-                                <TableCell className="font-medium max-w-[100px] truncate">
-                                    {project.id}
-                                </TableCell>
-                                <TableCell>{project.title}</TableCell>
-                                <TableCell className="max-w-[100px] truncate">{project.description}</TableCell>
-                                <TableCell className="max-w-[100px] truncate">{project.revenue}</TableCell>
-                                <TableCell className="max-w-[100px] truncate">{project.createdAt}</TableCell>
-                                <TableCell className="max-w-[100px] truncate">{project.updatedAt}</TableCell>
-                                <TableCell>{project.tasks}</TableCell>
-                                <TableCell className="text-left">
-                                    {
-                                        project.status === 'finished' ?
-                                            (
-                                                <Badge variant={'default'}>
-                                                    finished
-                                                </Badge>
-                                            )
-                                            : (
-                                                <Badge variant={'secondary'}>
-                                                   in progress
-                                                </Badge>
-                                            )
-                                    }
-                                </TableCell>
-                                <TableCell className="max-w-[100px] truncate">{project.ownerId}</TableCell>
-                                <TableCell className="text-right">
-                                    <DropdownMenu>
-                                        <DropdownMenuTrigger asChild>
-                                            <Button variant={'outline'} className="text-muted-foreground">
-                                                <MoreVertical size={20} />
-                                            </Button>
-                                        </DropdownMenuTrigger>
-                                        <DropdownMenuContent>
-                                            <DropdownMenuItem className="cursor-pointer flex items-center gap-2 p-2">
-                                                <div className="w-10 h-10 border flex items-center justify-center rounded-xl">
-                                                    <span className="text-sm">
-                                                        <Folder size={20} className="text-black" />
-                                                    </span>
-                                                </div>
-                                                Details
-                                            </DropdownMenuItem>
-                                            <DropdownMenuItem className="cursor-pointer flex items-center gap-2 p-2">
-                                                <div className="w-10 h-10 border flex items-center justify-center rounded-xl">
-                                                    <span className="text-sm">
-                                                        <Pencil size={20} className="text-black" />
-                                                    </span>
-                                                </div>
-                                                Edit
-                                            </DropdownMenuItem>
-                                            <DropdownMenuItem className="cursor-pointer flex items-center gap-2 p-2">
-                                                <div className="w-10 h-10 border flex items-center justify-center rounded-xl">
-                                                    <span className="text-sm">
-                                                        <Trash size={20} className="text-black" />
-                                                    </span>
-                                                </div>
-                                                Delete
-                                            </DropdownMenuItem>
-                                        </DropdownMenuContent>
-                                    </DropdownMenu>
-                                </TableCell>
-                            </TableRow>
-                        ))}
+                        {
+                            projects.map((project) => (
+                                <TableRow key={project.id}>
+                                    <TableCell className="font-medium max-w-[100px] truncate">
+                                        {project.id}
+                                    </TableCell>
+                                    <TableCell>{project.title}</TableCell>
+                                    <TableCell className="max-w-[100px] truncate">{project.description}</TableCell>
+                                    <TableCell className="max-w-[100px] truncate">{project.revenue}</TableCell>
+                                    <TableCell className="max-w-[100px] truncate">{project.createdAt}</TableCell>
+                                    <TableCell className="max-w-[100px] truncate">{project.updatedAt}</TableCell>
+                                    <TableCell>{project.tasks}</TableCell>
+                                    <TableCell className="text-left">
+                                        {
+                                            project.status === 'finished' ?
+                                                (
+                                                    <Badge variant={'default'}>
+                                                        FINISHED
+                                                    </Badge>
+                                                )
+                                                : (
+                                                    <Badge variant={'secondary'}>
+                                                        IN_PROGRESS
+                                                    </Badge>
+                                                )
+                                        }
+                                    </TableCell>
+                                    <TableCell className="max-w-[100px] truncate">{project.color}</TableCell>
+                                    <TableCell className="max-w-[100px] truncate">{project.icon}</TableCell>
+                                    <TableCell className="max-w-[100px] truncate">{project.ownerId}</TableCell>
+                                    <TableCell className="text-right">
+                                        <DropdownMenu>
+                                            <DropdownMenuTrigger asChild>
+                                                <Button variant={'outline'} className="text-muted-foreground">
+                                                    <MoreVertical size={20} />
+                                                </Button>
+                                            </DropdownMenuTrigger>
+                                            <DropdownMenuContent>
+                                                <DropdownMenuItem className="cursor-pointer flex items-center gap-2 p-2">
+                                                    <div className="w-10 h-10 border flex items-center justify-center rounded-xl">
+                                                        <span className="text-sm">
+                                                            <Folder size={20} className="text-black" />
+                                                        </span>
+                                                    </div>
+                                                    Details
+                                                </DropdownMenuItem>
+                                                <DropdownMenuItem className="cursor-pointer flex items-center gap-2 p-2">
+                                                    <div className="w-10 h-10 border flex items-center justify-center rounded-xl">
+                                                        <span className="text-sm">
+                                                            <Pencil size={20} className="text-black" />
+                                                        </span>
+                                                    </div>
+                                                    Edit
+                                                </DropdownMenuItem>
+                                                <DropdownMenuItem className="cursor-pointer flex items-center gap-2 p-2">
+                                                    <div className="w-10 h-10 border flex items-center justify-center rounded-xl">
+                                                        <span className="text-sm">
+                                                            <Trash size={20} className="text-black" />
+                                                        </span>
+                                                    </div>
+                                                    Delete
+                                                </DropdownMenuItem>
+                                            </DropdownMenuContent>
+                                        </DropdownMenu>
+                                    </TableCell>
+                                </TableRow>
+                            ))
+                        }
                     </TableBody>
                 </Table>
             </CardContent>
