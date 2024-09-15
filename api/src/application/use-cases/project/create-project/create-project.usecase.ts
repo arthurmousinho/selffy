@@ -7,7 +7,7 @@ export class CreateProjectUseCase {
         private projectRepository: ProjectRepository
     ) {}
 
-    async execute(newProject: Project) {
+    public async execute(newProject: Project) {
         const project = await this.projectRepository.findById(newProject.getId());
         if (project) {
             throw new ProjectAlreadyExistsError();
