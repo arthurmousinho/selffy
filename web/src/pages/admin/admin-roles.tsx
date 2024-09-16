@@ -25,42 +25,9 @@ import {
 } from "@/components/ui/select"
 import { Label } from "@/components/ui/label";
 import { DetailsDialog } from "@/components/global/details-dialog";
+import { getMockRoles } from "@/mocks/get-roles";
 
 export function AdminRoles() {
-
-    const roles = [
-        {
-            id: "f87e328f-7f4a-4354-aeaa-c7039029ad3e",
-            key: "user.create",
-            createdAt: "2024-09-12T14:00:00Z",
-            updatedAt: "2024-09-12T14:00:00Z"
-        },
-        {
-            id: "a6b0383c-77cb-4f8b-8824-4ad3de77e1d5",
-            key: "user.delete",
-            createdAt: "2024-09-12T14:00:00Z",
-            updatedAt: "2024-09-12T14:00:00Z"
-        },
-        {
-            id: "2d5a47b8-d59b-4c9a-bf83-4f644431f8e7",
-            key: "user.edit",
-            createdAt: "2024-09-12T14:00:00Z",
-            updatedAt: "2024-09-12T14:00:00Z"
-        },
-        {
-            id: "db3c6b78-9df4-4f27-a8e4-b3a83b7d6c92",
-            key: "project.create",
-            createdAt: "2024-09-12T14:00:00Z",
-            updatedAt: "2024-09-12T14:00:00Z"
-        },
-        {
-            id: "fd5a1d3e-92f2-48d4-9d6a-73b8c4c6f62f",
-            key: "project.delete",
-            createdAt: "2024-09-12T14:00:00Z",
-            updatedAt: "2024-09-12T14:00:00Z"
-        }
-    ];
-
     return (
         <Card>
             <CardHeader className="flex flex-row items-center justify-between border-b">
@@ -105,59 +72,61 @@ export function AdminRoles() {
                         </TableRow>
                     </TableHeader>
                     <TableBody>
-                        {roles.map((role) => (
-                            <TableRow key={role.id}>
-                                <TableCell className="font-medium">
-                                    {role.id}
-                                </TableCell>
-                                <TableCell>{role.key}</TableCell>
-                                <TableCell className="text-left">{role.createdAt}</TableCell>
-                                <TableCell className="text-left">{role.updatedAt}</TableCell>
-                                <TableCell className="text-right">
-                                    <DropdownMenu>
-                                        <DropdownMenuTrigger asChild>
-                                            <Button variant={'outline'} className="text-muted-foreground">
-                                                <MoreVertical size={20} />
-                                            </Button>
-                                        </DropdownMenuTrigger>
-                                        <DropdownMenuContent>
-                                            <DropdownMenuItem className="cursor-pointer p-2" onSelect={(e) => e.preventDefault()}>
-                                                <DetailsDialog data={role}>
+                        {
+                            getMockRoles().map((role) => (
+                                <TableRow key={role.id}>
+                                    <TableCell className="font-medium">
+                                        {role.id}
+                                    </TableCell>
+                                    <TableCell>{role.key}</TableCell>
+                                    <TableCell className="text-left">{role.createdAt}</TableCell>
+                                    <TableCell className="text-left">{role.updatedAt}</TableCell>
+                                    <TableCell className="text-right">
+                                        <DropdownMenu>
+                                            <DropdownMenuTrigger asChild>
+                                                <Button variant={'outline'} className="text-muted-foreground">
+                                                    <MoreVertical size={20} />
+                                                </Button>
+                                            </DropdownMenuTrigger>
+                                            <DropdownMenuContent>
+                                                <DropdownMenuItem className="cursor-pointer p-2" onSelect={(e) => e.preventDefault()}>
+                                                    <DetailsDialog data={role}>
+                                                        <div className="flex items-center gap-2">
+                                                            <div className="w-10 h-10 border flex items-center justify-center rounded-xl">
+                                                                <span className="text-sm">
+                                                                    <Folder size={20} className="text-black" />
+                                                                </span>
+                                                            </div>
+                                                            Details
+                                                        </div>
+                                                    </DetailsDialog>
+                                                </DropdownMenuItem>
+                                                <DropdownMenuItem className="cursor-pointer p-2" >
                                                     <div className="flex items-center gap-2">
                                                         <div className="w-10 h-10 border flex items-center justify-center rounded-xl">
                                                             <span className="text-sm">
-                                                                <Folder size={20} className="text-black" />
+                                                                <Pencil size={20} className="text-black" />
                                                             </span>
                                                         </div>
-                                                        Details
+                                                        Edit
                                                     </div>
-                                                </DetailsDialog>
-                                            </DropdownMenuItem>
-                                            <DropdownMenuItem className="cursor-pointer p-2" >
-                                                <div className="flex items-center gap-2">
-                                                    <div className="w-10 h-10 border flex items-center justify-center rounded-xl">
-                                                        <span className="text-sm">
-                                                            <Pencil size={20} className="text-black" />
-                                                        </span>
+                                                </DropdownMenuItem>
+                                                <DropdownMenuItem className="cursor-pointer p-2">
+                                                    <div className="flex items-center gap-2">
+                                                        <div className="w-10 h-10 border flex items-center justify-center rounded-xl">
+                                                            <span className="text-sm">
+                                                                <Trash size={20} className="text-black" />
+                                                            </span>
+                                                        </div>
+                                                        Delete
                                                     </div>
-                                                    Edit
-                                                </div>
-                                            </DropdownMenuItem>
-                                            <DropdownMenuItem className="cursor-pointer p-2">
-                                                <div className="flex items-center gap-2">
-                                                    <div className="w-10 h-10 border flex items-center justify-center rounded-xl">
-                                                        <span className="text-sm">
-                                                            <Trash size={20} className="text-black" />
-                                                        </span>
-                                                    </div>
-                                                    Delete
-                                                </div>
-                                            </DropdownMenuItem>
-                                        </DropdownMenuContent>
-                                    </DropdownMenu>
-                                </TableCell>
-                            </TableRow>
-                        ))}
+                                                </DropdownMenuItem>
+                                            </DropdownMenuContent>
+                                        </DropdownMenu>
+                                    </TableCell>
+                                </TableRow>
+                            ))
+                        }
                     </TableBody>
                 </Table>
             </CardContent>
