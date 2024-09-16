@@ -25,6 +25,8 @@ import {
     SelectValue,
 } from "@/components/ui/select"
 import { Label } from "@/components/ui/label";
+import { DetailsDialog } from "@/components/global/details-dialog";
+
 
 export function AdminUsers() {
 
@@ -117,94 +119,96 @@ export function AdminUsers() {
                 <Table>
                     <TableHeader>
                         <TableRow>
-                            <TableHead className="w-[100px]">ID</TableHead>
-                            <TableHead>Name</TableHead>
-                            <TableHead>E-mail</TableHead>
-                            <TableHead className="text-left">Password</TableHead>
-                            <TableHead className="text-left w-[100px]">CreatedAt</TableHead>
-                            <TableHead className="text-left w-[100px]">UpdatedAt</TableHead>
+                            <TableHead className="text-left">Name</TableHead>
+                            <TableHead className="text-left">E-mail</TableHead>
                             <TableHead className="text-left">Roles</TableHead>
                             <TableHead className="text-left">Type</TableHead>
                             <TableHead className="text-right">Options</TableHead>
                         </TableRow>
                     </TableHeader>
                     <TableBody>
-                        {users.map((user) => (
-                            <TableRow key={user.id}>
-                                <TableCell className="font-medium max-w-[100px] truncate">
-                                    {user.id}
-                                </TableCell>
-                                <TableCell>{user.name}</TableCell>
-                                <TableCell className="max-w-[100px] truncate">{user.email}</TableCell>
-                                <TableCell className="max-w-[100px] truncate">{user.password}</TableCell>
-                                <TableCell className="max-w-[100px] truncate">{user.createdAt}</TableCell>
-                                <TableCell className="max-w-[100px] truncate">{user.updatedAt}</TableCell>
-                                <TableCell>
-                                    <DropdownMenu>
-                                        <DropdownMenuTrigger className="flex flex-row items-center gap-2 text-muted-foreground justify-center">
-                                            {user.roles.length} Roles <ChevronDown size={20} />
-                                        </DropdownMenuTrigger>
-                                        <DropdownMenuContent>
-                                            {user.roles.map((role, index) => (
-                                                <DropdownMenuItem key={index}>
-                                                    {role}
+                        {
+                            users.map((user) => (
+                                <TableRow key={user.id}>
+                                    <TableCell>{user.name}</TableCell>
+                                    <TableCell>{user.email}</TableCell>
+                                    <TableCell>
+                                        <DropdownMenu>
+                                            <DropdownMenuTrigger className="flex flex-row items-center gap-2 text-muted-foreground justify-center">
+                                                {user.roles.length} Roles <ChevronDown size={20} />
+                                            </DropdownMenuTrigger>
+                                            <DropdownMenuContent>
+                                                {
+                                                    user.roles.map((role, index) => (
+                                                        <DropdownMenuItem key={index}>
+                                                            {role}
+                                                        </DropdownMenuItem>
+                                                    ))
+                                                }
+                                            </DropdownMenuContent>
+                                        </DropdownMenu>
+                                    </TableCell>
+                                    <TableCell className="text-left">
+                                        {
+                                            user.userType === 'admin' ?
+                                                (
+                                                    <Badge variant={'default'}>
+                                                        {user.userType}
+                                                    </Badge>
+                                                )
+                                                : (
+                                                    <Badge variant={'secondary'}>
+                                                        {user.userType}
+                                                    </Badge>
+                                                )
+                                        }
+                                    </TableCell>
+                                    <TableCell className="text-right">
+                                        <DropdownMenu>
+                                            <DropdownMenuTrigger asChild>
+                                                <Button variant={'outline'} className="text-muted-foreground">
+                                                    <MoreVertical size={20} />
+                                                </Button>
+                                            </DropdownMenuTrigger>
+                                            <DropdownMenuContent>
+                                                <DropdownMenuItem className="cursor-pointer p-2" onSelect={(e) => e.preventDefault()}>
+                                                    <DetailsDialog data={user}>
+                                                        <div className="flex items-center gap-2">
+                                                            <div className="w-10 h-10 border flex items-center justify-center rounded-xl">
+                                                                <span className="text-sm">
+                                                                    <Folder size={20} className="text-black" />
+                                                                </span>
+                                                            </div>
+                                                            Details
+                                                        </div>
+                                                    </DetailsDialog>
                                                 </DropdownMenuItem>
-                                            ))}
-                                        </DropdownMenuContent>
-                                    </DropdownMenu>
-                                </TableCell>
-                                <TableCell className="text-left">
-                                    {
-                                        user.userType === 'admin' ?
-                                            (
-                                                <Badge variant={'default'}>
-                                                    {user.userType}
-                                                </Badge>
-                                            )
-                                            : (
-                                                <Badge variant={'secondary'}>
-                                                    {user.userType}
-                                                </Badge>
-                                            )
-                                    }
-                                </TableCell>
-                                <TableCell className="text-right">
-                                    <DropdownMenu>
-                                        <DropdownMenuTrigger asChild>
-                                            <Button variant={'outline'} className="text-muted-foreground">
-                                                <MoreVertical size={20} />
-                                            </Button>
-                                        </DropdownMenuTrigger>
-                                        <DropdownMenuContent>
-                                            <DropdownMenuItem className="cursor-pointer flex items-center gap-2 p-2">
-                                                <div className="w-10 h-10 border flex items-center justify-center rounded-xl">
-                                                    <span className="text-sm">
-                                                        <Folder size={20} className="text-black" />
-                                                    </span>
-                                                </div>
-                                                Details
-                                            </DropdownMenuItem>
-                                            <DropdownMenuItem className="cursor-pointer flex items-center gap-2 p-2">
-                                                <div className="w-10 h-10 border flex items-center justify-center rounded-xl">
-                                                    <span className="text-sm">
-                                                        <Pencil size={20} className="text-black" />
-                                                    </span>
-                                                </div>
-                                                Edit
-                                            </DropdownMenuItem>
-                                            <DropdownMenuItem className="cursor-pointer flex items-center gap-2 p-2">
-                                                <div className="w-10 h-10 border flex items-center justify-center rounded-xl">
-                                                    <span className="text-sm">
-                                                        <Trash size={20} className="text-black" />
-                                                    </span>
-                                                </div>
-                                                Delete
-                                            </DropdownMenuItem>
-                                        </DropdownMenuContent>
-                                    </DropdownMenu>
-                                </TableCell>
-                            </TableRow>
-                        ))}
+                                                <DropdownMenuItem className="cursor-pointer p-2" >
+                                                    <div className="flex items-center gap-2">
+                                                        <div className="w-10 h-10 border flex items-center justify-center rounded-xl">
+                                                            <span className="text-sm">
+                                                                <Pencil size={20} className="text-black" />
+                                                            </span>
+                                                        </div>
+                                                        Edit
+                                                    </div>
+                                                </DropdownMenuItem>
+                                                <DropdownMenuItem className="cursor-pointer p-2">
+                                                    <div className="flex items-center gap-2">
+                                                        <div className="w-10 h-10 border flex items-center justify-center rounded-xl">
+                                                            <span className="text-sm">
+                                                                <Trash size={20} className="text-black" />
+                                                            </span>
+                                                        </div>
+                                                        Delete
+                                                    </div>
+                                                </DropdownMenuItem>
+                                            </DropdownMenuContent>
+                                        </DropdownMenu>
+                                    </TableCell>
+                                </TableRow>
+                            ))
+                        }
                     </TableBody>
                 </Table>
             </CardContent>

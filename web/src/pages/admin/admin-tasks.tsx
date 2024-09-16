@@ -25,6 +25,7 @@ import {
     SelectValue,
 } from "@/components/ui/select"
 import { Label } from "@/components/ui/label";
+import { DetailsDialog } from "@/components/global/details-dialog";
 
 export function AdminTasks() {
 
@@ -75,9 +76,9 @@ export function AdminTasks() {
             description: "Develop content for the new marketing strategy.",
             dueDate: "2024-09-22",
             priority: "LOW",
-            projectId: "fd5a1d3e-92f2-48d4-9d6a-73b8c4c6f62f",
             createdAt: "2024-09-08T09:45:00Z",
-            updatedAt: "2024-09-12T14:30:00Z"
+            updatedAt: "2024-09-12T14:30:00Z",
+            projectId: "db3c6b78-9df4-4f27-a8e4-b3a83b7d6c92",
         }
     ];
 
@@ -117,25 +118,17 @@ export function AdminTasks() {
                 <Table>
                     <TableHeader>
                         <TableRow>
-                            <TableHead className="w-[100px]">ID</TableHead>
                             <TableHead>Title</TableHead>
-                            <TableHead>Description</TableHead>
                             <TableHead className="text-left">Due Date</TableHead>
-                            <TableHead className="text-left w-[100px]">Priority</TableHead>
-                            <TableHead className="text-left w-[100px]">Project ID</TableHead>
-                            <TableHead className="text-left w-[100px]">CreatedAt</TableHead>
-                            <TableHead className="text-left w-[100px]">UpdatedAt</TableHead>
+                            <TableHead className="text-left">Priority</TableHead>
+                            <TableHead className="text-left">Project ID</TableHead>
                             <TableHead className="text-right">Options</TableHead>
                         </TableRow>
                     </TableHeader>
                     <TableBody>
                         {tasks.map((task) => (
                             <TableRow key={task.id}>
-                                <TableCell className="font-medium max-w-[100px] truncate">
-                                    {task.id}
-                                </TableCell>
                                 <TableCell>{task.title}</TableCell>
-                                <TableCell className="max-w-[100px] truncate">{task.description}</TableCell>
                                 <TableCell className="max-w-[100px] truncate">{task.dueDate}</TableCell>
                                 <TableCell>
                                     {
@@ -154,9 +147,7 @@ export function AdminTasks() {
                                         )
                                     }
                                 </TableCell>
-                                <TableCell className="max-w-[100px] truncate">{task.projectId}</TableCell>
-                                <TableCell className="max-w-[100px] truncate">{task.createdAt}</TableCell>
-                                <TableCell className="max-w-[100px] truncate">{task.updatedAt}</TableCell>
+                                <TableCell>{task.projectId}</TableCell>
                                 <TableCell className="text-right">
                                     <DropdownMenu>
                                         <DropdownMenuTrigger asChild>
@@ -165,29 +156,37 @@ export function AdminTasks() {
                                             </Button>
                                         </DropdownMenuTrigger>
                                         <DropdownMenuContent>
-                                            <DropdownMenuItem className="cursor-pointer flex items-center gap-2 p-2">
-                                                <div className="w-10 h-10 border flex items-center justify-center rounded-xl">
-                                                    <span className="text-sm">
-                                                        <Folder size={20} className="text-black" />
-                                                    </span>
-                                                </div>
-                                                Details
+                                            <DropdownMenuItem className="cursor-pointer p-2" onSelect={(e) => e.preventDefault()}>
+                                                <DetailsDialog data={task}>
+                                                    <div className="flex items-center gap-2">
+                                                        <div className="w-10 h-10 border flex items-center justify-center rounded-xl">
+                                                            <span className="text-sm">
+                                                                <Folder size={20} className="text-black" />
+                                                            </span>
+                                                        </div>
+                                                        Details
+                                                    </div>
+                                                </DetailsDialog>
                                             </DropdownMenuItem>
-                                            <DropdownMenuItem className="cursor-pointer flex items-center gap-2 p-2">
-                                                <div className="w-10 h-10 border flex items-center justify-center rounded-xl">
-                                                    <span className="text-sm">
-                                                        <Pencil size={20} className="text-black" />
-                                                    </span>
+                                            <DropdownMenuItem className="cursor-pointer p-2" >
+                                                <div className="flex items-center gap-2">
+                                                    <div className="w-10 h-10 border flex items-center justify-center rounded-xl">
+                                                        <span className="text-sm">
+                                                            <Pencil size={20} className="text-black" />
+                                                        </span>
+                                                    </div>
+                                                    Edit
                                                 </div>
-                                                Edit
                                             </DropdownMenuItem>
-                                            <DropdownMenuItem className="cursor-pointer flex items-center gap-2 p-2">
-                                                <div className="w-10 h-10 border flex items-center justify-center rounded-xl">
-                                                    <span className="text-sm">
-                                                        <Trash size={20} className="text-black" />
-                                                    </span>
+                                            <DropdownMenuItem className="cursor-pointer p-2">
+                                                <div className="flex items-center gap-2">
+                                                    <div className="w-10 h-10 border flex items-center justify-center rounded-xl">
+                                                        <span className="text-sm">
+                                                            <Trash size={20} className="text-black" />
+                                                        </span>
+                                                    </div>
+                                                    Delete
                                                 </div>
-                                                Delete
                                             </DropdownMenuItem>
                                         </DropdownMenuContent>
                                     </DropdownMenu>

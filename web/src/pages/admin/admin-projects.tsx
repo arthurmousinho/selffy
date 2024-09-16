@@ -25,6 +25,8 @@ import {
     SelectValue,
 } from "@/components/ui/select"
 import { Label } from "@/components/ui/label";
+import { DetailsDialog } from "@/components/global/details-dialog";
+import { formatCurrency } from "@/utils/format-currency";
 
 export function AdminProjects() {
 
@@ -132,16 +134,10 @@ export function AdminProjects() {
                 <Table>
                     <TableHeader>
                         <TableRow>
-                            <TableHead className="w-[100px]">ID</TableHead>
                             <TableHead>Title</TableHead>
-                            <TableHead>Description</TableHead>
                             <TableHead className="text-left">Revenue</TableHead>
-                            <TableHead className="text-left w-[100px]">CreatedAt</TableHead>
-                            <TableHead className="text-left w-[100px]">UpdatedAt</TableHead>
                             <TableHead className="text-left">Tasks</TableHead>
                             <TableHead className="text-left">Status</TableHead>
-                            <TableHead className="text-left">Color</TableHead>
-                            <TableHead className="text-left">Icon</TableHead>
                             <TableHead className="text-left">Owner Id</TableHead>
                             <TableHead className="text-right">Options</TableHead>
                         </TableRow>
@@ -150,15 +146,9 @@ export function AdminProjects() {
                         {
                             projects.map((project) => (
                                 <TableRow key={project.id}>
-                                    <TableCell className="font-medium max-w-[100px] truncate">
-                                        {project.id}
-                                    </TableCell>
                                     <TableCell>{project.title}</TableCell>
-                                    <TableCell className="max-w-[100px] truncate">{project.description}</TableCell>
-                                    <TableCell className="max-w-[100px] truncate">{project.revenue}</TableCell>
-                                    <TableCell className="max-w-[100px] truncate">{project.createdAt}</TableCell>
-                                    <TableCell className="max-w-[100px] truncate">{project.updatedAt}</TableCell>
-                                    <TableCell>{project.tasks}</TableCell>
+                                    <TableCell>{formatCurrency(project.revenue)}</TableCell>
+                                    <TableCell className="text-left">{project.tasks}</TableCell>
                                     <TableCell className="text-left">
                                         {
                                             project.status === 'finished' ?
@@ -174,9 +164,7 @@ export function AdminProjects() {
                                                 )
                                         }
                                     </TableCell>
-                                    <TableCell className="max-w-[100px] truncate">{project.color}</TableCell>
-                                    <TableCell className="max-w-[100px] truncate">{project.icon}</TableCell>
-                                    <TableCell className="max-w-[100px] truncate">{project.ownerId}</TableCell>
+                                    <TableCell>{project.ownerId}</TableCell>
                                     <TableCell className="text-right">
                                         <DropdownMenu>
                                             <DropdownMenuTrigger asChild>
@@ -185,29 +173,37 @@ export function AdminProjects() {
                                                 </Button>
                                             </DropdownMenuTrigger>
                                             <DropdownMenuContent>
-                                                <DropdownMenuItem className="cursor-pointer flex items-center gap-2 p-2">
-                                                    <div className="w-10 h-10 border flex items-center justify-center rounded-xl">
-                                                        <span className="text-sm">
-                                                            <Folder size={20} className="text-black" />
-                                                        </span>
-                                                    </div>
-                                                    Details
+                                                <DropdownMenuItem className="cursor-pointer p-2" onSelect={(e) => e.preventDefault()}>
+                                                    <DetailsDialog data={project}>
+                                                        <div className="flex items-center gap-2">
+                                                            <div className="w-10 h-10 border flex items-center justify-center rounded-xl">
+                                                                <span className="text-sm">
+                                                                    <Folder size={20} className="text-black" />
+                                                                </span>
+                                                            </div>
+                                                            Details
+                                                        </div>
+                                                    </DetailsDialog>
                                                 </DropdownMenuItem>
-                                                <DropdownMenuItem className="cursor-pointer flex items-center gap-2 p-2">
-                                                    <div className="w-10 h-10 border flex items-center justify-center rounded-xl">
-                                                        <span className="text-sm">
-                                                            <Pencil size={20} className="text-black" />
-                                                        </span>
+                                                <DropdownMenuItem className="cursor-pointer p-2" >
+                                                    <div className="flex items-center gap-2">
+                                                        <div className="w-10 h-10 border flex items-center justify-center rounded-xl">
+                                                            <span className="text-sm">
+                                                                <Pencil size={20} className="text-black" />
+                                                            </span>
+                                                        </div>
+                                                        Edit
                                                     </div>
-                                                    Edit
                                                 </DropdownMenuItem>
-                                                <DropdownMenuItem className="cursor-pointer flex items-center gap-2 p-2">
-                                                    <div className="w-10 h-10 border flex items-center justify-center rounded-xl">
-                                                        <span className="text-sm">
-                                                            <Trash size={20} className="text-black" />
-                                                        </span>
+                                                <DropdownMenuItem className="cursor-pointer p-2">
+                                                    <div className="flex items-center gap-2">
+                                                        <div className="w-10 h-10 border flex items-center justify-center rounded-xl">
+                                                            <span className="text-sm">
+                                                                <Trash size={20} className="text-black" />
+                                                            </span>
+                                                        </div>
+                                                        Delete
                                                     </div>
-                                                    Delete
                                                 </DropdownMenuItem>
                                             </DropdownMenuContent>
                                         </DropdownMenu>

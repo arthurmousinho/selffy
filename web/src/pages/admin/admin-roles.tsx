@@ -24,6 +24,7 @@ import {
     SelectValue,
 } from "@/components/ui/select"
 import { Label } from "@/components/ui/label";
+import { DetailsDialog } from "@/components/global/details-dialog";
 
 export function AdminRoles() {
 
@@ -96,7 +97,7 @@ export function AdminRoles() {
                 <Table>
                     <TableHeader>
                         <TableRow>
-                            <TableHead className="w-[100px]">ID</TableHead>
+                            <TableHead>ID</TableHead>
                             <TableHead>Key</TableHead>
                             <TableHead className="text-left">CreatedAt</TableHead>
                             <TableHead className="text-left">UpdatedAt</TableHead>
@@ -106,7 +107,7 @@ export function AdminRoles() {
                     <TableBody>
                         {roles.map((role) => (
                             <TableRow key={role.id}>
-                                <TableCell className="font-medium max-w-[100px] truncate">
+                                <TableCell className="font-medium">
                                     {role.id}
                                 </TableCell>
                                 <TableCell>{role.key}</TableCell>
@@ -120,29 +121,37 @@ export function AdminRoles() {
                                             </Button>
                                         </DropdownMenuTrigger>
                                         <DropdownMenuContent>
-                                            <DropdownMenuItem className="cursor-pointer flex items-center gap-2 p-2">
-                                                <div className="w-10 h-10 border flex items-center justify-center rounded-xl">
-                                                    <span className="text-sm">
-                                                        <Folder size={20} className="text-black" />
-                                                    </span>
-                                                </div>
-                                                Details
+                                            <DropdownMenuItem className="cursor-pointer p-2" onSelect={(e) => e.preventDefault()}>
+                                                <DetailsDialog data={role}>
+                                                    <div className="flex items-center gap-2">
+                                                        <div className="w-10 h-10 border flex items-center justify-center rounded-xl">
+                                                            <span className="text-sm">
+                                                                <Folder size={20} className="text-black" />
+                                                            </span>
+                                                        </div>
+                                                        Details
+                                                    </div>
+                                                </DetailsDialog>
                                             </DropdownMenuItem>
-                                            <DropdownMenuItem className="cursor-pointer flex items-center gap-2 p-2">
-                                                <div className="w-10 h-10 border flex items-center justify-center rounded-xl">
-                                                    <span className="text-sm">
-                                                        <Pencil size={20} className="text-black" />
-                                                    </span>
+                                            <DropdownMenuItem className="cursor-pointer p-2" >
+                                                <div className="flex items-center gap-2">
+                                                    <div className="w-10 h-10 border flex items-center justify-center rounded-xl">
+                                                        <span className="text-sm">
+                                                            <Pencil size={20} className="text-black" />
+                                                        </span>
+                                                    </div>
+                                                    Edit
                                                 </div>
-                                                Edit
                                             </DropdownMenuItem>
-                                            <DropdownMenuItem className="cursor-pointer flex items-center gap-2 p-2">
-                                                <div className="w-10 h-10 border flex items-center justify-center rounded-xl">
-                                                    <span className="text-sm">
-                                                        <Trash size={20} className="text-black" />
-                                                    </span>
+                                            <DropdownMenuItem className="cursor-pointer p-2">
+                                                <div className="flex items-center gap-2">
+                                                    <div className="w-10 h-10 border flex items-center justify-center rounded-xl">
+                                                        <span className="text-sm">
+                                                            <Trash size={20} className="text-black" />
+                                                        </span>
+                                                    </div>
+                                                    Delete
                                                 </div>
-                                                Delete
                                             </DropdownMenuItem>
                                         </DropdownMenuContent>
                                     </DropdownMenu>
