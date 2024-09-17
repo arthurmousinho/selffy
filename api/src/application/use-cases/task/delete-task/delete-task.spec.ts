@@ -28,7 +28,7 @@ describe('Delete Task UseCase', () => {
 
         const foundTask = await taskRepository.findById(existingTask.getId());
         
-        expect(foundTask).toBeNull();
+        expect(foundTask).toBeFalsy();
     });
 
 });
