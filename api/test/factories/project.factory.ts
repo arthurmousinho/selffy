@@ -2,7 +2,7 @@ import { Project } from "@application/entities/project/project";
 import { randomUUID } from "crypto";
 import { makeUser } from "./user.factory";
 
-export function makeProject() {
+export function makeProject(props?: { title: string, description: string }) {
     const projectId = randomUUID();
     const projectOwner = makeUser();
 
