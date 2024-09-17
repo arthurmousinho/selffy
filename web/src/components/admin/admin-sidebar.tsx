@@ -1,4 +1,4 @@
-import { Bell, CheckCheck, FolderOpen, Home, LogOut, Shield, Star, UserRoundSearch, UsersRound } from "lucide-react";
+import { CheckCheck, FolderOpen, HandCoins, Home, LogOut, Shield, UsersRound } from "lucide-react";
 import { NavLink } from "react-router-dom";
 import { Card, CardContent } from "../ui/card";
 
@@ -6,11 +6,9 @@ const sidebarLinks = [
     { to: '/admin/dashboard', label: 'Dashboard', icon: <Home size={20} className="text-black" /> },
     { to: '/admin/users', label: 'Users', icon: <UsersRound size={20} className="text-black" /> },
     { to: '/admin/projects', label: 'Projects', icon: <FolderOpen size={20} className="text-black" /> },
-    { to: '/admin/notifications', label: 'Notifications', icon: <Bell size={20} className="text-black" /> },
+    { to: '/admin/costs', label: 'Costs', icon: <HandCoins size={20} className="text-black" /> },
     { to: '/admin/tasks', label: 'Tasks', icon: <CheckCheck size={20} className="text-black" /> },
-    { to: '/admin/priorities', label: 'Priorities', icon: <Star size={20} className="text-black" /> },
     { to: '/admin/roles', label: 'Roles', icon: <Shield size={20} className="text-black" /> },
-    { to: '/admin/user-types', label: 'User Types', icon: <UserRoundSearch size={20} className="text-black" /> },
     { to: '/auth/signin', label: 'Exit', icon: <LogOut size={20} className="text-black" /> },
 ];
 
