@@ -13,6 +13,10 @@ import {
 } from "../ui/dropdown-menu";
 import {
     Check,
+    ChevronLeft,
+    ChevronRight,
+    ChevronsLeft,
+    ChevronsRight,
     Filter,
     Folder,
     MoreVertical,
@@ -22,49 +26,18 @@ import {
 } from "lucide-react"
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
-import { Card, CardContent, CardHeader } from "../ui/card";
-export interface Task {
-    id: string;
-    title: string;
-    priority: "low" | "medium" | "high";
-    dueDate: string;
-}
+import { Card, CardContent, CardFooter, CardHeader } from "../ui/card";
+import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from "@/components/ui/select"
+import { Label } from "@/components/ui/label";
+import { getMockTasks } from "@/mocks/get-tasks";
 
-const data: Task[] = [
-    {
-        id: "1",
-        title: "Try to calculate the EXE feed, maybe it will index the multi-byte pixel!",
-        priority: "high",
-        dueDate: "2024-09-20"
-    },
-    {
-        id: "2",
-        title: "Generating the alarm won't do anything, we need to generate the mobile IP cap",
-        priority: "medium",
-        dueDate: "2024-09-18"
-    },
-    {
-        id: "3",
-        title: "I'll transmit the wireless JBOD capacitor, that should hard drive the SSD feed!",
-        priority: "low",
-        dueDate: "2024-09-15"
-    },
-    {
-        id: "4",
-        title: "Reboot the system to apply new security patches.",
-        priority: "high",
-        dueDate: "2024-09-25"
-    },
-    {
-        id: "5",
-        title: "Optimize the database queries for faster performance.",
-        priority: "medium",
-        dueDate: "2024-09-30"
-    },
-]
-
-export function TasksTable() {
-
+export function ProjectTasksTable() {
     return (
         <Card>
             <CardHeader className="flex flex-row items-center justify-between border-b">
@@ -97,7 +70,7 @@ export function TasksTable() {
                 <Table>
                     <TableBody>
                         {
-                            data.map(item => (
+                            getMockTasks().map(item => (
                                 <TableRow key={item.id}>
                                     <TableCell className="flex items-center gap-2 text-sm">
                                         <TaskBadge priority={item.priority} />
@@ -147,6 +120,42 @@ export function TasksTable() {
                     </TableBody>
                 </Table>
             </CardContent>
-        </Card >
+            <CardFooter className="flex items-center justify-between">
+                <span className="text-sm text-muted-foreground">
+                    Showing 5 of 1200 items
+                </span>
+                <footer className="flex flex-row items-center gap-4">
+                    <div className="flex flex-row items-center gap-2">
+                        <Label htmlFor="rows-per-page-input">
+                            Rows per page
+                        </Label>
+                        <Select defaultValue="5">
+                            <SelectTrigger className="w-[100px] h-12" id="rows-per-page-input">
+                                <SelectValue placeholder="Rows per page" />
+                            </SelectTrigger>
+                            <SelectContent>
+                                <SelectItem value="5">5 rows</SelectItem>
+                                <SelectItem value="10">10 rows</SelectItem>
+                                <SelectItem value="15">15 rows</SelectItem>
+                            </SelectContent>
+                        </Select>
+                    </div>
+                    <div className="space-x-2">
+                        <Button variant={'outline'}>
+                            <ChevronsLeft size={20} />
+                        </Button>
+                        <Button variant={'outline'}>
+                            <ChevronLeft size={20} />
+                        </Button>
+                        <Button variant={'outline'}>
+                            <ChevronRight size={20} />
+                        </Button>
+                        <Button variant={'outline'}>
+                            <ChevronsRight size={20} />
+                        </Button>
+                    </div>
+                </footer>
+            </CardFooter>
+        </Card>
     )
 }

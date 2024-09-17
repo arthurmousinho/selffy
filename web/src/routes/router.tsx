@@ -9,7 +9,6 @@ import { Forbidden } from "@/pages/errors/forbidden";
 import { Projects } from "@/pages/projects/projects";
 import { Notifications } from "@/pages/notifications/notifications";
 import { Settings } from "@/pages/settings/settings";
-import { ProjectDetails } from "@/pages/projects/project-details";
 import { AdminLayout } from "@/layouts/admin-layout";
 import { AdminUsers } from "@/pages/admin/admin-users";
 import { AdminDashboard } from "@/pages/admin/admin-dashboard";
@@ -17,6 +16,7 @@ import { Priorities } from "@/pages/priorities/priorities";
 import { AdminProjects } from "@/pages/admin/admin-projects";
 import { AdminTasks } from "@/pages/admin/admin-tasks";
 import { AdminRoles } from "@/pages/admin/admin-roles";
+import { ProjectDashboard } from "@/pages/projects/project-dashboard";
 
 export const ROUTER = createBrowserRouter([
     {
@@ -27,7 +27,7 @@ export const ROUTER = createBrowserRouter([
             { path: 'dashboard', element: <Dashboard /> },
             { path: 'projects', element: <Projects /> },
             { path: 'priorities', element: <Priorities /> },
-            { path: 'projects/:id', element: <ProjectDetails /> },
+            { path: 'projects/:id', element: <ProjectDashboard /> },
             { path: 'notifications', element: <Notifications /> },
             { path: 'settings', element: <Settings /> },
         ]

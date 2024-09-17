@@ -8,12 +8,12 @@ import {
 
 
 interface BadgeProps {
-    priority: "low" | "medium" | "high"
+    priority: "LOW" | "MEDIUM" | "HIGH"
 }
 
 export function TaskBadge(props: BadgeProps) {
 
-    if (props.priority === 'high') {
+    if (props.priority === 'HIGH') {
         return (
             <TooltipProvider>
                 <Tooltip>
@@ -30,7 +30,7 @@ export function TaskBadge(props: BadgeProps) {
         )
     }
 
-    if (props.priority === 'medium') {
+    if (props.priority === 'MEDIUM') {
         return (
             <TooltipProvider>
                 <Tooltip>
@@ -47,7 +47,7 @@ export function TaskBadge(props: BadgeProps) {
         )
     }
 
-    if (props.priority === 'low') {
+    if (props.priority === 'LOW') {
         return (
             <TooltipProvider>
                 <Tooltip>
