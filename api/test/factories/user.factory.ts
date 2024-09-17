@@ -1,7 +1,7 @@
 import { User } from "@application/entities/user/user";
 import { randomUUID } from "crypto";
 
-export function makeUser(props?: { email: string, name: string }): User {
+export function makeUser(props?: { email?: string, name?: string }): User {
     const userId = randomUUID();
 
     const user = new User({
