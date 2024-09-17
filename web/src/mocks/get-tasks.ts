@@ -5,7 +5,7 @@ export function getMockTasks() {
             title: "Design Wireframes",
             description: "Create wireframes for the new mobile app.",
             dueDate: "2024-09-20",
-            priorityId: "MEDIUM",
+            priority: "MEDIUM",
             projectId: "c9b1f650-7a0c-42c3-899b-4850987c4741",
             createdAt: "2024-09-12T14:00:00Z",
             updatedAt: "2024-09-12T15:00:00Z"

@@ -2,6 +2,8 @@ import {
     Table,
     TableBody,
     TableCell,
+    TableHead,
+    TableHeader,
     TableRow,
 } from "@/components/ui/table"
 import { TaskBadge } from "../tasks/task-badge";
@@ -12,13 +14,13 @@ import {
     DropdownMenuTrigger
 } from "../ui/dropdown-menu";
 import {
-    Check,
     ChevronLeft,
     ChevronRight,
     ChevronsLeft,
     ChevronsRight,
     Filter,
     Folder,
+    HandCoins,
     MoreVertical,
     Pencil,
     Plus,
@@ -35,20 +37,22 @@ import {
     SelectValue,
 } from "@/components/ui/select"
 import { Label } from "@/components/ui/label";
-import { getMockTasks } from "@/mocks/get-tasks";
+import { getMockCosts } from "@/mocks/get-costs";
+import { formatCurrency } from "@/utils/format-currency";
 
-export function ProjectTasksTable() {
+
+export function ProjectCostsTable() {
     return (
         <Card>
             <CardHeader className="flex flex-row items-center justify-between border-b">
                 <div className="flex flex-row items-center gap-2">
                     <div className="w-10 h-10 flex border items-center justify-center rounded-xl">
                         <span className="text-sm">
-                            <Check size={20} />
+                            <HandCoins size={20} />
                         </span>
                     </div>
                     <h2 className="font-semibold text-xl">
-                        Tasks
+                        Costs
                     </h2>
                 </div>
                 <div className="flex items-center gap-2">
@@ -62,22 +66,29 @@ export function ProjectTasksTable() {
                     </Button>
                     <Button className="flex items-center gap-2">
                         <Plus size={20} />
-                        New Task
+                        New Cost
                     </Button>
                 </div>
             </CardHeader>
             <CardContent className="pt-4">
                 <Table>
+                    <TableHeader>
+                        <TableRow>
+                            <TableHead className="text-sm">Title</TableHead>
+                            <TableHead className="text-right text-sm">Value</TableHead>
+                            <TableHead className="text-right">Options</TableHead>
+                        </TableRow>
+                    </TableHeader>
                     <TableBody>
                         {
-                            getMockTasks().map(item => (
+                            getMockCosts().map((item: any) => (
                                 <TableRow key={item.id}>
                                     <TableCell className="flex items-center gap-2 text-sm">
-                                        <TaskBadge priority={item.priority as any} />
+                                        <TaskBadge priority={item.priority} />
                                         {item.title}
                                     </TableCell>
                                     <TableCell className="text-right text-sm text-muted-foreground">
-                                        {item.dueDate}
+                                        {formatCurrency(item.value)}
                                     </TableCell>
                                     <TableCell className="text-right">
                                         <DropdownMenu>

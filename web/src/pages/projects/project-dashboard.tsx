@@ -1,3 +1,4 @@
+import { ProjectCostsTable } from "@/components/projects/project-costs-table";
 import { ProjectTasksTable } from "@/components/projects/project-tasks-table";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -230,6 +231,7 @@ export function ProjectDashboard() {
                 </Card>
             </section>
             <ProjectTasksTable />
+            <ProjectCostsTable />
         </main>
     )
 }
