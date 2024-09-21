@@ -1,5 +1,11 @@
-export class UserAlreadyExistsError extends Error {
+import { HttpException, HttpStatus } from "@nestjs/common";
+
+export class UserAlreadyExistsError extends HttpException {
   constructor() {
-    super('User already exists');
+    super({
+      message: ['email already in use'],
+      error: 'Bad Request',
+      statusCode: HttpStatus.BAD_REQUEST,
+    }, HttpStatus.BAD_REQUEST);
   }
 }

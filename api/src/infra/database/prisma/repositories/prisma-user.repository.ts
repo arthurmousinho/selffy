@@ -9,9 +9,7 @@ export class PrismaUserRepository implements UserRepository {
 
     constructor(
         private readonly prismaService: PrismaService
-    ) {
-        console.log('PrismaService in PrismaUserRepository:', prismaService);
-    }
+    ) {}
 
     public async create(user: User): Promise<void> {
         const raw = PrismaUserMapper.toPrisma(user);
