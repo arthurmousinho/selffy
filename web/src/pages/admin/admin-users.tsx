@@ -26,9 +26,16 @@ import {
 } from "@/components/ui/select"
 import { Label } from "@/components/ui/label";
 import { DetailsDialog } from "@/components/global/details-dialog";
-import { getMockUsers } from "@/mocks/get-users";
+import { getAllUsers, UserProps } from "@/hooks/use-user.hook";
 
 export function AdminUsers() {
+
+    const { data, refetch } = getAllUsers();
+
+    async function handleRefresh() {
+        await refetch();
+    }
+
     return (
         <Card>
             <CardHeader className="flex flex-row items-center justify-between border-b">
@@ -51,7 +58,7 @@ export function AdminUsers() {
                         <Filter size={20} />
                         Filter
                     </Button>
-                    <Button variant={'outline'} className="flex items-center gap-2 text-muted-foreground">
+                    <Button onClick={handleRefresh} variant={'outline'} className="flex items-center gap-2 text-muted-foreground">
                         <RefreshCcw size={20} />
                         Refresh
                     </Button>
@@ -74,7 +81,7 @@ export function AdminUsers() {
                     </TableHeader>
                     <TableBody>
                         {
-                            getMockUsers().map((user) => (
+                            data?.users.map((user: UserProps) => (
                                 <TableRow key={user.id}>
                                     <TableCell>{user.name}</TableCell>
                                     <TableCell>{user.email}</TableCell>
@@ -87,7 +94,7 @@ export function AdminUsers() {
                                                 {
                                                     user.roles.map((role, index) => (
                                                         <DropdownMenuItem key={index}>
-                                                            {role}
+                                                            {role.key}
                                                         </DropdownMenuItem>
                                                     ))
                                                 }
@@ -96,15 +103,15 @@ export function AdminUsers() {
                                     </TableCell>
                                     <TableCell className="text-left">
                                         {
-                                            user.userType === 'admin' ?
+                                            user.type === 'ADMIN' ?
                                                 (
                                                     <Badge variant={'default'}>
-                                                        {user.userType}
+                                                        {user.type.toLowerCase()}
                                                     </Badge>
                                                 )
                                                 : (
                                                     <Badge variant={'secondary'}>
-                                                        {user.userType}
+                                                        {user.type.toLowerCase()}
                                                     </Badge>
                                                 )
                                         }
