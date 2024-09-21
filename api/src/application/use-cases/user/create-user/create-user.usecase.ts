@@ -3,6 +3,7 @@ import { User } from "@application/entities/user/user";
 import { UserAlreadyExistsError } from "@application/errors/user/user-already-exists.error";
 import { UserRepository } from "@application/repositories/user.repository";
 import { Injectable } from "@nestjs/common";
+import * as bcrypt from 'bcryptjs';
 
 interface CreateUserRequest {
     name: string;
@@ -29,10 +30,12 @@ export class CreateUserUseCase {
             throw new UserAlreadyExistsError();
         }
 
+        const hashedPassword = await this.hashPassword(password);
+
         const user = new User({ 
             name, 
             email, 
-            password, 
+            password: hashedPassword, 
             roles: [ 
                 new Role({ key: 'user.update' }),
                 new Role({ key: 'user.delete' }),
@@ -42,6 +45,12 @@ export class CreateUserUseCase {
         await this.userRepository.create(user);
 
         return { user };
+    }
+
+    private async hashPassword(password: string): Promise<string> {
+        const salt = await bcrypt.genSalt(10);
+        const hashedPassword = await bcrypt.hash(password, salt);
+        return hashedPassword;
     }
 
 }

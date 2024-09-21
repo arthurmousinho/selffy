@@ -1,10 +1,8 @@
 import { UserRepository } from "@application/repositories/user.repository";
 import { CreateUserUseCase } from "./create-user.usecase";
 import { InMemoryUserRepository } from "@test/repositories/in-memory-user.repository";
-import { User } from "@application/entities/user/user";
 import { UserAlreadyExistsError } from "@application/errors/user/user-already-exists.error";
 import { makeUser } from "@test/factories/user.factory";
-
 
 describe('Create User UseCase', () => {
     let createUserUseCase: CreateUserUseCase;
