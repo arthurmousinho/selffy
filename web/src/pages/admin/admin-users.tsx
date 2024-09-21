@@ -26,7 +26,8 @@ import {
 } from "@/components/ui/select"
 import { Label } from "@/components/ui/label";
 import { DetailsDialog } from "@/components/global/details-dialog";
-import { getAllUsers, UserProps } from "@/hooks/use-user.hook";
+import { NewUserDialog } from "@/components/admin/new-user-dialog";
+import { getAllUsers, UserProps } from "@/hooks/use-user";
 
 export function AdminUsers() {
 
@@ -54,18 +55,27 @@ export function AdminUsers() {
                         placeholder="Search..."
                         className="w-[250px]"
                     />
-                    <Button variant={'outline'} className="flex items-center gap-2 text-muted-foreground">
+                    <Button 
+                        variant={'outline'} 
+                        className="flex items-center gap-2 text-muted-foreground"
+                    >
                         <Filter size={20} />
                         Filter
                     </Button>
-                    <Button onClick={handleRefresh} variant={'outline'} className="flex items-center gap-2 text-muted-foreground">
+                    <Button 
+                        onClick={handleRefresh} 
+                        variant={'outline'} 
+                        className="flex items-center gap-2 text-muted-foreground"
+                    >
                         <RefreshCcw size={20} />
                         Refresh
                     </Button>
-                    <Button className="flex items-center gap-2">
-                        <Plus size={20} />
-                        New User
-                    </Button>
+                    <NewUserDialog>
+                        <Button className="flex items-center gap-2">
+                            <Plus size={20} />
+                            New User
+                        </Button>
+                    </NewUserDialog>
                 </div>
             </CardHeader>
             <CardContent className="pt-4">

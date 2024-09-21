@@ -22,7 +22,7 @@ export function DetailsDialog(props: DetailsDialogProps) {
             <DialogTrigger>
                 {props.children}
             </DialogTrigger>
-            <DialogContent className="h-[500px] min-w-[600px] overflow-y-auto">
+            <DialogContent className="h-[500px] min-w-[600px] overflow-y-auto overflow-x-hidden">
                 <DialogHeader>
                     <DialogTitle>Details</DialogTitle>
                 </DialogHeader>

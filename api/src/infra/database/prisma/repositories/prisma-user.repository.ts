@@ -57,7 +57,11 @@ export class PrismaUserRepository implements UserRepository {
     }
 
     public async findAll(): Promise<User[]> {
-        const users = await this.prismaService.user.findMany();
+        const users = await this.prismaService.user.findMany({
+            orderBy: {
+                createdAt: "desc"
+            }
+        });
         return users.map(PrismaUserMapper.toDomain);
     }
 
