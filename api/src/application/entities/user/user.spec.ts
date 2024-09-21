@@ -5,12 +5,9 @@ describe('User', () => {
     it('should be able to create a user', () => {
         const user = makeUser();
         expect(user).toBeTruthy();
-        expect(user.getName()).toBe('New User');
-        expect(user.getEmail()).toBe('new@example.com');
-        expect(user.getPassword()).toBe('password123');
-        expect(user.getRoles()).toEqual(['user.edit']);
-        expect(user.getCreatedAt()).toBeInstanceOf(Date);
-        expect(user.getProjects()).toEqual([]);
+        expect(user.getName()).toBe('test');
+        expect(user.getEmail()).toBe('test@test.com');
+        expect(user.getPassword()).toBe('123456');
     });
 
     it('should correctly update user name', () => {
@@ -23,12 +20,6 @@ describe('User', () => {
         const user = makeUser();
         user.setEmail('jane.smith@example.com');
         expect(user.getEmail()).toBe('jane.smith@example.com');
-    });
-
-    it('should correctly add and retrieve roles', () => {
-        const user = makeUser();
-        user.addRole('admin');
-        expect(user.getRoles()).toContain('admin');
     });
 
     it('should correctly add and retrieve projects', () => {

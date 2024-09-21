@@ -10,14 +10,13 @@ datasource db {
 model User {
   id        String    @id
   name      String
-  email     String
+  email     String    @unique
   password  String
-  roles     String
+  roles     Role[]
   createdAt DateTime
   updatedAt DateTime
-  projects  String
   type      UserType
-  Project   Project[]
+  projects  Project[]
 }
 
 enum UserType {
@@ -29,7 +28,7 @@ model Project {
   id          String        @id
   title       String
   description String
-  revenue     String
+  revenue     Float
   createdAt   DateTime
   icon        String
   color       String
@@ -76,4 +75,6 @@ model Role {
   key       String
   createdAt DateTime
   updatedAt DateTime
+  User      User?    @relation(fields: [userId], references: [id])
+  userId    String?
 }

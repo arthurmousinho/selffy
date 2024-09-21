@@ -1,5 +1,6 @@
 import { Replace } from "@utils/replace";
 import { randomUUID } from "crypto";
+import { User } from "../user/user";
 
 export interface RoleProps {
     key: string;
@@ -8,6 +9,7 @@ export interface RoleProps {
 }
 
 export class Role {
+
     private _id: string;
     private props: RoleProps;
 
@@ -46,5 +48,5 @@ export class Role {
     public update() {
         this.props.updatedAt = new Date();
     }
-
+    
 }

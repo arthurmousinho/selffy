@@ -17,19 +17,31 @@ describe('Create User UseCase', () => {
 
     it('should throw an error if the user already exists', async () => {
         const newUser = makeUser();
-        await createUserUseCase.execute(newUser);
-        await expect(createUserUseCase.execute(newUser)).rejects.toThrow(UserAlreadyExistsError);
+        await createUserUseCase.execute({
+            name: newUser.getName(),
+            email: newUser.getEmail(),
+            password: newUser.getPassword(),
+        });
+        await expect(createUserUseCase.execute({
+            name: newUser.getName(),
+            email: newUser.getEmail(),
+            password: newUser.getPassword(),
+        })).rejects.toThrow(UserAlreadyExistsError);
     });
 
     it('should create a new user if the user does not exist', async () => {
         const newUser = makeUser();
-        await createUserUseCase.execute(newUser);
+        const { user } = await createUserUseCase.execute({
+            name: newUser.getName(),
+            email: newUser.getEmail(),
+            password: newUser.getPassword(),
+        });
         const users = await userRepository.findAll();
         expect(users.length).toBe(1);
-        expect(users[0].getEmail()).toBe(newUser.getEmail());
-        expect(users[0].getName()).toBe(newUser.getName());
-        expect(users[0].getPassword()).toBe(newUser.getPassword());
-        expect(users[0].getRoles()).toEqual(newUser.getRoles());
+        expect(users[0].getEmail()).toBe(user.getEmail());
+        expect(users[0].getName()).toBe(user.getName());
+        expect(users[0].getPassword()).toBe(user.getPassword());
+        expect(users[0].getRoles()).toEqual(user.getRoles());
     });
 
 });

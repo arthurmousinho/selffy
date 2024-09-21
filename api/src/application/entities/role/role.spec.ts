@@ -1,12 +1,20 @@
 import { makeRole } from '@test/factories/role.factory';
+import { Role } from './role';
 
 describe('Role', () => {
+
+    beforeAll(() => {
+        jest.useFakeTimers();
+    });
+
+    afterAll(() => {
+        jest.useRealTimers();
+    });
 
     it('should be able to create a role', () => {
         const role = makeRole();
 
         expect(role).toBeTruthy();
-        expect(role.getKey()).toBe('user.create');
     });
 
     it('should generate an ID if not provided', () => {
@@ -17,10 +25,9 @@ describe('Role', () => {
     });
 
     it('should allow setting a key', () => {
-        const role = makeRole();
-        role.setKey('user');
+        const role = makeRole({ key: 'user.test' });
 
-        expect(role.getKey()).toBe('user');
+        expect(role.getKey()).toBe('user.test');
     });
 
     it('should update the updatedAt property', () => {

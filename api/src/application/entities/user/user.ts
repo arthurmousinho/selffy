@@ -1,6 +1,8 @@
 import { randomUUID } from "crypto";
 import { Replace } from "src/utils/replace";
 import { Project } from "../project/project";
+import { Role } from "../role/role";
+import { makeRole } from "@test/factories/role.factory";
 
 export type UserType = 'ADMIN' | 'DEFAULT';
 
@@ -8,7 +10,7 @@ export interface UserProps {
     name: string;
     email: string;
     password: string;
-    roles: string[];
+    roles: Role[];
     createdAt: Date;
     updatedAt: Date;
     projects: Project[];
@@ -21,15 +23,28 @@ export class User {
     private props: UserProps;
 
     constructor(
-        props: Replace<UserProps, { id?: string, createdAt?: Date, type?: UserType, updatedAt?: Date }>,
+        props: Replace<UserProps, {
+            id?: string,
+            roles?: Role[],
+            createdAt?: Date,
+            type?: UserType,
+            updatedAt?: Date,
+            projects?: Project[]
+        }>,
         id?: string,
     ) {
         this._id = id ?? randomUUID();
+        const defaultRoles = [ 
+            makeRole(),
+        ];
+
         this.props = {
             ...props,
             type: props.type ?? 'DEFAULT',
             createdAt: props.createdAt ?? new Date(),
-            updatedAt: props.updatedAt ?? new Date()
+            updatedAt: props.updatedAt ?? new Date(),
+            roles: props?.roles ?? defaultRoles,
+            projects: props.projects ?? []
         };
     }
 
@@ -65,14 +80,18 @@ export class User {
         return this.props.roles
     }
 
-    public addRole(role: string) {
+    public addRole(role: Role) {
         this.props.roles.push(role)
+    }
+    
+    public removeRole(role: Role) {
+        this.props.roles = this.props.roles.filter(r => r.getId() !== role.getId())
     }
 
     public getCreatedAt() {
         return this.props.createdAt
     }
-    
+
     public getUpdatedAt() {
         return this.props.updatedAt
     }
@@ -88,7 +107,11 @@ export class User {
     public addProject(project: any) {
         this.props.projects.push(project)
     }
-    
+
+    public removeProject(project: any) {
+        this.props.projects = this.props.projects.filter(p => p.getId() !== project.getId())
+    }
+
     public getType() {
         return this.props.type
     }
