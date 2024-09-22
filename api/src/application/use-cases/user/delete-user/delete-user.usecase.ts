@@ -1,20 +1,21 @@
-import { User } from "@application/entities/user/user";
 import { UserNotFoundError } from "@application/errors/user/user-not-found.error";
 import { UserRepository } from "@application/repositories/user.repository";
+import { Injectable } from "@nestjs/common";
 
+@Injectable()
 export class DeleteUserUsecase {
 
     constructor(
         private userRepository: UserRepository
     ){}
 
-    public async execute(user: User) {
-        const userExists = await this.userRepository.findById(user.getId());
+    public async execute(id: string) {
+        const userExists = await this.userRepository.findById(id);
         if (!userExists) {
             throw new UserNotFoundError();
         }
 
-        await this.userRepository.delete(user.getId());
+        await this.userRepository.delete(id);
     }
 
 }

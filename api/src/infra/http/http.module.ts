@@ -5,6 +5,7 @@ import { CreateUserUseCase } from '@application/use-cases/user/create-user/creat
 import { AuthUserUseCase } from '@application/use-cases/user/auth-user/auth-user.usecase';
 import { JwtService } from '@nestjs/jwt';
 import { FindAllUsersUseCase } from '@application/use-cases/user/find-all-users/find-all-users.usecase';
+import { DeleteUserUsecase } from '@application/use-cases/user/delete-user/delete-user.usecase';
 
 @Module({
   imports: [
@@ -17,7 +18,8 @@ import { FindAllUsersUseCase } from '@application/use-cases/user/find-all-users/
     JwtService,
     CreateUserUseCase,
     AuthUserUseCase,
-    FindAllUsersUseCase
+    FindAllUsersUseCase,
+    DeleteUserUsecase
   ]
 })
 export class HttpModule { }

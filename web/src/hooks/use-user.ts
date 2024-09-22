@@ -48,3 +48,22 @@ export function createUser() {
 
     return query;
 }
+
+export function deleteUser() {
+    const { toast } = useToast();
+
+    const query = useMutation({
+        mutationFn: async (id: string) => {
+            return await axios.delete(`http://localhost:3000/users/${id}`);
+        },
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ['users'] });
+            toast({
+                title: "✅ Success",
+                description: "User was deleted successfully",
+            });
+        },
+    });
+
+    return query;
+}

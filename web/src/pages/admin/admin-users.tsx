@@ -27,11 +27,14 @@ import {
 import { Label } from "@/components/ui/label";
 import { DetailsDialog } from "@/components/global/details-dialog";
 import { NewUserDialog } from "@/components/admin/new-user-dialog";
-import { getAllUsers, UserProps } from "@/hooks/use-user";
+import { deleteUser, getAllUsers, UserProps } from "@/hooks/use-user";
+import { DeleteAlertDialog } from "@/components/admin/delete-alert-dialog";
 
 export function AdminUsers() {
 
     const { data, refetch } = getAllUsers();
+
+    const { mutate } = deleteUser()
 
     async function handleRefresh() {
         await refetch();
@@ -55,16 +58,16 @@ export function AdminUsers() {
                         placeholder="Search..."
                         className="w-[250px]"
                     />
-                    <Button 
-                        variant={'outline'} 
+                    <Button
+                        variant={'outline'}
                         className="flex items-center gap-2 text-muted-foreground"
                     >
                         <Filter size={20} />
                         Filter
                     </Button>
-                    <Button 
-                        onClick={handleRefresh} 
-                        variant={'outline'} 
+                    <Button
+                        onClick={handleRefresh}
+                        variant={'outline'}
                         className="flex items-center gap-2 text-muted-foreground"
                     >
                         <RefreshCcw size={20} />
@@ -156,15 +159,19 @@ export function AdminUsers() {
                                                         Edit
                                                     </div>
                                                 </DropdownMenuItem>
-                                                <DropdownMenuItem className="cursor-pointer p-2">
-                                                    <div className="flex items-center gap-2">
-                                                        <div className="w-10 h-10 border flex items-center justify-center rounded-xl">
-                                                            <span className="text-sm">
-                                                                <Trash size={20} className="text-black" />
-                                                            </span>
+                                                <DropdownMenuItem className="cursor-pointer p-2" onSelect={(e) => e.preventDefault()}>
+                                                    <DeleteAlertDialog
+                                                        onDelete={() => mutate(user.id)}
+                                                    >
+                                                        <div className="flex items-center gap-2">
+                                                            <div className="w-10 h-10 border flex items-center justify-center rounded-xl">
+                                                                <span className="text-sm">
+                                                                    <Trash size={20} className="text-black" />
+                                                                </span>
+                                                            </div>
+                                                            Delete
                                                         </div>
-                                                        Delete
-                                                    </div>
+                                                    </DeleteAlertDialog>
                                                 </DropdownMenuItem>
                                             </DropdownMenuContent>
                                         </DropdownMenu>

@@ -1,10 +1,11 @@
 import { CreateUserUseCase } from "@application/use-cases/user/create-user/create-user.usecase";
-import { Body, Controller, Get, Post } from "@nestjs/common";
+import { Body, Controller, Delete, Get, Param, Post } from "@nestjs/common";
 import { SignUpUserBody } from "../dtos/signup-user-body.dto";
 import { LoginUserBody } from "../dtos/login-user-body.dto";
 import { AuthUserUseCase } from "@application/use-cases/user/auth-user/auth-user.usecase";
 import { FindAllUsersUseCase } from "@application/use-cases/user/find-all-users/find-all-users.usecase";
 import { UserViewModel } from "../view-models/user.viewmodel";
+import { DeleteUserUsecase } from "@application/use-cases/user/delete-user/delete-user.usecase";
 
 @Controller('users')
 export class UserController {
@@ -12,7 +13,8 @@ export class UserController {
     constructor(
         private createUserUseCase: CreateUserUseCase,
         private authUserUseCase: AuthUserUseCase,
-        private findAllUsersUseCase: FindAllUsersUseCase
+        private findAllUsersUseCase: FindAllUsersUseCase,
+        private deleteUserUserCase: DeleteUserUsecase
     ) {}
 
     @Get()
@@ -44,6 +46,12 @@ export class UserController {
         });
 
         return { token };
+    }
+
+    @Delete('/:id')
+    public async delete(@Param() params: { id: string }) {
+        const { id } = params;
+        await this.deleteUserUserCase.execute(id);
     }
 
 }
