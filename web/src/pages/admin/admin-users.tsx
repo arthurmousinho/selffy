@@ -1,20 +1,19 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { 
-    ChevronDown, 
-    ChevronLeft, 
-    ChevronRight, 
-    ChevronsLeft, 
-    ChevronsRight, 
-    Filter, 
-    Folder, 
-    MoreVertical, 
-    Pencil, 
-    Plus, 
-    RefreshCcw, 
-    Trash, 
-    UsersRound 
+import {
+    ChevronDown,
+    ChevronLeft,
+    ChevronRight,
+    ChevronsLeft,
+    ChevronsRight,
+    Filter,
+    Folder,
+    Pencil,
+    Plus,
+    RefreshCcw,
+    Trash,
+    UsersRound
 } from "lucide-react";
 import {
     Table,
@@ -40,10 +39,11 @@ import {
 } from "@/components/ui/select"
 import { Label } from "@/components/ui/label";
 import { DetailsDialog } from "@/components/global/details-dialog";
-import { NewUserDialog } from "@/components/admin/new-user-dialog";
 import { deleteUser, getAllUsers, searchUsersByName, UserProps } from "@/hooks/use-user";
-import { DeleteAlertDialog } from "@/components/admin/delete-alert-dialog";
+import { DeleteAlertDialog } from "@/components/global/delete-alert-dialog";
 import { useEffect, useState } from "react";
+import { NewUserDialog } from "@/components/admin/user/new-user-dialog";
+import { EditUserDialog } from "@/components/admin/user/edit-user-dialog";
 
 export function AdminUsers() {
 
@@ -56,10 +56,10 @@ export function AdminUsers() {
 
     useEffect(() => {
         if (!searchTerm && fetchUsersData) {
-            setUsersData(fetchUsersData.users); 
-        }  
+            setUsersData(fetchUsersData.users);
+        }
         if (searchUsersByNameData) {
-            setUsersData(searchUsersByNameData.users); 
+            setUsersData(searchUsersByNameData.users);
         }
     }, [fetchUsersData, searchUsersByNameData, searchTerm]);
 
@@ -118,7 +118,9 @@ export function AdminUsers() {
                             <TableHead className="text-left">E-mail</TableHead>
                             <TableHead className="text-left">Roles</TableHead>
                             <TableHead className="text-left">Type</TableHead>
-                            <TableHead className="text-right">Options</TableHead>
+                            <TableHead className="text-right">Details</TableHead>
+                            <TableHead className="text-right">Edit</TableHead>
+                            <TableHead className="text-right">Delete</TableHead>
                         </TableRow>
                     </TableHeader>
                     <TableBody>
@@ -159,51 +161,25 @@ export function AdminUsers() {
                                         }
                                     </TableCell>
                                     <TableCell className="text-right">
-                                        <DropdownMenu>
-                                            <DropdownMenuTrigger asChild>
-                                                <Button variant={'outline'} className="text-muted-foreground">
-                                                    <MoreVertical size={20} />
-                                                </Button>
-                                            </DropdownMenuTrigger>
-                                            <DropdownMenuContent>
-                                                <DropdownMenuItem className="cursor-pointer p-2" onSelect={(e) => e.preventDefault()}>
-                                                    <DetailsDialog data={user}>
-                                                        <div className="flex items-center gap-2">
-                                                            <div className="w-10 h-10 border flex items-center justify-center rounded-xl">
-                                                                <span className="text-sm">
-                                                                    <Folder size={20} className="text-black" />
-                                                                </span>
-                                                            </div>
-                                                            Details
-                                                        </div>
-                                                    </DetailsDialog>
-                                                </DropdownMenuItem>
-                                                <DropdownMenuItem className="cursor-pointer p-2" >
-                                                    <div className="flex items-center gap-2">
-                                                        <div className="w-10 h-10 border flex items-center justify-center rounded-xl">
-                                                            <span className="text-sm">
-                                                                <Pencil size={20} className="text-black" />
-                                                            </span>
-                                                        </div>
-                                                        Edit
-                                                    </div>
-                                                </DropdownMenuItem>
-                                                <DropdownMenuItem className="cursor-pointer p-2" onSelect={(e) => e.preventDefault()}>
-                                                    <DeleteAlertDialog
-                                                        onDelete={() => deleteUserFn(user.id)}
-                                                    >
-                                                        <div className="flex items-center gap-2">
-                                                            <div className="w-10 h-10 border flex items-center justify-center rounded-xl">
-                                                                <span className="text-sm">
-                                                                    <Trash size={20} className="text-black" />
-                                                                </span>
-                                                            </div>
-                                                            Delete
-                                                        </div>
-                                                    </DeleteAlertDialog>
-                                                </DropdownMenuItem>
-                                            </DropdownMenuContent>
-                                        </DropdownMenu>
+                                        <DetailsDialog data={user}>
+                                            <Button className="text-muted-foreground" variant={'outline'}>
+                                                <Folder size={20} />
+                                            </Button>
+                                        </DetailsDialog>
+                                    </TableCell>
+                                    <TableCell className="text-right">
+                                        <EditUserDialog data={user}>
+                                            <Button className="text-muted-foreground" variant={'outline'}>
+                                                <Pencil size={20} />
+                                            </Button>
+                                        </EditUserDialog>
+                                    </TableCell>
+                                    <TableCell className="flex justify-end">
+                                        <DeleteAlertDialog onDelete={() => deleteUserFn(user.id)}>
+                                            <Button className="text-muted-foreground" variant={'outline'}>
+                                                <Trash size={20} />
+                                            </Button>
+                                        </DeleteAlertDialog>
                                     </TableCell>
                                 </TableRow>
                             ))

@@ -5,6 +5,7 @@ import { makeUser } from "@test/factories/user.factory";
 import { UserNotFoundError } from "@application/errors/user/user-not-found.error";
 
 describe('Update User UseCase', () => {
+    
     let updateUserUseCase: UpdateUserUseCase;
     let userRepository: UserRepository;
 
@@ -14,22 +15,24 @@ describe('Update User UseCase', () => {
     });
 
     it('should throw an error if the user does not exist', async () => {
-        const nonExistentUser = makeUser();
-
-        await expect(updateUserUseCase.execute(nonExistentUser)).rejects.toThrow(UserNotFoundError);
+        await expect(updateUserUseCase.execute({
+            id: 'non-existent-id',
+            name: 'Some Name',
+            email: 'some@example.com',
+        })).rejects.toThrow(UserNotFoundError);
     });
 
     it('should update the user if the user exists', async () => {
-        const existingUser = makeUser(); 
-        await userRepository.create(existingUser); 
+        const existingUser = makeUser();
+        await userRepository.create(existingUser);
 
-        existingUser.setName('Updated Name');
-        existingUser.setEmail('updated@example.com');
-
-        await updateUserUseCase.execute(existingUser);
+        await updateUserUseCase.execute({
+            id: existingUser.getId(),
+            name: 'Updated Name',
+            email: 'updated@example.com',
+        });
 
         const updatedUser = await userRepository.findById(existingUser.getId());
-
         expect(updatedUser).toBeDefined();
         expect(updatedUser.getName()).toBe('Updated Name');
         expect(updatedUser.getEmail()).toBe('updated@example.com');

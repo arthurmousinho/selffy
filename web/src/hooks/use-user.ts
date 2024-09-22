@@ -32,7 +32,6 @@ export function getAllUsers() {
 
 export function createUser() {
     const { toast } = useToast();
-
     const query = useMutation({
         mutationFn: async (newUser: { name: string; email: string; password: string }) => {
             return await axios.post('http://localhost:3000/users/signup', newUser);
@@ -44,6 +43,12 @@ export function createUser() {
                 description: "User was created successfully",
             })
         },
+        onError: () => {
+            toast({
+                title: "❌ Error",
+                description: "Something went wrong",
+            });
+        }
     })
 
     return query;
@@ -51,7 +56,6 @@ export function createUser() {
 
 export function deleteUser() {
     const { toast } = useToast();
-
     const query = useMutation({
         mutationFn: async (id: string) => {
             return await axios.delete(`http://localhost:3000/users/${id}`);
@@ -63,6 +67,12 @@ export function deleteUser() {
                 description: "User was deleted successfully",
             });
         },
+        onError: () => {
+            toast({
+                title: "❌ Error",
+                description: "Something went wrong",
+            });
+        }
     });
 
     return query;
@@ -77,6 +87,24 @@ export function searchUsersByName(name?: string) {
         },
         enabled: !!name,
         staleTime: 5000
+    });
+
+    return query;
+}
+
+export function updateUser() {
+    const { toast } = useToast();
+    const query = useMutation({
+        mutationFn: async (data: { id: string, name: string, email: string }) => {
+            return await axios.put(`http://localhost:3000/users`, data);
+        },
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ['users'] });
+            toast({
+                title: "✅ Success",
+                description: "User was updated successfully",
+            });
+        },
     });
 
     return query;
