@@ -1,7 +1,21 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { ChevronDown, ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight, Filter, Folder, MoreVertical, Pencil, Plus, RefreshCcw, Trash, UsersRound } from "lucide-react";
+import { 
+    ChevronDown, 
+    ChevronLeft, 
+    ChevronRight, 
+    ChevronsLeft, 
+    ChevronsRight, 
+    Filter, 
+    Folder, 
+    MoreVertical, 
+    Pencil, 
+    Plus, 
+    RefreshCcw, 
+    Trash, 
+    UsersRound 
+} from "lucide-react";
 import {
     Table,
     TableBody,
@@ -27,17 +41,30 @@ import {
 import { Label } from "@/components/ui/label";
 import { DetailsDialog } from "@/components/global/details-dialog";
 import { NewUserDialog } from "@/components/admin/new-user-dialog";
-import { deleteUser, getAllUsers, UserProps } from "@/hooks/use-user";
+import { deleteUser, getAllUsers, searchUsersByName, UserProps } from "@/hooks/use-user";
 import { DeleteAlertDialog } from "@/components/admin/delete-alert-dialog";
+import { useEffect, useState } from "react";
 
 export function AdminUsers() {
 
-    const { data, refetch } = getAllUsers();
+    const [usersData, setUsersData] = useState<UserProps[]>([]);
+    const [searchTerm, setSearchTerm] = useState<string>('');
 
-    const { mutate } = deleteUser()
+    const { data: fetchUsersData, refetch: refetchUsers } = getAllUsers();
+    const { mutate: deleteUserFn } = deleteUser();
+    const { data: searchUsersByNameData } = searchUsersByName(searchTerm);
+
+    useEffect(() => {
+        if (!searchTerm && fetchUsersData) {
+            setUsersData(fetchUsersData.users); 
+        }  
+        if (searchUsersByNameData) {
+            setUsersData(searchUsersByNameData.users); 
+        }
+    }, [fetchUsersData, searchUsersByNameData, searchTerm]);
 
     async function handleRefresh() {
-        await refetch();
+        await refetchUsers();
     }
 
     return (
@@ -57,6 +84,8 @@ export function AdminUsers() {
                     <Input
                         placeholder="Search..."
                         className="w-[250px]"
+                        onChange={event => setSearchTerm(event.target.value)}
+                        type="search"
                     />
                     <Button
                         variant={'outline'}
@@ -94,7 +123,7 @@ export function AdminUsers() {
                     </TableHeader>
                     <TableBody>
                         {
-                            data?.users.map((user: UserProps) => (
+                            usersData.map((user: UserProps) => (
                                 <TableRow key={user.id}>
                                     <TableCell>{user.name}</TableCell>
                                     <TableCell>{user.email}</TableCell>
@@ -161,7 +190,7 @@ export function AdminUsers() {
                                                 </DropdownMenuItem>
                                                 <DropdownMenuItem className="cursor-pointer p-2" onSelect={(e) => e.preventDefault()}>
                                                     <DeleteAlertDialog
-                                                        onDelete={() => mutate(user.id)}
+                                                        onDelete={() => deleteUserFn(user.id)}
                                                     >
                                                         <div className="flex items-center gap-2">
                                                             <div className="w-10 h-10 border flex items-center justify-center rounded-xl">

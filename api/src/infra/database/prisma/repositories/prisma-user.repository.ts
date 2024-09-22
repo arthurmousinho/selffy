@@ -9,7 +9,7 @@ export class PrismaUserRepository implements UserRepository {
 
     constructor(
         private readonly prismaService: PrismaService
-    ) {}
+    ) { }
 
     public async create(user: User): Promise<void> {
         const raw = PrismaUserMapper.toPrisma(user);
@@ -24,7 +24,7 @@ export class PrismaUserRepository implements UserRepository {
                 email
             }
         });
-        
+
         if (!user) {
             return null;
         }
@@ -32,16 +32,16 @@ export class PrismaUserRepository implements UserRepository {
         return PrismaUserMapper.toDomain(user);
     }
 
-    public async findByName(name: string): Promise<User | null> {
-        const user = await this.prismaService.user.findFirst({
+    public async findManyByName(name: string): Promise<User[]> {
+        const users = await this.prismaService.user.findMany({
             where: {
-                name
+                name: {
+                    contains: name,
+                    mode: 'insensitive'
+                }
             }
         });
-        if (!user) {
-            return null;
-        }
-        return PrismaUserMapper.toDomain(user);
+        return users.map(PrismaUserMapper.toDomain);
     }
 
     public async findById(id: string): Promise<User | null> {

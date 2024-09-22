@@ -16,11 +16,11 @@ export class InMemoryUserRepository implements UserRepository {
         return user ?? null;
     }
 
-    public async findByName(name: string) {
-        const user = this.users.find(
+    public async findManyByName(name: string) {
+        const users = this.users.filter(
             (user) => user.getName() === name
         );
-        return user ?? null;
+        return users;
     }
 
     public async findById(id: string) {

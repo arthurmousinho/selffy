@@ -67,3 +67,17 @@ export function deleteUser() {
 
     return query;
 }
+
+export function searchUsersByName(name?: string) {
+    const query = useQuery({
+        queryKey: ['users', name],
+        queryFn: async () => {
+            const response = await axios.get(`http://localhost:3000/users/${name}`);
+            return response.data as Response;
+        },
+        enabled: !!name,
+        staleTime: 5000
+    });
+
+    return query;
+}
