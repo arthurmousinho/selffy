@@ -1,7 +1,20 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight, Filter, Folder, MoreVertical, Pencil, Plus, RefreshCcw, Shield, Trash } from "lucide-react";
+import {
+    ChevronLeft,
+    ChevronRight,
+    ChevronsLeft,
+    ChevronsRight,
+    Filter,
+    Folder,
+    Pencil,
+    Plus,
+    RefreshCcw,
+    Shield,
+    Trash
+}
+    from "lucide-react";
 import {
     Table,
     TableBody,
@@ -11,12 +24,6 @@ import {
     TableRow,
 } from "@/components/ui/table"
 import {
-    DropdownMenu,
-    DropdownMenuContent,
-    DropdownMenuItem,
-    DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
-import {
     Select,
     SelectContent,
     SelectItem,
@@ -25,9 +32,15 @@ import {
 } from "@/components/ui/select"
 import { Label } from "@/components/ui/label";
 import { DetailsDialog } from "@/components/global/details-dialog";
-import { getMockRoles } from "@/mocks/get-roles";
+import { DeleteAlertDialog } from "@/components/global/delete-alert-dialog";
+import { Badge } from "@/components/ui/badge";
+import { getAllRoles, RoleProps } from "@/hooks/use-role";
+import { UserType } from "@/hooks/use-user";
 
 export function AdminRoles() {
+
+    const { data: fetchRoleData } = getAllRoles();
+
     return (
         <Card>
             <CardHeader className="flex flex-row items-center justify-between border-b">
@@ -64,65 +77,45 @@ export function AdminRoles() {
                 <Table>
                     <TableHeader>
                         <TableRow>
-                            <TableHead>ID</TableHead>
-                            <TableHead>Key</TableHead>
-                            <TableHead className="text-left">CreatedAt</TableHead>
-                            <TableHead className="text-left">UpdatedAt</TableHead>
-                            <TableHead className="text-right">Options</TableHead>
+                            <TableHead className="text-left">Key</TableHead>
+                            <TableHead className="text-left">User Types</TableHead>
+                            <TableHead className="text-right">Details</TableHead>
+                            <TableHead className="text-right">Edit</TableHead>
+                            <TableHead className="text-right">Delete</TableHead>
                         </TableRow>
                     </TableHeader>
                     <TableBody>
                         {
-                            getMockRoles().map((role) => (
+                            fetchRoleData?.roles.map((role: RoleProps) => (
                                 <TableRow key={role.id}>
-                                    <TableCell className="font-medium">
-                                        {role.id}
-                                    </TableCell>
                                     <TableCell>{role.key}</TableCell>
-                                    <TableCell className="text-left">{role.createdAt}</TableCell>
-                                    <TableCell className="text-left">{role.updatedAt}</TableCell>
+                                    <TableCell className="flex flex-row items-center gap-2">
+                                        {
+                                            role.userTypes.map((userType: UserType) => (
+                                                <Badge variant={userType === 'ADMIN' ? 'default' : 'secondary'}>
+                                                    {userType.toLowerCase()}
+                                                </Badge>
+                                            ))
+                                        }
+                                    </TableCell>
                                     <TableCell className="text-right">
-                                        <DropdownMenu>
-                                            <DropdownMenuTrigger asChild>
-                                                <Button variant={'outline'} className="text-muted-foreground">
-                                                    <MoreVertical size={20} />
-                                                </Button>
-                                            </DropdownMenuTrigger>
-                                            <DropdownMenuContent>
-                                                <DropdownMenuItem className="cursor-pointer p-2" onSelect={(e) => e.preventDefault()}>
-                                                    <DetailsDialog data={role}>
-                                                        <div className="flex items-center gap-2">
-                                                            <div className="w-10 h-10 border flex items-center justify-center rounded-xl">
-                                                                <span className="text-sm">
-                                                                    <Folder size={20} className="text-black" />
-                                                                </span>
-                                                            </div>
-                                                            Details
-                                                        </div>
-                                                    </DetailsDialog>
-                                                </DropdownMenuItem>
-                                                <DropdownMenuItem className="cursor-pointer p-2" >
-                                                    <div className="flex items-center gap-2">
-                                                        <div className="w-10 h-10 border flex items-center justify-center rounded-xl">
-                                                            <span className="text-sm">
-                                                                <Pencil size={20} className="text-black" />
-                                                            </span>
-                                                        </div>
-                                                        Edit
-                                                    </div>
-                                                </DropdownMenuItem>
-                                                <DropdownMenuItem className="cursor-pointer p-2">
-                                                    <div className="flex items-center gap-2">
-                                                        <div className="w-10 h-10 border flex items-center justify-center rounded-xl">
-                                                            <span className="text-sm">
-                                                                <Trash size={20} className="text-black" />
-                                                            </span>
-                                                        </div>
-                                                        Delete
-                                                    </div>
-                                                </DropdownMenuItem>
-                                            </DropdownMenuContent>
-                                        </DropdownMenu>
+                                        <DetailsDialog data={role}>
+                                            <Button className="text-muted-foreground" variant={'outline'}>
+                                                <Folder size={20} />
+                                            </Button>
+                                        </DetailsDialog>
+                                    </TableCell>
+                                    <TableCell className="text-right">
+                                        <Button className="text-muted-foreground" variant={'outline'}>
+                                            <Pencil size={20} />
+                                        </Button>
+                                    </TableCell>
+                                    <TableCell className="flex justify-end">
+                                        <DeleteAlertDialog onDelete={() => console.log('delete')}>
+                                            <Button className="text-muted-foreground" variant={'outline'}>
+                                                <Trash size={20} />
+                                            </Button>
+                                        </DeleteAlertDialog>
                                     </TableCell>
                                 </TableRow>
                             ))

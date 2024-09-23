@@ -6,7 +6,9 @@ export class RoleViewModel {
         return {
             id: role.getId(),
             key: role.getKey(),
-            userTypes: role.getUserTypes()
+            userTypes: role.getUserTypes(),
+            createdAt: role.getCreatedAt(),
+            updatedAt: role.getUpdatedAt()
         }
     }
 

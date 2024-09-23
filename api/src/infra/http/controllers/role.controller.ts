@@ -15,8 +15,8 @@ export class RoleController {
 
     @Get()
     public async getRoles() {
-        const users = await this.findAllRolesUseCase.execute();
-        return { users: users.map(RoleViewModel.toHTTP) };
+        const roles = await this.findAllRolesUseCase.execute();
+        return { roles: roles.map(RoleViewModel.toHTTP) };
     }
 
     @Post()

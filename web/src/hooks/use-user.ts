@@ -3,6 +3,8 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import axios from 'axios';
 import { useToast } from "./use-toast";
 
+export type UserType = "ADMIN" | "DEFAULT";
+
 export interface UserProps {
     id: string;
     name: string;
@@ -10,11 +12,15 @@ export interface UserProps {
     password: string;
     createdAt: string;
     updatedAt: string;
-    type: "ADMIN" | "DEFAULT";
+    type: UserType;
     roles: { key: string }[]
 }
 
-interface Response {
+interface GetAllUsersResponse {
+    users: UserProps[]
+}
+
+interface SearchUserByNameResponse {
     users: UserProps[]
 }
 
@@ -23,7 +29,7 @@ export function getAllUsers() {
         queryKey: ['users'],
         queryFn: async () => {
             const response = await axios.get('http://localhost:3000/users');
-            return response.data as Response;
+            return response.data as GetAllUsersResponse;
         }
     })
 
@@ -83,7 +89,7 @@ export function searchUsersByName(name?: string) {
         queryKey: ['users', name],
         queryFn: async () => {
             const response = await axios.get(`http://localhost:3000/users/${name}`);
-            return response.data as Response;
+            return response.data as SearchUserByNameResponse;
         },
         enabled: !!name,
         staleTime: 5000
