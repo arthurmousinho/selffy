@@ -1,4 +1,4 @@
-import { Task } from "@application/entities/task/task";
+import { Task } from "@application/entities/task/task.entity";
 import { randomUUID } from "crypto";
 
 export function makeTask(props?: { title: string, description: string }) {

@@ -1,4 +1,4 @@
-import { Cost } from "@application/entities/cost/cost";
+import { Cost } from "@application/entities/cost/cost.entity";
 import { randomUUID } from "crypto";
 
 export function makeCost() {

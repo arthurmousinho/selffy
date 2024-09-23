@@ -8,13 +8,16 @@ import { FindAllUsersUseCase } from '@application/use-cases/user/find-all-users/
 import { DeleteUserUsecase } from '@application/use-cases/user/delete-user/delete-user.usecase';
 import { SearchUserByNameUseCase } from '@application/use-cases/user/search-user-by-name/search-user-by-name.usecase';
 import { UpdateUserUseCase } from '@application/use-cases/user/update-user/update-user.usecase';
+import { CreateRoleUseCase } from '@application/use-cases/role/create-role/create-role.usecase';
+import { RoleController } from './controllers/role.controller';
 
 @Module({
   imports: [
     DatabaseModule
   ],
   controllers: [
-    UserController
+    UserController,
+    RoleController
   ],
   providers: [
     JwtService,
@@ -23,7 +26,9 @@ import { UpdateUserUseCase } from '@application/use-cases/user/update-user/updat
     FindAllUsersUseCase,
     DeleteUserUsecase,
     SearchUserByNameUseCase,
-    UpdateUserUseCase
+    UpdateUserUseCase,
+
+    CreateRoleUseCase
   ]
 })
 export class HttpModule { }

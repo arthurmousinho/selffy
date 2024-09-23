@@ -1,7 +1,7 @@
 import { randomUUID } from "crypto";
 import { Replace } from "src/utils/replace";
-import { Project } from "../project/project";
-import { Role } from "../role/role";
+import { Project } from "../project/project.entity";
+import { Role } from "../role/role.entity";
 import { makeRole } from "@test/factories/role.factory";
 
 export type UserType = 'ADMIN' | 'DEFAULT';
@@ -34,7 +34,7 @@ export class User {
         id?: string,
     ) {
         this._id = id ?? randomUUID();
-        const defaultRoles = [ 
+        const defaultRoles = [
             makeRole(),
         ];
 
@@ -83,7 +83,7 @@ export class User {
     public addRole(role: Role) {
         this.props.roles.push(role)
     }
-    
+
     public removeRole(role: Role) {
         this.props.roles = this.props.roles.filter(r => r.getId() !== role.getId())
     }

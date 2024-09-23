@@ -1,4 +1,4 @@
-import { Role } from "@application/entities/role/role";
+import { Role } from "@application/entities/role/role.entity";
 import { RoleNotFoundError } from "@application/errors/role/role-not-found.error";
 import { RoleRepository } from "@application/repositories/role.repository";
 

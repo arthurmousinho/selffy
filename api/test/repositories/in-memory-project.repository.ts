@@ -1,8 +1,8 @@
-import { Project } from "@application/entities/project/project";
+import { Project } from "@application/entities/project/project.entity";
 import { ProjectRepository } from "@application/repositories/project.repository";
 
 export class InMemoryProjectRepository implements ProjectRepository {
-    
+
     private projects: Project[] = [];
 
     public async create(project: Project): Promise<void> {

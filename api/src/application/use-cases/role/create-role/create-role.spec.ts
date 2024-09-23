@@ -6,7 +6,7 @@ import { RoleAlreadyExistsError } from "@application/errors/role/role-already-ex
 
 describe('Create Role UseCase', () => {
     let createRoleUseCase: CreateRoleUseCase;
-    let roleRepository: RoleRepository;
+    let roleRepository: InMemoryRoleRepository;
 
     beforeEach(() => {
         roleRepository = new InMemoryRoleRepository();
@@ -14,18 +14,28 @@ describe('Create Role UseCase', () => {
     });
 
     it('should throw an error if the role already exists', async () => {
-        const newRole = makeRole();
-        await createRoleUseCase.execute(newRole);
-        await expect(createRoleUseCase.execute(newRole)).rejects.toThrow(RoleAlreadyExistsError);
+        const newRole = makeRole(); 
+        await createRoleUseCase.execute({
+            key: newRole.getKey(),
+            userTypes: newRole.getUserTypes()
+        });
+
+        await expect(createRoleUseCase.execute({
+            key: newRole.getKey(),
+            userTypes: newRole.getUserTypes()
+        })).rejects.toThrow(RoleAlreadyExistsError);
     });
 
     it('should create a new role if the role does not exist', async () => {
-        const newRole = makeRole();
-        await createRoleUseCase.execute(newRole);
+        await createRoleUseCase.execute({
+            key: 'role.test',
+            userTypes: ['ADMIN', 'DEFAULT']
+        });
+
         const roles = await roleRepository.findAll();
         expect(roles.length).toBe(1);
-        expect(roles[0].getId()).toBe(newRole.getId());
-        expect(roles[0].getKey()).toBe(newRole.getKey());
+        expect(roles[0].getKey()).toBe('role.test');
+        expect(roles[0].getUserTypes()).toEqual(['ADMIN', 'DEFAULT']);
     });
 
 });

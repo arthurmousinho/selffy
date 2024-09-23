@@ -15,16 +15,14 @@ describe('Delete User UseCase', () => {
     });
 
     it('should throw an error if the user does not exist', async () => {
-        const nonExistentUser = makeUser(); 
-
-        await expect(deleteUserUseCase.execute(nonExistentUser)).rejects.toThrow(UserNotFoundError);
+        await expect(deleteUserUseCase.execute('some-id-here')).rejects.toThrow(UserNotFoundError);
     });
 
     it('should delete the user if the user exists', async () => {
         const existingUser = makeUser();  
         await userRepository.create(existingUser);  
 
-        await deleteUserUseCase.execute(existingUser);
+        await deleteUserUseCase.execute(existingUser.getId());
 
         const foundUser = await userRepository.findById(existingUser.getId());
 

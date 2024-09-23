@@ -1,18 +1,24 @@
-import { Role } from "@application/entities/role/role";
+import { Role } from "@application/entities/role/role.entity";
 import { RoleRepository } from "@application/repositories/role.repository";
 
 export class InMemoryRoleRepository implements RoleRepository {
     
     private roles: Role[] = [];
 
-    public async create(role: Role): Promise<Role> {
+    public async create(role: Role): Promise<void> {
         this.roles.push(role);
-        return role;
     }
     
     public async findById(id: string): Promise<Role | null> {
         const role = this.roles.find(
             (item) => item.getId() === id
+        );
+        return role || null;
+    }
+
+    public async findByKey(key: string): Promise<Role | null> {
+        const role = this.roles.find(
+            (item) => item.getKey() === key
         );
         return role || null;
     }

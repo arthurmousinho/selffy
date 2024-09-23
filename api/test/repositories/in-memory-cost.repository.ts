@@ -1,4 +1,4 @@
-import { Cost } from "@application/entities/cost/cost";
+import { Cost } from "@application/entities/cost/cost.entity";
 import { CostRepository } from "@application/repositories/cost.repository";
 
 export class InMemoryCostRepository implements CostRepository {

@@ -1,8 +1,8 @@
-import { Task } from "@application/entities/task/task";
+import { Task } from "@application/entities/task/task.entity";
 import { TaskRepository } from "@application/repositories/task.repository";
 
 export class InMemoryTaskRepository implements TaskRepository {
-    
+
     private tasks: Task[] = [];
 
     public async create(task: any): Promise<void> {
@@ -19,7 +19,7 @@ export class InMemoryTaskRepository implements TaskRepository {
         );
         return task ?? null;
     }
-    
+
     public async update(task: any): Promise<void> {
         const index = this.tasks.findIndex(
             (item) => item.getId() === task.getId()

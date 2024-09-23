@@ -2,7 +2,7 @@ import { makeUser } from "@test/factories/user.factory";
 import { SearchUserByNameUseCase } from "./search-user-by-name.usecase";
 import { UserRepository } from "@application/repositories/user.repository";
 import { InMemoryUserRepository } from "@test/repositories/in-memory-user.repository";
-import { User } from "@application/entities/user/user";
+import { User } from "@application/entities/user/user.entity";
 import { makeRole } from "@test/factories/role.factory";
 
 describe('SearchUserByNameUseCase', () => {

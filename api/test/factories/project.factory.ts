@@ -1,4 +1,4 @@
-import { Project } from "@application/entities/project/project";
+import { Project } from "@application/entities/project/project.entity";
 import { randomUUID } from "crypto";
 import { makeUser } from "./user.factory";
 
@@ -15,6 +15,6 @@ export function makeProject(props?: { title: string, description: string }) {
         color: "#000000",
         icon: "👍🏻"
     }, projectId);
-    
+
     return project;
 }

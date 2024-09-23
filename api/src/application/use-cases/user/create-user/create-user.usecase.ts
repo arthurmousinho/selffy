@@ -1,5 +1,5 @@
-import { Role } from "@application/entities/role/role";
-import { User } from "@application/entities/user/user";
+import { Role } from "@application/entities/role/role.entity";
+import { User } from "@application/entities/user/user.entity";
 import { UserAlreadyExistsError } from "@application/errors/user/user-already-exists.error";
 import { UserRepository } from "@application/repositories/user.repository";
 import { Injectable } from "@nestjs/common";
@@ -20,7 +20,7 @@ export class CreateUserUseCase {
 
     constructor(
         private userRepository: UserRepository
-    ) {}
+    ) { }
 
     public async execute(request: CreateUserRequest): Promise<CreateUserResponse> {
         const { name, email, password } = request;
@@ -32,19 +32,19 @@ export class CreateUserUseCase {
 
         const hashedPassword = await this.hashPassword(password);
 
-        const user = new User({ 
-            name, 
-            email, 
-            password: hashedPassword, 
-            roles: [ 
+        const newUser = new User({
+            name,
+            email,
+            password: hashedPassword,
+            roles: [
                 new Role({ key: 'user.update' }),
                 new Role({ key: 'user.delete' }),
             ]
         });
 
-        await this.userRepository.create(user);
+        await this.userRepository.create(newUser);
 
-        return { user };
+        return { user: newUser };
     }
 
     private async hashPassword(password: string): Promise<string> {

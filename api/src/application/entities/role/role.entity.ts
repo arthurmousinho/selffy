@@ -1,9 +1,10 @@
 import { Replace } from "@utils/replace";
 import { randomUUID } from "crypto";
-import { User } from "../user/user";
+import { UserType } from "../user/user.entity";
 
 export interface RoleProps {
     key: string;
+    userTypes: UserType[]
     createdAt: Date;
     updatedAt: Date;
 }
@@ -14,12 +15,13 @@ export class Role {
     private props: RoleProps;
 
     constructor(
-        props: Replace<RoleProps, { createdAt?: Date, updatedAt?: Date }>,
+        props: Replace<RoleProps, { createdAt?: Date, updatedAt?: Date, userTypes?: UserType[] }>,
         id?: string
     ) {
         this._id = id ?? randomUUID();
         this.props = {
             ...props,
+            userTypes: props.userTypes ?? [ 'ADMIN', 'DEFAULT' ],
             createdAt: props.createdAt ?? new Date(),
             updatedAt: props.updatedAt ?? new Date()
         };
@@ -35,6 +37,14 @@ export class Role {
 
     public setKey(key: string) {
         this.props.key = key;
+    }
+
+    public getUserTypes() {
+        return this.props.userTypes;
+    }
+    
+    public setUserTypes(userTypes: UserType[]) {
+        this.props.userTypes = userTypes;
     }
 
     public getCreatedAt() {

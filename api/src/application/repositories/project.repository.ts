@@ -1,4 +1,4 @@
-import { Project } from "@application/entities/project/project";
+import { Project } from "@application/entities/project/project.entity";
 
 export abstract class ProjectRepository {
     abstract create(project: Project): Promise<void>;

@@ -1,7 +1,7 @@
 import { randomUUID } from "crypto";
 import { Replace } from "src/utils/replace";
-import { User } from "../user/user";
-import { Task } from "../task/task";
+import { User } from "../user/user.entity";
+import { Task } from "../task/task.entity";
 
 export type ProjectStatus = 'IN_PROGRESS' | 'FINISHED';
 
@@ -75,7 +75,7 @@ export class Project {
     public update() {
         this.props.updatedAt = new Date();
     }
-    
+
     public getIcon() {
         return this.props.icon;
     }

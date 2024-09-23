@@ -1,4 +1,4 @@
-import { User } from "@application/entities/user/user";
+import { User } from "@application/entities/user/user.entity";
 import { randomUUID } from "crypto";
 import { makeRole } from "./role.factory";
 

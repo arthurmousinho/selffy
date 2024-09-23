@@ -1,4 +1,4 @@
-import { User } from "@application/entities/user/user";
+import { User } from "@application/entities/user/user.entity";
 import { UserNotFoundError } from "@application/errors/user/user-not-found.error";
 import { UserRepository } from "@application/repositories/user.repository";
 import { Injectable } from "@nestjs/common";
@@ -11,7 +11,7 @@ interface UpdateUserUseCaseRequest {
 
 @Injectable()
 export class UpdateUserUseCase {
-    
+
     constructor(
         private userRepository: UserRepository
     ) { }

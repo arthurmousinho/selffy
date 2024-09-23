@@ -71,10 +71,12 @@ model Cost {
 }
 
 model Role {
-  id        String   @id
-  key       String
+  id        String     @id
+  key       String     @unique
   createdAt DateTime
   updatedAt DateTime
-  User      User?    @relation(fields: [userId], references: [id])
-  userId    String?
+  userTypes UserType[]
+
+  User   User?   @relation(fields: [userId], references: [id])
+  userId String?
 }

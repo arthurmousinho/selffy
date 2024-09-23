@@ -1,7 +1,7 @@
-import { User } from "@application/entities/user/user";
+import { User } from "@application/entities/user/user.entity";
 
 export class UserViewModel {
-    
+
     static toHTTP(user: User) {
         return {
             id: user.getId(),

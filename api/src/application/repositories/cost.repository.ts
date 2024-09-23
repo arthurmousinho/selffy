@@ -1,4 +1,4 @@
-import { Cost } from "@application/entities/cost/cost";
+import { Cost } from "@application/entities/cost/cost.entity";
 
 export abstract class CostRepository {
     abstract create(cost: Cost): Promise<void>;

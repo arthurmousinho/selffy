@@ -1,4 +1,4 @@
-import { Cost } from "@application/entities/cost/cost";
+import { Cost } from "@application/entities/cost/cost.entity";
 import { CostNotFoundError } from "@application/errors/cost/cost-not-found.error";
 import { CostRepository } from "@application/repositories/cost.repository";
 
@@ -6,7 +6,7 @@ export class DeleteCostUseCase {
 
     constructor(
         private costRepository: CostRepository
-    ){}
+    ) { }
 
     public async execute(cost: Cost) {
         const roleExists = await this.costRepository.findById(cost.getId());
