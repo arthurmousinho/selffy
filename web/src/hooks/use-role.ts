@@ -68,3 +68,27 @@ export function updateRole() {
 
     return query;
 }
+
+export function deleteRole() {
+    const { toast } = useToast();
+    const query = useMutation({
+        mutationFn: async (id: string) => {
+            return await axios.delete(`http://localhost:3000/roles/${id}`);
+        },
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ['roles'] });
+            toast({
+                title: "✅ Success",
+                description: "Role was deleted successfully",
+            });
+        },
+        onError: () => {
+            toast({
+                title: "❌ Error",
+                description: "Something went wrong",
+            });
+        }
+    });
+
+    return query;
+}

@@ -1,5 +1,11 @@
-export class RoleNotFoundError extends Error {
+import { HttpException, HttpStatus } from "@nestjs/common";
+
+export class RoleNotFoundError extends HttpException {
     constructor() {
-        super('Role not found');
+        super({
+            message: ['role not found'],
+            error: 'Not Found',
+            statusCode: HttpStatus.NOT_FOUND,
+        }, HttpStatus.NOT_FOUND);
     }
 }

@@ -33,7 +33,7 @@ import { Label } from "@/components/ui/label";
 import { DetailsDialog } from "@/components/global/details-dialog";
 import { DeleteAlertDialog } from "@/components/global/delete-alert-dialog";
 import { Badge } from "@/components/ui/badge";
-import { getAllRoles, RoleProps } from "@/hooks/use-role";
+import { deleteRole, getAllRoles, RoleProps } from "@/hooks/use-role";
 import { UserType } from "@/hooks/use-user";
 import { NewRoleDialog } from "@/components/admin/role/new-role-dialog";
 import { EditRoleDialog } from "@/components/admin/role/edit-role-dialog";
@@ -41,6 +41,7 @@ import { EditRoleDialog } from "@/components/admin/role/edit-role-dialog";
 export function AdminRoles() {
 
     const { data: fetchRoleData, refetch: refetchRoles } = getAllRoles();
+    const { mutate: deleteRoleFn } = deleteRole();
 
     async function handleRefresh() {
         await refetchRoles();
@@ -124,7 +125,7 @@ export function AdminRoles() {
                                         </EditRoleDialog>
                                     </TableCell>
                                     <TableCell className="flex justify-end">
-                                        <DeleteAlertDialog onDelete={() => console.log('delete')}>
+                                        <DeleteAlertDialog onDelete={() => deleteRoleFn(role.id)}>
                                             <Button className="text-muted-foreground" variant={'outline'}>
                                                 <Trash size={20} />
                                             </Button>

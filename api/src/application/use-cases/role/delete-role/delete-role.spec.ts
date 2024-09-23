@@ -17,14 +17,14 @@ describe('Delete Role UseCase', () => {
     it('should throw an error if the role does not exist', async () => {
         const nonExistentRole = makeRole(); 
 
-        await expect(deleteRoleUseCase.execute(nonExistentRole)).rejects.toThrow(RoleNotFoundError);
+        await expect(deleteRoleUseCase.execute(nonExistentRole.getId())).rejects.toThrow(RoleNotFoundError);
     });
 
     it('should delete the role if the role exists', async () => {
         const existingRole = makeRole();  
         await roleRepository.create(existingRole);  
 
-        await deleteRoleUseCase.execute(existingRole);
+        await deleteRoleUseCase.execute(existingRole.getId());
 
         const foundRole = await roleRepository.findById(existingRole.getId());
 
