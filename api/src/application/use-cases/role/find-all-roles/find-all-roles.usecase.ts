@@ -1,5 +1,7 @@
 import { RoleRepository } from "@application/repositories/role.repository";
+import { Injectable } from "@nestjs/common";
 
+@Injectable()
 export class FindAllRolesUseCase {
 
     constructor(

@@ -10,6 +10,7 @@ import { SearchUserByNameUseCase } from '@application/use-cases/user/search-user
 import { UpdateUserUseCase } from '@application/use-cases/user/update-user/update-user.usecase';
 import { CreateRoleUseCase } from '@application/use-cases/role/create-role/create-role.usecase';
 import { RoleController } from './controllers/role.controller';
+import { FindAllRolesUseCase } from '@application/use-cases/role/find-all-roles/find-all-roles.usecase';
 
 @Module({
   imports: [
@@ -28,7 +29,8 @@ import { RoleController } from './controllers/role.controller';
     SearchUserByNameUseCase,
     UpdateUserUseCase,
 
-    CreateRoleUseCase
+    CreateRoleUseCase,
+    FindAllRolesUseCase
   ]
 })
 export class HttpModule { }
