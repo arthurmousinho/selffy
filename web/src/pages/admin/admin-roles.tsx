@@ -36,10 +36,15 @@ import { DeleteAlertDialog } from "@/components/global/delete-alert-dialog";
 import { Badge } from "@/components/ui/badge";
 import { getAllRoles, RoleProps } from "@/hooks/use-role";
 import { UserType } from "@/hooks/use-user";
+import { NewRoleDialog } from "@/components/admin/role/new-role-dialog";
 
 export function AdminRoles() {
 
-    const { data: fetchRoleData } = getAllRoles();
+    const { data: fetchRoleData, refetch: refetchRoles } = getAllRoles();
+
+    async function handleRefresh() {
+        await refetchRoles();
+    }
 
     return (
         <Card>
@@ -63,14 +68,20 @@ export function AdminRoles() {
                         <Filter size={20} />
                         Filter
                     </Button>
-                    <Button variant={'outline'} className="flex items-center gap-2 text-muted-foreground">
+                    <Button 
+                        onClick={handleRefresh}
+                        variant={'outline'} 
+                        className="flex items-center gap-2 text-muted-foreground"
+                    >
                         <RefreshCcw size={20} />
                         Refresh
                     </Button>
-                    <Button className="flex items-center gap-2">
-                        <Plus size={20} />
-                        New Role
-                    </Button>
+                    <NewRoleDialog>
+                        <Button className="flex items-center gap-2">
+                            <Plus size={20} />
+                            New Role
+                        </Button>
+                    </NewRoleDialog>
                 </div>
             </CardHeader>
             <CardContent className="pt-4">

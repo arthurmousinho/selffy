@@ -1,5 +1,11 @@
-export class RoleAlreadyExistsError extends Error {
+import { HttpException, HttpStatus } from "@nestjs/common";
+
+export class RoleAlreadyExistsError extends HttpException {
     constructor() {
-        super('Role already exists');
+        super({
+            message: ['role already exists'],
+            error: 'Conflict',
+            statusCode: HttpStatus.CONFLICT,
+        }, HttpStatus.CONFLICT);
     }
 }
