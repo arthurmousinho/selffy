@@ -14,6 +14,10 @@ interface GetAllRolesResponse {
     roles: RoleProps[]
 }
 
+interface SearchRoleByKeyResponse {
+    roles: RoleProps[]
+}
+
 export function getAllRoles() {
     const query = useQuery({
         queryKey: ['roles'],
@@ -88,6 +92,20 @@ export function deleteRole() {
                 description: "Something went wrong",
             });
         }
+    });
+
+    return query;
+}
+
+export function searchRolesByKey(key?: string) {
+    const query = useQuery({
+        queryKey: ['roles', key],
+        queryFn: async () => {
+            const response = await axios.get(`http://localhost:3000/roles/${key}`);
+            return response.data as SearchRoleByKeyResponse;
+        },
+        enabled: !!key,
+        staleTime: 5000
     });
 
     return query;

@@ -6,6 +6,7 @@ import { RoleViewModel } from "../view-models/role.viewmodel";
 import { UpdateRoleBody } from "../dtos/role/update-role-body.dto";
 import { UpdateRoleUseCase } from "@application/use-cases/role/update-role/update-role.usecase";
 import { DeleteRoleUseCase } from "@application/use-cases/role/delete-role/delete-role.usecase";
+import { SearchRolesByKeyUseCase } from "@application/use-cases/role/search-roles-by-key/search-roles-by-key.usecase";
 
 
 @Controller('roles')
@@ -15,13 +16,20 @@ export class RoleController {
         private createRoleUseCase: CreateRoleUseCase,
         private findAllRolesUseCase: FindAllRolesUseCase,
         private updateRoleUseCase: UpdateRoleUseCase,
-        private deleteRoleUseCase: DeleteRoleUseCase
+        private deleteRoleUseCase: DeleteRoleUseCase,
+        private searchRolesByKeyUseCase: SearchRolesByKeyUseCase
     ) {}
 
     @Get()
     public async getRoles() {
         const roles = await this.findAllRolesUseCase.execute();
         return { roles: roles.map(RoleViewModel.toHTTP) };
+    }
+
+    @Get(':key')
+    public async searchByKey(@Param('key') key: string) {
+        const rolesFound = await this.searchRolesByKeyUseCase.execute(key);
+        return { roles: rolesFound.map(RoleViewModel.toHTTP) };
     }
 
     @Post()

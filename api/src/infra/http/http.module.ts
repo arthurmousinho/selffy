@@ -13,6 +13,7 @@ import { RoleController } from './controllers/role.controller';
 import { FindAllRolesUseCase } from '@application/use-cases/role/find-all-roles/find-all-roles.usecase';
 import { UpdateRoleUseCase } from '@application/use-cases/role/update-role/update-role.usecase';
 import { DeleteRoleUseCase } from '@application/use-cases/role/delete-role/delete-role.usecase';
+import { SearchRolesByKeyUseCase } from '@application/use-cases/role/search-roles-by-key/search-roles-by-key.usecase';
 
 @Module({
   imports: [
@@ -34,7 +35,8 @@ import { DeleteRoleUseCase } from '@application/use-cases/role/delete-role/delet
     CreateRoleUseCase,
     FindAllRolesUseCase,
     UpdateRoleUseCase,
-    DeleteRoleUseCase
+    DeleteRoleUseCase,
+    SearchRolesByKeyUseCase
   ]
 })
 export class HttpModule { }

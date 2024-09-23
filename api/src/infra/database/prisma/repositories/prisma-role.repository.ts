@@ -39,7 +39,7 @@ export class PrismaRoleRepository implements RoleRepository {
         return PrismaRoleMapper.toDomain(role);
     }
 
-    public async findByKey(key: string) {
+    public async findByKey(key: string): Promise<Role | null> {
         const role = await this.prismaService.role.findUnique({
             where: {
                 key
@@ -49,6 +49,18 @@ export class PrismaRoleRepository implements RoleRepository {
             return null;
         }
         return PrismaRoleMapper.toDomain(role);
+    }
+
+    public async findManyByKey(key: string): Promise<Role[]> {
+        const roles = await this.prismaService.role.findMany({
+            where: {
+                key: {
+                    contains: key,
+                    mode: "insensitive"
+                }
+            }
+        });
+        return roles.map(PrismaRoleMapper.toDomain);
     }
 
     public async update(role: Role): Promise<void> {

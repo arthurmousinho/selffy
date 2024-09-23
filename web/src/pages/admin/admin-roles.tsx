@@ -33,15 +33,30 @@ import { Label } from "@/components/ui/label";
 import { DetailsDialog } from "@/components/global/details-dialog";
 import { DeleteAlertDialog } from "@/components/global/delete-alert-dialog";
 import { Badge } from "@/components/ui/badge";
-import { deleteRole, getAllRoles, RoleProps } from "@/hooks/use-role";
+import { deleteRole, getAllRoles, RoleProps, searchRolesByKey } from "@/hooks/use-role";
 import { UserType } from "@/hooks/use-user";
 import { NewRoleDialog } from "@/components/admin/role/new-role-dialog";
 import { EditRoleDialog } from "@/components/admin/role/edit-role-dialog";
+import { useEffect, useState } from "react";
 
 export function AdminRoles() {
 
-    const { data: fetchRoleData, refetch: refetchRoles } = getAllRoles();
+    const [rolesData, setRolesData] = useState<RoleProps[]>([]);
+    const [searchTerm, setSearchTerm] = useState<string>('');
+
+    const { data: fetchRolesData, refetch: refetchRoles } = getAllRoles();
+    const { data: searchRolesByNameData } = searchRolesByKey(searchTerm);
     const { mutate: deleteRoleFn } = deleteRole();
+
+    useEffect(() => {
+        if (!searchTerm && fetchRolesData) {
+            setRolesData(fetchRolesData.roles);
+        }
+        if (searchRolesByNameData) {
+            setRolesData(searchRolesByNameData.roles);
+        }
+    }, [fetchRolesData, searchRolesByNameData, searchTerm]);
+
 
     async function handleRefresh() {
         await refetchRoles();
@@ -64,6 +79,8 @@ export function AdminRoles() {
                     <Input
                         placeholder="Search..."
                         className="w-[250px]"
+                        onChange={event => setSearchTerm(event.target.value)}
+                        type="search"
                     />
                     <Button variant={'outline'} className="flex items-center gap-2 text-muted-foreground">
                         <Filter size={20} />
@@ -98,7 +115,7 @@ export function AdminRoles() {
                     </TableHeader>
                     <TableBody>
                         {
-                            fetchRoleData?.roles.map((role: RoleProps) => (
+                            rolesData.map((role: RoleProps) => (
                                 <TableRow key={role.id}>
                                     <TableCell>{role.key}</TableCell>
                                     <TableCell className="flex flex-row items-center gap-2">

@@ -23,6 +23,13 @@ export class InMemoryRoleRepository implements RoleRepository {
         return role || null;
     }
 
+    public async findManyByKey(key: string): Promise<Role[]> {
+        const roles = this.roles.filter(
+            (item) => item.getKey().includes(key)
+        );
+        return roles;
+    }
+
     public async findAll(): Promise<Role[]> {
         return this.roles;
     }
