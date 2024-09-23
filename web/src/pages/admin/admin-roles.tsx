@@ -13,8 +13,7 @@ import {
     RefreshCcw,
     Shield,
     Trash
-}
-    from "lucide-react";
+} from "lucide-react";
 import {
     Table,
     TableBody,
@@ -37,6 +36,7 @@ import { Badge } from "@/components/ui/badge";
 import { getAllRoles, RoleProps } from "@/hooks/use-role";
 import { UserType } from "@/hooks/use-user";
 import { NewRoleDialog } from "@/components/admin/role/new-role-dialog";
+import { EditRoleDialog } from "@/components/admin/role/edit-role-dialog";
 
 export function AdminRoles() {
 
@@ -68,9 +68,9 @@ export function AdminRoles() {
                         <Filter size={20} />
                         Filter
                     </Button>
-                    <Button 
+                    <Button
                         onClick={handleRefresh}
-                        variant={'outline'} 
+                        variant={'outline'}
                         className="flex items-center gap-2 text-muted-foreground"
                     >
                         <RefreshCcw size={20} />
@@ -117,9 +117,11 @@ export function AdminRoles() {
                                         </DetailsDialog>
                                     </TableCell>
                                     <TableCell className="text-right">
-                                        <Button className="text-muted-foreground" variant={'outline'}>
-                                            <Pencil size={20} />
-                                        </Button>
+                                        <EditRoleDialog data={role}>
+                                            <Button className="text-muted-foreground" variant={'outline'}>
+                                                <Pencil size={20} />
+                                            </Button>
+                                        </EditRoleDialog>
                                     </TableCell>
                                     <TableCell className="flex justify-end">
                                         <DeleteAlertDialog onDelete={() => console.log('delete')}>

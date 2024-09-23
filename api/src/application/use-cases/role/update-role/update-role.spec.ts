@@ -17,7 +17,11 @@ describe('Update Role UseCase', () => {
     it('should throw an error if the role does not exist', async () => {
         const nonExistentRole = makeRole();
 
-        await expect(updateRoleUseCase.execute(nonExistentRole)).rejects.toThrow(RoleNotFoundError);
+        await expect(updateRoleUseCase.execute({
+            id: nonExistentRole.getId(),
+            key: nonExistentRole.getKey(),
+            userTypes: nonExistentRole.getUserTypes(),
+        })).rejects.toThrow(RoleNotFoundError);
     });
 
     it('should update the role if the role exists', async () => {
@@ -26,7 +30,11 @@ describe('Update Role UseCase', () => {
     
         existingRole.setKey('Updated Role Key');
 
-        await updateRoleUseCase.execute(existingRole);
+        await updateRoleUseCase.execute({
+            id: existingRole.getId(),
+            key: existingRole.getKey(),
+            userTypes: existingRole.getUserTypes(),
+        });
 
         const updatedRole = await roleRepository.findById(existingRole.getId());
 

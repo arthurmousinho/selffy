@@ -1,5 +1,5 @@
 import { UserType } from "@prisma/client";
-import { IsEnum, IsNotEmpty } from "class-validator";
+import { ArrayNotEmpty, IsEnum, IsNotEmpty } from "class-validator";
 
 export class CreateRoleBody {
 
@@ -7,6 +7,7 @@ export class CreateRoleBody {
     key: string;
 
     @IsNotEmpty()
+    @ArrayNotEmpty()
     @IsEnum(UserType, { each: true })
     userTypes: UserType[];
 

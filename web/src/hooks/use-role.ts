@@ -50,3 +50,21 @@ export function createRole() {
 
     return query;
 }
+
+export function updateRole() {
+    const { toast } = useToast();
+    const query = useMutation({
+        mutationFn: async (data: { id: string, key: string, userTypes: UserType[] }) => {
+            return await axios.put(`http://localhost:3000/roles`, data);
+        },
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ['roles'] });
+            toast({
+                title: "✅ Success",
+                description: "Role was updated successfully",
+            });
+        },
+    });
+
+    return query;
+}
