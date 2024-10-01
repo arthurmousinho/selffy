@@ -88,4 +88,26 @@ export class PrismaRoleRepository implements RoleRepository {
         })
     }
 
+    public async getRolesForAdminUser(): Promise<Role[]> {
+        const roles = await this.prismaService.role.findMany({
+            where: {
+                userTypes: {
+                    has: "ADMIN"
+                }
+            }
+        });
+        return roles.map(PrismaRoleMapper.toDomain);
+    }
+
+    public async getRolesForDefaultUser(): Promise<Role[]> {
+        const roles = await this.prismaService.role.findMany({
+            where: {
+                userTypes: {
+                    has: "DEFAULT"
+                }
+            }
+        });
+        return roles.map(PrismaRoleMapper.toDomain);
+    }
+
 }

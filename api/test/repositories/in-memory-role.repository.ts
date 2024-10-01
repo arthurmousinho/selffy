@@ -56,4 +56,18 @@ export class InMemoryRoleRepository implements RoleRepository {
         }
     }
 
+    public async getRolesForAdminUser(): Promise<Role[]> {
+        const roles = this.roles.filter(
+            (item) => item.getKey() === 'ADMIN'
+        );
+        return roles;
+    }
+
+    public async getRolesForDefaultUser(): Promise<Role[]> {
+        const roles = this.roles.filter(
+            (item) => item.getKey() === 'DEFAULT'
+        );
+        return roles;
+    }
+
 }
