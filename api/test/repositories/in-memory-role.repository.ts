@@ -8,6 +8,10 @@ export class InMemoryRoleRepository implements RoleRepository {
     public async create(role: Role): Promise<void> {
         this.roles.push(role);
     }
+
+    public async createMany(roles: Role[]): Promise<void> {
+        this.roles.push(...roles);
+    }
     
     public async findById(id: string): Promise<Role | null> {
         const role = this.roles.find(

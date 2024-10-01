@@ -6,7 +6,7 @@ import { DatabaseModule } from './infra/database/database.module';
   imports: [
     DatabaseModule,
     HttpModule, 
-  ],
+  ]
 })
 
 export class AppModule {}
