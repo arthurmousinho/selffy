@@ -12,9 +12,16 @@ const sidebarLinks = [
     { to: '/auth/signin', label: 'Exit', icon: <LogOut size={20} className="text-black" /> },
 ];
 
-export function AdminSidebar() {
+interface AdminSidebarProps {
+    isSidebarOpen: boolean;
+}
+
+export function AdminSidebar(props: AdminSidebarProps) {
     return (
-        <Card className="h-screen rounded-none min-w-[20%] border-t-0">
+        <Card className={`
+            h-screen rounded-none min-w-[20%] border-t-0
+            ${props.isSidebarOpen && 'hidden'}
+        `}>
             <CardContent className="pt-4 px-2 flex flex-col gap-2">
                 {
                     sidebarLinks.map((link, index) => (
