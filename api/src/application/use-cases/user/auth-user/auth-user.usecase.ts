@@ -34,7 +34,9 @@ export class AuthUserUseCase {
         const token = this.jwtService.sign(
             {
                 sub: user.getId(),
-                email: user.getEmail()
+                email: user.getEmail(),
+                type: user.getType(),
+                roles: user.getRoles().map(role => role.getKey())
             },
             {
                 secret: process.env.JWT_SECRET,

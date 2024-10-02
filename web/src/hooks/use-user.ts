@@ -2,6 +2,9 @@ import { queryClient } from "@/main";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import axios from 'axios';
 import { useToast } from "./use-toast";
+import { useNavigate } from "react-router-dom";
+import { jwtDecode } from 'jwt-decode';
+import Cookies from 'js-cookie';
 
 export type UserType = "ADMIN" | "DEFAULT";
 
@@ -118,6 +121,45 @@ export function updateUser() {
                 description: "User was updated successfully",
             });
         },
+    });
+
+    return query;
+}
+
+interface TokenProps {
+    sub: string;
+    email: string;
+    type: UserType;
+    roles: string[];
+    iat: number;
+    exp: number;
+}
+
+export function authUser() {
+    const { toast } = useToast();
+    const navigate = useNavigate();
+
+    const query = useMutation({
+        mutationFn: async (data: { email: string, password: string }) => {
+            const response = await axios.post('http://localhost:3000/users/login', data);
+            const token = response.data.token;
+            return token;
+        },
+        onSuccess: (token: string) => {
+            const decodedToken = jwtDecode<TokenProps>(token);
+            const expirationDate = new Date(decodedToken.exp * 1000);
+
+            Cookies.set('selffy_token', token, { expires: expirationDate });
+
+            if (decodedToken.type === 'ADMIN') navigate('/admin');
+            if (decodedToken.type === 'DEFAULT') navigate('/');
+        },
+        onError: () => {
+            toast({
+                title: "❌ Error",
+                description: "Something went wrong",
+            });
+        }
     });
 
     return query;
