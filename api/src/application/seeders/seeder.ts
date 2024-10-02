@@ -3,6 +3,7 @@ import { RoleSeeder } from './role.seeder';
 
 @Injectable()
 export class Seeder {
+  
   constructor(
     private readonly roleSeeder: RoleSeeder,
   ) {}
