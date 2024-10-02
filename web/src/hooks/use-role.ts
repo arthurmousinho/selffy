@@ -1,8 +1,8 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
-import axios from "axios";
 import { UserType } from "./use-user";
 import { useToast } from "./use-toast";
 import { queryClient } from "@/main";
+import { axios } from "@/lib/axios";
 
 export interface RoleProps {
     id: string;
@@ -22,7 +22,7 @@ export function getAllRoles() {
     const query = useQuery({
         queryKey: ['roles'],
         queryFn: async () => {
-            const response = await axios.get('http://localhost:3000/roles');
+            const response = await axios.get('/roles');
             return response.data as GetAllRolesResponse;
         }
     })
@@ -30,12 +30,16 @@ export function getAllRoles() {
     return query;
 }
 
+interface CreateRoleProps {
+    key: string;
+    userTypes: UserType[];
+}
 
 export function createRole() {
     const { toast } = useToast();
     const query = useMutation({
-        mutationFn: async (newRole: { key: string; userTypes: UserType[] }) => {
-            return await axios.post('http://localhost:3000/roles', newRole);
+        mutationFn: async (newRole: CreateRoleProps) => {
+            return await axios.post('/roles', newRole);
         },
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ['roles'] });
@@ -55,11 +59,17 @@ export function createRole() {
     return query;
 }
 
+interface UpdateRoleProps {
+    id: string;
+    key: string;
+    userTypes: UserType[];
+}
+
 export function updateRole() {
     const { toast } = useToast();
     const query = useMutation({
-        mutationFn: async (data: { id: string, key: string, userTypes: UserType[] }) => {
-            return await axios.put(`http://localhost:3000/roles`, data);
+        mutationFn: async (data: UpdateRoleProps) => {
+            return await axios.put('/roles', data);
         },
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ['roles'] });
@@ -77,7 +87,7 @@ export function deleteRole() {
     const { toast } = useToast();
     const query = useMutation({
         mutationFn: async (id: string) => {
-            return await axios.delete(`http://localhost:3000/roles/${id}`);
+            return await axios.delete(`/roles/${id}`);
         },
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ['roles'] });
@@ -101,7 +111,7 @@ export function searchRolesByKey(key?: string) {
     const query = useQuery({
         queryKey: ['roles', key],
         queryFn: async () => {
-            const response = await axios.get(`http://localhost:3000/roles/${key}`);
+            const response = await axios.get(`/roles/${key}`);
             return response.data as SearchRoleByKeyResponse;
         },
         enabled: !!key,

@@ -1,10 +1,10 @@
 import { queryClient } from "@/main";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import axios from 'axios';
 import { useToast } from "./use-toast";
 import { useNavigate } from "react-router-dom";
 import { jwtDecode } from 'jwt-decode';
 import Cookies from 'js-cookie';
+import { axios } from "@/lib/axios";
 
 export type UserType = "ADMIN" | "DEFAULT";
 
@@ -31,7 +31,7 @@ export function getAllUsers() {
     const query = useQuery({
         queryKey: ['users'],
         queryFn: async () => {
-            const response = await axios.get('http://localhost:3000/users');
+            const response = await axios.get('/users');
             return response.data as GetAllUsersResponse;
         }
     })
@@ -50,7 +50,7 @@ export function createUser() {
     const { toast } = useToast();
     const query = useMutation({
         mutationFn: async (newUser: CreateUserProps) => {
-            return await axios.post('http://localhost:3000/users/signup', newUser);
+            return await axios.post('/users/signup', newUser);
         },
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ['users'] });
@@ -74,7 +74,7 @@ export function deleteUser() {
     const { toast } = useToast();
     const query = useMutation({
         mutationFn: async (id: string) => {
-            return await axios.delete(`http://localhost:3000/users/${id}`);
+            return await axios.delete(`/users/${id}`);
         },
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ['users'] });
@@ -98,7 +98,7 @@ export function searchUsersByName(name?: string) {
     const query = useQuery({
         queryKey: ['users', name],
         queryFn: async () => {
-            const response = await axios.get(`http://localhost:3000/users/${name}`);
+            const response = await axios.get(`/users/${name}`);
             return response.data as SearchUserByNameResponse;
         },
         enabled: !!name,
@@ -108,11 +108,17 @@ export function searchUsersByName(name?: string) {
     return query;
 }
 
+interface UpdateUserProps {
+    id: string;
+    name: string;
+    email: string;
+}
+
 export function updateUser() {
     const { toast } = useToast();
     const query = useMutation({
-        mutationFn: async (data: { id: string, name: string, email: string }) => {
-            return await axios.put(`http://localhost:3000/users`, data);
+        mutationFn: async (data: UpdateUserProps) => {
+            return await axios.put('/users', data);
         },
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ['users'] });
@@ -135,14 +141,19 @@ interface TokenProps {
     exp: number;
 }
 
+interface AuthUserProps {
+    email: string;
+    password: string;
+}
+
 export function authUser() {
     const { toast } = useToast();
     const navigate = useNavigate();
 
     const query = useMutation({
-        mutationFn: async (data: { email: string, password: string }) => {
-            const response = await axios.post('http://localhost:3000/users/login', data);
-            const token = response.data.token;
+        mutationFn: async (data: AuthUserProps) => {
+            const response = await axios.post('/users/login', data);
+            const token = response.data.token as string;
             return token;
         },
         onSuccess: (token: string) => {
