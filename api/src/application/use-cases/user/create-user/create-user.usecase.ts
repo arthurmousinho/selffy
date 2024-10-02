@@ -1,4 +1,3 @@
-import { Role } from "@application/entities/role/role.entity";
 import { User, UserType } from "@application/entities/user/user.entity";
 import { UserAlreadyExistsError } from "@application/errors/user/user-already-exists.error";
 import { UserRepository } from "@application/repositories/user.repository";
