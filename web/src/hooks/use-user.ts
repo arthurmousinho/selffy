@@ -3,8 +3,8 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import { useToast } from "./use-toast";
 import { useNavigate } from "react-router-dom";
 import { jwtDecode } from 'jwt-decode';
-import Cookies from 'js-cookie';
 import { axios } from "@/lib/axios";
+import { saveToken, TokenProps } from "./use-token";
 
 export type UserType = "ADMIN" | "DEFAULT";
 
@@ -132,14 +132,7 @@ export function updateUser() {
     return query;
 }
 
-interface TokenProps {
-    sub: string;
-    email: string;
-    type: UserType;
-    roles: string[];
-    iat: number;
-    exp: number;
-}
+
 
 interface AuthUserProps {
     email: string;
@@ -158,9 +151,7 @@ export function authUser() {
         },
         onSuccess: (token: string) => {
             const decodedToken = jwtDecode<TokenProps>(token);
-            const expirationDate = new Date(decodedToken.exp * 1000);
-
-            Cookies.set('selffy_token', token, { expires: expirationDate });
+            saveToken(token);
 
             if (decodedToken.type === 'ADMIN') navigate('/admin');
             if (decodedToken.type === 'DEFAULT') navigate('/');
