@@ -36,10 +36,17 @@ export function getAllUsers() {
     return query;
 }
 
+interface CreateUserProps {
+    name: string;
+    email: string;
+    password: string;
+    type: UserType;
+}
+
 export function createUser() {
     const { toast } = useToast();
     const query = useMutation({
-        mutationFn: async (newUser: { name: string; email: string; password: string }) => {
+        mutationFn: async (newUser: CreateUserProps) => {
             return await axios.post('http://localhost:3000/users/signup', newUser);
         },
         onSuccess: () => {

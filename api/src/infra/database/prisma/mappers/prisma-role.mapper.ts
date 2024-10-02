@@ -10,7 +10,6 @@ export class PrismaRoleMapper {
             createdAt: role.getCreatedAt(),
             updatedAt: role.getUpdatedAt(),
             userTypes: role.getUserTypes(),
-            userId: null
         }
     }
 

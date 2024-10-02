@@ -36,12 +36,13 @@ export class UserController {
 
     @Post('/signup')
     public async signup(@Body() body: SignUpUserBody) {
-        const { name, email, password } = body;
+        const { name, email, password, type } = body;
 
         const { user } = await this.createUserUseCase.execute({
             name,
             email,
-            password
+            password,
+            type
         });
 
         return { user }

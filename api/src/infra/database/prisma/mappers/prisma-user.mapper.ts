@@ -1,5 +1,7 @@
 import { User } from "@application/entities/user/user.entity";
-import { User as RawUser } from "@prisma/client";
+import { User as RawUser, Role as PrismaRawRole, Role } from "@prisma/client";
+import { PrismaRoleMapper } from "./prisma-role.mapper";
+
 
 export class PrismaUserMapper {
 
@@ -12,10 +14,10 @@ export class PrismaUserMapper {
             type: user.getType(),
             createdAt: user.getCreatedAt(),
             updatedAt: user.getUpdatedAt(),
-        }
+        };
     }
 
-    public static toDomain(raw: RawUser): User {
+    public static toDomain(raw: RawUser & { roles: Role[] }): User {
         return new User({
             name: raw.name,
             email: raw.email,
@@ -23,6 +25,7 @@ export class PrismaUserMapper {
             type: raw.type,
             createdAt: raw.createdAt,
             updatedAt: raw.updatedAt,
+            roles: raw.roles.map(PrismaRoleMapper.toDomain)
         }, raw.id)
     }
 

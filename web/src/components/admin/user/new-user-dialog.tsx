@@ -19,10 +19,12 @@ import { Button } from "@/components/ui/button";
 import { z } from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
-import { createUser, UserProps } from "@/hooks/use-user";
+import { createUser } from "@/hooks/use-user";
+import { Label } from "@/components/ui/label"
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
+
 
 interface NewUserDialogProps {
-    data?: UserProps;
     children: React.ReactNode;
 }
 
@@ -31,8 +33,9 @@ export function NewUserDialog(props: NewUserDialogProps) {
     const formSchema = z.object({
         name: z.string({ message: "Name is required" }).min(1, { message: "Name is required" }),
         email: z.string({ message: "Email is required" }).email({ message: "Invalid email" }),
-        password: z.string({ message: "Password is required" })
-    })
+        password: z.string({ message: "Password is required" }),
+        type: z.enum(["DEFAULT", "ADMIN"], { message: "Type is required" })
+    });
 
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
@@ -40,6 +43,7 @@ export function NewUserDialog(props: NewUserDialogProps) {
             name: "",
             email: "",
             password: "",
+            type: "DEFAULT"
         },
     })
 
@@ -49,7 +53,8 @@ export function NewUserDialog(props: NewUserDialogProps) {
         createUserFn({
             name: values.name,
             email: values.email,
-            password: values.password
+            password: values.password,
+            type: values.type
         });
     }
 
@@ -112,6 +117,28 @@ export function NewUserDialog(props: NewUserDialogProps) {
                                                     {...field}
                                                     type="password"
                                                 />
+                                            </FormControl>
+                                            <FormMessage />
+                                        </FormItem>
+                                    )}
+                                />
+                                <FormField
+                                    control={form.control}
+                                    name="type"
+                                    render={({ field }) => (
+                                        <FormItem>
+                                            <FormLabel>Type</FormLabel>
+                                            <FormControl>
+                                                <RadioGroup value={field.value} onValueChange={field.onChange}>
+                                                    <div className="flex items-center space-x-2">
+                                                        <RadioGroupItem value="DEFAULT" id="DEFAULT" />
+                                                        <Label htmlFor="DEFAULT">Default</Label>
+                                                    </div>
+                                                    <div className="flex items-center space-x-2">
+                                                        <RadioGroupItem value="ADMIN" id="ADMIN" />
+                                                        <Label htmlFor="ADMIN">Admin</Label>
+                                                    </div>
+                                                </RadioGroup>
                                             </FormControl>
                                             <FormMessage />
                                         </FormItem>

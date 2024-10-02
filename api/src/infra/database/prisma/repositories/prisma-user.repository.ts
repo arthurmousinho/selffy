@@ -14,7 +14,15 @@ export class PrismaUserRepository implements UserRepository {
     public async create(user: User): Promise<void> {
         const raw = PrismaUserMapper.toPrisma(user);
         await this.prismaService.user.create({
-            data: raw
+            data: {
+                ...raw,
+                roles: {
+                    connect: user.getRoles().map(role => ({ id: role.getId() }))
+                }
+            },
+            include: {
+                roles: true
+            }
         })
     }
 
@@ -22,6 +30,9 @@ export class PrismaUserRepository implements UserRepository {
         const user = await this.prismaService.user.findUnique({
             where: {
                 email
+            },
+            include: {
+                roles: true
             }
         });
 
@@ -39,6 +50,9 @@ export class PrismaUserRepository implements UserRepository {
                     contains: name,
                     mode: 'insensitive'
                 }
+            },
+            include: {
+                roles: true
             }
         });
         return users.map(PrismaUserMapper.toDomain);
@@ -48,6 +62,9 @@ export class PrismaUserRepository implements UserRepository {
         const user = await this.prismaService.user.findUnique({
             where: {
                 id
+            },
+            include: {
+                roles: true
             }
         });
         if (!user) {
@@ -60,6 +77,9 @@ export class PrismaUserRepository implements UserRepository {
         const users = await this.prismaService.user.findMany({
             orderBy: {
                 createdAt: "desc"
+            },
+            include: {
+                roles: true
             }
         });
         return users.map(PrismaUserMapper.toDomain);

@@ -14,6 +14,7 @@ import { FindAllRolesUseCase } from '@application/use-cases/role/find-all-roles/
 import { UpdateRoleUseCase } from '@application/use-cases/role/update-role/update-role.usecase';
 import { DeleteRoleUseCase } from '@application/use-cases/role/delete-role/delete-role.usecase';
 import { SearchRolesByKeyUseCase } from '@application/use-cases/role/search-roles-by-key/search-roles-by-key.usecase';
+import { GetRolesForUserTypeUseCase } from '@application/use-cases/role/get-roles-for-user-type/get-roles-for-user-type';
 
 @Module({
   imports: [
@@ -36,7 +37,8 @@ import { SearchRolesByKeyUseCase } from '@application/use-cases/role/search-role
     FindAllRolesUseCase,
     UpdateRoleUseCase,
     DeleteRoleUseCase,
-    SearchRolesByKeyUseCase
+    SearchRolesByKeyUseCase,
+    GetRolesForUserTypeUseCase
   ]
 })
 export class HttpModule { }

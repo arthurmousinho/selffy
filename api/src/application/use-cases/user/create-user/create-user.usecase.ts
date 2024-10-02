@@ -1,7 +1,8 @@
 import { Role } from "@application/entities/role/role.entity";
-import { User } from "@application/entities/user/user.entity";
+import { User, UserType } from "@application/entities/user/user.entity";
 import { UserAlreadyExistsError } from "@application/errors/user/user-already-exists.error";
 import { UserRepository } from "@application/repositories/user.repository";
+import { GetRolesForUserTypeUseCase } from "@application/use-cases/role/get-roles-for-user-type/get-roles-for-user-type";
 import { Injectable } from "@nestjs/common";
 import * as bcrypt from 'bcryptjs';
 
@@ -9,6 +10,7 @@ interface CreateUserRequest {
     name: string;
     email: string;
     password: string;
+    type: UserType;
 }
 
 interface CreateUserResponse {
@@ -19,11 +21,12 @@ interface CreateUserResponse {
 export class CreateUserUseCase {
 
     constructor(
-        private userRepository: UserRepository
-    ) { }
+        private userRepository: UserRepository,
+        private getRolesForUserTypeUseCase: GetRolesForUserTypeUseCase,
+    ) {}
 
     public async execute(request: CreateUserRequest): Promise<CreateUserResponse> {
-        const { name, email, password } = request;
+        const { name, email, password, type } = request;
 
         const userAlreadyExists = await this.userRepository.findByEmail(email);
         if (userAlreadyExists) {
@@ -32,18 +35,18 @@ export class CreateUserUseCase {
 
         const hashedPassword = await this.hashPassword(password);
 
+        const roles = await this.getRolesForUserTypeUseCase.execute(type);
+
         const newUser = new User({
             name,
             email,
             password: hashedPassword,
-            roles: [
-                new Role({ key: 'user.update' }),
-                new Role({ key: 'user.delete' }),
-            ]
+            type,
+            roles
         });
 
         await this.userRepository.create(newUser);
-
+        
         return { user: newUser };
     }
 

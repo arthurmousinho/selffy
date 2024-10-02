@@ -77,6 +77,5 @@ model Role {
   updatedAt DateTime
   userTypes UserType[]
 
-  User   User?   @relation(fields: [userId], references: [id])
-  userId String?
+  users User[]
 }
