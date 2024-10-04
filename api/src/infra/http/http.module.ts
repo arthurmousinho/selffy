@@ -21,6 +21,10 @@ import { FindUserByIdUseCase } from '@application/use-cases/user/find-user-by-id
 import { FindAllProjectsUseCase } from '@application/use-cases/project/find-all-projects/find-all-projects.usecase';
 import { DeleteProjectUseCase } from '@application/use-cases/project/delete-project/delete-project.usecase';
 import { UpdateProjectUseCase } from '@application/use-cases/project/update-project/update-project.usecase';
+import { AdminDashboardController } from './controllers/admin-dashboard.controller';
+import { CountUsersUseCase } from '@application/use-cases/user/count-users/count-users.usecase';
+import { CountProjectsUseCase } from '@application/use-cases/project/count-projects/count-projects.usecase';
+import { GetTotalRevenueUseCase } from '@application/use-cases/project/get-total-revenue/get-total-revenue.usecase';
 
 @Module({
   imports: [
@@ -29,7 +33,8 @@ import { UpdateProjectUseCase } from '@application/use-cases/project/update-proj
   controllers: [
     UserController,
     RoleController,
-    ProjectController
+    ProjectController,
+    AdminDashboardController
   ],
   providers: [
     JwtService,
@@ -41,6 +46,7 @@ import { UpdateProjectUseCase } from '@application/use-cases/project/update-proj
     SearchUserByNameUseCase,
     UpdateUserUseCase,
     FindUserByIdUseCase,
+    CountUsersUseCase,
 
     CreateRoleUseCase,
     FindAllRolesUseCase,
@@ -52,7 +58,9 @@ import { UpdateProjectUseCase } from '@application/use-cases/project/update-proj
     CreateProjectUseCase,
     FindAllProjectsUseCase,
     DeleteProjectUseCase,
-    UpdateProjectUseCase
+    UpdateProjectUseCase,
+    CountProjectsUseCase,
+    GetTotalRevenueUseCase
   ]
 })
 export class HttpModule { }
