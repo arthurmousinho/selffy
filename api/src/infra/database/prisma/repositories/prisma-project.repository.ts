@@ -23,7 +23,15 @@ export class PrismaProjectRepository implements ProjectRepository {
     }
     
     public async findAll(): Promise<Project[]> {
-        return [];
+        const projects = await this.prismaService.project.findMany({
+            orderBy: {
+                createdAt: 'desc'
+            },
+            include:  {
+                owner: true
+            }
+        });
+        return projects.map(PrismaProjectMapper.toDomain);
     }
 
     public async update(project: Project): Promise<void> {

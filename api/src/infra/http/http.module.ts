@@ -18,6 +18,7 @@ import { GetRolesForUserTypeUseCase } from '@application/use-cases/role/get-role
 import { ProjectController } from './controllers/project.controller';
 import { CreateProjectUseCase } from '@application/use-cases/project/create-project/create-project.usecase';
 import { FindUserByIdUseCase } from '@application/use-cases/user/find-user-by-id/find-user-by-id.usecase';
+import { FindAllProjectsUseCase } from '@application/use-cases/project/find-all-projects/find-all-projects.usecase';
 
 @Module({
   imports: [
@@ -46,7 +47,8 @@ import { FindUserByIdUseCase } from '@application/use-cases/user/find-user-by-id
     SearchRolesByKeyUseCase,
     GetRolesForUserTypeUseCase,
 
-    CreateProjectUseCase
+    CreateProjectUseCase,
+    FindAllProjectsUseCase
   ]
 })
 export class HttpModule { }

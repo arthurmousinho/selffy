@@ -17,7 +17,7 @@ export class PrismaUserMapper {
         };
     }
 
-    public static toDomain(raw: RawUser & { roles: Role[] }): User {
+    public static toDomain(raw: RawUser & { roles?: Role[] }): User {
         return new User({
             name: raw.name,
             email: raw.email,
@@ -25,7 +25,7 @@ export class PrismaUserMapper {
             type: raw.type,
             createdAt: raw.createdAt,
             updatedAt: raw.updatedAt,
-            roles: raw.roles.map(PrismaRoleMapper.toDomain)
+            roles: raw.roles?.map(PrismaRoleMapper.toDomain)
         }, raw.id)
     }
 

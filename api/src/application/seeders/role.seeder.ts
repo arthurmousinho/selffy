@@ -1,4 +1,3 @@
-import { Role } from "@application/entities/role/role.entity";
 import { UserType } from "@application/entities/user/user.entity";
 import { RoleRepository } from "@application/repositories/role.repository";
 import { PrismaRoleMapper } from "@infra/database/prisma/mappers/prisma-role.mapper";

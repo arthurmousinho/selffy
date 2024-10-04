@@ -1,5 +1,7 @@
 import { ProjectRepository } from "@application/repositories/project.repository";
+import { Injectable } from "@nestjs/common";
 
+@Injectable()
 export class FindAllProjectsUseCase {
 
     constructor(
