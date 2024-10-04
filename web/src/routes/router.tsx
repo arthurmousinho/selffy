@@ -18,11 +18,13 @@ import { AdminTasks } from "@/pages/admin/admin-tasks";
 import { AdminRoles } from "@/pages/admin/admin-roles";
 import { ProjectDashboard } from "@/pages/projects/project-dashboard";
 import { AdminCosts } from "@/pages/admin/admin-costs";
+import { AuthzGuard } from "./guards/authz-guard";
+import { AuthGuard } from "./guards/auth-guard";
 
 export const ROUTER = createBrowserRouter([
     {
         path: '',
-        element: <BaseLayout />,
+        element: <AuthGuard><BaseLayout/></AuthGuard>,
         children: [
             { path: '', element: <Navigate to={'/dashboard'} /> },
             { path: 'dashboard', element: <Dashboard /> },
@@ -35,7 +37,7 @@ export const ROUTER = createBrowserRouter([
     },
     {
         path: '/admin',
-        element: <AdminLayout />,
+        element: <AuthzGuard userType="ADMIN"><AdminLayout /></AuthzGuard>,
         children: [
             { path: '', element: <Navigate to={'dashboard'} /> },
             { path: 'dashboard', element: <AdminDashboard /> },

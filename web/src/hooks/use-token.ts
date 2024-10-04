@@ -16,7 +16,6 @@ const cookieKey = 'selffy_token';
 export function saveToken(token: string) {
     const decodedToken = jwtDecode<TokenProps>(token);
     const expirationDate = new Date(decodedToken.exp * 1000);
-
     Cookies.set(
         cookieKey,
         token,
@@ -44,4 +43,11 @@ export function hasRoleKey(roleKey: string) {
     const decodedToken = decodeToken();
     const roles = decodedToken?.roles || [];
     return roles.some(key => key === roleKey);
+}
+
+export function hasTokenExpired() {
+    const decodedToken = decodeToken();
+    if (!decodedToken) return true;
+    const expirationDate = new Date(decodedToken.exp * 1000);
+    return expirationDate < new Date();
 }

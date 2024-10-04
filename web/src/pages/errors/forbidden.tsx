@@ -15,9 +15,9 @@ export function Forbidden() {
                     You do not have permission to view this page.
                 </span>
                 <footer className="flex justify-start">
-                    <Link to={'/'} className="flex items-center gap-2 text-sm text-primary hover:underline underline-offset-2">
+                    <Link to={'/auth/signin'} className="flex items-center gap-2 text-sm text-primary hover:underline underline-offset-2">
                         <ChevronLeft size={20} />
-                        Go back home
+                        Go to SignIn page
                     </Link>
                 </footer>
             </main>

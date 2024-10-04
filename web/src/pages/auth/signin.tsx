@@ -16,8 +16,14 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { authUser } from "@/hooks/use-user";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import { useEffect } from "react";
+import { removeToken } from "@/hooks/use-token";
 
 export function SignIn() {
+
+    useEffect(() => {
+        removeToken()
+    }, []);
 
     const formSchema = z.object({
         email: z
