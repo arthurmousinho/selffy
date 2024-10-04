@@ -1,5 +1,5 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { CheckCircle, DollarSign, Folder } from "lucide-react";
+import { DollarSign, FolderOpen, UsersRound } from "lucide-react";
 import { CartesianGrid, XAxis, Area, AreaChart, Bar, BarChart } from "recharts"
 import {
     ChartConfig,
@@ -9,6 +9,8 @@ import {
     ChartTooltip,
     ChartTooltipContent
 } from "@/components/ui/chart"
+import { getAdminDashboard } from "@/hooks/use-dashboard";
+import { formatCurrency } from "@/utils/format-currency";
 
 export function AdminDashboard() {
 
@@ -61,6 +63,8 @@ export function AdminDashboard() {
     } satisfies ChartConfig;
 
 
+    const { data } = getAdminDashboard();
+
     return (
         <main className="space-y-6">
             <section className="grid grid-cols-3 gap-4">
@@ -70,13 +74,10 @@ export function AdminDashboard() {
                             <h2 className="font-semibold">
                                 Total Users
                             </h2>
-                            <CheckCircle size={20} className="text-primary" />
+                            <UsersRound size={20} className="text-primary" />
                         </header>
                         <span className="font-bold text-2xl">
-                            1200 Users
-                        </span>
-                        <span className="text-sm text-muted-foreground">
-                            +126 since last month
+                            {data?.usersCount} Users
                         </span>
                     </CardHeader>
                 </Card>
@@ -84,11 +85,10 @@ export function AdminDashboard() {
                     <CardHeader className="flex flex-col items-start gap-2 justify-start">
                         <header className="flex flex-row items-center justify-between w-full">
                             <h2 className="font-semibold">Total Projects</h2>
-                            <Folder size={20} className="text-primary" />
+                            <FolderOpen size={20} className="text-primary" />
                         </header>
-                        <span className="font-bold text-2xl">4800 Projects</span>
-                        <span className="text-sm text-muted-foreground">
-                            +1245 since last month
+                        <span className="font-bold text-2xl">
+                            {data?.projectsCount} Projects
                         </span>
                     </CardHeader>
                 </Card>
@@ -98,9 +98,8 @@ export function AdminDashboard() {
                             <h2 className="font-semibold">Total Revenue</h2>
                             <DollarSign size={20} className="text-primary" />
                         </header>
-                        <span className="font-bold text-2xl">R$ 35.880,00</span>
-                        <span className="text-sm text-muted-foreground">
-                            +R$ 3.200,00 since last month
+                        <span className="font-bold text-2xl">
+                            {formatCurrency(data?.totalRevenue || 0)}
                         </span>
                     </CardHeader>
                 </Card>
