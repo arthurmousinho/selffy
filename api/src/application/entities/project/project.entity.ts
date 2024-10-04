@@ -24,7 +24,12 @@ export class Project {
     private props: ProjectProps;
 
     constructor(
-        props: Replace<ProjectProps, { createdAt?: Date, status?: ProjectStatus, updatedAt?: Date; }>,
+        props: Replace<ProjectProps, { 
+            createdAt?: Date, 
+            status?: ProjectStatus, 
+            updatedAt?: Date,
+            tasks?: Task[]
+        }>,
         id?: string,
     ) {
         this._id = id ?? randomUUID();
@@ -32,7 +37,8 @@ export class Project {
             ...props,
             status: 'IN_PROGRESS',
             createdAt: props.createdAt ?? new Date(),
-            updatedAt: props.updatedAt ?? new Date()
+            updatedAt: props.updatedAt ?? new Date(),
+            tasks: []
         }
     }
 

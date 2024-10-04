@@ -1,4 +1,4 @@
-import { Module, Search } from '@nestjs/common';
+import { Module } from '@nestjs/common';
 import { DatabaseModule } from '../database/database.module';
 import { UserController } from './controllers/user.controller';
 import { CreateUserUseCase } from '@application/use-cases/user/create-user/create-user.usecase';
@@ -15,6 +15,9 @@ import { UpdateRoleUseCase } from '@application/use-cases/role/update-role/updat
 import { DeleteRoleUseCase } from '@application/use-cases/role/delete-role/delete-role.usecase';
 import { SearchRolesByKeyUseCase } from '@application/use-cases/role/search-roles-by-key/search-roles-by-key.usecase';
 import { GetRolesForUserTypeUseCase } from '@application/use-cases/role/get-roles-for-user-type/get-roles-for-user-type';
+import { ProjectController } from './controllers/project.controller';
+import { CreateProjectUseCase } from '@application/use-cases/project/create-project/create-project.usecase';
+import { FindUserByIdUseCase } from '@application/use-cases/user/find-user-by-id/find-user-by-id.usecase';
 
 @Module({
   imports: [
@@ -22,23 +25,28 @@ import { GetRolesForUserTypeUseCase } from '@application/use-cases/role/get-role
   ],
   controllers: [
     UserController,
-    RoleController
+    RoleController,
+    ProjectController
   ],
   providers: [
     JwtService,
+    
     CreateUserUseCase,
     AuthUserUseCase,
     FindAllUsersUseCase,
     DeleteUserUsecase,
     SearchUserByNameUseCase,
     UpdateUserUseCase,
+    FindUserByIdUseCase,
 
     CreateRoleUseCase,
     FindAllRolesUseCase,
     UpdateRoleUseCase,
     DeleteRoleUseCase,
     SearchRolesByKeyUseCase,
-    GetRolesForUserTypeUseCase
+    GetRolesForUserTypeUseCase,
+
+    CreateProjectUseCase
   ]
 })
 export class HttpModule { }

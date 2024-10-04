@@ -1,6 +1,8 @@
 import { UserNotFoundError } from "@application/errors/user/user-not-found.error";
 import { UserRepository } from "@application/repositories/user.repository";
+import { Injectable } from "@nestjs/common";
 
+@Injectable()
 export class FindUserByIdUseCase {
 
     constructor(
