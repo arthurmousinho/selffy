@@ -20,6 +20,7 @@ import { ProjectDashboard } from "@/pages/projects/project-dashboard";
 import { AdminCosts } from "@/pages/admin/admin-costs";
 import { AuthzGuard } from "./guards/authz-guard";
 import { AuthGuard } from "./guards/auth-guard";
+import { AdminSettings } from "@/pages/admin/admin-settings";
 
 export const ROUTER = createBrowserRouter([
     {
@@ -46,6 +47,7 @@ export const ROUTER = createBrowserRouter([
             { path: 'costs', element: <AdminCosts /> },
             { path: 'tasks', element: <AdminTasks /> },
             { path: 'roles', element: <AdminRoles /> },
+            { path: 'settings', element: <AdminSettings /> },
         ]
     },
     {
