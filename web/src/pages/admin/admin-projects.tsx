@@ -27,9 +27,13 @@ import {
 import { Label } from "@/components/ui/label";
 import { DetailsDialog } from "@/components/global/details-dialog";
 import { formatCurrency } from "@/utils/format-currency";
-import { getMockProjects } from "@/mocks/get-projects";
+import { NewProjectDialog } from "@/components/admin/project/new-project-dialog";
+import { getAllProjects } from "@/hooks/use-project";
 
 export function AdminProjects() {
+
+    const { data: getAllProjectsData, refetch } = getAllProjects()
+
     return (
         <Card>
             <CardHeader className="flex flex-row items-center justify-between border-b">
@@ -52,14 +56,16 @@ export function AdminProjects() {
                         <Filter size={20} />
                         Filter
                     </Button>
-                    <Button variant={'outline'} className="flex items-center gap-2 text-muted-foreground">
+                    <Button variant={'outline'} className="flex items-center gap-2 text-muted-foreground" onClick={() => refetch()}>
                         <RefreshCcw size={20} />
                         Refresh
                     </Button>
-                    <Button className="flex items-center gap-2">
-                        <Plus size={20} />
-                        New Project
-                    </Button>
+                    <NewProjectDialog>
+                        <Button className="flex items-center gap-2">
+                            <Plus size={20} />
+                            New Project
+                        </Button>
+                    </NewProjectDialog>
                 </div>
             </CardHeader>
             <CardContent className="pt-4">
@@ -76,14 +82,14 @@ export function AdminProjects() {
                     </TableHeader>
                     <TableBody>
                         {
-                            getMockProjects().map((project) => (
+                            getAllProjectsData?.projects.map((project) => (
                                 <TableRow key={project.id}>
                                     <TableCell>{project.title}</TableCell>
                                     <TableCell>{formatCurrency(project.revenue)}</TableCell>
-                                    <TableCell className="text-left">{project.tasks}</TableCell>
+                                    <TableCell className="text-left">{project.tasks.length} tasks</TableCell>
                                     <TableCell className="text-left">
                                         {
-                                            project.status === 'finished' ?
+                                            project.status === 'FINISHED' ?
                                                 (
                                                     <Badge variant={'default'}>
                                                         FINISHED
@@ -96,7 +102,7 @@ export function AdminProjects() {
                                                 )
                                         }
                                     </TableCell>
-                                    <TableCell>{project.ownerId}</TableCell>
+                                    <TableCell>{project.owner.id}</TableCell>
                                     <TableCell className="text-right">
                                         <DropdownMenu>
                                             <DropdownMenuTrigger asChild>

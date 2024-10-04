@@ -10,6 +10,8 @@ export class ProjectViewModel {
             revenue: project.getRevenue(),
             icon: project.getIcon(),
             color: project.getColor(),
+            status: project.getStatus(),
+            tasks: project.getTasks(),
             owner: {
                 id: project.getOwner().getId(),
                 name: project.getOwner().getName(),

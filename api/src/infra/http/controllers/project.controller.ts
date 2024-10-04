@@ -17,7 +17,7 @@ export class ProjectController {
     @Get()
     public async getProject() {
         const projects = await this.findAllProjectsUseCase.execute();
-        return { roles: projects.map(ProjectViewModel.toHTTP) };
+        return { projects: projects.map(ProjectViewModel.toHTTP) };
     }
 
     @Post()
