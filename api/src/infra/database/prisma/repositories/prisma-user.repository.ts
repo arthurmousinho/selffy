@@ -103,4 +103,8 @@ export class PrismaUserRepository implements UserRepository {
         });
     }
 
+    public async count(): Promise<number> {
+        return this.prismaService.user.count();
+    }
+
 }

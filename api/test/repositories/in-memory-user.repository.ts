@@ -52,4 +52,8 @@ export class InMemoryUserRepository implements UserRepository {
         }
     }
 
+    public async count() {
+        return this.users.length;
+    }
+
 }

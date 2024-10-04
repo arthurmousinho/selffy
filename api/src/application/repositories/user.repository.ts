@@ -8,4 +8,5 @@ export abstract class UserRepository {
     abstract findById(id: string): Promise<any>;
     abstract update(user: User): Promise<void>;
     abstract delete(id: string): Promise<void>;
+    abstract count(): Promise<number>;
 }
