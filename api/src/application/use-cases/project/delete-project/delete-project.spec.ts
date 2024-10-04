@@ -17,14 +17,14 @@ describe('Delete Project UseCase', () => {
     it('should throw an error if the project does not exist', async () => {
         const nonExistentProject = makeProject(); 
 
-        await expect(deleteProjectUseCase.execute(nonExistentProject)).rejects.toThrow(ProjectNotFoundError);
+        await expect(deleteProjectUseCase.execute(nonExistentProject.getId())).rejects.toThrow(ProjectNotFoundError);
     });
 
     it('should delete the project if the project exists', async () => {
         const existingProject = makeProject();  
         await projectRepository.create(existingProject);  
 
-        await deleteProjectUseCase.execute(existingProject);
+        await deleteProjectUseCase.execute(existingProject.getId());
 
         const foundProject = await projectRepository.findById(existingProject.getId());
         expect(foundProject).toBeFalsy();

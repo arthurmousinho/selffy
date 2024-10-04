@@ -1,9 +1,10 @@
-import { Body, Controller, Get, Post } from "@nestjs/common";
+import { Body, Controller, Delete, Get, Param, Post } from "@nestjs/common";
 import { CreateProjectBody } from "../dtos/project/create-project.dto";
 import { CreateProjectUseCase } from "@application/use-cases/project/create-project/create-project.usecase";
 import { FindUserByIdUseCase } from "@application/use-cases/user/find-user-by-id/find-user-by-id.usecase";
 import { FindAllProjectsUseCase } from "@application/use-cases/project/find-all-projects/find-all-projects.usecase";
 import { ProjectViewModel } from "../view-models/project.viewmodel";
+import { DeleteProjectUseCase } from "@application/use-cases/project/delete-project/delete-project.usecase";
 
 @Controller('projects')
 export class ProjectController {
@@ -11,7 +12,8 @@ export class ProjectController {
     constructor(
         private createProjectUseCase: CreateProjectUseCase,
         private findUserByIdUseCase: FindUserByIdUseCase,
-        private findAllProjectsUseCase: FindAllProjectsUseCase
+        private findAllProjectsUseCase: FindAllProjectsUseCase,
+        private deleteProjectUseCase: DeleteProjectUseCase
     ) {}
 
     @Get()
@@ -32,6 +34,11 @@ export class ProjectController {
             color,
             owner
         })
+    }
+
+    @Delete(':id')
+    public async delete(@Param('id') id: string) {
+        await this.deleteProjectUseCase.execute(id);
     }
 
 }

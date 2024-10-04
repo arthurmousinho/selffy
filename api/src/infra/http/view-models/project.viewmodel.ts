@@ -12,11 +12,7 @@ export class ProjectViewModel {
             color: project.getColor(),
             status: project.getStatus(),
             tasks: project.getTasks(),
-            owner: {
-                id: project.getOwner().getId(),
-                name: project.getOwner().getName(),
-                email: project.getOwner().getEmail(),
-            },
+            ownerId: project.getOwner().getId(),
             createdAt: project.getCreatedAt(),
             updatedAt: project.getUpdatedAt()
         }

@@ -86,7 +86,9 @@ export function NewProjectDialog(props: NewProjectDialogProps) {
             icon: values.icon,
             color: values.color,
             ownerId: values.ownerId,
-        })
+        });
+        form.reset();
+        setSelectedColor(null);
     }
 
     return (

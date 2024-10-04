@@ -1,5 +1,11 @@
-export class ProjectAlreadyExistsError extends Error {
+import { HttpException, HttpStatus } from "@nestjs/common";
+
+export class ProjectAlreadyExistsError extends HttpException {
     constructor() {
-        super('Project already exists');
+        super({
+            message: ['project already exists'],
+            error: 'Conflict',
+            statusCode: HttpStatus.CONFLICT,
+        }, HttpStatus.CONFLICT);
     }
 }

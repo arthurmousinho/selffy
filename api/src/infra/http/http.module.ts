@@ -19,6 +19,7 @@ import { ProjectController } from './controllers/project.controller';
 import { CreateProjectUseCase } from '@application/use-cases/project/create-project/create-project.usecase';
 import { FindUserByIdUseCase } from '@application/use-cases/user/find-user-by-id/find-user-by-id.usecase';
 import { FindAllProjectsUseCase } from '@application/use-cases/project/find-all-projects/find-all-projects.usecase';
+import { DeleteProjectUseCase } from '@application/use-cases/project/delete-project/delete-project.usecase';
 
 @Module({
   imports: [
@@ -48,7 +49,8 @@ import { FindAllProjectsUseCase } from '@application/use-cases/project/find-all-
     GetRolesForUserTypeUseCase,
 
     CreateProjectUseCase,
-    FindAllProjectsUseCase
+    FindAllProjectsUseCase,
+    DeleteProjectUseCase
   ]
 })
 export class HttpModule { }

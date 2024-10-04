@@ -1,7 +1,19 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight, Filter, Folder, FolderOpen, MoreVertical, Pencil, Plus, RefreshCcw, Trash } from "lucide-react";
+import { 
+    ChevronLeft, 
+    ChevronRight,
+    ChevronsLeft, 
+    ChevronsRight, 
+    Filter, 
+    Folder, 
+    FolderOpen, 
+    Pencil, 
+    Plus, 
+    RefreshCcw, 
+    Trash 
+} from "lucide-react";
 import {
     Table,
     TableBody,
@@ -10,12 +22,6 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table"
-import {
-    DropdownMenu,
-    DropdownMenuContent,
-    DropdownMenuItem,
-    DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
 import { Badge } from "@/components/ui/badge";
 import {
     Select,
@@ -28,11 +34,13 @@ import { Label } from "@/components/ui/label";
 import { DetailsDialog } from "@/components/global/details-dialog";
 import { formatCurrency } from "@/utils/format-currency";
 import { NewProjectDialog } from "@/components/admin/project/new-project-dialog";
-import { getAllProjects } from "@/hooks/use-project";
+import { deleteProject, getAllProjects } from "@/hooks/use-project";
+import { DeleteAlertDialog } from "@/components/global/delete-alert-dialog";
 
 export function AdminProjects() {
 
     const { data: getAllProjectsData, refetch } = getAllProjects()
+    const { mutate: deleteProjectFn } = deleteProject()
 
     return (
         <Card>
@@ -76,8 +84,9 @@ export function AdminProjects() {
                             <TableHead className="text-left">Revenue</TableHead>
                             <TableHead className="text-left">Tasks</TableHead>
                             <TableHead className="text-left">Status</TableHead>
-                            <TableHead className="text-left">Owner Id</TableHead>
-                            <TableHead className="text-right">Options</TableHead>
+                            <TableHead className="text-right">Details</TableHead>
+                            <TableHead className="text-right">Edit</TableHead>
+                            <TableHead className="text-right">Delete</TableHead>
                         </TableRow>
                     </TableHeader>
                     <TableBody>
@@ -102,49 +111,24 @@ export function AdminProjects() {
                                                 )
                                         }
                                     </TableCell>
-                                    <TableCell>{project.owner.id}</TableCell>
                                     <TableCell className="text-right">
-                                        <DropdownMenu>
-                                            <DropdownMenuTrigger asChild>
-                                                <Button variant={'outline'} className="text-muted-foreground">
-                                                    <MoreVertical size={20} />
-                                                </Button>
-                                            </DropdownMenuTrigger>
-                                            <DropdownMenuContent>
-                                                <DropdownMenuItem className="cursor-pointer p-2" onSelect={(e) => e.preventDefault()}>
-                                                    <DetailsDialog data={project}>
-                                                        <div className="flex items-center gap-2">
-                                                            <div className="w-10 h-10 border flex items-center justify-center rounded-xl">
-                                                                <span className="text-sm">
-                                                                    <Folder size={20} className="text-black" />
-                                                                </span>
-                                                            </div>
-                                                            Details
-                                                        </div>
-                                                    </DetailsDialog>
-                                                </DropdownMenuItem>
-                                                <DropdownMenuItem className="cursor-pointer p-2" >
-                                                    <div className="flex items-center gap-2">
-                                                        <div className="w-10 h-10 border flex items-center justify-center rounded-xl">
-                                                            <span className="text-sm">
-                                                                <Pencil size={20} className="text-black" />
-                                                            </span>
-                                                        </div>
-                                                        Edit
-                                                    </div>
-                                                </DropdownMenuItem>
-                                                <DropdownMenuItem className="cursor-pointer p-2">
-                                                    <div className="flex items-center gap-2">
-                                                        <div className="w-10 h-10 border flex items-center justify-center rounded-xl">
-                                                            <span className="text-sm">
-                                                                <Trash size={20} className="text-black" />
-                                                            </span>
-                                                        </div>
-                                                        Delete
-                                                    </div>
-                                                </DropdownMenuItem>
-                                            </DropdownMenuContent>
-                                        </DropdownMenu>
+                                        <DetailsDialog data={project}>
+                                            <Button className="text-muted-foreground" variant={'outline'}>
+                                                <Folder size={20} />
+                                            </Button>
+                                        </DetailsDialog>
+                                    </TableCell>
+                                    <TableCell className="text-right">
+                                        <Button className="text-muted-foreground" variant={'outline'}>
+                                            <Pencil size={20} />
+                                        </Button>
+                                    </TableCell>
+                                    <TableCell className="flex justify-end">
+                                        <DeleteAlertDialog onDelete={() => deleteProjectFn(project.id)}>
+                                            <Button className="text-muted-foreground" variant={'outline'}>
+                                                <Trash size={20} />
+                                            </Button>
+                                        </DeleteAlertDialog>
                                     </TableCell>
                                 </TableRow>
                             ))

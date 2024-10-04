@@ -13,11 +13,7 @@ export interface ProjectProps {
     status: 'IN_PROGRESS' | 'FINISHED';
     tasks: any[];
     color: string;
-    owner: {
-        id: string;
-        name: string;
-        email: string;
-    };
+    ownerId: string;
     createdAt: Date;
     updatedAt: Date;
 }
@@ -67,6 +63,30 @@ export function createProject() {
             });
         }
     })
+
+    return query;
+}
+
+export function deleteProject() {
+    const { toast } = useToast();
+    const query = useMutation({
+        mutationFn: async (id: string) => {
+            return await axios.delete(`/projects/${id}`);
+        },
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ['projects'] });
+            toast({
+                title: "✅ Success",
+                description: "Project was deleted successfully",
+            });
+        },
+        onError: () => {
+            toast({
+                title: "❌ Error",
+                description: "Something went wrong",
+            });
+        }
+    });
 
     return query;
 }
