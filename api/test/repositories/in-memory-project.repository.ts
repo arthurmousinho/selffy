@@ -38,4 +38,8 @@ export class InMemoryProjectRepository implements ProjectRepository {
         }
     }
 
+    public async count(): Promise<number> {
+        return this.projects.length;
+    }
+
 }

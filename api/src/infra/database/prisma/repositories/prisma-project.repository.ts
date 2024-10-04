@@ -63,4 +63,8 @@ export class PrismaProjectRepository implements ProjectRepository {
         })
     }
 
+    public async count(): Promise<number> {
+        return await this.prismaService.project.count();
+    }
+
 }
