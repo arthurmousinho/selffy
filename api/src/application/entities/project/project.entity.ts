@@ -35,7 +35,7 @@ export class Project {
         this._id = id ?? randomUUID();
         this.props = {
             ...props,
-            status: 'IN_PROGRESS',
+            status: props.status ?? 'IN_PROGRESS',
             createdAt: props.createdAt ?? new Date(),
             updatedAt: props.updatedAt ?? new Date(),
             tasks: []

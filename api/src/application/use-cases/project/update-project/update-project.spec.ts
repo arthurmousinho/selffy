@@ -17,7 +17,16 @@ describe('Update Project UseCase', () => {
     it('should throw an error if the project does not exist', async () => {
         const nonExistentProject = makeProject();  
 
-        await expect(updateProjectUseCase.execute(nonExistentProject)).rejects.toThrow(ProjectNotFoundError);
+        await expect(updateProjectUseCase.execute({
+            id: nonExistentProject.getId(),
+            title: 'Updated Project Title',
+            description: 'Updated project description',
+            revenue: 1000,
+            icon: 'newIcon',
+            color: 'newColor',
+            ownerId: 'ownerId',
+            status: nonExistentProject.getStatus()
+        })).rejects.toThrow(ProjectNotFoundError);
     });
 
     it('should update the project if the project exists', async () => {
@@ -29,7 +38,16 @@ describe('Update Project UseCase', () => {
         existingProject.setColor('newColor'); 
         existingProject.setIcon('newIcon'); 
 
-        await updateProjectUseCase.execute(existingProject);
+        await updateProjectUseCase.execute({
+            id: existingProject.getId(),
+            title: 'Updated Project Title',
+            description: 'Updated project description',
+            revenue: 1000,
+            icon: 'newIcon',
+            color: 'newColor',
+            ownerId: 'ownerId',
+            status: existingProject.getStatus()
+        });
 
         const updatedProject = await projectRepository.findById(existingProject.getId());
 

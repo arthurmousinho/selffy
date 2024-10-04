@@ -1,18 +1,18 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { 
-    ChevronLeft, 
+import {
+    ChevronLeft,
     ChevronRight,
-    ChevronsLeft, 
-    ChevronsRight, 
-    Filter, 
-    Folder, 
-    FolderOpen, 
-    Pencil, 
-    Plus, 
-    RefreshCcw, 
-    Trash 
+    ChevronsLeft,
+    ChevronsRight,
+    Filter,
+    Folder,
+    FolderOpen,
+    Pencil,
+    Plus,
+    RefreshCcw,
+    Trash
 } from "lucide-react";
 import {
     Table,
@@ -36,6 +36,7 @@ import { formatCurrency } from "@/utils/format-currency";
 import { NewProjectDialog } from "@/components/admin/project/new-project-dialog";
 import { deleteProject, getAllProjects } from "@/hooks/use-project";
 import { DeleteAlertDialog } from "@/components/global/delete-alert-dialog";
+import { EditProjectDialog } from "@/components/admin/project/edit-project.dialog";
 
 export function AdminProjects() {
 
@@ -119,9 +120,11 @@ export function AdminProjects() {
                                         </DetailsDialog>
                                     </TableCell>
                                     <TableCell className="text-right">
-                                        <Button className="text-muted-foreground" variant={'outline'}>
-                                            <Pencil size={20} />
-                                        </Button>
+                                        <EditProjectDialog data={project}>
+                                            <Button className="text-muted-foreground" variant={'outline'}>
+                                                <Pencil size={20} />
+                                            </Button>
+                                        </EditProjectDialog>
                                     </TableCell>
                                     <TableCell className="flex justify-end">
                                         <DeleteAlertDialog onDelete={() => deleteProjectFn(project.id)}>

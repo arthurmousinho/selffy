@@ -20,6 +20,7 @@ import { CreateProjectUseCase } from '@application/use-cases/project/create-proj
 import { FindUserByIdUseCase } from '@application/use-cases/user/find-user-by-id/find-user-by-id.usecase';
 import { FindAllProjectsUseCase } from '@application/use-cases/project/find-all-projects/find-all-projects.usecase';
 import { DeleteProjectUseCase } from '@application/use-cases/project/delete-project/delete-project.usecase';
+import { UpdateProjectUseCase } from '@application/use-cases/project/update-project/update-project.usecase';
 
 @Module({
   imports: [
@@ -50,7 +51,8 @@ import { DeleteProjectUseCase } from '@application/use-cases/project/delete-proj
 
     CreateProjectUseCase,
     FindAllProjectsUseCase,
-    DeleteProjectUseCase
+    DeleteProjectUseCase,
+    UpdateProjectUseCase
   ]
 })
 export class HttpModule { }

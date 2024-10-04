@@ -90,3 +90,32 @@ export function deleteProject() {
 
     return query;
 }
+
+interface UpdateProjectProps {
+    id: string;
+    title: string;
+    description: string;
+    revenue: number;
+    icon: string
+    color: string;
+    ownerId: string;
+    status: ProjectProps['status'];
+}
+
+export function updateProject() {
+    const { toast } = useToast();
+    const query = useMutation({
+        mutationFn: async (data: UpdateProjectProps) => {
+            return await axios.put('/projects', data);
+        },
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ['projects'] });
+            toast({
+                title: "✅ Success",
+                description: "Project was updated successfully",
+            });
+        },
+    });
+
+    return query;
+}

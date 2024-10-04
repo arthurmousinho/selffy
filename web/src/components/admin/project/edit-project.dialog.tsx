@@ -1,4 +1,3 @@
-import { ReactNode, useState } from "react";
 import {
     Dialog,
     DialogContent,
@@ -15,21 +14,24 @@ import {
     FormLabel,
     FormMessage,
 } from "@/components/ui/form"
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
 import { z } from "zod"
-import { zodResolver } from "@hookform/resolvers/zod"
-import { useForm } from "react-hook-form"
+import { ProjectProps, updateProject } from "@/hooks/use-project";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { 
-    Select, 
-    SelectContent, 
-    SelectItem, 
-    SelectTrigger, 
-    SelectValue 
+import { Button } from "@/components/ui/button";
+import { useState } from "react";
+import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue
 } from "@/components/ui/select";
 import { getAllUsers, UserProps } from "@/hooks/use-user";
-import { createProject } from "@/hooks/use-project";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Label } from "@/components/ui/label";
 
 const colorOptions = [
     { label: "Red", class: "bg-red-300", hex: "#fca5a5" },
@@ -43,22 +45,26 @@ const colorOptions = [
     { label: "Blue", class: "bg-blue-300", hex: "#93c5fd" },
 ]
 
-interface NewProjectDialogProps {
-    children: ReactNode;
+
+interface EditProjectDialogProps {
+    data: ProjectProps;
+    children: React.ReactNode;
 }
 
-export function NewProjectDialog(props: NewProjectDialogProps) {
+export function EditProjectDialog(props: EditProjectDialogProps) {
 
-    const [selectedColor, setSelectedColor] = useState<string | null>(null);
+    const [selectedColor, setSelectedColor] = useState<string>(props.data.color);
 
     const { data: getAllUsersData } = getAllUsers();
-    const { mutate: createProjectFn } = createProject();
+    const { mutate: updateProjectFn } = updateProject();
 
     const formSchema = z.object({
         title: z
             .string({ message: "Title is required" })
             .trim()
             .min(1, { message: "Title is required" }),
+        status: z
+            .enum(["IN_PROGRESS", "FINISHED"], { message: "Status is required" }),
         description: z
             .string({ message: "Description is required" })
             .trim()
@@ -82,19 +88,28 @@ export function NewProjectDialog(props: NewProjectDialogProps) {
 
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
+        defaultValues: {
+            title: props.data.title,
+            description: props.data.description,
+            revenue: props.data.revenue,
+            icon: props.data.icon,
+            color: props.data.color,
+            status: props.data.status,
+            ownerId: props.data.ownerId,
+        }
     });
 
     function onSubmit(values: z.infer<typeof formSchema>) {
-        createProjectFn({
+        updateProjectFn({
+            id: props.data.id,
             title: values.title,
             description: values.description,
             revenue: values.revenue,
             icon: values.icon,
             color: values.color,
+            status: values.status,
             ownerId: values.ownerId,
         });
-        form.reset();
-        setSelectedColor(null);
     }
 
     return (
@@ -104,7 +119,9 @@ export function NewProjectDialog(props: NewProjectDialogProps) {
             </DialogTrigger>
             <DialogContent className="overflow-y-scroll max-h-[90vh]">
                 <DialogHeader className="space-y-4">
-                    <DialogTitle>New Project</DialogTitle>
+                    <DialogTitle>
+                        Edit Project
+                    </DialogTitle>
                     <DialogDescription>
                         <Form {...form}>
                             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
@@ -152,6 +169,7 @@ export function NewProjectDialog(props: NewProjectDialogProps) {
                                                     placeholder="Ex: R$ 1000,00"
                                                     onChange={event => field.onChange(Number(event.target.value))}
                                                     type="number"
+                                                    defaultValue={field.value}
                                                 />
                                             </FormControl>
                                             <FormMessage />
@@ -206,6 +224,31 @@ export function NewProjectDialog(props: NewProjectDialogProps) {
                                 />
                                 <FormField
                                     control={form.control}
+                                    name="status"
+                                    render={({ field }) => (
+                                        <FormItem>
+                                            <FormLabel>Status</FormLabel>
+                                            <FormControl>
+                                                <RadioGroup 
+                                                    defaultValue={field.value} 
+                                                    onValueChange={field.onChange}
+                                                >
+                                                    <div className="flex items-center space-x-2">
+                                                        <RadioGroupItem value="IN_PROGRESS" id="IN_PROGRESS" />
+                                                        <Label htmlFor="IN_PROGRESS">In Progress</Label>
+                                                    </div>
+                                                    <div className="flex items-center space-x-2">
+                                                        <RadioGroupItem value="FINISHED" id="FINISHED" />
+                                                        <Label htmlFor="FINISHED">Finished</Label>
+                                                    </div>
+                                                </RadioGroup>
+                                            </FormControl>
+                                            <FormMessage />
+                                        </FormItem>
+                                    )}
+                                />
+                                <FormField
+                                    control={form.control}
                                     name="ownerId"
                                     render={({ field }) => (
                                         <FormItem>
@@ -213,6 +256,7 @@ export function NewProjectDialog(props: NewProjectDialogProps) {
                                             <FormControl>
                                                 <Select
                                                     onValueChange={(value) => field.onChange(value)}
+                                                    defaultValue={field.value}
                                                 >
                                                     <SelectTrigger>
                                                         <SelectValue placeholder="Select the owner" />
@@ -245,5 +289,5 @@ export function NewProjectDialog(props: NewProjectDialogProps) {
                 </DialogHeader>
             </DialogContent>
         </Dialog>
-    );
+    )
 }

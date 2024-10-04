@@ -49,7 +49,7 @@ export class PrismaProjectRepository implements ProjectRepository {
         const raw = PrismaProjectMapper.toPrisma(project);
         await this.prismaService.project.update({
             where: {
-                id: raw.id
+                id: raw.id,
             },
             data: raw
         })
