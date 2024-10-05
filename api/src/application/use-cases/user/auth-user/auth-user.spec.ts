@@ -55,8 +55,16 @@ describe('AuthUserUseCase', () => {
 
         expect(token).toBe('valid-token');
         expect(jwtService.sign).toHaveBeenCalledWith(
-            { sub: user.getId(), email: user.getEmail() },
-            { secret: process.env.JWT_SECRET, expiresIn: '1d' },
+            { 
+                sub: user.getId(), 
+                email: user.getEmail(), 
+                type: user.getType(), 
+                roles: user.getRoles().map(role => role.getKey()) 
+            },
+            { 
+                secret: process.env.JWT_SECRET, 
+                expiresIn: '1d' 
+            },
         );
     });
 
