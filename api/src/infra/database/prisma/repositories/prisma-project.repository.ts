@@ -67,5 +67,19 @@ export class PrismaProjectRepository implements ProjectRepository {
         return await this.prismaService.project.count();
     }
 
+    public async findManyByTitle(title: string): Promise<Project[]> {
+        const projects = await this.prismaService.project.findMany({
+            where: {
+                title: {
+                    contains: title,
+                    mode: 'insensitive'
+                }
+            },
+            include: {
+                owner: true
+            }
+        });
+        return projects.map(PrismaProjectMapper.toDomain);
+    }
 
 }

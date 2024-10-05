@@ -7,4 +7,5 @@ export abstract class ProjectRepository {
     abstract update(project: Project): Promise<void>;
     abstract delete(id: string): Promise<void>;
     abstract count(): Promise<number>;
+    abstract findManyByTitle(title: string): Promise<Project[]>;
 }

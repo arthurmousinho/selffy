@@ -34,14 +34,29 @@ import { Label } from "@/components/ui/label";
 import { DetailsDialog } from "@/components/global/details-dialog";
 import { formatCurrency } from "@/utils/format-currency";
 import { NewProjectDialog } from "@/components/admin/project/new-project-dialog";
-import { deleteProject, getAllProjects } from "@/hooks/use-project";
+import { deleteProject, getAllProjects, ProjectProps, searchProjectsByTitle } from "@/hooks/use-project";
 import { DeleteAlertDialog } from "@/components/global/delete-alert-dialog";
 import { EditProjectDialog } from "@/components/admin/project/edit-project.dialog";
+import { useEffect, useState } from "react";
 
 export function AdminProjects() {
 
-    const { data: getAllProjectsData, refetch } = getAllProjects()
-    const { mutate: deleteProjectFn } = deleteProject()
+    const [projectsData, setProjectsData] = useState<ProjectProps[]>([]);
+    const [searchTerm, setSearchTerm] = useState<string>('');
+
+    const { data: getAllProjectsData, refetch } = getAllProjects();
+    const { mutate: deleteProjectFn } = deleteProject();
+    const { data: searchProjectsByTitleData } = searchProjectsByTitle(searchTerm);
+
+    useEffect(() => {
+        if (!searchTerm && getAllProjectsData) {
+            setProjectsData(getAllProjectsData?.projects);
+        }
+        if (searchProjectsByTitleData) {
+            setProjectsData(searchProjectsByTitleData.projects);
+        }
+    }, [getAllProjectsData, searchProjectsByTitleData, searchTerm]);
+
 
     return (
         <Card>
@@ -60,6 +75,8 @@ export function AdminProjects() {
                     <Input
                         placeholder="Search..."
                         className="w-[250px]"
+                        onChange={event => setSearchTerm(event.target.value)}
+                        type="search"
                     />
                     <Button variant={'outline'} className="flex items-center gap-2 text-muted-foreground">
                         <Filter size={20} />
@@ -92,7 +109,7 @@ export function AdminProjects() {
                     </TableHeader>
                     <TableBody>
                         {
-                            getAllProjectsData?.projects.map((project) => (
+                            projectsData.map((project) => (
                                 <TableRow key={project.id}>
                                     <TableCell>{project.title}</TableCell>
                                     <TableCell>{formatCurrency(project.revenue)}</TableCell>

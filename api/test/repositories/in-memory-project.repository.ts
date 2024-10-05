@@ -42,4 +42,10 @@ export class InMemoryProjectRepository implements ProjectRepository {
         return this.projects.length;
     }
 
+    public async findManyByTitle(title: string): Promise<Project[]> {
+        return this.projects.filter(
+            (project) => project.getTitle().includes(title)
+        );
+    }
+
 }

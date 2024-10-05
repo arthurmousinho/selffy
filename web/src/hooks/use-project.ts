@@ -119,3 +119,21 @@ export function updateProject() {
 
     return query;
 }
+
+interface SearchProjectByTitleResponse {
+    projects: ProjectProps[]
+}
+
+export function searchProjectsByTitle(title?: string) {
+    const query = useQuery({
+        queryKey: ['projects', title],
+        queryFn: async () => {
+            const response = await axios.get(`/projects/${title}`);
+            return response.data as SearchProjectByTitleResponse;
+        },
+        enabled: !!title,
+        staleTime: 5000
+    });
+
+    return query;
+}

@@ -7,6 +7,7 @@ import { ProjectViewModel } from "../view-models/project.viewmodel";
 import { DeleteProjectUseCase } from "@application/use-cases/project/delete-project/delete-project.usecase";
 import { UpdateProjectBody } from "../dtos/project/update-project.dto";
 import { UpdateProjectUseCase } from "@application/use-cases/project/update-project/update-project.usecase";
+import { SearchProjectByTitleUseCase } from "@application/use-cases/project/search-project-by-title/search-project-by-title.usecase";
 
 @Controller('projects')
 export class ProjectController {
@@ -16,7 +17,8 @@ export class ProjectController {
         private findUserByIdUseCase: FindUserByIdUseCase,
         private findAllProjectsUseCase: FindAllProjectsUseCase,
         private deleteProjectUseCase: DeleteProjectUseCase,
-        private updateProjectUseCase: UpdateProjectUseCase
+        private updateProjectUseCase: UpdateProjectUseCase,
+        private searchProjectByTitle: SearchProjectByTitleUseCase
     ) {}
 
     @Get()
@@ -47,6 +49,12 @@ export class ProjectController {
     @Put()
     public async update(@Body() body: UpdateProjectBody) {
         await this.updateProjectUseCase.execute(body);
+    }
+
+    @Get(':title')
+    public async searchByKey(@Param('title') title: string) {
+        const projectsFound = await this.searchProjectByTitle.execute(title);
+        return { projects: projectsFound.map(ProjectViewModel.toHTTP) };
     }
 
 }

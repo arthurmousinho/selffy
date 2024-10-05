@@ -25,6 +25,7 @@ import { AdminDashboardController } from './controllers/admin-dashboard.controll
 import { CountUsersUseCase } from '@application/use-cases/user/count-users/count-users.usecase';
 import { CountProjectsUseCase } from '@application/use-cases/project/count-projects/count-projects.usecase';
 import { GetTotalRevenueUseCase } from '@application/use-cases/project/get-total-revenue/get-total-revenue.usecase';
+import { SearchProjectByTitleUseCase } from '@application/use-cases/project/search-project-by-title/search-project-by-title.usecase';
 
 @Module({
   imports: [
@@ -60,7 +61,8 @@ import { GetTotalRevenueUseCase } from '@application/use-cases/project/get-total
     DeleteProjectUseCase,
     UpdateProjectUseCase,
     CountProjectsUseCase,
-    GetTotalRevenueUseCase
+    GetTotalRevenueUseCase,
+    SearchProjectByTitleUseCase
   ]
 })
 export class HttpModule { }
