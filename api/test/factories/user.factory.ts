@@ -3,8 +3,6 @@ import { randomUUID } from "crypto";
 import { makeRole } from "./role.factory";
 
 export function makeUser(props?: { id?: string, email?: string, name?: string }): User {
-
-
     const user = new User({
         email: props?.email ?? 'test@test.com',
         name: props?.name ?? 'test',
