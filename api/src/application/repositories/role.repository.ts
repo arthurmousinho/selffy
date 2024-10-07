@@ -11,4 +11,5 @@ export abstract class RoleRepository {
     abstract delete(id: string): Promise<void>;
     abstract getRolesForAdminUser(): Promise<Role[]>;
     abstract getRolesForDefaultUser(): Promise<Role[]>;
+    abstract count(): Promise<number>;
 }

@@ -1,5 +1,5 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { DollarSign, FolderOpen, UsersRound } from "lucide-react";
+import { DollarSign, FolderOpen, Shield, UsersRound } from "lucide-react";
 import { CartesianGrid, XAxis, Area, AreaChart, Bar, BarChart } from "recharts"
 import {
     ChartConfig,
@@ -89,6 +89,17 @@ export function AdminDashboard() {
                         </header>
                         <span className="font-bold text-2xl">
                             {data?.projectsCount} Projects
+                        </span>
+                    </CardHeader>
+                </Card>
+                <Card>
+                    <CardHeader className="flex flex-col items-start gap-2 justify-start">
+                        <header className="flex flex-row items-center justify-between w-full">
+                            <h2 className="font-semibold">Total Roles</h2>
+                            <Shield size={20} className="text-primary" />
+                        </header>
+                        <span className="font-bold text-2xl">
+                            {data?.rolesCount} Roles
                         </span>
                     </CardHeader>
                 </Card>

@@ -70,4 +70,8 @@ export class InMemoryRoleRepository implements RoleRepository {
         return roles;
     }
 
+    public async count(): Promise<number> {
+        return this.roles.length;
+    }
+
 }

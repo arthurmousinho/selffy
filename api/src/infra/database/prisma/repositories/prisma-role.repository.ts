@@ -110,4 +110,9 @@ export class PrismaRoleRepository implements RoleRepository {
         return roles.map(PrismaRoleMapper.toDomain);
     }
 
+    public async count(): Promise<number> {
+        const count = await this.prismaService.role.count();
+        return count;
+    }
+
 }
