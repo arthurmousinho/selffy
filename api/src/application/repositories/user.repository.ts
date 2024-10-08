@@ -1,4 +1,4 @@
-import { User } from "../entities/user/user.entity";
+import { PlanType, User } from "../entities/user/user.entity";
 
 export abstract class UserRepository {
     abstract create(user: User): Promise<void>;
@@ -9,4 +9,5 @@ export abstract class UserRepository {
     abstract update(user: User): Promise<void>;
     abstract delete(id: string): Promise<void>;
     abstract count(): Promise<number>;
+    abstract countByPlan(plan: PlanType): Promise<number>;
 }

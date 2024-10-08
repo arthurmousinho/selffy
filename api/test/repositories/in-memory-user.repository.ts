@@ -1,4 +1,4 @@
-import { User } from "@application/entities/user/user.entity";
+import { PlanType, User } from "@application/entities/user/user.entity";
 import { UserRepository } from "src/application/repositories/user.repository";
 
 export class InMemoryUserRepository implements UserRepository {
@@ -54,6 +54,12 @@ export class InMemoryUserRepository implements UserRepository {
 
     public async count() {
         return this.users.length;
+    }
+
+    public async countByPlan(plan: PlanType): Promise<number> {
+        return this.users.filter(
+            (user) => user.getPlan() === plan
+        ).length;
     }
 
 }

@@ -2,10 +2,17 @@ import { axios } from "@/lib/axios";
 import { useQuery } from "@tanstack/react-query";
 
 interface GetAdminDashboardResponse {
-    totalRevenue: number;
-    projectsCount: number;
-    rolesCount: number;
-    usersCount: number;
+    users: {
+        total: number;
+        free: number;
+        premium: number;
+    },
+    projects: {
+        total: number;
+        inProgress: number;
+        finished: number;
+        totalRevenue: number;
+    }
 }
 
 export function getAdminDashboard() {

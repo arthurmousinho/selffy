@@ -1,4 +1,4 @@
-import { Project } from "@application/entities/project/project.entity";
+import { Project, ProjectStatus } from "@application/entities/project/project.entity";
 import { ProjectRepository } from "@application/repositories/project.repository";
 
 export class InMemoryProjectRepository implements ProjectRepository {
@@ -46,6 +46,12 @@ export class InMemoryProjectRepository implements ProjectRepository {
         return this.projects.filter(
             (project) => project.getTitle().includes(title)
         );
+    }
+
+    public async countByStatus(status: ProjectStatus): Promise<number> {
+        return this.projects.filter(
+            (project) => project.getStatus() === status
+        ).length;
     }
 
 }

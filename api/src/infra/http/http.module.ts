@@ -26,7 +26,8 @@ import { CountUsersUseCase } from '@application/use-cases/user/count-users/count
 import { CountProjectsUseCase } from '@application/use-cases/project/count-projects/count-projects.usecase';
 import { GetTotalRevenueUseCase } from '@application/use-cases/project/get-total-revenue/get-total-revenue.usecase';
 import { SearchProjectByTitleUseCase } from '@application/use-cases/project/search-project-by-title/search-project-by-title.usecase';
-import { CountRolesUseCase } from '@application/use-cases/role/count-roles/count-roles.usecase';
+import { CountUsersByPlanUseCase } from '@application/use-cases/user/count-users-by-plan/count-users-by-plan.usecase';
+import { CountProjectByStatusUseCase } from '@application/use-cases/project/count-projects-by-status/count-projects-by-status.usecase';
 
 @Module({
   imports: [
@@ -49,6 +50,7 @@ import { CountRolesUseCase } from '@application/use-cases/role/count-roles/count
     UpdateUserUseCase,
     FindUserByIdUseCase,
     CountUsersUseCase,
+    CountUsersByPlanUseCase,
 
     CreateRoleUseCase,
     FindAllRolesUseCase,
@@ -56,7 +58,6 @@ import { CountRolesUseCase } from '@application/use-cases/role/count-roles/count
     DeleteRoleUseCase,
     SearchRolesByKeyUseCase,
     GetRolesForUserTypeUseCase,
-    CountRolesUseCase,
 
     CreateProjectUseCase,
     FindAllProjectsUseCase,
@@ -64,7 +65,8 @@ import { CountRolesUseCase } from '@application/use-cases/role/count-roles/count
     UpdateProjectUseCase,
     CountProjectsUseCase,
     GetTotalRevenueUseCase,
-    SearchProjectByTitleUseCase
+    SearchProjectByTitleUseCase,
+    CountProjectByStatusUseCase
   ]
 })
 export class HttpModule { }

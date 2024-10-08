@@ -1,4 +1,4 @@
-import { Project } from "@application/entities/project/project.entity";
+import { Project, ProjectStatus } from "@application/entities/project/project.entity";
 
 export abstract class ProjectRepository {
     abstract create(project: Project): Promise<void>;
@@ -8,4 +8,5 @@ export abstract class ProjectRepository {
     abstract delete(id: string): Promise<void>;
     abstract count(): Promise<number>;
     abstract findManyByTitle(title: string): Promise<Project[]>;
+    abstract countByStatus(status: ProjectStatus): Promise<number>;
 }

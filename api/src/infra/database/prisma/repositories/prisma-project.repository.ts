@@ -1,4 +1,4 @@
-import { Project } from "@application/entities/project/project.entity";
+import { Project, ProjectStatus } from "@application/entities/project/project.entity";
 import { ProjectRepository } from "@application/repositories/project.repository";
 import { Injectable } from "@nestjs/common";
 import { PrismaService } from "../prisma.service";
@@ -80,6 +80,14 @@ export class PrismaProjectRepository implements ProjectRepository {
             }
         });
         return projects.map(PrismaProjectMapper.toDomain);
+    }
+
+    public async countByStatus(status: ProjectStatus): Promise<number> {
+        return await this.prismaService.project.count({
+            where: {
+                status
+            }
+        });
     }
 
 }
