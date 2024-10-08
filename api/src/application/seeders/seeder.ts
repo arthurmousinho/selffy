@@ -1,4 +1,4 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { RoleSeeder } from './role.seeder';
 import { UserSeeder } from './user.seeder';
 
@@ -12,10 +12,8 @@ export class Seeder {
 
   async seed() {
     console.log('Starting seeders...');
-    await Promise.all([
-      this.roleSeeder.run(),
-      this.userSeeder.run(),
-    ]);
+    await this.roleSeeder.run(),
+    await this.userSeeder.run(),
     console.log('Completed seeders.');
   }
 

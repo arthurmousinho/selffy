@@ -24,7 +24,8 @@ export class UserSeeder {
             name: 'Admin',
             email: 'admin@selffy.com',
             password: 'admin123',
-            type: 'ADMIN'
+            type: 'ADMIN',
+            plan: 'PREMIUM'
         });
     }
 

@@ -118,6 +118,7 @@ export function AdminUsers() {
                             <TableHead className="text-left">E-mail</TableHead>
                             <TableHead className="text-left">Roles</TableHead>
                             <TableHead className="text-left">Type</TableHead>
+                            <TableHead className="text-left">Plan</TableHead>
                             <TableHead className="text-right">Details</TableHead>
                             <TableHead className="text-right">Edit</TableHead>
                             <TableHead className="text-right">Delete</TableHead>
@@ -150,12 +151,27 @@ export function AdminUsers() {
                                             user.type === 'ADMIN' ?
                                                 (
                                                     <Badge variant={'default'}>
-                                                        {user.type.toLowerCase()}
+                                                        {user.type}
                                                     </Badge>
                                                 )
                                                 : (
                                                     <Badge variant={'secondary'}>
-                                                        {user.type.toLowerCase()}
+                                                        {user.type}
+                                                    </Badge>
+                                                )
+                                        }
+                                    </TableCell>
+                                    <TableCell className="text-left">
+                                        {
+                                            user.plan === 'PREMIUM' ?
+                                                (
+                                                    <Badge variant={'default'}>
+                                                        {user.plan}
+                                                    </Badge>
+                                                )
+                                                : (
+                                                    <Badge variant={'secondary'}>
+                                                        {user.plan}
                                                     </Badge>
                                                 )
                                         }

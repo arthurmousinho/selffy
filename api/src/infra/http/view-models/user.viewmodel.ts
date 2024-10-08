@@ -8,6 +8,7 @@ export class UserViewModel {
             name: user.getName(),
             email: user.getEmail(),
             type: user.getType(),
+            plan: user.getPlan(),
             password: user.getPassword(),
             createdAt: user.getCreatedAt(),
             updatedAt: user.getUpdatedAt(),

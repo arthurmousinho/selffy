@@ -34,7 +34,8 @@ export function NewUserDialog(props: NewUserDialogProps) {
         name: z.string({ message: "Name is required" }).min(1, { message: "Name is required" }),
         email: z.string({ message: "Email is required" }).email({ message: "Invalid email" }),
         password: z.string({ message: "Password is required" }),
-        type: z.enum(["DEFAULT", "ADMIN"], { message: "Type is required" })
+        type: z.enum(["DEFAULT", "ADMIN"], { message: "Type is required" }),
+        plan: z.enum(["FREE", "PREMIUM"], { message: "Plan is required" }),
     });
 
     const form = useForm<z.infer<typeof formSchema>>({
@@ -43,7 +44,8 @@ export function NewUserDialog(props: NewUserDialogProps) {
             name: "",
             email: "",
             password: "",
-            type: "DEFAULT"
+            type: "DEFAULT",
+            plan: "FREE",
         },
     })
 
@@ -54,7 +56,8 @@ export function NewUserDialog(props: NewUserDialogProps) {
             name: values.name,
             email: values.email,
             password: values.password,
-            type: values.type
+            type: values.type,
+            plan: values.plan,
         });
     }
 
@@ -122,28 +125,52 @@ export function NewUserDialog(props: NewUserDialogProps) {
                                         </FormItem>
                                     )}
                                 />
-                                <FormField
-                                    control={form.control}
-                                    name="type"
-                                    render={({ field }) => (
-                                        <FormItem>
-                                            <FormLabel>Type</FormLabel>
-                                            <FormControl>
-                                                <RadioGroup value={field.value} onValueChange={field.onChange}>
-                                                    <div className="flex items-center space-x-2">
-                                                        <RadioGroupItem value="DEFAULT" id="DEFAULT" />
-                                                        <Label htmlFor="DEFAULT">Default</Label>
-                                                    </div>
-                                                    <div className="flex items-center space-x-2">
-                                                        <RadioGroupItem value="ADMIN" id="ADMIN" />
-                                                        <Label htmlFor="ADMIN">Admin</Label>
-                                                    </div>
-                                                </RadioGroup>
-                                            </FormControl>
-                                            <FormMessage />
-                                        </FormItem>
-                                    )}
-                                />
+                                <div className="flex flex-row items-center justify-start gap-10">
+                                    <FormField
+                                        control={form.control}
+                                        name="type"
+                                        render={({ field }) => (
+                                            <FormItem>
+                                                <FormLabel>Type</FormLabel>
+                                                <FormControl>
+                                                    <RadioGroup value={field.value} onValueChange={field.onChange}>
+                                                        <div className="flex items-center space-x-2">
+                                                            <RadioGroupItem value="DEFAULT" id="DEFAULT" />
+                                                            <Label htmlFor="DEFAULT">Default</Label>
+                                                        </div>
+                                                        <div className="flex items-center space-x-2">
+                                                            <RadioGroupItem value="ADMIN" id="ADMIN" />
+                                                            <Label htmlFor="ADMIN">Admin</Label>
+                                                        </div>
+                                                    </RadioGroup>
+                                                </FormControl>
+                                                <FormMessage />
+                                            </FormItem>
+                                        )}
+                                    />
+                                    <FormField
+                                        control={form.control}
+                                        name="plan"
+                                        render={({ field }) => (
+                                            <FormItem>
+                                                <FormLabel>Plan</FormLabel>
+                                                <FormControl>
+                                                    <RadioGroup value={field.value} onValueChange={field.onChange}>
+                                                        <div className="flex items-center space-x-2">
+                                                            <RadioGroupItem value="FREE" id="FREE" />
+                                                            <Label htmlFor="FREE">Free</Label>
+                                                        </div>
+                                                        <div className="flex items-center space-x-2">
+                                                            <RadioGroupItem value="PREMIUM" id="PREMIUM" />
+                                                            <Label htmlFor="PREMIUM">Premium</Label>
+                                                        </div>
+                                                    </RadioGroup>
+                                                </FormControl>
+                                                <FormMessage />
+                                            </FormItem>
+                                        )}
+                                    />
+                                </div>
                                 <Button className="w-full">
                                     Save
                                 </Button>

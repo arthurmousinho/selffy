@@ -7,6 +7,7 @@ import { axios } from "@/lib/axios";
 import { saveToken, TokenProps } from "./use-token";
 
 export type UserType = "ADMIN" | "DEFAULT";
+export type PlanType = "FREE" | "PREMIUM";
 
 export interface UserProps {
     id: string;
@@ -16,7 +17,8 @@ export interface UserProps {
     createdAt: string;
     updatedAt: string;
     type: UserType;
-    roles: { key: string }[]
+    roles: { key: string }[],
+    plan: PlanType;
 }
 
 interface GetAllUsersResponse {
@@ -44,6 +46,7 @@ interface CreateUserProps {
     email: string;
     password: string;
     type: UserType;
+    plan: PlanType;
 }
 
 export function createUser() {

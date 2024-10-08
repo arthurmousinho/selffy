@@ -24,6 +24,7 @@ export class PrismaUserMapper {
             email: raw.email,
             password: raw.password,
             type: raw.type,
+            plan: raw.plan,
             createdAt: raw.createdAt,
             updatedAt: raw.updatedAt,
             roles: raw.roles?.map(PrismaRoleMapper.toDomain)
