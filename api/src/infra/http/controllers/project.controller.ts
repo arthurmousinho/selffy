@@ -22,7 +22,7 @@ export class ProjectController {
     ) {}
 
     @Get()
-    public async getProject() {
+    public async getProjects() {
         const projects = await this.findAllProjectsUseCase.execute();
         return { projects: projects.map(ProjectViewModel.toHTTP) };
     }

@@ -18,8 +18,9 @@ export class PrismaCostRepository implements CostRepository {
         });
     }
 
-    public async findAll(): Promise<any> {
-        return await this.prismaService.cost.findMany();
+    public async findAll(): Promise<Cost[]> {
+        const costs = await this.prismaService.cost.findMany();
+        return costs.map(PrismaCostMapper.toDomain);
     }
 
     public async findById(id: string): Promise<any> {
