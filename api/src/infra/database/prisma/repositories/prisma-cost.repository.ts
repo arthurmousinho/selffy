@@ -19,7 +19,18 @@ export class PrismaCostRepository implements CostRepository {
     }
 
     public async findAll(): Promise<Cost[]> {
-        const costs = await this.prismaService.cost.findMany();
+        const costs = await this.prismaService.cost.findMany({
+            orderBy: {
+                createdAt: 'desc'
+            },
+            include: {
+                project: {
+                    include: {
+                        owner: true
+                    }
+                }
+            }
+        });
         return costs.map(PrismaCostMapper.toDomain);
     }
 
@@ -27,6 +38,9 @@ export class PrismaCostRepository implements CostRepository {
         return await this.prismaService.cost.findUnique({
             where: {
                 id
+            },
+            include: {
+                project: true
             }
         });
     }

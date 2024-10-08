@@ -1,5 +1,8 @@
 import { Cost } from "@application/entities/cost/cost.entity";
-import { Cost as RawCost } from "@prisma/client";
+import { Cost as RawCost, Project as RawProject, User as RawUser } from "@prisma/client";
+import { PrismaProjectMapper } from "./prisma-project.mapper";
+import { PrismaUserMapper } from "./prisma-user.mapper";
+import { Project } from "@application/entities/project/project.entity";
 
 export class PrismaCostMapper {
 
@@ -8,18 +11,22 @@ export class PrismaCostMapper {
             id: cost.getId(),
             title: cost.getTitle(),
             createdAt: cost.getCreatedAt(),
+            projectId: cost.getProject().getId(),
             updatedAt: cost.getUpdatedAt(),
             value: cost.getValue(),
         }
     }
 
-    public static toDomain(raw: RawCost): Cost {
+    public static toDomain(raw: RawCost & { project: RawProject & { owner: RawUser } }): Cost {
+        const project = PrismaProjectMapper.toDomain(raw.project);
+    
         return new Cost({
             title: raw.title,
             createdAt: raw.createdAt,
             updatedAt: raw.updatedAt,
             value: raw.value,
+            project,
         }, raw.id)
     }
-
+    
 }

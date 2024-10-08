@@ -10,4 +10,8 @@ export class CreateCostBody {
     @IsNumber()
     value: number
 
+    @IsNotEmpty()
+    @IsUUID()
+    projectId: string;
+
 }

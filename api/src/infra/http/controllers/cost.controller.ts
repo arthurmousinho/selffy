@@ -3,14 +3,16 @@ import { CreateCostBody } from "../dtos/cost/create-cost.dto";
 import { CreateCostUseCase } from "@application/use-cases/cost/create-cost/create-cost.usecase";
 import { FindAllCostsUseCase } from "@application/use-cases/cost/find-all-costs/find-all-costs.usecase";
 import { CostViewModel } from "../view-models/cost.viewmodel";
+import { FindProjectByIdUseCase } from "@application/use-cases/project/find-project-by-id/find-project-by-id.usecase";
 
 
 @Controller('costs')
-export class ConstController {
+export class CostController {
 
     constructor(
         private createCostUseCase: CreateCostUseCase,
-        private findAllCostUseCase: FindAllCostsUseCase
+        private findAllCostUseCase: FindAllCostsUseCase,
+        private findProjectByIdUseCase: FindProjectByIdUseCase
     ) { }
 
     @Get()
@@ -21,10 +23,12 @@ export class ConstController {
 
     @Post()
     public async createCost(@Body() body: CreateCostBody) {
-        const { title, value } = body;
+        const { title, value, projectId } = body;
+        const project = await this.findProjectByIdUseCase.execute(projectId);
         await this.createCostUseCase.execute({
             title,
-            value
+            value,
+            project
         })
     }
 

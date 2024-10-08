@@ -1,4 +1,5 @@
 import { makeCost } from "@test/factories/cost.factory";
+import { makeProject } from "@test/factories/project.factory";
 
 describe('Cost', () => {
 
@@ -34,6 +35,15 @@ describe('Cost', () => {
 
         expect(cost.getUpdatedAt()).not.toEqual(initialUpdatedAt);
         expect(cost.getUpdatedAt()).toBeInstanceOf(Date);
+    });
+
+    it('should set and update the project', () => {
+        const cost = makeCost();
+        const newProject = makeProject();
+
+        cost.setProject(newProject);
+
+        expect(cost.getProject()).toBe(newProject);
     });
 
 });

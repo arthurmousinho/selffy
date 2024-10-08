@@ -18,7 +18,8 @@ describe('Create Cost UseCase', () => {
 
         await createCostUseCase.execute({
             title: newCost.getTitle(),
-            value: newCost.getValue()
+            value: newCost.getValue(),
+            project: newCost.getProject()
         });
 
         const costs = await costRepository.findAll();

@@ -7,6 +7,7 @@ export class CostViewModel {
             id: cost.getId(),
             title: cost.getTitle(),
             value: cost.getValue(),
+            projectId: cost.getProject().getId(),
             createdAt: cost.getCreatedAt(),
             updatedAt: cost.getUpdatedAt()
         }
