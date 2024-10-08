@@ -139,7 +139,7 @@ export function AdminUsers() {
                                                 {
                                                     user.roles.map((role, index) => (
                                                         <DropdownMenuItem key={index}>
-                                                            {role.key}
+                                                            {role}
                                                         </DropdownMenuItem>
                                                     ))
                                                 }

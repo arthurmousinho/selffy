@@ -12,11 +12,7 @@ export class UserViewModel {
             password: user.getPassword(),
             createdAt: user.getCreatedAt(),
             updatedAt: user.getUpdatedAt(),
-            roles: user.getRoles().map(
-                (role) => {
-                    return { key: role.getKey() }
-                }
-            )
+            roles: user.getRoles().map(role => role.getKey())
         }
     }
 

@@ -17,7 +17,7 @@ export interface UserProps {
     createdAt: string;
     updatedAt: string;
     type: UserType;
-    roles: { key: string }[],
+    roles: string[],
     plan: PlanType;
 }
 
