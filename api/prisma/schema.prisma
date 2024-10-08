@@ -79,3 +79,11 @@ model Role {
 
   users User[]
 }
+
+model Plan {
+  id        String   @id
+  name      String
+  price     Float
+  createdAt DateTime
+  updatedAt DateTime
+}
