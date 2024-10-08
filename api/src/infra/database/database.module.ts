@@ -6,6 +6,8 @@ import { RoleRepository } from '@application/repositories/role.repository';
 import { PrismaRoleRepository } from './prisma/repositories/prisma-role.repository';
 import { ProjectRepository } from '@application/repositories/project.repository';
 import { PrismaProjectRepository } from './prisma/repositories/prisma-project.repository';
+import { CostRepository } from '@application/repositories/cost.repository';
+import { PrismaCostRepository } from './prisma/repositories/prisma-cost.repository';
 
 @Global()
 @Module({
@@ -13,12 +15,14 @@ import { PrismaProjectRepository } from './prisma/repositories/prisma-project.re
     PrismaService,
     { provide: UserRepository, useClass: PrismaUserRepository },
     { provide: RoleRepository, useClass: PrismaRoleRepository },
-    { provide: ProjectRepository, useClass: PrismaProjectRepository }
+    { provide: ProjectRepository, useClass: PrismaProjectRepository },
+    { provide: CostRepository, useClass: PrismaCostRepository }
   ],
   exports: [
     UserRepository,
     RoleRepository,
-    ProjectRepository
+    ProjectRepository,
+    CostRepository
   ],
 })
 export class DatabaseModule {}

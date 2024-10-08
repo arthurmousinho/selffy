@@ -8,22 +8,23 @@ import { UserModule } from '@application/use-cases/user/user.module';
 import { RoleModule } from '@application/use-cases/role/role.module';
 import { ProjectModule } from '@application/use-cases/project/project.module';
 import { AdminDashboardController } from './controllers/admin-dashboard.controller';
+import { ConstController } from './controllers/cost.controller';
+import { CostModule } from '@application/use-cases/cost/cost.module';
 
 @Module({
   imports: [
     DatabaseModule,
     UserModule,
     RoleModule,
-    ProjectModule
+    ProjectModule,
+    CostModule
   ],
   controllers: [
     UserController,
     RoleController,
     ProjectController,
+    ConstController,
     AdminDashboardController
-  ],
-  providers: [  
-   
   ]
 })
 export class HttpModule { }
