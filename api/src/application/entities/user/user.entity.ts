@@ -5,6 +5,7 @@ import { Role } from "../role/role.entity";
 import { makeRole } from "@test/factories/role.factory";
 
 export type UserType = 'ADMIN' | 'DEFAULT';
+export type PlanType = 'FREE' | 'PREMIUM';
 
 export interface UserProps {
     name: string;
@@ -15,6 +16,7 @@ export interface UserProps {
     updatedAt: Date;
     projects: Project[];
     type: UserType;
+    plan: PlanType;
 }
 
 export class User {
@@ -29,7 +31,8 @@ export class User {
             createdAt?: Date,
             type?: UserType,
             updatedAt?: Date,
-            projects?: Project[]
+            projects?: Project[],
+            plan?: PlanType,
         }>,
         id?: string,
     ) {
@@ -44,7 +47,8 @@ export class User {
             createdAt: props.createdAt ?? new Date(),
             updatedAt: props.updatedAt ?? new Date(),
             roles: props?.roles ?? defaultRoles,
-            projects: props.projects ?? []
+            projects: props.projects ?? [],
+            plan: props.plan ?? 'FREE',
         };
     }
 
@@ -118,6 +122,14 @@ export class User {
 
     public setType(type: UserType) {
         this.props.type = type
+    }
+
+    public getPlan() {
+        return this.props.plan
+    }
+
+    public setPlan(plan: PlanType) {
+        this.props.plan = plan
     }
 
 }

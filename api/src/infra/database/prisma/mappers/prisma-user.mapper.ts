@@ -12,6 +12,7 @@ export class PrismaUserMapper {
             email: user.getEmail(),
             password: user.getPassword(),
             type: user.getType(),
+            plan: user.getPlan(),
             createdAt: user.getCreatedAt(),
             updatedAt: user.getUpdatedAt(),
         };

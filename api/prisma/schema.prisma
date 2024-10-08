@@ -17,6 +17,12 @@ model User {
   updatedAt DateTime
   type      UserType
   projects  Project[]
+  plan      PlanType
+}
+
+enum PlanType {
+  FREE
+  PREMIUM
 }
 
 enum UserType {
@@ -78,12 +84,4 @@ model Role {
   userTypes UserType[]
 
   users User[]
-}
-
-model Plan {
-  id        String   @id
-  name      String
-  price     Float
-  createdAt DateTime
-  updatedAt DateTime
 }

@@ -8,6 +8,7 @@ describe('User', () => {
         expect(user.getName()).toBe('test');
         expect(user.getEmail()).toBe('test@test.com');
         expect(user.getPassword()).toBe('123456');
+        expect(user.getPlan()).toBe('FREE'); 
     });
 
     it('should correctly update user name', () => {
@@ -37,6 +38,12 @@ describe('User', () => {
 
         expect(user.getUpdatedAt()).not.toBe(initialUpdatedAt);
         expect(user.getUpdatedAt()).toBeInstanceOf(Date);
+    });
+
+    it('should correctly set and retrieve the user plan', () => {
+        const user = makeUser();
+        user.setPlan('PREMIUM');
+        expect(user.getPlan()).toBe('PREMIUM'); 
     });
 
 });
