@@ -4,7 +4,7 @@ describe('Cost', () => {
 
     it('should create a cost with provided properties', () => {
         const cost = makeCost();
-
+        
         expect(cost).toBeTruthy();
     });
 
