@@ -26,14 +26,16 @@ describe('Create User UseCase', () => {
             name: newUser.getName(),
             email: newUser.getEmail(),
             password: newUser.getPassword(),
-            type: "DEFAULT", 
+            type: "DEFAULT",
+            plan: "FREE"
         });
-        
+
         await expect(createUserUseCase.execute({
             name: newUser.getName(),
             email: newUser.getEmail(),
             password: newUser.getPassword(),
-            type: "DEFAULT", 
+            type: "DEFAULT",
+            plan: "FREE"
         })).rejects.toThrow(UserAlreadyExistsError);
     });
 
@@ -43,16 +45,18 @@ describe('Create User UseCase', () => {
             name: newUser.getName(),
             email: newUser.getEmail(),
             password: newUser.getPassword(),
-            type: "DEFAULT", 
+            type: "DEFAULT",
+            plan: "FREE"
         });
 
         const users = await userRepository.findAll();
         expect(users.length).toBe(1);
         expect(users[0].getEmail()).toBe(user.getEmail());
         expect(users[0].getName()).toBe(user.getName());
-        expect(users[0].getPassword()).toBe(user.getPassword()); 
+        expect(users[0].getPassword()).toBe(user.getPassword());
         expect(users[0].getRoles()).toEqual(user.getRoles());
-        expect(users[0].getType()).toBe(user.getType()); 
+        expect(users[0].getType()).toBe(user.getType());
+        expect(users[0].getPlan()).toBe(user.getPlan());
     });
 
 });
