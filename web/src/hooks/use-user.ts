@@ -115,6 +115,8 @@ interface UpdateUserProps {
     id: string;
     name: string;
     email: string;
+    type: UserType;
+    plan: PlanType;
 }
 
 export function updateUser() {

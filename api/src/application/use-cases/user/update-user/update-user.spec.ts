@@ -19,6 +19,8 @@ describe('Update User UseCase', () => {
             id: 'non-existent-id',
             name: 'Some Name',
             email: 'some@example.com',
+            type: 'DEFAULT',
+            plan: 'FREE',
         })).rejects.toThrow(UserNotFoundError);
     });
 
@@ -30,6 +32,8 @@ describe('Update User UseCase', () => {
             id: existingUser.getId(),
             name: 'Updated Name',
             email: 'updated@example.com',
+            type: 'DEFAULT',
+            plan: 'FREE',
         });
 
         const updatedUser = await userRepository.findById(existingUser.getId());

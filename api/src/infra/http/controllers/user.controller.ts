@@ -63,11 +63,13 @@ export class UserController {
 
     @Put()
     public async update(@Body() body: UpdateUserBody) {
-        const { id ,name, email } = body;
+        const { id ,name, email, type, plan } = body;
         await this.updateUserUseCase.execute({
             id,
             name,
-            email
+            email,
+            type,
+            plan
         });
     }
 

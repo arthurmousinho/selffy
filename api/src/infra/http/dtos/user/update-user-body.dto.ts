@@ -1,4 +1,5 @@
-import { IsEmail, IsNotEmpty, IsUUID } from "class-validator";
+import { IsEmail, IsNotEmpty, IsUUID, IsEnum } from "class-validator";
+import { PlanType, UserType } from "@prisma/client";
 
 export class UpdateUserBody {
 
@@ -12,5 +13,13 @@ export class UpdateUserBody {
     @IsNotEmpty()
     @IsEmail()
     email: string;
+
+    @IsNotEmpty()
+    @IsEnum(UserType, { each: true })
+    type: UserType;
+
+    @IsNotEmpty()
+    @IsEnum(PlanType, { each: true })
+    plan: PlanType
 
 }
