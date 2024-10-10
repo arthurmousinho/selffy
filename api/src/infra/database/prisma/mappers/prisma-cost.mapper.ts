@@ -1,9 +1,6 @@
 import { Cost } from "@application/entities/cost/cost.entity";
 import { Cost as RawCost, Project as RawProject, User as RawUser } from "@prisma/client";
 import { PrismaProjectMapper } from "./prisma-project.mapper";
-import { PrismaUserMapper } from "./prisma-user.mapper";
-import { Project } from "@application/entities/project/project.entity";
-
 export class PrismaCostMapper {
 
     public static toPrisma(cost: Cost): RawCost {

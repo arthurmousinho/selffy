@@ -1,10 +1,13 @@
-import { Body, Controller, Delete, Get, Param, Post } from "@nestjs/common";
+import { Body, Controller, Delete, Get, Param, Post, Put } from "@nestjs/common";
 import { CreateCostBody } from "../dtos/cost/create-cost.dto";
 import { CreateCostUseCase } from "@application/use-cases/cost/create-cost/create-cost.usecase";
 import { FindAllCostsUseCase } from "@application/use-cases/cost/find-all-costs/find-all-costs.usecase";
 import { CostViewModel } from "../view-models/cost.viewmodel";
 import { FindProjectByIdUseCase } from "@application/use-cases/project/find-project-by-id/find-project-by-id.usecase";
 import { DeleteCostUseCase } from "@application/use-cases/cost/delete-cost/delete-cost.usecase";
+import { UpdateCostBody } from "../dtos/cost/update-cost.dto";
+import { UpdateCostUseCase } from "@application/use-cases/cost/update-cost/update-cost.usecase";
+import { Cost } from "@application/entities/cost/cost.entity";
 
 
 @Controller('costs')
@@ -14,7 +17,8 @@ export class CostController {
         private createCostUseCase: CreateCostUseCase,
         private findAllCostUseCase: FindAllCostsUseCase,
         private findProjectByIdUseCase: FindProjectByIdUseCase,
-        private deleteCostUseCase: DeleteCostUseCase
+        private deleteCostUseCase: DeleteCostUseCase,
+        private updateCostUseCase: UpdateCostUseCase,
     ) { }
 
     @Get()
@@ -32,6 +36,11 @@ export class CostController {
             value,
             project
         })
+    }
+
+    @Put()
+    public async updateCost(@Body() body: UpdateCostBody) {
+        await this.updateCostUseCase.execute(body);
     }
 
     @Delete(':id')

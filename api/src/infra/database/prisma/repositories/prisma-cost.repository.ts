@@ -34,15 +34,25 @@ export class PrismaCostRepository implements CostRepository {
         return costs.map(PrismaCostMapper.toDomain);
     }
 
-    public async findById(id: string): Promise<any> {
-        return await this.prismaService.cost.findUnique({
+    public async findById(id: string): Promise<Cost | null> {
+        const cost = await this.prismaService.cost.findUnique({
             where: {
                 id
             },
             include: {
-                project: true
+                project: {
+                    include: {
+                        owner: true
+                    }
+                }
             }
         });
+
+        if (!cost) {
+            return null;
+        }
+
+        return PrismaCostMapper.toDomain(cost);
     }
 
     public async update(cost: Cost): Promise<void> {
