@@ -1,9 +1,10 @@
-import { Body, Controller, Get, Post } from "@nestjs/common";
+import { Body, Controller, Delete, Get, Param, Post } from "@nestjs/common";
 import { CreateCostBody } from "../dtos/cost/create-cost.dto";
 import { CreateCostUseCase } from "@application/use-cases/cost/create-cost/create-cost.usecase";
 import { FindAllCostsUseCase } from "@application/use-cases/cost/find-all-costs/find-all-costs.usecase";
 import { CostViewModel } from "../view-models/cost.viewmodel";
 import { FindProjectByIdUseCase } from "@application/use-cases/project/find-project-by-id/find-project-by-id.usecase";
+import { DeleteCostUseCase } from "@application/use-cases/cost/delete-cost/delete-cost.usecase";
 
 
 @Controller('costs')
@@ -12,7 +13,8 @@ export class CostController {
     constructor(
         private createCostUseCase: CreateCostUseCase,
         private findAllCostUseCase: FindAllCostsUseCase,
-        private findProjectByIdUseCase: FindProjectByIdUseCase
+        private findProjectByIdUseCase: FindProjectByIdUseCase,
+        private deleteCostUseCase: DeleteCostUseCase
     ) { }
 
     @Get()
@@ -30,6 +32,11 @@ export class CostController {
             value,
             project
         })
+    }
+
+    @Delete(':id')
+    public async delete(@Param('id') id: string) {
+        await this.deleteCostUseCase.execute(id);
     }
 
 }

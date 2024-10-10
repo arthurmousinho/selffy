@@ -17,7 +17,7 @@ describe('Delete Cos tUseCase', () => {
     it('should throw an error if the cost does not exist', async () => {
         const nonExistentCost = makeCost();
 
-        await expect(deleteCostUseCase.execute(nonExistentCost))
+        await expect(deleteCostUseCase.execute(nonExistentCost.getId()))
             .rejects
             .toThrow(CostNotFoundError);
     });
@@ -27,7 +27,7 @@ describe('Delete Cos tUseCase', () => {
 
         await costRepository.create(existingCost);
 
-        await deleteCostUseCase.execute(existingCost);
+        await deleteCostUseCase.execute(existingCost.getId());
 
         const deletedCost = await costRepository.findById(existingCost.getId());
         expect(deletedCost).toBeNull();

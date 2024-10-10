@@ -1,23 +1,23 @@
 import { Button } from "@/components/ui/button";
-import { 
-    Card, 
-    CardContent, 
-    CardFooter, 
-    CardHeader 
+import {
+    Card,
+    CardContent,
+    CardFooter,
+    CardHeader
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { 
-    ChevronLeft, 
-    ChevronRight, 
-    ChevronsLeft, 
-    ChevronsRight, 
-    Filter, 
-    Folder, 
-    FolderOpen, 
-    Pencil, 
-    Plus, 
-    RefreshCcw, 
-    Trash 
+import {
+    ChevronLeft,
+    ChevronRight,
+    ChevronsLeft,
+    ChevronsRight,
+    Filter,
+    Folder,
+    FolderOpen,
+    Pencil,
+    Plus,
+    RefreshCcw,
+    Trash
 } from "lucide-react";
 import {
     Table,
@@ -38,11 +38,13 @@ import { Label } from "@/components/ui/label";
 import { DetailsDialog } from "@/components/global/details-dialog";
 import { formatCurrency } from "@/utils/format-currency";
 import { NewCostDialog } from "@/components/admin/cost/new-cost-dialog";
-import { getAllCosts } from "@/hooks/use-cost";
+import { deleteCost, getAllCosts } from "@/hooks/use-cost";
+import { DeleteAlertDialog } from "@/components/global/delete-alert-dialog";
 
 export function AdminCosts() {
 
     const { data: getAllCostsData, refetch: refetchCosts } = getAllCosts();
+    const { mutate: deleteCostFn } = deleteCost()
 
     return (
         <Card>
@@ -66,8 +68,8 @@ export function AdminCosts() {
                         <Filter size={20} />
                         Filter
                     </Button>
-                    <Button 
-                        variant={'outline'} 
+                    <Button
+                        variant={'outline'}
                         className="flex items-center gap-2 text-muted-foreground"
                         onClick={() => refetchCosts()}
                     >
@@ -114,9 +116,13 @@ export function AdminCosts() {
                                         </Button>
                                     </TableCell>
                                     <TableCell className="flex justify-end">
-                                        <Button className="text-muted-foreground" variant={'outline'}>
-                                            <Trash size={20} />
-                                        </Button>
+                                        <DeleteAlertDialog
+                                            onDelete={() => deleteCostFn(cost.id)}
+                                        >
+                                            <Button className="text-muted-foreground" variant={'outline'}>
+                                                <Trash size={20} />
+                                            </Button>
+                                        </DeleteAlertDialog>
                                     </TableCell>
                                 </TableRow>
                             ))

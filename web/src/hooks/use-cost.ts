@@ -55,3 +55,27 @@ export function createCost() {
     })
     return query;
 }
+
+export function deleteCost() {
+    const { toast } = useToast();
+    const query = useMutation({
+        mutationFn: async (id: string) => {
+            return await axios.delete(`/costs/${id}`);
+        },
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ['costs'] });
+            toast({
+                title: "✅ Success",
+                description: "Cost was deleted successfully",
+            });
+        },
+        onError: () => {
+            toast({
+                title: "❌ Error",
+                description: "Something went wrong",
+            });
+        }
+    });
+
+    return query;
+}
