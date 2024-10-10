@@ -94,6 +94,7 @@ export class Task {
 
     public complete() {
         this.props.completedAt = new Date();
+        this.props.status = 'COMPLETED';
     }
 
 }
