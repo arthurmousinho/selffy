@@ -51,12 +51,18 @@ enum ProjectStatus {
   FINISHED
 }
 
+enum TaskStatus {
+  PENDING
+  COMPLETED
+}
+
 model Task {
   id          String       @id
   title       String
   description String
   createdAt   DateTime
   completedAt DateTime
+  status      TaskStatus
   dueDate     DateTime
   priority    TaskPriority
   project     Project      @relation(fields: [projectId], references: [id])

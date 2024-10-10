@@ -1,12 +1,14 @@
 import { randomUUID } from "crypto";
 import { Replace } from "src/utils/replace";
 
-export type TaskPriority = 'low' | 'medium' | 'high';
+export type TaskPriority = 'LOW' | 'MEDIUM' | 'HIGH';
+export type TaskStatus = 'PENDING' | 'COMPLETED';
 
 export interface TaskProps {
     title: string;
     description: string;
     dueDate: Date;
+    status: TaskStatus;
     priority: TaskPriority;
     projectId: string;
     createdAt: Date;
@@ -19,13 +21,14 @@ export class Task {
     private props: TaskProps;
 
     constructor(
-        props: Replace<TaskProps, { createdAt?: Date }>,
+        props: Replace<TaskProps, { createdAt?: Date, status?: TaskStatus }>,
         id?: string
     ) {
         this._id = id ?? randomUUID();
         this.props = {
             ...props,
             createdAt: props.createdAt ?? new Date(),
+            status: props.status ?? 'PENDING',
         };
     }
 
@@ -55,6 +58,14 @@ export class Task {
 
     public setDueDate(dueDate: Date) {
         this.props.dueDate = dueDate;
+    }
+
+    public getStatus() {
+        return this.props.status;
+    }
+
+    public setStatus(status: TaskStatus) {
+        this.props.status = status;
     }
 
     public getPriority() {

@@ -39,9 +39,9 @@ describe('Task', () => {
 
     it('should allow setting a priority', () => {
         const task = makeTask();
-        task.setPriority('high');
+        task.setPriority('HIGH');
 
-        expect(task.getPriority()).toBe('high');
+        expect(task.getPriority()).toBe('HIGH');
     });
 
     it('should allow setting a projectId', () => {
@@ -61,6 +61,29 @@ describe('Task', () => {
         expect(task.getCompletedAt()).toBeDefined();
         expect(task.getCompletedAt()).toBeInstanceOf(Date);
         expect(task.getCompletedAt()).not.toEqual(initialCompletedAt);
+    });
+
+    it('should default to PENDING status when created', () => {
+        const task = makeTask();
+
+        expect(task.getStatus()).toBe('PENDING');
+    });
+
+    it('should allow setting the status to COMPLETED', () => {
+        const task = makeTask();
+
+        task.setStatus('COMPLETED');
+        expect(task.getStatus()).toBe('COMPLETED');
+    });
+
+    it('should allow setting the status back to PENDING', () => {
+        const task = makeTask();
+
+        task.setStatus('COMPLETED');
+        expect(task.getStatus()).toBe('COMPLETED');
+
+        task.setStatus('PENDING');
+        expect(task.getStatus()).toBe('PENDING');
     });
 
 });

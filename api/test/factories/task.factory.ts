@@ -10,7 +10,7 @@ export function makeTask(props?: { title: string, description: string }) {
         title: props?.title ?? 'Test Task',
         description: props?.description ?? 'This is a test task',
         dueDate,
-        priority: 'medium',
+        priority: 'MEDIUM',
         projectId,
     }, taskId);
 
