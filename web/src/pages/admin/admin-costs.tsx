@@ -1,7 +1,24 @@
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
+import { 
+    Card, 
+    CardContent, 
+    CardFooter, 
+    CardHeader 
+} from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight, Filter, Folder, FolderOpen, MoreVertical, Pencil, Plus, RefreshCcw, Trash } from "lucide-react";
+import { 
+    ChevronLeft, 
+    ChevronRight, 
+    ChevronsLeft, 
+    ChevronsRight, 
+    Filter, 
+    Folder, 
+    FolderOpen, 
+    Pencil, 
+    Plus, 
+    RefreshCcw, 
+    Trash 
+} from "lucide-react";
 import {
     Table,
     TableBody,
@@ -10,12 +27,6 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table"
-import {
-    DropdownMenu,
-    DropdownMenuContent,
-    DropdownMenuItem,
-    DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
 import {
     Select,
     SelectContent,
@@ -26,10 +37,13 @@ import {
 import { Label } from "@/components/ui/label";
 import { DetailsDialog } from "@/components/global/details-dialog";
 import { formatCurrency } from "@/utils/format-currency";
-import { getMockCosts } from "@/mocks/get-costs";
-
+import { NewCostDialog } from "@/components/admin/cost/new-cost-dialog";
+import { getAllCosts } from "@/hooks/use-cost";
 
 export function AdminCosts() {
+
+    const { data: getAllCostsData, refetch: refetchCosts } = getAllCosts();
+
     return (
         <Card>
             <CardHeader className="flex flex-row items-center justify-between border-b">
@@ -52,75 +66,57 @@ export function AdminCosts() {
                         <Filter size={20} />
                         Filter
                     </Button>
-                    <Button variant={'outline'} className="flex items-center gap-2 text-muted-foreground">
+                    <Button 
+                        variant={'outline'} 
+                        className="flex items-center gap-2 text-muted-foreground"
+                        onClick={() => refetchCosts()}
+                    >
                         <RefreshCcw size={20} />
                         Refresh
                     </Button>
-                    <Button className="flex items-center gap-2">
-                        <Plus size={20} />
-                        New Cost
-                    </Button>
+                    <NewCostDialog>
+                        <Button className="flex items-center gap-2">
+                            <Plus size={20} />
+                            New Cost
+                        </Button>
+                    </NewCostDialog>
                 </div>
             </CardHeader>
             <CardContent className="pt-4">
                 <Table>
                     <TableHeader>
                         <TableRow>
-                            <TableHead>ID</TableHead>
                             <TableHead>Title</TableHead>
                             <TableHead className="text-left">Value</TableHead>
-                            <TableHead className="text-right">Options</TableHead>
+                            <TableHead className="text-left">PrejectId</TableHead>
+                            <TableHead className="text-right">Details</TableHead>
+                            <TableHead className="text-right">Edit</TableHead>
+                            <TableHead className="text-right">Delete</TableHead>
                         </TableRow>
                     </TableHeader>
                     <TableBody>
                         {
-                            getMockCosts().map((cost) => (
+                            getAllCostsData?.costs.map((cost) => (
                                 <TableRow key={cost.id}>
-                                    <TableCell>{cost.id}</TableCell>
                                     <TableCell>{cost.title}</TableCell>
                                     <TableCell>{formatCurrency(cost.value)}</TableCell>
+                                    <TableCell>{cost.projectId}</TableCell>
                                     <TableCell className="text-right">
-                                        <DropdownMenu>
-                                            <DropdownMenuTrigger asChild>
-                                                <Button variant={'outline'} className="text-muted-foreground">
-                                                    <MoreVertical size={20} />
-                                                </Button>
-                                            </DropdownMenuTrigger>
-                                            <DropdownMenuContent>
-                                                <DropdownMenuItem className="cursor-pointer p-2" onSelect={(e) => e.preventDefault()}>
-                                                    <DetailsDialog data={cost}>
-                                                        <div className="flex items-center gap-2">
-                                                            <div className="w-10 h-10 border flex items-center justify-center rounded-xl">
-                                                                <span className="text-sm">
-                                                                    <Folder size={20} className="text-black" />
-                                                                </span>
-                                                            </div>
-                                                            Details
-                                                        </div>
-                                                    </DetailsDialog>
-                                                </DropdownMenuItem>
-                                                <DropdownMenuItem className="cursor-pointer p-2" >
-                                                    <div className="flex items-center gap-2">
-                                                        <div className="w-10 h-10 border flex items-center justify-center rounded-xl">
-                                                            <span className="text-sm">
-                                                                <Pencil size={20} className="text-black" />
-                                                            </span>
-                                                        </div>
-                                                        Edit
-                                                    </div>
-                                                </DropdownMenuItem>
-                                                <DropdownMenuItem className="cursor-pointer p-2">
-                                                    <div className="flex items-center gap-2">
-                                                        <div className="w-10 h-10 border flex items-center justify-center rounded-xl">
-                                                            <span className="text-sm">
-                                                                <Trash size={20} className="text-black" />
-                                                            </span>
-                                                        </div>
-                                                        Delete
-                                                    </div>
-                                                </DropdownMenuItem>
-                                            </DropdownMenuContent>
-                                        </DropdownMenu>
+                                        <DetailsDialog data={cost}>
+                                            <Button className="text-muted-foreground" variant={'outline'}>
+                                                <Folder size={20} />
+                                            </Button>
+                                        </DetailsDialog>
+                                    </TableCell>
+                                    <TableCell className="text-right">
+                                        <Button className="text-muted-foreground" variant={'outline'}>
+                                            <Pencil size={20} />
+                                        </Button>
+                                    </TableCell>
+                                    <TableCell className="flex justify-end">
+                                        <Button className="text-muted-foreground" variant={'outline'}>
+                                            <Trash size={20} />
+                                        </Button>
                                     </TableCell>
                                 </TableRow>
                             ))
