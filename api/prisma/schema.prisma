@@ -61,7 +61,7 @@ model Task {
   title       String
   description String
   createdAt   DateTime
-  completedAt DateTime
+  completedAt DateTime?
   status      TaskStatus
   dueDate     DateTime
   priority    TaskPriority

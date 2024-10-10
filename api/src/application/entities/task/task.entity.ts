@@ -12,7 +12,7 @@ export interface TaskProps {
     priority: TaskPriority;
     projectId: string;
     createdAt: Date;
-    completedAt?: Date | null;
+    completedAt: Date | null;
 }
 
 export class Task {
