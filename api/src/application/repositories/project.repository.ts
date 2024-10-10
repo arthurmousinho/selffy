@@ -8,5 +8,6 @@ export abstract class ProjectRepository {
     abstract delete(id: string): Promise<void>;
     abstract count(): Promise<number>;
     abstract findManyByTitle(title: string): Promise<Project[]>;
+    abstract findByStatus(status: ProjectStatus): Promise<Project[]>;
     abstract countByStatus(status: ProjectStatus): Promise<number>;
 }

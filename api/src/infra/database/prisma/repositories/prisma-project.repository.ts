@@ -90,4 +90,16 @@ export class PrismaProjectRepository implements ProjectRepository {
         });
     }
 
+    public async findByStatus(status: ProjectStatus): Promise<Project[]> {
+        const projects = await this.prismaService.project.findMany({
+            where: {
+                status
+            },
+            include: {
+                owner: true
+            }
+        });
+        return projects.map(PrismaProjectMapper.toDomain);
+    }
+
 }

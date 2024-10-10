@@ -54,4 +54,10 @@ export class InMemoryProjectRepository implements ProjectRepository {
         ).length;
     }
 
+    public async findByStatus(status: ProjectStatus): Promise<Project[]> {
+        return this.projects.filter(
+            (project) => project.getStatus() === status
+        );
+    }
+
 }
