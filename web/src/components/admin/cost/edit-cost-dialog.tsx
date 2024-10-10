@@ -27,13 +27,14 @@ import {
     SelectValue
 } from "@/components/ui/select";
 import { getAllProjects, ProjectProps } from "@/hooks/use-project";
-import { createCost } from "@/hooks/use-cost";
+import { CostProps, updateCost } from "@/hooks/use-cost";
 
-interface NewCostDialogProps {
+interface EditCostDialogProps {
+    data: CostProps;
     children: React.ReactNode;
 }
 
-export function NewCostDialog(props: NewCostDialogProps) {
+export function EditCostDialog(props: EditCostDialogProps) {
 
     const formSchema = z.object({
         title: z
@@ -51,14 +52,20 @@ export function NewCostDialog(props: NewCostDialogProps) {
     });
 
     const form = useForm<z.infer<typeof formSchema>>({
-        resolver: zodResolver(formSchema)
+        resolver: zodResolver(formSchema),
+        defaultValues: {
+            title: props.data.title,
+            value: props.data.value,
+            projectId: props.data.projectId,
+        }
     })
 
     const { data: getAllProjectsData } = getAllProjects();
-    const { mutate: createCostFn } = createCost();
+    const { mutate: updateCostFn } = updateCost();
 
     function onSubmit(values: z.infer<typeof formSchema>) {
-        createCostFn({
+        updateCostFn({
+            id: props.data.id,
             title: values.title,
             value: values.value,
             projectId: values.projectId,
@@ -73,7 +80,7 @@ export function NewCostDialog(props: NewCostDialogProps) {
             <DialogContent>
                 <DialogHeader className="space-y-4">
                     <DialogTitle>
-                        New Cost
+                        Edit Cost
                     </DialogTitle>
                     <DialogDescription>
                         <Form {...form}>
@@ -106,7 +113,7 @@ export function NewCostDialog(props: NewCostDialogProps) {
                                                     placeholder="Ex: R$ 200,00"
                                                     onChange={(e) => field.onChange(Number(e.target.value))}
                                                     type="number"
-
+                                                    defaultValue={props.data.value}
                                                 />
                                             </FormControl>
                                             <FormMessage />
@@ -122,6 +129,7 @@ export function NewCostDialog(props: NewCostDialogProps) {
                                             <FormControl>
                                                 <Select
                                                     onValueChange={(value) => field.onChange(value)}
+                                                    defaultValue={field.value}
                                                 >
                                                     <SelectTrigger>
                                                         <SelectValue placeholder="Select the project" />

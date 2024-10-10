@@ -40,6 +40,7 @@ import { formatCurrency } from "@/utils/format-currency";
 import { NewCostDialog } from "@/components/admin/cost/new-cost-dialog";
 import { deleteCost, getAllCosts } from "@/hooks/use-cost";
 import { DeleteAlertDialog } from "@/components/global/delete-alert-dialog";
+import { EditCostDialog } from "@/components/admin/cost/edit-cost-dialog";
 
 export function AdminCosts() {
 
@@ -111,9 +112,11 @@ export function AdminCosts() {
                                         </DetailsDialog>
                                     </TableCell>
                                     <TableCell className="text-right">
-                                        <Button className="text-muted-foreground" variant={'outline'}>
-                                            <Pencil size={20} />
-                                        </Button>
+                                        <EditCostDialog data={cost} > 
+                                            <Button className="text-muted-foreground" variant={'outline'}>
+                                                <Pencil size={20} />
+                                            </Button>
+                                        </EditCostDialog>
                                     </TableCell>
                                     <TableCell className="flex justify-end">
                                         <DeleteAlertDialog

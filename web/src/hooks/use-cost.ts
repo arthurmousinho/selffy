@@ -3,7 +3,7 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import { useToast } from "./use-toast";
 import { queryClient } from "@/main";
 
-interface CostProps {
+export interface CostProps {
     id: string;
     title: string;
     value: number;
@@ -77,5 +77,35 @@ export function deleteCost() {
         }
     });
 
+    return query;
+}
+
+interface UpdateCostRequest {
+    id: string;
+    title: string;
+    value: number;
+    projectId: string;
+}
+
+export function updateCost() {
+    const { toast } = useToast();
+    const query = useMutation({
+        mutationFn: async (data: UpdateCostRequest) => {
+            return await axios.put('/costs', data);
+        },
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ['costs'] });
+            toast({
+                title: "✅ Success",
+                description: "Cost was updated successfully",
+            });
+        },
+        onError: () => {
+            toast({
+                title: "❌ Error",
+                description: "Something went wrong",
+            });
+        }
+    });
     return query;
 }
