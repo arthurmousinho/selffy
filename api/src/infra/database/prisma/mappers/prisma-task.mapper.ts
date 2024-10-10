@@ -21,7 +21,7 @@ export class PrismaTaskMapper {
         return new Task({
             title: raw.title,
             createdAt: raw.createdAt,
-            completedAt: raw.completedAt,
+            completedAt: raw.completedAt ?? undefined,
             dueDate: raw.dueDate,
             description: raw.description,
             priority: raw.priority,

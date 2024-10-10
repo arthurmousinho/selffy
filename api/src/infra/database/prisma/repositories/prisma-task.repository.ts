@@ -2,8 +2,10 @@ import { TaskRepository } from "@application/repositories/task.repository";
 import { PrismaService } from "../prisma.service";
 import { Task, TaskPriority, TaskStatus } from "@application/entities/task/task.entity";
 import { PrismaTaskMapper } from "../mappers/prisma-task.mapper";
+import { Injectable } from "@nestjs/common";
 
-export class PrimaTaskRepository implements TaskRepository {
+@Injectable()
+export class PrismaTaskRepository implements TaskRepository {
 
     constructor(
         private readonly prismaService: PrismaService

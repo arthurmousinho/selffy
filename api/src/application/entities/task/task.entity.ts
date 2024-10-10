@@ -21,13 +21,14 @@ export class Task {
     private props: TaskProps;
 
     constructor(
-        props: Replace<TaskProps, { createdAt?: Date, status?: TaskStatus }>,
+        props: Replace<TaskProps, { createdAt?: Date, status?: TaskStatus, completedAt?: Date }>,
         id?: string
     ) {
         this._id = id ?? randomUUID();
         this.props = {
             ...props,
             createdAt: props.createdAt ?? new Date(),
+            completedAt: props.completedAt ?? null,
             status: props.status ?? 'PENDING',
         };
     }

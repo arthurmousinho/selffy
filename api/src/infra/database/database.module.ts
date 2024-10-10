@@ -8,6 +8,8 @@ import { ProjectRepository } from '@application/repositories/project.repository'
 import { PrismaProjectRepository } from './prisma/repositories/prisma-project.repository';
 import { CostRepository } from '@application/repositories/cost.repository';
 import { PrismaCostRepository } from './prisma/repositories/prisma-cost.repository';
+import { TaskRepository } from '@application/repositories/task.repository';
+import { PrismaTaskRepository } from './prisma/repositories/prisma-task.repository';
 
 @Global()
 @Module({
@@ -16,13 +18,15 @@ import { PrismaCostRepository } from './prisma/repositories/prisma-cost.reposito
     { provide: UserRepository, useClass: PrismaUserRepository },
     { provide: RoleRepository, useClass: PrismaRoleRepository },
     { provide: ProjectRepository, useClass: PrismaProjectRepository },
-    { provide: CostRepository, useClass: PrismaCostRepository }
+    { provide: CostRepository, useClass: PrismaCostRepository },
+    { provide: TaskRepository, useClass: PrismaTaskRepository }
   ],
   exports: [
     UserRepository,
     RoleRepository,
     ProjectRepository,
-    CostRepository
+    CostRepository,
+    TaskRepository
   ],
 })
-export class DatabaseModule {}
+export class DatabaseModule { }
