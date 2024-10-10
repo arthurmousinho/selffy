@@ -6,4 +6,5 @@ export abstract class CostRepository {
     abstract findById(id: string): Promise<Cost | null>;
     abstract update(cost: Cost): Promise<void>;
     abstract delete(id: string): Promise<void>;
+    abstract searchByTitle(title: string): Promise<Cost[]>;
 }

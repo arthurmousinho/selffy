@@ -25,7 +25,7 @@ describe('Update Cost UseCase', () => {
     });
 
     it('should throw an error if the cost does not exist', async () => {
-        const nonExistentCost = makeCost(); // Simulando um custo que não foi salvo no repositório
+        const nonExistentCost = makeCost(); 
 
         await expect(updateCostUseCase.execute({
             id: nonExistentCost.getId(),

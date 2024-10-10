@@ -38,14 +38,28 @@ import { Label } from "@/components/ui/label";
 import { DetailsDialog } from "@/components/global/details-dialog";
 import { formatCurrency } from "@/utils/format-currency";
 import { NewCostDialog } from "@/components/admin/cost/new-cost-dialog";
-import { deleteCost, getAllCosts } from "@/hooks/use-cost";
+import { CostProps, deleteCost, getAllCosts, searchCostsByTitle } from "@/hooks/use-cost";
 import { DeleteAlertDialog } from "@/components/global/delete-alert-dialog";
 import { EditCostDialog } from "@/components/admin/cost/edit-cost-dialog";
+import { useEffect, useState } from "react";
 
 export function AdminCosts() {
 
+    const [costsData, setCostsData] = useState<CostProps[]>([]);
+    const [searchTerm, setSearchTerm] = useState<string>('');
+
     const { data: getAllCostsData, refetch: refetchCosts } = getAllCosts();
-    const { mutate: deleteCostFn } = deleteCost()
+    const { mutate: deleteCostFn } = deleteCost();
+    const { data: searchCostsByTitleData } = searchCostsByTitle(searchTerm);
+
+    useEffect(() => {
+        if (!searchTerm && getAllCostsData) {
+            setCostsData(getAllCostsData?.costs);
+        }
+        if (searchCostsByTitleData) {
+            setCostsData(searchCostsByTitleData.costs);
+        }
+    }, [getAllCostsData, searchCostsByTitleData, searchTerm]);
 
     return (
         <Card>
@@ -64,6 +78,8 @@ export function AdminCosts() {
                     <Input
                         placeholder="Search..."
                         className="w-[250px]"
+                        type="search"
+                        onChange={(e) => setSearchTerm(e.target.value)}
                     />
                     <Button variant={'outline'} className="flex items-center gap-2 text-muted-foreground">
                         <Filter size={20} />
@@ -99,7 +115,7 @@ export function AdminCosts() {
                     </TableHeader>
                     <TableBody>
                         {
-                            getAllCostsData?.costs.map((cost) => (
+                            costsData.map((cost) => (
                                 <TableRow key={cost.id}>
                                     <TableCell>{cost.title}</TableCell>
                                     <TableCell>{formatCurrency(cost.value)}</TableCell>

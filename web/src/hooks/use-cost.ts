@@ -109,3 +109,21 @@ export function updateCost() {
     });
     return query;
 }
+
+interface SearchCostsByTitleResponse {
+    costs: CostProps[]
+}
+
+export function searchCostsByTitle(title?: string) {
+    const query = useQuery({
+        queryKey: ['costs', title],
+        queryFn: async () => {
+            const response = await axios.get(`/costs/${title}`);
+            return response.data as SearchCostsByTitleResponse;
+        },
+        enabled: !!title,
+        staleTime: 5000
+    });
+
+    return query;
+}

@@ -29,4 +29,8 @@ export class InMemoryCostRepository implements CostRepository {
         this.costs = this.costs.filter(cost => cost.getId() !== id);
     }
 
+    public async searchByTitle(title: string): Promise<Cost[]> {
+        return this.costs.filter(cost => cost.getTitle().toLowerCase().includes(title.toLowerCase()));
+    }
+
 }

@@ -52,7 +52,7 @@ export class ProjectController {
     }
 
     @Get(':title')
-    public async searchByKey(@Param('title') title: string) {
+    public async searchByTitle(@Param('title') title: string) {
         const projectsFound = await this.searchProjectByTitle.execute(title);
         return { projects: projectsFound.map(ProjectViewModel.toHTTP) };
     }

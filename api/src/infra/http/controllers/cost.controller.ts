@@ -7,7 +7,7 @@ import { FindProjectByIdUseCase } from "@application/use-cases/project/find-proj
 import { DeleteCostUseCase } from "@application/use-cases/cost/delete-cost/delete-cost.usecase";
 import { UpdateCostBody } from "../dtos/cost/update-cost.dto";
 import { UpdateCostUseCase } from "@application/use-cases/cost/update-cost/update-cost.usecase";
-import { Cost } from "@application/entities/cost/cost.entity";
+import { SearchCostsByTitleUseCase } from "@application/use-cases/cost/search-costs-by-title/search-costs-by-title.usecase";
 
 
 @Controller('costs')
@@ -19,6 +19,7 @@ export class CostController {
         private findProjectByIdUseCase: FindProjectByIdUseCase,
         private deleteCostUseCase: DeleteCostUseCase,
         private updateCostUseCase: UpdateCostUseCase,
+        private searchCostByTitle: SearchCostsByTitleUseCase
     ) { }
 
     @Get()
@@ -46,6 +47,12 @@ export class CostController {
     @Delete(':id')
     public async delete(@Param('id') id: string) {
         await this.deleteCostUseCase.execute(id);
+    }
+
+    @Get(':title')
+    public async searchByTitle(@Param('title') title: string) {
+        const costsFound = await this.searchCostByTitle.execute(title);
+        return { costs: costsFound.map(CostViewModel.toHTTP) };
     }
 
 }

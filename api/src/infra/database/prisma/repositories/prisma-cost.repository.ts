@@ -73,4 +73,23 @@ export class PrismaCostRepository implements CostRepository {
         });
     }
 
+    public async searchByTitle(title: string): Promise<Cost[]> {
+        const costs = await this.prismaService.cost.findMany({
+            where: {
+                title: {
+                    contains: title,
+                    mode: 'insensitive'
+                }
+            },
+            include: {
+                project: {
+                    include: {
+                        owner: true
+                    }
+                }
+            }
+        });
+        return costs.map(PrismaCostMapper.toDomain);
+    }
+
 }
