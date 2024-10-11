@@ -27,6 +27,7 @@ import {
 import { Label } from "@/components/ui/label";
 import { DetailsDialog } from "@/components/global/details-dialog";
 import { getMockTasks } from "@/mocks/get-tasks";
+import { NewTaskDialog } from "@/components/admin/task/new-task-dialog";
 
 export function AdminTasks() {
     return (
@@ -55,10 +56,12 @@ export function AdminTasks() {
                         <RefreshCcw size={20} />
                         Refresh
                     </Button>
-                    <Button className="flex items-center gap-2">
-                        <Plus size={20} />
-                        New Task
-                    </Button>
+                    <NewTaskDialog>
+                        <Button className="flex items-center gap-2">
+                            <Plus size={20} />
+                            New Task
+                        </Button>
+                    </NewTaskDialog>
                 </div>
             </CardHeader>
             <CardContent className="pt-4">
@@ -84,7 +87,7 @@ export function AdminTasks() {
                                                 <Badge>
                                                     high
                                                 </Badge>
-                                            ) : task.priorityId === 'MEDIUM' ? (
+                                            ) : task.priority === 'MEDIUM' ? (
                                                 <Badge variant={'secondary'}>
                                                     medium
                                                 </Badge>

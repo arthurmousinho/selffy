@@ -137,3 +137,14 @@ export function searchProjectsByTitle(title?: string) {
 
     return query;
 }
+
+export function getInProgressProjects() {
+    const query = useQuery({
+        queryKey: ['projects', 'in-progress'],
+        queryFn: async () => {
+            const response = await axios.get('/projects/status/IN_PROGRESS');
+            return response.data as GetAllProjectsResponse;
+        }
+    });
+    return query;
+}
