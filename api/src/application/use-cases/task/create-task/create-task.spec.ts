@@ -7,6 +7,7 @@ import { ProjectRepository } from "@application/repositories/project.repository"
 import { InMemoryProjectRepository } from "@test/repositories/in-memory-project.repository";
 import { makeProject } from "@test/factories/project.factory";
 import { ProjectAlreadyFinishedError } from "@application/errors/project/project-already-finished.error";
+import { TaskDueDateInPastError } from "@application/errors/task/task-due-date-in-past.error";
 
 describe('Create Task UseCase', () => {
     
@@ -60,6 +61,27 @@ describe('Create Task UseCase', () => {
             priority: newTask.getPriority(),
             projectId: finishedProject.getId(),
         })).rejects.toThrow(ProjectAlreadyFinishedError);
+
+        const tasks = await taskRepository.findAll();
+        expect(tasks.length).toBe(0);
+    });
+
+    it('should throw an error if the due date is in the past', async () => {
+        const activeProject = makeProject({ status: 'IN_PROGRESS' });
+        await projectRepository.create(activeProject);
+
+        const newTask = makeTask({ 
+            projectId: activeProject.getId(),
+            dueDate: new Date('1900-10-01T00:00:00.000Z') 
+        });
+
+        await expect(createTaskUseCase.execute({
+            title: newTask.getTitle(),
+            description: newTask.getDescription(),
+            dueDate: newTask.getDueDate(),
+            priority: newTask.getPriority(),
+            projectId: activeProject.getId(),
+        })).rejects.toThrow(TaskDueDateInPastError);
 
         const tasks = await taskRepository.findAll();
         expect(tasks.length).toBe(0);
