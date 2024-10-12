@@ -1,7 +1,24 @@
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
+import { 
+    Card, 
+    CardContent,
+    CardFooter, 
+    CardHeader 
+} from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { CheckCheck, ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight, Filter, Folder, MoreVertical, Pencil, Plus, RefreshCcw, Trash } from "lucide-react";
+import { 
+    CheckCheck, 
+    ChevronLeft, 
+    ChevronRight, 
+    ChevronsLeft, 
+    ChevronsRight, 
+    Filter, 
+    Folder, 
+    Pencil, 
+    Plus, 
+    RefreshCcw, 
+    Trash 
+} from "lucide-react";
 import {
     Table,
     TableBody,
@@ -10,12 +27,6 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table"
-import {
-    DropdownMenu,
-    DropdownMenuContent,
-    DropdownMenuItem,
-    DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
 import { Badge } from "@/components/ui/badge";
 import {
     Select,
@@ -26,10 +37,14 @@ import {
 } from "@/components/ui/select"
 import { Label } from "@/components/ui/label";
 import { DetailsDialog } from "@/components/global/details-dialog";
-import { getMockTasks } from "@/mocks/get-tasks";
 import { NewTaskDialog } from "@/components/admin/task/new-task-dialog";
+import { getAllTasks, TaskProps } from "@/hooks/use-task";
+import { DeleteAlertDialog } from "@/components/global/delete-alert-dialog";
 
 export function AdminTasks() {
+
+    const { data: getAllTasksData, refetch: refetchTasksFn } = getAllTasks();
+
     return (
         <Card>
             <CardHeader className="flex flex-row items-center justify-between border-b">
@@ -52,7 +67,11 @@ export function AdminTasks() {
                         <Filter size={20} />
                         Filter
                     </Button>
-                    <Button variant={'outline'} className="flex items-center gap-2 text-muted-foreground">
+                    <Button 
+                        variant={'outline'} 
+                        className="flex items-center gap-2 text-muted-foreground"
+                        onClick={() => refetchTasksFn()}
+                    >
                         <RefreshCcw size={20} />
                         Refresh
                     </Button>
@@ -69,18 +88,18 @@ export function AdminTasks() {
                     <TableHeader>
                         <TableRow>
                             <TableHead>Title</TableHead>
-                            <TableHead className="text-left">Due Date</TableHead>
                             <TableHead className="text-left">Priority</TableHead>
-                            <TableHead className="text-left">Project ID</TableHead>
-                            <TableHead className="text-right">Options</TableHead>
+                            <TableHead className="text-left">Project Id</TableHead>
+                            <TableHead className="text-right">Details</TableHead>
+                            <TableHead className="text-right">Edit</TableHead>
+                            <TableHead className="text-right">Delete</TableHead>
                         </TableRow>
                     </TableHeader>
                     <TableBody>
                         {
-                            getMockTasks().map((task) => (
+                            getAllTasksData?.tasks.map((task: TaskProps) => (
                                 <TableRow key={task.id}>
-                                    <TableCell>{task.title}</TableCell>
-                                    <TableCell className="max-w-[100px] truncate">{task.dueDate}</TableCell>
+                                    <TableCell className="truncate max-w-[200px]">{task.title}</TableCell>
                                     <TableCell>
                                         {
                                             task.priority === 'HIGH' ? (
@@ -100,47 +119,25 @@ export function AdminTasks() {
                                     </TableCell>
                                     <TableCell>{task.projectId}</TableCell>
                                     <TableCell className="text-right">
-                                        <DropdownMenu>
-                                            <DropdownMenuTrigger asChild>
-                                                <Button variant={'outline'} className="text-muted-foreground">
-                                                    <MoreVertical size={20} />
-                                                </Button>
-                                            </DropdownMenuTrigger>
-                                            <DropdownMenuContent>
-                                                <DropdownMenuItem className="cursor-pointer p-2" onSelect={(e) => e.preventDefault()}>
-                                                    <DetailsDialog data={task}>
-                                                        <div className="flex items-center gap-2">
-                                                            <div className="w-10 h-10 border flex items-center justify-center rounded-xl">
-                                                                <span className="text-sm">
-                                                                    <Folder size={20} className="text-black" />
-                                                                </span>
-                                                            </div>
-                                                            Details
-                                                        </div>
-                                                    </DetailsDialog>
-                                                </DropdownMenuItem>
-                                                <DropdownMenuItem className="cursor-pointer p-2" >
-                                                    <div className="flex items-center gap-2">
-                                                        <div className="w-10 h-10 border flex items-center justify-center rounded-xl">
-                                                            <span className="text-sm">
-                                                                <Pencil size={20} className="text-black" />
-                                                            </span>
-                                                        </div>
-                                                        Edit
-                                                    </div>
-                                                </DropdownMenuItem>
-                                                <DropdownMenuItem className="cursor-pointer p-2">
-                                                    <div className="flex items-center gap-2">
-                                                        <div className="w-10 h-10 border flex items-center justify-center rounded-xl">
-                                                            <span className="text-sm">
-                                                                <Trash size={20} className="text-black" />
-                                                            </span>
-                                                        </div>
-                                                        Delete
-                                                    </div>
-                                                </DropdownMenuItem>
-                                            </DropdownMenuContent>
-                                        </DropdownMenu>
+                                        <DetailsDialog data={task}>
+                                            <Button className="text-muted-foreground" variant={'outline'}>
+                                                <Folder size={20} />
+                                            </Button>
+                                        </DetailsDialog>
+                                    </TableCell>
+                                    <TableCell className="text-right">
+                                        <Button className="text-muted-foreground" variant={'outline'}>
+                                            <Pencil size={20} />
+                                        </Button>
+                                    </TableCell>
+                                    <TableCell className="flex justify-end">
+                                        <DeleteAlertDialog
+                                            onDelete={() => { }}
+                                        >
+                                            <Button className="text-muted-foreground" variant={'outline'}>
+                                                <Trash size={20} />
+                                            </Button>
+                                        </DeleteAlertDialog>
                                     </TableCell>
                                 </TableRow>
                             ))

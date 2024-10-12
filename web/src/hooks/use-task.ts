@@ -1,8 +1,33 @@
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { useToast } from "./use-toast";
 import { axios } from "@/lib/axios";
 import { queryClient } from "@/main";
 
+export interface TaskProps {
+    id: string;
+    title: string;
+    description: string;
+    dueDate: Date;
+    priority: "LOW" | "MEDIUM" | "HIGH";
+    projectId: string;
+    createdAt: Date;
+    updatedAt: Date;
+}
+
+interface GetAllTasksResponse {
+    tasks: TaskProps[]
+}
+
+export function getAllTasks() {
+    const query = useQuery({
+        queryKey: ['tasks'],
+        queryFn: async () => {
+            const response = await axios.get('/tasks');
+            return response.data as GetAllTasksResponse;
+        }
+    })
+    return query;
+}
 
 interface CreateTaskProps {
     title: string;
