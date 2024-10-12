@@ -92,4 +92,18 @@ export class PrismaCostRepository implements CostRepository {
         return costs.map(PrismaCostMapper.toDomain);
     }
 
+    public async count(): Promise<number> {
+        const count = await this.prismaService.cost.count();
+        return count;
+    }
+
+    public async sumValues(): Promise<number> {
+        const sum = await this.prismaService.cost.aggregate({
+            _sum: {
+                value: true
+            }
+        });
+        return sum._sum.value || 0;
+    }
+
 }

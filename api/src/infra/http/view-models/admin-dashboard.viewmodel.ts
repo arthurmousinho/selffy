@@ -6,6 +6,8 @@ interface AdminDashboardProps {
     inProgressProjects: number;
     finishedProjects: number;
     totalRevenue: number;
+    costsCount: number;
+    costsTotalValue: number;
 }
 
 export class AdminDashboardViewModel {
@@ -22,6 +24,10 @@ export class AdminDashboardViewModel {
                 inProgress: dashboard.inProgressProjects,
                 finished: dashboard.finishedProjects,
                 totalRevenue: dashboard.totalRevenue
+            },
+            costs: {
+                total: dashboard.costsCount,
+                totalValue: dashboard.costsTotalValue
             }
         }
     }

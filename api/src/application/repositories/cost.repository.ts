@@ -7,4 +7,6 @@ export abstract class CostRepository {
     abstract update(cost: Cost): Promise<void>;
     abstract delete(id: string): Promise<void>;
     abstract searchByTitle(title: string): Promise<Cost[]>;
+    abstract count(): Promise<number>;
+    abstract sumValues(): Promise<number>;
 }

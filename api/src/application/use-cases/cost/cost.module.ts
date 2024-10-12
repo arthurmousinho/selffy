@@ -5,6 +5,8 @@ import { ProjectModule } from '../project/project.module';
 import { DeleteCostUseCase } from './delete-cost/delete-cost.usecase';
 import { UpdateCostUseCase } from './update-cost/update-cost.usecase';
 import { SearchCostsByTitleUseCase } from './search-costs-by-title/search-costs-by-title.usecase';
+import { CountCostsUseCase } from './count-costs/count-costs.usecase';
+import { GetCostsTotalValueUseCase } from './get-costs-total-value/get-costs-total-value.usecase';
 
 @Module({
     imports: [
@@ -15,14 +17,18 @@ import { SearchCostsByTitleUseCase } from './search-costs-by-title/search-costs-
         FindAllCostsUseCase,
         DeleteCostUseCase,
         UpdateCostUseCase,
-        SearchCostsByTitleUseCase
+        SearchCostsByTitleUseCase,
+        CountCostsUseCase,
+        GetCostsTotalValueUseCase
     ],
     exports: [
         CreateCostUseCase,
         FindAllCostsUseCase,
         DeleteCostUseCase,
         UpdateCostUseCase,
-        SearchCostsByTitleUseCase
+        SearchCostsByTitleUseCase,
+        CountCostsUseCase,
+        GetCostsTotalValueUseCase
     ]
 })
 

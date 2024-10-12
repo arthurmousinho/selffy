@@ -5,6 +5,8 @@ import { CountUsersByPlanUseCase } from "@application/use-cases/user/count-users
 import { CountUsersUseCase } from "@application/use-cases/user/count-users/count-users.usecase";
 import { Controller, Get } from "@nestjs/common";
 import { AdminDashboardViewModel } from "../view-models/admin-dashboard.viewmodel";
+import { CountCostsUseCase } from "@application/use-cases/cost/count-costs/count-costs.usecase";
+import { GetCostsTotalValueUseCase } from "@application/use-cases/cost/get-costs-total-value/get-costs-total-value.usecase";
 
 @Controller("/admin/dashboard")
 export class AdminDashboardController {
@@ -16,6 +18,9 @@ export class AdminDashboardController {
         private countProjectsUseCase: CountProjectsUseCase,
         private countProjectsByPlanUseCase: CountProjectByStatusUseCase,
         private getTotalRevenueUseCase: GetTotalRevenueUseCase,
+
+        private countCostsUseCase: CountCostsUseCase,
+        private getCostsTotalValueUseCase: GetCostsTotalValueUseCase
     ) {}
 
     @Get()
@@ -28,7 +33,10 @@ export class AdminDashboardController {
             projectsCount,
             inProgressProjectsCount,
             finishedProjectsCount,
-            totalRevenue,
+            projectsTotalRevenue,
+
+            costsCount,
+            costsTotalValue
         ] = await Promise.all([
             this.countUsersUseCase.execute(),
             this.countUsersByPlanUseCase.execute('FREE'),
@@ -38,6 +46,9 @@ export class AdminDashboardController {
             this.countProjectsByPlanUseCase.execute('IN_PROGRESS'),
             this.countProjectsByPlanUseCase.execute('FINISHED'),
             this.getTotalRevenueUseCase.execute(),
+
+            this.countCostsUseCase.execute(),
+            this.getCostsTotalValueUseCase.execute()
         ])
 
         return AdminDashboardViewModel.toHTTP({
@@ -47,7 +58,9 @@ export class AdminDashboardController {
             totalProjects: projectsCount,
             inProgressProjects: inProgressProjectsCount,
             finishedProjects: finishedProjectsCount,
-            totalRevenue
+            totalRevenue: projectsTotalRevenue,
+            costsCount,
+            costsTotalValue
         })
     }
 

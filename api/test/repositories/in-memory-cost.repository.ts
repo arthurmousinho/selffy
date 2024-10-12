@@ -33,4 +33,12 @@ export class InMemoryCostRepository implements CostRepository {
         return this.costs.filter(cost => cost.getTitle().toLowerCase().includes(title.toLowerCase()));
     }
 
+    public async count(): Promise<number> {
+        return this.costs.length;
+    }
+
+    public async sumValues(): Promise<number> {
+        return this.costs.reduce((acc, cost) => acc + cost.getValue(), 0);
+    }
+
 }
