@@ -12,6 +12,7 @@ export interface TaskProps {
     priority: TaskPriority;
     projectId: string;
     createdAt: Date;
+    updatedAt: Date;
     completedAt: Date | null;
 }
 
@@ -21,13 +22,19 @@ export class Task {
     private props: TaskProps;
 
     constructor(
-        props: Replace<TaskProps, { createdAt?: Date, status?: TaskStatus, completedAt?: Date }>,
+        props: Replace<TaskProps, { 
+            createdAt?: Date, 
+            status?: TaskStatus, 
+            completedAt?: Date | null,
+            updatedAt?: Date
+        }>,
         id?: string
     ) {
         this._id = id ?? randomUUID();
         this.props = {
             ...props,
             createdAt: props.createdAt ?? new Date(),
+            updatedAt: props.updatedAt ?? new Date(),
             completedAt: props.completedAt ?? null,
             status: props.status ?? 'PENDING',
         };
@@ -89,6 +96,14 @@ export class Task {
         return this.props.createdAt;
     }
     
+    public getUpdatedAt() {
+        return this.props.updatedAt;
+    }
+
+    public update() {
+        this.props.updatedAt = new Date();
+    }
+
     public getCompletedAt() {
         return this.props.completedAt;
     }

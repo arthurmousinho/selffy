@@ -30,6 +30,7 @@ export class CreateProjectUseCase {
             icon
         })
         await this.projectRepository.create(newProject);
+        return newProject;
     }
 
 }

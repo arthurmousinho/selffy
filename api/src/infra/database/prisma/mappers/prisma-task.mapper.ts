@@ -10,6 +10,7 @@ export class PrismaTaskMapper {
             createdAt: task.getCreatedAt(),
             completedAt: task.getCompletedAt(),
             dueDate: task.getDueDate(),
+            updatedAt: task.getUpdatedAt(),
             description: task.getDescription(),
             priority: task.getPriority(),
             projectId: task.getProjectId(),
@@ -21,8 +22,9 @@ export class PrismaTaskMapper {
         return new Task({
             title: raw.title,
             createdAt: raw.createdAt,
-            completedAt: raw.completedAt ?? undefined,
+            completedAt: raw.completedAt,
             dueDate: raw.dueDate,
+            updatedAt: raw.updatedAt,
             description: raw.description,
             priority: raw.priority,
             projectId: raw.projectId,

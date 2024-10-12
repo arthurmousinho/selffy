@@ -32,7 +32,8 @@ export class CreateTaskUseCase {
             dueDate,
             priority,
             projectId,
-            description
+            description,
+            completedAt: null
         });
 
         await this.taskRepository.create(newTask);

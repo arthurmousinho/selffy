@@ -1,23 +1,23 @@
 import { Button } from "@/components/ui/button";
-import { 
-    Card, 
+import {
+    Card,
     CardContent,
-    CardFooter, 
-    CardHeader 
+    CardFooter,
+    CardHeader
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { 
-    CheckCheck, 
-    ChevronLeft, 
-    ChevronRight, 
-    ChevronsLeft, 
-    ChevronsRight, 
-    Filter, 
-    Folder, 
-    Pencil, 
-    Plus, 
-    RefreshCcw, 
-    Trash 
+import {
+    CheckCheck,
+    ChevronLeft,
+    ChevronRight,
+    ChevronsLeft,
+    ChevronsRight,
+    Filter,
+    Folder,
+    Pencil,
+    Plus,
+    RefreshCcw,
+    Trash
 } from "lucide-react";
 import {
     Table,
@@ -68,8 +68,8 @@ export function AdminTasks() {
                         <Filter size={20} />
                         Filter
                     </Button>
-                    <Button 
-                        variant={'outline'} 
+                    <Button
+                        variant={'outline'}
                         className="flex items-center gap-2 text-muted-foreground"
                         onClick={() => refetchTasksFn()}
                     >
@@ -90,6 +90,7 @@ export function AdminTasks() {
                         <TableRow>
                             <TableHead>Title</TableHead>
                             <TableHead className="text-left">Priority</TableHead>
+                            <TableHead className="text-left">Status</TableHead>
                             <TableHead className="text-left">Project Id</TableHead>
                             <TableHead className="text-right">Details</TableHead>
                             <TableHead className="text-right">Edit</TableHead>
@@ -105,17 +106,30 @@ export function AdminTasks() {
                                         {
                                             task.priority === 'HIGH' ? (
                                                 <Badge>
-                                                    high
+                                                    HIGH
                                                 </Badge>
                                             ) : task.priority === 'MEDIUM' ? (
                                                 <Badge variant={'secondary'}>
-                                                    medium
+                                                    MEDIUM
                                                 </Badge>
                                             ) : (
                                                 <Badge variant={'outline'}>
-                                                    low
+                                                    LOW
                                                 </Badge>
                                             )
+                                        }
+                                    </TableCell>
+                                    <TableCell>
+                                        {
+                                            task.status === 'PENDING' ? (
+                                                <Badge variant={'secondary'}>
+                                                    PENDING
+                                                </Badge>
+                                            ) : (
+                                                <Badge>
+                                                    COMPLETED
+                                                </Badge>
+                                            ) 
                                         }
                                     </TableCell>
                                     <TableCell>{task.projectId}</TableCell>

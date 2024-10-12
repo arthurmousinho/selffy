@@ -8,6 +8,7 @@ export class TaskViewModel {
             title: task.getTitle(),
             description: task.getDescription(),
             createdAt: task.getCreatedAt(),
+            updatedAt: task.getUpdatedAt(),
             completedAt: task.getCompletedAt(),
             dueDate: task.getDueDate(),
             status: task.getStatus(),

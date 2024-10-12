@@ -9,6 +9,7 @@ export interface TaskProps {
     description: string;
     dueDate: Date;
     priority: "LOW" | "MEDIUM" | "HIGH";
+    status: "PENDING" | "COMPLETED";
     projectId: string;
     createdAt: Date;
     updatedAt: Date;
