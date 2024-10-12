@@ -84,3 +84,36 @@ export function deleteTask() {
     })
     return query;
 }
+
+interface UpdateTaskProps {
+    id: string;
+    title: string;
+    description: string;
+    status: "PENDING" | "COMPLETED";
+    dueDate: Date;
+    priority: "LOW" | "MEDIUM" | "HIGH";
+    projectId: string;
+}
+
+export function updateTask() {
+    const { toast } = useToast();
+    const query = useMutation({
+        mutationFn: async (data: UpdateTaskProps) => {
+            return await axios.put('/tasks', data);
+        },
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ['tasks'] });
+            toast({
+                title: "✅ Success",
+                description: "Task was updated successfully",
+            })
+        },
+        onError: () => {
+            toast({
+                title: "❌ Error",
+                description: "Something went wrong",
+            });
+        }
+    })
+    return query;
+}

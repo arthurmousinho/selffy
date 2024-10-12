@@ -16,17 +16,19 @@ import { CalendarIcon } from "lucide-react"
 import { format } from "date-fns"
 import { cn } from "@/lib/utils"
 import { Label } from '@/components/ui/label'
-import { createTask } from '@/hooks/use-task'
+import { TaskProps, updateTask } from '@/hooks/use-task'
 
-interface NewTaskDialogProps {
-    children: React.ReactNode
+interface EditTaskDialogProps {
+    children: React.ReactNode;
+    data: TaskProps;
 }
 
-export function NewTaskDialog(props: NewTaskDialogProps) {
+export function EditTaskDialog(props: EditTaskDialogProps) {
     const formSchema = z.object({
         title: z.string({ message: "Title is required" }).min(1, { message: "Title is required" }),
         description: z.string({ message: "Description is required" }).min(1, { message: "Description is required" }),
         dueDate: z.date({ message: "Due date is required" }),
+        status: z.enum(["PENDING", "COMPLETED"], { message: "Status is required" }),
         priority: z.enum(["LOW", "MEDIUM", "HIGH"], { message: "Priority is required" }),
         projectId: z.string({ message: "Project is required" }),
     })
@@ -34,18 +36,25 @@ export function NewTaskDialog(props: NewTaskDialogProps) {
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
-            dueDate: new Date(),
-        },
+            title: props.data.title,
+            description: props.data.description,
+            dueDate: props.data.dueDate,
+            status: props.data.status,
+            priority: props.data.priority,
+            projectId: props.data.projectId,
+        }
     })
 
     const { data: getInProgressProjectsData } = getInProgressProjects();
-    const { mutate: createTaskFn } = createTask();
+    const { mutate: updateTaskFn } = updateTask();
 
     function onSubmit(values: z.infer<typeof formSchema>) {
-        createTaskFn({
+        updateTaskFn({
+            id: props.data.id,
             title: values.title,
             description: values.description,
             dueDate: values.dueDate,
+            status: values.status,
             priority: values.priority,
             projectId: values.projectId,
         })
@@ -86,6 +95,32 @@ export function NewTaskDialog(props: NewTaskDialogProps) {
                                             placeholder="Ex: In this task we will create the initial structure of the application"
                                             {...field}
                                         />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+                        <FormField
+                            control={form.control}
+                            name="status"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>Status</FormLabel>
+                                    <FormControl>
+                                        <RadioGroup
+                                            value={field.value}
+                                            onValueChange={field.onChange}
+                                            className="flex items-center gap-10"
+                                        >
+                                            <div className="flex items-center space-x-2">
+                                                <RadioGroupItem value="PENDING" id="PENDING" />
+                                                <Label htmlFor="PENDING">Pending</Label>
+                                            </div>
+                                            <div className="flex items-center space-x-2">
+                                                <RadioGroupItem value="COMPLETED" id="COMPLETED" />
+                                                <Label htmlFor="COMPLETED">Completed</Label>
+                                            </div>
+                                        </RadioGroup>
                                     </FormControl>
                                     <FormMessage />
                                 </FormItem>

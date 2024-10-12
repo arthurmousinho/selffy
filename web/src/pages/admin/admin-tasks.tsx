@@ -40,6 +40,7 @@ import { DetailsDialog } from "@/components/global/details-dialog";
 import { NewTaskDialog } from "@/components/admin/task/new-task-dialog";
 import { deleteTask, getAllTasks, TaskProps } from "@/hooks/use-task";
 import { DeleteAlertDialog } from "@/components/global/delete-alert-dialog";
+import { EditTaskDialog } from "@/components/admin/task/edit-task-dialog";
 
 export function AdminTasks() {
 
@@ -129,7 +130,7 @@ export function AdminTasks() {
                                                 <Badge>
                                                     COMPLETED
                                                 </Badge>
-                                            ) 
+                                            )
                                         }
                                     </TableCell>
                                     <TableCell>{task.projectId}</TableCell>
@@ -141,9 +142,11 @@ export function AdminTasks() {
                                         </DetailsDialog>
                                     </TableCell>
                                     <TableCell className="text-right">
-                                        <Button className="text-muted-foreground" variant={'outline'}>
-                                            <Pencil size={20} />
-                                        </Button>
+                                        <EditTaskDialog data={task}>
+                                            <Button className="text-muted-foreground" variant={'outline'}>
+                                                <Pencil size={20} />
+                                            </Button>
+                                        </EditTaskDialog>
                                     </TableCell>
                                     <TableCell className="flex justify-end">
                                         <DeleteAlertDialog
