@@ -60,3 +60,26 @@ export function createTask() {
 
     return query;
 }
+
+export function deleteTask() {
+    const { toast } = useToast();
+    const query = useMutation({
+        mutationFn: async (id: string) => {
+            return await axios.delete(`/tasks/${id}`);
+        },
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ['tasks'] });
+            toast({
+                title: "✅ Success",
+                description: "Task was deleted successfully",
+            })
+        },
+        onError: () => {
+            toast({
+                title: "❌ Error",
+                description: "Something went wrong",
+            });
+        }
+    })
+    return query;
+}

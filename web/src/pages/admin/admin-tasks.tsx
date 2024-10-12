@@ -38,11 +38,12 @@ import {
 import { Label } from "@/components/ui/label";
 import { DetailsDialog } from "@/components/global/details-dialog";
 import { NewTaskDialog } from "@/components/admin/task/new-task-dialog";
-import { getAllTasks, TaskProps } from "@/hooks/use-task";
+import { deleteTask, getAllTasks, TaskProps } from "@/hooks/use-task";
 import { DeleteAlertDialog } from "@/components/global/delete-alert-dialog";
 
 export function AdminTasks() {
 
+    const { mutate: deleteTaskFn } = deleteTask();
     const { data: getAllTasksData, refetch: refetchTasksFn } = getAllTasks();
 
     return (
@@ -132,7 +133,7 @@ export function AdminTasks() {
                                     </TableCell>
                                     <TableCell className="flex justify-end">
                                         <DeleteAlertDialog
-                                            onDelete={() => { }}
+                                            onDelete={() => deleteTaskFn(task.id)}
                                         >
                                             <Button className="text-muted-foreground" variant={'outline'}>
                                                 <Trash size={20} />
