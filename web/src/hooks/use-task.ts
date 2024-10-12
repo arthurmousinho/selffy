@@ -117,3 +117,16 @@ export function updateTask() {
     })
     return query;
 }
+
+export function searchTasksByTitle(title?: string) {
+    const query = useQuery({
+        queryKey: ['tasks', title],
+        queryFn: async () => {
+            const response = await axios.get(`/tasks/${title}`);
+            return response.data as GetAllTasksResponse;
+        },
+        enabled: !!title,
+        staleTime: 5000
+    })
+    return query;
+}

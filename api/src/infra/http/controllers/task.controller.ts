@@ -6,6 +6,7 @@ import { TaskViewModel } from "../view-models/task.viewmodel";
 import { DeleteTaskUseCase } from "@application/use-cases/task/delete-task/delete-task.usecase";
 import { UpdateTaskBody } from "../dtos/task/update-task.dto";
 import { UpdateTaskUseCase } from "@application/use-cases/task/update-task/update-task.usecase";
+import { SearchTasksByTitleUseCase } from "@application/use-cases/task/search-tasks-by-title/search-tasks-by-title.usecase";
 
 @Controller('tasks')
 export class TaskController {
@@ -15,11 +16,18 @@ export class TaskController {
         private findAllTasksUseCase: FindAllTasksUseCase,
         private deleteTaskUseCase: DeleteTaskUseCase,
         private updateTaskUseCase: UpdateTaskUseCase,
+        private searchTasksByTitleUseCase: SearchTasksByTitleUseCase
     ) { }
 
     @Get()
     public async getTasks() {
         const tasks = await this.findAllTasksUseCase.execute();
+        return { tasks: tasks.map(TaskViewModel.toHTTP) };
+    }
+
+    @Get(':title')
+    public async getTaskByTitle(@Param('title') title: string) {
+        const tasks = await this.searchTasksByTitleUseCase.execute(title);
         return { tasks: tasks.map(TaskViewModel.toHTTP) };
     }
 

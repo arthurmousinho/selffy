@@ -5,6 +5,7 @@ import { FindAllTasksUseCase } from './find-all-tasks/find-all-tasks.usecase';
 import { FindTaskByIdUseCase } from './find-task-by-id/find-task-by-id.usecase';
 import { UpdateTaskUseCase } from './update-task/update-task.usecase';
 import { ProjectModule } from '../project/project.module';
+import { SearchTasksByTitleUseCase } from './search-tasks-by-title/search-tasks-by-title.usecase';
 
 @Module({
     imports: [
@@ -15,14 +16,16 @@ import { ProjectModule } from '../project/project.module';
         DeleteTaskUseCase,
         FindAllTasksUseCase,
         FindTaskByIdUseCase,
-        UpdateTaskUseCase
+        UpdateTaskUseCase,
+        SearchTasksByTitleUseCase
     ],
     exports: [
         CreateTaskUseCase,
         DeleteTaskUseCase,
         FindAllTasksUseCase,
         FindTaskByIdUseCase,
-        UpdateTaskUseCase
+        UpdateTaskUseCase,
+        SearchTasksByTitleUseCase
     ]
 })
 

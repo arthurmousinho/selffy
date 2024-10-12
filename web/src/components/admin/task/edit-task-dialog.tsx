@@ -25,12 +25,12 @@ interface EditTaskDialogProps {
 
 export function EditTaskDialog(props: EditTaskDialogProps) {
     const formSchema = z.object({
-        title: z.string({ message: "Title is required" }).min(1, { message: "Title is required" }),
-        description: z.string({ message: "Description is required" }).min(1, { message: "Description is required" }),
-        dueDate: z.date({ message: "Due date is required" }),
-        status: z.enum(["PENDING", "COMPLETED"], { message: "Status is required" }),
-        priority: z.enum(["LOW", "MEDIUM", "HIGH"], { message: "Priority is required" }),
-        projectId: z.string({ message: "Project is required" }),
+        title: z.string({ required_error: "Title is required" }).min(1, { message: "Title is required" }),
+        description: z.string({ required_error: "Description is required" }).min(1, { message: "Description is required" }),
+        dueDate: z.date({ required_error: "Due date is required" }),
+        status: z.enum(["PENDING", "COMPLETED"], { required_error: "Status is required" }),
+        priority: z.enum(["LOW", "MEDIUM", "HIGH"], { required_error: "Priority is required" }),
+        projectId: z.string({ required_error: "Project is required" }),
     })
 
     const form = useForm<z.infer<typeof formSchema>>({
@@ -38,7 +38,7 @@ export function EditTaskDialog(props: EditTaskDialogProps) {
         defaultValues: {
             title: props.data.title,
             description: props.data.description,
-            dueDate: props.data.dueDate,
+            dueDate: new Date(props.data.dueDate),
             status: props.data.status,
             priority: props.data.priority,
             projectId: props.data.projectId,
@@ -67,7 +67,7 @@ export function EditTaskDialog(props: EditTaskDialogProps) {
             </DialogTrigger>
             <DialogContent>
                 <DialogHeader>
-                    <DialogTitle>New Task</DialogTitle>
+                    <DialogTitle>Edit Task</DialogTitle>
                 </DialogHeader>
                 <Form {...form}>
                     <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 text-muted-foreground">
@@ -162,7 +162,7 @@ export function EditTaskDialog(props: EditTaskDialogProps) {
                             render={({ field }) => (
                                 <FormItem className="flex flex-col">
                                     <FormLabel>Due Date</FormLabel>
-                                    <Popover >
+                                    <Popover>
                                         <PopoverTrigger asChild onClick={(e) => e.stopPropagation()}>
                                             <FormControl>
                                                 <Button

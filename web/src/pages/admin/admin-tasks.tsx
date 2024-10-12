@@ -38,14 +38,28 @@ import {
 import { Label } from "@/components/ui/label";
 import { DetailsDialog } from "@/components/global/details-dialog";
 import { NewTaskDialog } from "@/components/admin/task/new-task-dialog";
-import { deleteTask, getAllTasks, TaskProps } from "@/hooks/use-task";
+import { deleteTask, getAllTasks, searchTasksByTitle, TaskProps } from "@/hooks/use-task";
 import { DeleteAlertDialog } from "@/components/global/delete-alert-dialog";
 import { EditTaskDialog } from "@/components/admin/task/edit-task-dialog";
+import { useEffect, useState } from "react";
 
 export function AdminTasks() {
 
+    const [tasksData, setTasksData] = useState<TaskProps[]>([]);
+    const [searchTerm, setSearchTerm] = useState<string>('');
+
     const { mutate: deleteTaskFn } = deleteTask();
     const { data: getAllTasksData, refetch: refetchTasksFn } = getAllTasks();
+    const { data: searchTasksByTitleData } = searchTasksByTitle(searchTerm);
+
+    useEffect(() => {
+        if (!searchTerm && getAllTasksData) {
+            setTasksData(getAllTasksData?.tasks);
+        }
+        if (searchTasksByTitleData) {
+            setTasksData(searchTasksByTitleData.tasks);
+        }
+    }, [getAllTasksData, searchTasksByTitleData, searchTerm]);
 
     return (
         <Card>
@@ -64,6 +78,8 @@ export function AdminTasks() {
                     <Input
                         placeholder="Search..."
                         className="w-[250px]"
+                        type="search"
+                        onChange={(e) => setSearchTerm(e.target.value)}
                     />
                     <Button variant={'outline'} className="flex items-center gap-2 text-muted-foreground">
                         <Filter size={20} />
@@ -100,7 +116,7 @@ export function AdminTasks() {
                     </TableHeader>
                     <TableBody>
                         {
-                            getAllTasksData?.tasks.map((task: TaskProps) => (
+                            tasksData.map((task: TaskProps) => (
                                 <TableRow key={task.id}>
                                     <TableCell className="truncate max-w-[200px]">{task.title}</TableCell>
                                     <TableCell>
