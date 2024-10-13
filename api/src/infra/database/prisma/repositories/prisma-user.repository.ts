@@ -1,6 +1,6 @@
 import { UserRepository } from "@application/repositories/user.repository";
 import { PrismaService } from "../prisma.service";
-import { PlanType, User } from "@application/entities/user/user.entity";
+import { PlanType, User, UserType } from "@application/entities/user/user.entity";
 import { PrismaUserMapper } from "../mappers/prisma-user.mapper";
 import { Injectable } from "@nestjs/common";
 
@@ -111,6 +111,14 @@ export class PrismaUserRepository implements UserRepository {
         return this.prismaService.user.count({
             where: {
                 plan
+            }
+        });
+    }
+
+    public async countByType(type: UserType): Promise<number> {
+        return this.prismaService.user.count({
+            where: {
+                type
             }
         });
     }

@@ -62,4 +62,10 @@ export class InMemoryUserRepository implements UserRepository {
         ).length;
     }
 
+    public async countByType(type: string): Promise<number> {
+        return this.users.filter(
+            (user) => user.getType() === type
+        ).length;
+    }
+
 }

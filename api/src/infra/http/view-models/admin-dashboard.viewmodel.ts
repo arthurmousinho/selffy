@@ -2,6 +2,8 @@ interface AdminDashboardProps {
     totalUsers: number;
     freeUsers: number;
     premiumUsers: number;
+    adminUsers: number;
+    defaultUsers: number;
     totalProjects: number;
     inProgressProjects: number;
     finishedProjects: number;
@@ -23,7 +25,9 @@ export class AdminDashboardViewModel {
             users: {
                 total: dashboard.totalUsers,
                 free: dashboard.freeUsers,
-                premium: dashboard.premiumUsers
+                premium: dashboard.premiumUsers,
+                admin: dashboard.adminUsers,
+                default: dashboard.defaultUsers
             },
             projects: {
                 total: dashboard.totalProjects,

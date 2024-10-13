@@ -10,6 +10,7 @@ import { GetCostsTotalValueUseCase } from "@application/use-cases/cost/get-costs
 import { CountTasksUseCase } from "@application/use-cases/task/count-tasks/count-tasks.usecase";
 import { CountTasksByPriorityUseCase } from "@application/use-cases/task/count-tasks-by-priority/count-tasks-by-priority.usecase";
 import { CountTasksByStatusUseCase } from "@application/use-cases/task/count-tasks-by-status/count-tasks-by-status.usecase";
+import { CountUsersByTypeUseCase } from "@application/use-cases/user/count-users-by-type/count-users-by-type.usecase";
 
 @Controller("/admin/dashboard")
 export class AdminDashboardController {
@@ -17,6 +18,7 @@ export class AdminDashboardController {
     constructor(
         private countUsersUseCase: CountUsersUseCase,
         private countUsersByPlanUseCase: CountUsersByPlanUseCase,
+        private countUsersByTypeUseCase: CountUsersByTypeUseCase,
 
         private countProjectsUseCase: CountProjectsUseCase,
         private countProjectsByPlanUseCase: CountProjectByStatusUseCase,
@@ -36,6 +38,8 @@ export class AdminDashboardController {
             usersCount,
             freeUsersCount,
             premiumUsersCount,
+            adminUsersCount,
+            defaultUsersCount,
 
             projectsCount,
             inProgressProjectsCount,
@@ -55,6 +59,8 @@ export class AdminDashboardController {
             this.countUsersUseCase.execute(),
             this.countUsersByPlanUseCase.execute('FREE'),
             this.countUsersByPlanUseCase.execute('PREMIUM'),
+            this.countUsersByTypeUseCase.execute('ADMIN'),
+            this.countUsersByTypeUseCase.execute('DEFAULT'),
 
             this.countProjectsUseCase.execute(),
             this.countProjectsByPlanUseCase.execute('IN_PROGRESS'),
@@ -76,6 +82,8 @@ export class AdminDashboardController {
             totalUsers: usersCount,
             freeUsers: freeUsersCount,
             premiumUsers: premiumUsersCount,
+            adminUsers: adminUsersCount,
+            defaultUsers: defaultUsersCount,
             totalProjects: projectsCount,
             inProgressProjects: inProgressProjectsCount,
             finishedProjects: finishedProjectsCount,
