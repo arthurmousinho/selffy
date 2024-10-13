@@ -12,6 +12,7 @@ import { CountTasksByPriorityUseCase } from "@application/use-cases/task/count-t
 import { CountTasksByStatusUseCase } from "@application/use-cases/task/count-tasks-by-status/count-tasks-by-status.usecase";
 import { CountUsersByTypeUseCase } from "@application/use-cases/user/count-users-by-type/count-users-by-type.usecase";
 import { CountRolesUseCase } from "@application/use-cases/role/count-roles/count-roles.usecase";
+import { CountRolesByUserTypeUseCase } from "@application/use-cases/role/count-roles-by-user-type/count-roles-by-user-type.usecase";
 
 @Controller("/admin/dashboard")
 export class AdminDashboardController {
@@ -32,7 +33,8 @@ export class AdminDashboardController {
         private countTasksByPriorityUseCase: CountTasksByPriorityUseCase,
         private countTasksByStatusUseCase: CountTasksByStatusUseCase,
 
-        private countRolesUseCase: CountRolesUseCase
+        private countRolesUseCase: CountRolesUseCase,
+        private countRolesByUserTypeUseCase: CountRolesByUserTypeUseCase,
     ) {}
 
     @Get()
@@ -59,7 +61,9 @@ export class AdminDashboardController {
             pendingTasksCount,
             completedTasksCount,
 
-            rolesCount
+            rolesCount,
+            adminRolesCount,
+            defaultRolesCount,
         ] = await Promise.all([
             this.countUsersUseCase.execute(),
             this.countUsersByPlanUseCase.execute('FREE'),
@@ -83,6 +87,8 @@ export class AdminDashboardController {
             this.countTasksByStatusUseCase.execute('COMPLETED'),
 
             this.countRolesUseCase.execute(),
+            this.countRolesByUserTypeUseCase.execute('ADMIN'),
+            this.countRolesByUserTypeUseCase.execute('DEFAULT'),
         ])
 
         return AdminDashboardViewModel.toHTTP({
@@ -103,7 +109,9 @@ export class AdminDashboardController {
             lowPriorityTasks: lowPriorityTasksCount,
             pendingTasks: pendingTasksCount,
             completedTasks: completedTasksCount,
-            rolesCount
+            rolesCount,
+            adminRoles: adminRolesCount,
+            defaultRoles: defaultRolesCount,
         })
     }
 

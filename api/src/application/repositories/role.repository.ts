@@ -1,4 +1,5 @@
 import { Role } from "@application/entities/role/role.entity";
+import { UserType } from "@application/entities/user/user.entity";
 
 export abstract class RoleRepository {
     abstract create(role: Role): Promise<void>;
@@ -12,4 +13,5 @@ export abstract class RoleRepository {
     abstract getRolesForAdminUser(): Promise<Role[]>;
     abstract getRolesForDefaultUser(): Promise<Role[]>;
     abstract count(): Promise<number>;
+    abstract countByUserType(userType: UserType): Promise<number>;
 }

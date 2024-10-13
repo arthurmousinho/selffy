@@ -6,6 +6,7 @@ import { DeleteRoleUseCase } from './delete-role/delete-role.usecase';
 import { SearchRolesByKeyUseCase } from './search-roles-by-key/search-roles-by-key.usecase';
 import { GetRolesForUserTypeUseCase } from './get-roles-for-user-type/get-roles-for-user-type';
 import { CountRolesUseCase } from './count-roles/count-roles.usecase';
+import { CountRolesByUserTypeUseCase } from './count-roles-by-user-type/count-roles-by-user-type.usecase';
 
 @Module({
     providers: [
@@ -15,7 +16,8 @@ import { CountRolesUseCase } from './count-roles/count-roles.usecase';
         DeleteRoleUseCase,
         SearchRolesByKeyUseCase,
         GetRolesForUserTypeUseCase,
-        CountRolesUseCase
+        CountRolesUseCase,
+        CountRolesByUserTypeUseCase
     ],
     exports: [
         CreateRoleUseCase,
@@ -24,7 +26,8 @@ import { CountRolesUseCase } from './count-roles/count-roles.usecase';
         DeleteRoleUseCase,
         SearchRolesByKeyUseCase,
         GetRolesForUserTypeUseCase,
-        CountRolesUseCase
+        CountRolesUseCase,
+        CountRolesByUserTypeUseCase
     ]
 })
 

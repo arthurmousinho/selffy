@@ -3,6 +3,7 @@ import { RoleRepository } from "@application/repositories/role.repository";
 import { PrismaService } from "../prisma.service";
 import { PrismaRoleMapper } from "../mappers/prisma-role.mapper";
 import { Injectable } from "@nestjs/common";
+import { UserType } from "@application/entities/user/user.entity";
 
 @Injectable()
 export class PrismaRoleRepository implements RoleRepository {
@@ -112,6 +113,17 @@ export class PrismaRoleRepository implements RoleRepository {
 
     public async count(): Promise<number> {
         const count = await this.prismaService.role.count();
+        return count;
+    }
+
+    public async countByUserType(userType: UserType): Promise<number> {
+        const count = await this.prismaService.role.count({
+            where: {
+                userTypes: {
+                    has: userType
+                }
+            }
+        });
         return count;
     }
 

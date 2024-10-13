@@ -17,6 +17,8 @@ interface AdminDashboardProps {
     pendingTasks: number;
     completedTasks: number;
     rolesCount: number;
+    adminRoles: number;
+    defaultRoles: number;
 }
 
 export class AdminDashboardViewModel {
@@ -49,7 +51,9 @@ export class AdminDashboardViewModel {
                 completed: dashboard.completedTasks
             },
             roles: {
-                total: dashboard.rolesCount
+                total: dashboard.rolesCount,
+                admin: dashboard.adminRoles,
+                default: dashboard.defaultRoles
             }
         }
     }
