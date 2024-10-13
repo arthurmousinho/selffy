@@ -16,6 +16,7 @@ interface AdminDashboardProps {
     lowPriorityTasks: number;
     pendingTasks: number;
     completedTasks: number;
+    rolesCount: number;
 }
 
 export class AdminDashboardViewModel {
@@ -46,6 +47,9 @@ export class AdminDashboardViewModel {
                 lowPriority: dashboard.lowPriorityTasks,
                 pending: dashboard.pendingTasks,
                 completed: dashboard.completedTasks
+            },
+            roles: {
+                total: dashboard.rolesCount
             }
         }
     }

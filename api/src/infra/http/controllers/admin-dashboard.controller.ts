@@ -11,6 +11,7 @@ import { CountTasksUseCase } from "@application/use-cases/task/count-tasks/count
 import { CountTasksByPriorityUseCase } from "@application/use-cases/task/count-tasks-by-priority/count-tasks-by-priority.usecase";
 import { CountTasksByStatusUseCase } from "@application/use-cases/task/count-tasks-by-status/count-tasks-by-status.usecase";
 import { CountUsersByTypeUseCase } from "@application/use-cases/user/count-users-by-type/count-users-by-type.usecase";
+import { CountRolesUseCase } from "@application/use-cases/role/count-roles/count-roles.usecase";
 
 @Controller("/admin/dashboard")
 export class AdminDashboardController {
@@ -30,6 +31,8 @@ export class AdminDashboardController {
         private countTasksUseCase: CountTasksUseCase,
         private countTasksByPriorityUseCase: CountTasksByPriorityUseCase,
         private countTasksByStatusUseCase: CountTasksByStatusUseCase,
+
+        private countRolesUseCase: CountRolesUseCase
     ) {}
 
     @Get()
@@ -55,6 +58,8 @@ export class AdminDashboardController {
             lowPriorityTasksCount,
             pendingTasksCount,
             completedTasksCount,
+
+            rolesCount
         ] = await Promise.all([
             this.countUsersUseCase.execute(),
             this.countUsersByPlanUseCase.execute('FREE'),
@@ -76,6 +81,8 @@ export class AdminDashboardController {
             this.countTasksByPriorityUseCase.execute('LOW'),
             this.countTasksByStatusUseCase.execute('PENDING'),
             this.countTasksByStatusUseCase.execute('COMPLETED'),
+
+            this.countRolesUseCase.execute(),
         ])
 
         return AdminDashboardViewModel.toHTTP({
@@ -96,6 +103,7 @@ export class AdminDashboardController {
             lowPriorityTasks: lowPriorityTasksCount,
             pendingTasks: pendingTasksCount,
             completedTasks: completedTasksCount,
+            rolesCount
         })
     }
 
