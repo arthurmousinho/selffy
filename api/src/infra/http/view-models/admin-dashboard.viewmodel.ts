@@ -8,6 +8,12 @@ interface AdminDashboardProps {
     totalRevenue: number;
     costsCount: number;
     costsTotalValue: number;
+    tasksCount: number;
+    highPriorityTasks: number;
+    mediumPriorityTasks: number;
+    lowPriorityTasks: number;
+    pendingTasks: number;
+    completedTasks: number;
 }
 
 export class AdminDashboardViewModel {
@@ -28,6 +34,14 @@ export class AdminDashboardViewModel {
             costs: {
                 total: dashboard.costsCount,
                 totalValue: dashboard.costsTotalValue
+            },
+            tasks: {
+                total: dashboard.tasksCount,
+                highPriority: dashboard.highPriorityTasks,
+                mediumPriority: dashboard.mediumPriorityTasks,
+                lowPriority: dashboard.lowPriorityTasks,
+                pending: dashboard.pendingTasks,
+                completed: dashboard.completedTasks
             }
         }
     }

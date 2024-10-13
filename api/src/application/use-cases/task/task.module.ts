@@ -6,6 +6,9 @@ import { FindTaskByIdUseCase } from './find-task-by-id/find-task-by-id.usecase';
 import { UpdateTaskUseCase } from './update-task/update-task.usecase';
 import { ProjectModule } from '../project/project.module';
 import { SearchTasksByTitleUseCase } from './search-tasks-by-title/search-tasks-by-title.usecase';
+import { CountTasksByPriorityUseCase } from './count-tasks-by-priority/count-tasks-by-priority.usecase';
+import { CountTasksByStatusUseCase } from './count-tasks-by-status/count-tasks-by-status.usecase';
+import { CountTasksUseCase } from './count-tasks/count-tasks.usecase';
 
 @Module({
     imports: [
@@ -17,7 +20,10 @@ import { SearchTasksByTitleUseCase } from './search-tasks-by-title/search-tasks-
         FindAllTasksUseCase,
         FindTaskByIdUseCase,
         UpdateTaskUseCase,
-        SearchTasksByTitleUseCase
+        SearchTasksByTitleUseCase,
+        CountTasksByPriorityUseCase,
+        CountTasksByStatusUseCase,
+        CountTasksUseCase
     ],
     exports: [
         CreateTaskUseCase,
@@ -25,7 +31,10 @@ import { SearchTasksByTitleUseCase } from './search-tasks-by-title/search-tasks-
         FindAllTasksUseCase,
         FindTaskByIdUseCase,
         UpdateTaskUseCase,
-        SearchTasksByTitleUseCase
+        SearchTasksByTitleUseCase,
+        CountTasksByPriorityUseCase,
+        CountTasksByStatusUseCase,
+        CountTasksUseCase
     ]
 })
 

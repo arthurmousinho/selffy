@@ -7,6 +7,9 @@ import { Controller, Get } from "@nestjs/common";
 import { AdminDashboardViewModel } from "../view-models/admin-dashboard.viewmodel";
 import { CountCostsUseCase } from "@application/use-cases/cost/count-costs/count-costs.usecase";
 import { GetCostsTotalValueUseCase } from "@application/use-cases/cost/get-costs-total-value/get-costs-total-value.usecase";
+import { CountTasksUseCase } from "@application/use-cases/task/count-tasks/count-tasks.usecase";
+import { CountTasksByPriorityUseCase } from "@application/use-cases/task/count-tasks-by-priority/count-tasks-by-priority.usecase";
+import { CountTasksByStatusUseCase } from "@application/use-cases/task/count-tasks-by-status/count-tasks-by-status.usecase";
 
 @Controller("/admin/dashboard")
 export class AdminDashboardController {
@@ -20,7 +23,11 @@ export class AdminDashboardController {
         private getTotalRevenueUseCase: GetTotalRevenueUseCase,
 
         private countCostsUseCase: CountCostsUseCase,
-        private getCostsTotalValueUseCase: GetCostsTotalValueUseCase
+        private getCostsTotalValueUseCase: GetCostsTotalValueUseCase,
+
+        private countTasksUseCase: CountTasksUseCase,
+        private countTasksByPriorityUseCase: CountTasksByPriorityUseCase,
+        private countTasksByStatusUseCase: CountTasksByStatusUseCase,
     ) {}
 
     @Get()
@@ -36,7 +43,14 @@ export class AdminDashboardController {
             projectsTotalRevenue,
 
             costsCount,
-            costsTotalValue
+            costsTotalValue,
+
+            tasksCount,
+            highPriorityTasksCount,
+            mediumPriorityTasksCount,
+            lowPriorityTasksCount,
+            pendingTasksCount,
+            completedTasksCount,
         ] = await Promise.all([
             this.countUsersUseCase.execute(),
             this.countUsersByPlanUseCase.execute('FREE'),
@@ -48,7 +62,14 @@ export class AdminDashboardController {
             this.getTotalRevenueUseCase.execute(),
 
             this.countCostsUseCase.execute(),
-            this.getCostsTotalValueUseCase.execute()
+            this.getCostsTotalValueUseCase.execute(),
+
+            this.countTasksUseCase.execute(),
+            this.countTasksByPriorityUseCase.execute('HIGH'),
+            this.countTasksByPriorityUseCase.execute('MEDIUM'),
+            this.countTasksByPriorityUseCase.execute('LOW'),
+            this.countTasksByStatusUseCase.execute('PENDING'),
+            this.countTasksByStatusUseCase.execute('COMPLETED'),
         ])
 
         return AdminDashboardViewModel.toHTTP({
@@ -60,7 +81,13 @@ export class AdminDashboardController {
             finishedProjects: finishedProjectsCount,
             totalRevenue: projectsTotalRevenue,
             costsCount,
-            costsTotalValue
+            costsTotalValue,
+            tasksCount,
+            highPriorityTasks: highPriorityTasksCount,
+            mediumPriorityTasks: mediumPriorityTasksCount,
+            lowPriorityTasks: lowPriorityTasksCount,
+            pendingTasks: pendingTasksCount,
+            completedTasks: completedTasksCount,
         })
     }
 
