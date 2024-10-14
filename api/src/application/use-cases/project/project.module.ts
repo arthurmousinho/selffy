@@ -10,6 +10,7 @@ import { SearchProjectByTitleUseCase } from './search-project-by-title/search-pr
 import { CountProjectByStatusUseCase } from './count-projects-by-status/count-projects-by-status.usecase';
 import { FindProjectByIdUseCase } from './find-project-by-id/find-project-by-id.usecase';
 import { FindProjectsByStatusUseCase } from './find-projects-by-status/find-projects-by-status.usecase';
+import { GetProjectsInsightsUseCase } from './get-projects-insights/get-projects-insights.usecase';
 
 @Module({
     providers: [
@@ -22,7 +23,8 @@ import { FindProjectsByStatusUseCase } from './find-projects-by-status/find-proj
         SearchProjectByTitleUseCase,
         CountProjectByStatusUseCase,
         FindProjectByIdUseCase,
-        FindProjectsByStatusUseCase
+        FindProjectsByStatusUseCase,
+        GetProjectsInsightsUseCase
     ],
     exports: [
         CreateProjectUseCase,
@@ -34,7 +36,8 @@ import { FindProjectsByStatusUseCase } from './find-projects-by-status/find-proj
         SearchProjectByTitleUseCase,
         CountProjectByStatusUseCase,
         FindProjectByIdUseCase,
-        FindProjectsByStatusUseCase
+        FindProjectsByStatusUseCase,
+        GetProjectsInsightsUseCase
     ]
 })
 

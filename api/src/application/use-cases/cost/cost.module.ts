@@ -7,6 +7,7 @@ import { UpdateCostUseCase } from './update-cost/update-cost.usecase';
 import { SearchCostsByTitleUseCase } from './search-costs-by-title/search-costs-by-title.usecase';
 import { CountCostsUseCase } from './count-costs/count-costs.usecase';
 import { GetCostsTotalValueUseCase } from './get-costs-total-value/get-costs-total-value.usecase';
+import { GetCostsInsightsUseCase } from './get-costs-insights/get-costs-insights.usecase';
 
 @Module({
     imports: [
@@ -19,7 +20,8 @@ import { GetCostsTotalValueUseCase } from './get-costs-total-value/get-costs-tot
         UpdateCostUseCase,
         SearchCostsByTitleUseCase,
         CountCostsUseCase,
-        GetCostsTotalValueUseCase
+        GetCostsTotalValueUseCase,
+        GetCostsInsightsUseCase
     ],
     exports: [
         CreateCostUseCase,
@@ -28,7 +30,8 @@ import { GetCostsTotalValueUseCase } from './get-costs-total-value/get-costs-tot
         UpdateCostUseCase,
         SearchCostsByTitleUseCase,
         CountCostsUseCase,
-        GetCostsTotalValueUseCase
+        GetCostsTotalValueUseCase,
+        GetCostsInsightsUseCase
     ]
 })
 

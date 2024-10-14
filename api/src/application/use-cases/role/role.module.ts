@@ -7,6 +7,7 @@ import { SearchRolesByKeyUseCase } from './search-roles-by-key/search-roles-by-k
 import { GetRolesForUserTypeUseCase } from './get-roles-for-user-type/get-roles-for-user-type';
 import { CountRolesUseCase } from './count-roles/count-roles.usecase';
 import { CountRolesByUserTypeUseCase } from './count-roles-by-user-type/count-roles-by-user-type.usecase';
+import { GetRolesInsightsUseCase } from './get-roles-insights/get-roles-insights.usecase';
 
 @Module({
     providers: [
@@ -17,7 +18,8 @@ import { CountRolesByUserTypeUseCase } from './count-roles-by-user-type/count-ro
         SearchRolesByKeyUseCase,
         GetRolesForUserTypeUseCase,
         CountRolesUseCase,
-        CountRolesByUserTypeUseCase
+        CountRolesByUserTypeUseCase,
+        GetRolesInsightsUseCase
     ],
     exports: [
         CreateRoleUseCase,
@@ -27,7 +29,8 @@ import { CountRolesByUserTypeUseCase } from './count-roles-by-user-type/count-ro
         SearchRolesByKeyUseCase,
         GetRolesForUserTypeUseCase,
         CountRolesUseCase,
-        CountRolesByUserTypeUseCase
+        CountRolesByUserTypeUseCase,
+        GetRolesInsightsUseCase
     ]
 })
 

@@ -13,6 +13,7 @@ import { RoleModule } from '../role/role.module';
 import { JwtService } from '@nestjs/jwt';
 import { CountUsersByTypeUseCase } from './count-users-by-type/count-users-by-type.usecase';
 import { GetUserGrowthUseCase } from './get-user-growth/get-user-growth.usecase';
+import { GetUsersInsightsUseCase } from './get-users-insights/get-users-insights.usecase';
 
 @Module({
     imports: [
@@ -30,7 +31,8 @@ import { GetUserGrowthUseCase } from './get-user-growth/get-user-growth.usecase'
         CountUsersUseCase,
         CountUsersByPlanUseCase,
         CountUsersByTypeUseCase,
-        GetUserGrowthUseCase
+        GetUserGrowthUseCase,
+        GetUsersInsightsUseCase
     ],
     exports: [
         CreateUserUseCase,
@@ -43,7 +45,8 @@ import { GetUserGrowthUseCase } from './get-user-growth/get-user-growth.usecase'
         CountUsersUseCase,
         CountUsersByPlanUseCase,
         CountUsersByTypeUseCase,
-        GetUserGrowthUseCase
+        GetUserGrowthUseCase,
+        GetUsersInsightsUseCase
     ]
 })
 
