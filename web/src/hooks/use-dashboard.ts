@@ -12,6 +12,23 @@ interface GetAdminDashboardResponse {
         inProgress: number;
         finished: number;
         totalRevenue: number;
+    },
+    costs: {
+        total: number;
+        totalValue: number;
+    },
+    tasks: {
+        total: number;
+        highPriority: number;
+        mediumPriority: number;
+        lowPriority: number;
+        pending: number;
+        completed: number;
+    },
+    roles: {
+        total: number;
+        admin: number;
+        default: number;
     }
 }
 
