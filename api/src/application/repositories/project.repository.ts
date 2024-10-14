@@ -10,4 +10,5 @@ export abstract class ProjectRepository {
     abstract findManyByTitle(title: string): Promise<Project[]>;
     abstract findByStatus(status: ProjectStatus): Promise<Project[]>;
     abstract countByStatus(status: ProjectStatus): Promise<number>;
+    abstract sumRevenues(): Promise<number>;
 }

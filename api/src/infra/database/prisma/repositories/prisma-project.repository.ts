@@ -102,4 +102,13 @@ export class PrismaProjectRepository implements ProjectRepository {
         return projects.map(PrismaProjectMapper.toDomain);
     }
 
+    public async sumRevenues(){
+        const sum = await this.prismaService.project.aggregate({
+            _sum: {
+                revenue: true
+            }
+        });
+        return sum._sum.revenue || 0;
+    }
+
 }

@@ -9,8 +9,8 @@ export class GetTotalRevenueUseCase {
     ) {}
 
     public async execute() {
-        const projects = await this.projectRepository.findAll();
-        return projects.reduce((total, project) => total + project.getRevenue(), 0);
+        const sumRevenues = await this.projectRepository.sumRevenues();
+        return sumRevenues;
     }
 
 }

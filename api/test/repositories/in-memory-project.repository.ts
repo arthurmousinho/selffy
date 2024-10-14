@@ -60,4 +60,8 @@ export class InMemoryProjectRepository implements ProjectRepository {
         );
     }
 
+    public async sumRevenues(): Promise<number> {
+        return this.projects.reduce((total, project) => total + project.getRevenue(), 0);
+    }
+
 }
