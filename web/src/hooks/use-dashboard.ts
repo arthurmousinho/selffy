@@ -6,6 +6,8 @@ interface GetAdminDashboardResponse {
         total: number;
         free: number;
         premium: number;
+        default: number;
+        admin: number;
     },
     projects: {
         total: number;
