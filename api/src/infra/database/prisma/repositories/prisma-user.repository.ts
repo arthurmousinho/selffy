@@ -123,4 +123,14 @@ export class PrismaUserRepository implements UserRepository {
         });
     }
 
+    public async countUsersCreatedAfter(date: Date): Promise<number> {
+        return this.prismaService.user.count({
+            where: {
+                createdAt: {
+                    gte: date
+                }
+            }
+        });
+    }
+
 }

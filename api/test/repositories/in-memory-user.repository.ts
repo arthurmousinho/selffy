@@ -68,4 +68,10 @@ export class InMemoryUserRepository implements UserRepository {
         ).length;
     }
 
+    public async countUsersCreatedAfter(date: Date): Promise<number> {
+        return this.users.filter(
+            (user) => user.getCreatedAt() > date
+        ).length;
+    }
+
 }

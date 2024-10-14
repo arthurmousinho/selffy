@@ -11,4 +11,5 @@ export abstract class UserRepository {
     abstract count(): Promise<number>;
     abstract countByPlan(plan: PlanType): Promise<number>;
     abstract countByType(type: UserType): Promise<number>;
+    abstract countUsersCreatedAfter(date: Date): Promise<number>;
 }

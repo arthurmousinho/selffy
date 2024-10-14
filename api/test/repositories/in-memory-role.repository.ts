@@ -1,4 +1,5 @@
 import { Role } from "@application/entities/role/role.entity";
+import { UserType } from "@application/entities/user/user.entity";
 import { RoleRepository } from "@application/repositories/role.repository";
 
 export class InMemoryRoleRepository implements RoleRepository {
@@ -72,6 +73,13 @@ export class InMemoryRoleRepository implements RoleRepository {
 
     public async count(): Promise<number> {
         return this.roles.length;
+    }
+
+    public async countByUserType(userType: UserType): Promise<number> {
+        const roles = this.roles.filter(
+            (item) => item.getKey() === userType
+        );
+        return roles.length;
     }
 
 }

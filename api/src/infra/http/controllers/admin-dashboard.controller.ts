@@ -13,6 +13,7 @@ import { CountTasksByStatusUseCase } from "@application/use-cases/task/count-tas
 import { CountUsersByTypeUseCase } from "@application/use-cases/user/count-users-by-type/count-users-by-type.usecase";
 import { CountRolesUseCase } from "@application/use-cases/role/count-roles/count-roles.usecase";
 import { CountRolesByUserTypeUseCase } from "@application/use-cases/role/count-roles-by-user-type/count-roles-by-user-type.usecase";
+import { GetUserGrowthUseCase } from "@application/use-cases/user/get-user-growth/get-user-growth.usecase";
 
 @Controller("/admin/dashboard")
 export class AdminDashboardController {
@@ -21,6 +22,7 @@ export class AdminDashboardController {
         private countUsersUseCase: CountUsersUseCase,
         private countUsersByPlanUseCase: CountUsersByPlanUseCase,
         private countUsersByTypeUseCase: CountUsersByTypeUseCase,
+        private getUserGrowthUseCase: GetUserGrowthUseCase,
 
         private countProjectsUseCase: CountProjectsUseCase,
         private countProjectsByPlanUseCase: CountProjectByStatusUseCase,
@@ -45,6 +47,7 @@ export class AdminDashboardController {
             premiumUsersCount,
             adminUsersCount,
             defaultUsersCount,
+            usersGrowth,
 
             projectsCount,
             inProgressProjectsCount,
@@ -70,6 +73,7 @@ export class AdminDashboardController {
             this.countUsersByPlanUseCase.execute('PREMIUM'),
             this.countUsersByTypeUseCase.execute('ADMIN'),
             this.countUsersByTypeUseCase.execute('DEFAULT'),
+            this.getUserGrowthUseCase.execute('MONTHLY'),
 
             this.countProjectsUseCase.execute(),
             this.countProjectsByPlanUseCase.execute('IN_PROGRESS'),
@@ -97,6 +101,7 @@ export class AdminDashboardController {
             premiumUsers: premiumUsersCount,
             adminUsers: adminUsersCount,
             defaultUsers: defaultUsersCount,
+            usersGrowth,
             totalProjects: projectsCount,
             inProgressProjects: inProgressProjectsCount,
             finishedProjects: finishedProjectsCount,
