@@ -3,6 +3,7 @@ import { UserType } from "./use-user";
 import { useToast } from "./use-toast";
 import { queryClient } from "@/main";
 import { axios } from "@/lib/axios";
+import { PageableMeta } from "@/types/pageable.type";
 
 export interface RoleProps {
     id: string;
@@ -11,21 +12,18 @@ export interface RoleProps {
 }
 
 interface GetAllRolesResponse {
-    roles: RoleProps[]
+    roles: RoleProps[],
+    meta: PageableMeta
 }
 
-interface SearchRoleByKeyResponse {
-    roles: RoleProps[]
-}
-
-export function getAllRoles() {
+export function getAllRoles(page: number, limit: number) {
     const query = useQuery({
-        queryKey: ['roles'],
+        queryKey: ['roles', page, limit],
         queryFn: async () => {
-            const response = await axios.get('/roles');
+            const response = await axios.get(`/roles?page=${page}&limit=${limit}`);
             return response.data as GetAllRolesResponse;
         }
-    })
+    });
 
     return query;
 }
@@ -105,6 +103,10 @@ export function deleteRole() {
     });
 
     return query;
+}
+
+interface SearchRoleByKeyResponse {
+    roles: RoleProps[]
 }
 
 export function searchRolesByKey(key?: string) {

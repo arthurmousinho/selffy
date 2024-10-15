@@ -2,10 +2,6 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import {
-    ChevronLeft,
-    ChevronRight,
-    ChevronsLeft,
-    ChevronsRight,
     Filter,
     Folder,
     Pencil,
@@ -22,14 +18,6 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table"
-import {
-    Select,
-    SelectContent,
-    SelectItem,
-    SelectTrigger,
-    SelectValue,
-} from "@/components/ui/select"
-import { Label } from "@/components/ui/label";
 import { DetailsDialog } from "@/components/global/details-dialog";
 import { DeleteAlertDialog } from "@/components/global/delete-alert-dialog";
 import { Badge } from "@/components/ui/badge";
@@ -38,13 +26,17 @@ import { UserType } from "@/hooks/use-user";
 import { NewRoleDialog } from "@/components/admin/role/new-role-dialog";
 import { EditRoleDialog } from "@/components/admin/role/edit-role-dialog";
 import { useEffect, useState } from "react";
+import { Paginator } from "@/components/global/paginator";
 
 export function AdminRoles() {
+
+    const [page, setPage] = useState(1);
+    const [limit, setLimit] = useState(5);
 
     const [rolesData, setRolesData] = useState<RoleProps[]>([]);
     const [searchTerm, setSearchTerm] = useState<string>('');
 
-    const { data: fetchRolesData, refetch: refetchRoles } = getAllRoles();
+    const { data: fetchRolesData, refetch: refetchRoles } = getAllRoles(page, limit);
     const { data: searchRolesByNameData } = searchRolesByKey(searchTerm);
     const { mutate: deleteRoleFn } = deleteRole();
 
@@ -154,41 +146,16 @@ export function AdminRoles() {
                     </TableBody>
                 </Table>
             </CardContent>
-            <CardFooter className="flex items-center justify-between">
-                <span className="text-sm text-muted-foreground">
-                    Showing 5 of 100 items
-                </span>
-                <footer className="flex flex-row items-center gap-4">
-                    <div className="flex flex-row items-center gap-2">
-                        <Label htmlFor="rows-per-page-input">
-                            Rows per page
-                        </Label>
-                        <Select defaultValue="5">
-                            <SelectTrigger className="w-[100px] h-12" id="rows-per-page-input">
-                                <SelectValue placeholder="Rows per page" />
-                            </SelectTrigger>
-                            <SelectContent>
-                                <SelectItem value="5">5 rows</SelectItem>
-                                <SelectItem value="10">10 rows</SelectItem>
-                                <SelectItem value="15">15 rows</SelectItem>
-                            </SelectContent>
-                        </Select>
-                    </div>
-                    <div className="space-x-2">
-                        <Button variant={'outline'}>
-                            <ChevronsLeft size={20} />
-                        </Button>
-                        <Button variant={'outline'}>
-                            <ChevronLeft size={20} />
-                        </Button>
-                        <Button variant={'outline'}>
-                            <ChevronRight size={20} />
-                        </Button>
-                        <Button variant={'outline'}>
-                            <ChevronsRight size={20} />
-                        </Button>
-                    </div>
-                </footer>
+            <CardFooter>
+                <Paginator
+                    showing={rolesData.length}
+                    total={fetchRolesData?.meta.total || 0}
+                    currentPage={page}
+                    currentLimit={limit}
+                    totalPages={fetchRolesData?.meta.totalPages || 0}
+                    onPageChange={page => setPage(page)}
+                    onLimitChange={limit => setLimit(limit)}
+                />
             </CardFooter>
         </Card>
     );
