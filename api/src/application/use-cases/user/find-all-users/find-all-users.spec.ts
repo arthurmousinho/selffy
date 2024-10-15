@@ -14,23 +14,46 @@ describe('Find All Users UseCase', () => {
     });
 
     it('should return an empty list if no users exist', async () => {
-        const users = await findAllUsersUseCase.execute();
+        const users = await findAllUsersUseCase.execute(1, 10);
 
-        expect(users).toEqual([]);
+        expect(users.data).toEqual([]);
+        expect(users.meta.page).toBe(1);
+        expect(users.meta.total).toBe(0);
+        expect(users.meta.totalPages).toBe(0);
+        expect(users.meta.limit).toBe(10);
     });
 
-    it('should return all users if they exist', async () => {
+    it('should return paginated users', async () => {
         const user1 = makeUser({ name: 'John Doe', email: 'john@example.com' });
         const user2 = makeUser({ name: 'Jane Doe', email: 'jane@example.com' });
 
         await userRepository.create(user1);
         await userRepository.create(user2);
 
-        const users = await findAllUsersUseCase.execute();
+        const users = await findAllUsersUseCase.execute(1, 1);
 
-        expect(users.length).toBe(2);
-        expect(users).toContainEqual(user1);
-        expect(users).toContainEqual(user2);
+        expect(users.data.length).toBe(1);
+        expect(users.meta.page).toBe(1);
+        expect(users.meta.total).toBe(2);
+        expect(users.meta.totalPages).toBe(2);
+        expect(users.meta.limit).toBe(1);
+    });
+
+    it('should return users for a specific page', async () => {
+        const user1 = makeUser({ name: 'John Doe', email: 'john@example.com' });
+        const user2 = makeUser({ name: 'Jane Doe', email: 'jane@example.com' });
+
+        await userRepository.create(user1);
+        await userRepository.create(user2);
+
+        const users = await findAllUsersUseCase.execute(2, 1);
+
+        expect(users.data.length).toBe(1);
+        expect(users.data[0].getEmail()).toBe(user2.getEmail());
+        expect(users.meta.page).toBe(2);
+        expect(users.meta.total).toBe(2);
+        expect(users.meta.totalPages).toBe(2);
+        expect(users.meta.limit).toBe(1);
     });
 
 });

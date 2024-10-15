@@ -49,14 +49,14 @@ describe('Create User UseCase', () => {
             plan: "FREE"
         });
 
-        const users = await userRepository.findAll();
-        expect(users.length).toBe(1);
-        expect(users[0].getEmail()).toBe(user.getEmail());
-        expect(users[0].getName()).toBe(user.getName());
-        expect(users[0].getPassword()).toBe(user.getPassword());
-        expect(users[0].getRoles()).toEqual(user.getRoles());
-        expect(users[0].getType()).toBe(user.getType());
-        expect(users[0].getPlan()).toBe(user.getPlan());
+        const pageableUsers = await userRepository.findAll(1,10);
+        expect(pageableUsers.meta.total).toBe(1);
+        expect(pageableUsers.data[0].getEmail()).toBe(user.getEmail());
+        expect(pageableUsers.data[0].getName()).toBe(user.getName());
+        expect(pageableUsers.data[0].getPassword()).toBe(user.getPassword());
+        expect(pageableUsers.data[0].getRoles()).toEqual(user.getRoles());
+        expect(pageableUsers.data[0].getType()).toBe(user.getType());
+        expect(pageableUsers.data[0].getPlan()).toBe(user.getPlan());
     });
 
 });

@@ -1,5 +1,5 @@
 import { CreateUserUseCase } from "@application/use-cases/user/create-user/create-user.usecase";
-import { Body, Controller, Delete, Get, Param, Post, Put } from "@nestjs/common";
+import { Body, Controller, Delete, Get, Param, Post, Put, Query } from "@nestjs/common";
 import { SignUpUserBody } from "../dtos/user/signup-user-body.dto";
 import { LoginUserBody } from "../dtos/user/login-user-body.dto";
 import { AuthUserUseCase } from "@application/use-cases/user/auth-user/auth-user.usecase";
@@ -23,9 +23,12 @@ export class UserController {
     ) {}
 
     @Get()
-    public async getUsers() {
-        const users = await this.findAllUsersUseCase.execute();
-        return { users: users.map(UserViewModel.toHTTP) };
+    public async getUsers(@Query('page') page = 1, @Query('limit') limit = 10) {
+        const pageblaUsers = await this.findAllUsersUseCase.execute(Number(page), Number(limit))
+        return { 
+            users: pageblaUsers.data.map(UserViewModel.toHTTP), 
+            meta: { ...pageblaUsers.meta } 
+        };
     }
 
     @Get(':name')

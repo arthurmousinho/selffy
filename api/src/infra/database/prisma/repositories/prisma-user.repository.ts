@@ -3,6 +3,7 @@ import { PrismaService } from "../prisma.service";
 import { PlanType, User, UserType } from "@application/entities/user/user.entity";
 import { PrismaUserMapper } from "../mappers/prisma-user.mapper";
 import { Injectable } from "@nestjs/common";
+import { Pageable } from "@application/types/pageable.type";
 
 @Injectable()
 export class PrismaUserRepository implements UserRepository {
@@ -73,16 +74,30 @@ export class PrismaUserRepository implements UserRepository {
         return PrismaUserMapper.toDomain(user);
     }
 
-    public async findAll(): Promise<User[]> {
-        const users = await this.prismaService.user.findMany({
-            orderBy: {
-                createdAt: "desc"
-            },
-            include: {
-                roles: true
+    public async findAll(page: number = 1, limit: number = 1): Promise<Pageable<User>> {
+        const [ users, total ] = await Promise.all([
+            this.prismaService.user.findMany({
+                skip: (page - 1) * limit,
+                take: limit,
+                orderBy: {
+                    createdAt: "desc"
+                },
+                include: {
+                    roles: true
+                }
+            }),
+            this.prismaService.user.count()
+        ])
+
+        return {
+            data: users.map(PrismaUserMapper.toDomain),
+            meta: {
+                total,
+                page,
+                limit,
+                totalPages: Math.ceil(total / limit)
             }
-        });
-        return users.map(PrismaUserMapper.toDomain);
+        };
     }
 
     public async update(user: User): Promise<void> {

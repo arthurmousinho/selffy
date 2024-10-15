@@ -30,8 +30,17 @@ export class InMemoryUserRepository implements UserRepository {
         return user;
     }
 
-    public async findAll() {
-        return this.users;
+    public async findAll(page: number, limit: number) {
+        const users = this.users.slice((page - 1) * limit, page * limit);
+        return {
+            data: users,
+            meta: {
+                page,
+                limit,
+                total: this.users.length,
+                totalPages: Math.ceil(this.users.length / limit)
+            }
+        }
     }
 
     public async update(user: User) {
