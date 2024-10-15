@@ -75,24 +75,34 @@ export class PrismaRoleRepository implements RoleRepository {
     }
 
     public async findManyByKey(params: { key: string, page: number, limit: number }): Promise<Pageable<Role>> {
-        const roles = await this.prismaService.role.findMany({
-            skip: (params.page - 1) * params.limit,
-            take: params.limit,
-            where: {
-                key: {
-                    contains: params.key,
-                    mode: "insensitive"
+        const [ roles, total ] = await Promise.all([
+            this.prismaService.role.findMany({
+                skip: (params.page - 1) * params.limit,
+                take: params.limit,
+                where: {
+                    key: {
+                        contains: params.key,
+                        mode: "insensitive"
+                    }
                 }
-            }
-        });
+            }),
+            this.prismaService.role.count({
+                where: {
+                    key: {
+                        contains: params.key,
+                        mode: "insensitive"
+                    }
+                }
+            }),
+        ])
 
         return {
             data: roles.map(PrismaRoleMapper.toDomain),
             meta: {
-                total: roles.length,
+                total,
                 page: params.page,
                 limit: params.limit,
-                totalPages: Math.ceil(roles.length / params.limit)
+                totalPages: Math.ceil(total / params.limit)
             }
         };
     }

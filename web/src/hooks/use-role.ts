@@ -105,18 +105,25 @@ export function deleteRole() {
     return query;
 }
 
-interface SearchRoleByKeyResponse {
-    roles: RoleProps[]
+export interface SearchRoleByKeyResponse {
+    roles: RoleProps[];
+    meta: PageableMeta;
 }
 
-export function searchRolesByKey(key?: string) {
+export function searchRolesByKey(props: { key?: string, page?: number, limit?: number }) {
+    const { key, page, limit } = props;
     const query = useQuery({
-        queryKey: ['roles', key],
+        queryKey: ['roles', key, page, limit],
         queryFn: async () => {
-            const response = await axios.get(`/roles/${key}`);
+            const response = await axios.get(`/roles/${key}`, {
+                params: {
+                    page: page,
+                    limit: limit
+                }
+            });
             return response.data as SearchRoleByKeyResponse;
         },
-        enabled: !!key,
+        enabled: !!key && !!page && !!limit,
         staleTime: 5000
     });
 

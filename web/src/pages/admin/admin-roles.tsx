@@ -21,31 +21,36 @@ import {
 import { DetailsDialog } from "@/components/global/details-dialog";
 import { DeleteAlertDialog } from "@/components/global/delete-alert-dialog";
 import { Badge } from "@/components/ui/badge";
-import { deleteRole, getAllRoles, RoleProps, searchRolesByKey } from "@/hooks/use-role";
+import { deleteRole, getAllRoles, RoleProps, SearchRoleByKeyResponse, searchRolesByKey } from "@/hooks/use-role";
 import { UserType } from "@/hooks/use-user";
 import { NewRoleDialog } from "@/components/admin/role/new-role-dialog";
 import { EditRoleDialog } from "@/components/admin/role/edit-role-dialog";
 import { useEffect, useState } from "react";
 import { Paginator } from "@/components/global/paginator";
 
+
 export function AdminRoles() {
 
     const [page, setPage] = useState(1);
     const [limit, setLimit] = useState(5);
 
-    const [rolesData, setRolesData] = useState<RoleProps[]>([]);
+    const [data, setData] = useState<SearchRoleByKeyResponse>();
     const [searchTerm, setSearchTerm] = useState<string>('');
 
     const { data: fetchRolesData, refetch: refetchRoles } = getAllRoles(page, limit);
-    const { data: searchRolesByNameData } = searchRolesByKey(searchTerm);
+    const { data: searchRolesByNameData } = searchRolesByKey({
+        key: searchTerm,
+        page: page,
+        limit: limit
+    });
     const { mutate: deleteRoleFn } = deleteRole();
 
     useEffect(() => {
         if (!searchTerm && fetchRolesData) {
-            setRolesData(fetchRolesData.roles);
+            setData(fetchRolesData);
         }
         if (searchRolesByNameData) {
-            setRolesData(searchRolesByNameData.roles);
+            setData(searchRolesByNameData);
         }
     }, [fetchRolesData, searchRolesByNameData, searchTerm]);
 
@@ -69,7 +74,7 @@ export function AdminRoles() {
                 </div>
                 <div className="flex items-center gap-2">
                     <Input
-                        placeholder="Search..."
+                        placeholder="Search by key..."
                         className="w-[250px]"
                         onChange={event => setSearchTerm(event.target.value)}
                         type="search"
@@ -107,7 +112,7 @@ export function AdminRoles() {
                     </TableHeader>
                     <TableBody>
                         {
-                            rolesData.map((role: RoleProps) => (
+                            data?.roles.map((role: RoleProps) => (
                                 <TableRow key={role.id}>
                                     <TableCell>{role.key}</TableCell>
                                     <TableCell className="flex flex-row items-center gap-2">
@@ -148,11 +153,11 @@ export function AdminRoles() {
             </CardContent>
             <CardFooter>
                 <Paginator
-                    showing={rolesData.length}
-                    total={fetchRolesData?.meta.total || 0}
+                    showing={data?.roles.length || 0}
+                    total={data?.meta.total || 0}
                     currentPage={page}
                     currentLimit={limit}
-                    totalPages={fetchRolesData?.meta.totalPages || 0}
+                    totalPages={data?.meta.totalPages || 0}
                     onPageChange={page => setPage(page)}
                     onLimitChange={limit => setLimit(limit)}
                 />
