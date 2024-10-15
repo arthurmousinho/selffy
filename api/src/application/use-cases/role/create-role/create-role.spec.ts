@@ -6,7 +6,7 @@ import { RoleAlreadyExistsError } from "@application/errors/role/role-already-ex
 
 describe('Create Role UseCase', () => {
     let createRoleUseCase: CreateRoleUseCase;
-    let roleRepository: InMemoryRoleRepository;
+    let roleRepository: RoleRepository;
 
     beforeEach(() => {
         roleRepository = new InMemoryRoleRepository();
@@ -32,10 +32,10 @@ describe('Create Role UseCase', () => {
             userTypes: ['ADMIN', 'DEFAULT']
         });
 
-        const roles = await roleRepository.findAll();
-        expect(roles.length).toBe(1);
-        expect(roles[0].getKey()).toBe('role.test');
-        expect(roles[0].getUserTypes()).toEqual(['ADMIN', 'DEFAULT']);
+        const pageableRoles = await roleRepository.findAll(1, 10);
+        expect(pageableRoles.data.length).toBe(1);
+        expect(pageableRoles.data[0].getKey()).toBe('role.test');
+        expect(pageableRoles.data[0].getUserTypes()).toEqual(['ADMIN', 'DEFAULT']);
     });
 
 });

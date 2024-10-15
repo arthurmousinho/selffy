@@ -24,10 +24,13 @@ export class UserController {
 
     @Get()
     public async getUsers(@Query('page') page = 1, @Query('limit') limit = 10) {
-        const pageblaUsers = await this.findAllUsersUseCase.execute(Number(page), Number(limit))
+        const pageblaUsers = await this.findAllUsersUseCase.execute(
+            Number(page), 
+            Number(limit)
+        );
         return { 
             users: pageblaUsers.data.map(UserViewModel.toHTTP), 
-            meta: { ...pageblaUsers.meta } 
+            meta: pageblaUsers.meta  
         };
     }
 

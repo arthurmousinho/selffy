@@ -8,8 +8,17 @@ export class FindAllRolesUseCase {
         private roleRepository: RoleRepository
     ) {}
 
-    public async execute() {
-        return await this.roleRepository.findAll();
+    public async execute(page?: number, limit?: number) {
+        if (!page || page < 1) {
+            page = 1;
+        }
+
+        if (!limit || limit < 1) {
+            limit = 1;
+        }
+
+        const pageableRoles =  await this.roleRepository.findAll(page, limit);
+        return pageableRoles;
     }
 
 }

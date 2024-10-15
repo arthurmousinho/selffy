@@ -4,13 +4,14 @@ import { PrismaService } from "../prisma.service";
 import { PrismaRoleMapper } from "../mappers/prisma-role.mapper";
 import { Injectable } from "@nestjs/common";
 import { UserType } from "@application/entities/user/user.entity";
+import { Pageable } from "@application/types/pageable.type";
 
 @Injectable()
 export class PrismaRoleRepository implements RoleRepository {
 
     constructor(
         private readonly prismaService: PrismaService
-    ) {}
+    ) { }
 
     public async create(role: Role) {
         const raw = PrismaRoleMapper.toPrisma(role);
@@ -26,13 +27,27 @@ export class PrismaRoleRepository implements RoleRepository {
         });
     }
 
-    public async findAll(): Promise<Role[]> {
-        const roles = await this.prismaService.role.findMany({
-            orderBy: {
-                createdAt: "desc"
+    public async findAll(page: number = 1, limit: number = 1): Promise<Pageable<Role>> {
+        const [ roles, total ] = await Promise.all([
+            await this.prismaService.role.findMany({
+                skip: (page - 1) * limit,
+                take: limit,
+                orderBy: {
+                    createdAt: "desc"
+                }
+            }),
+            await this.prismaService.role.count()
+        ])
+
+        return {
+            data: roles.map(PrismaRoleMapper.toDomain),
+            meta: {
+                total,
+                page,
+                limit,
+                totalPages: Math.ceil(total / limit)
             }
-        });
-        return roles.map(PrismaRoleMapper.toDomain);
+        };
     }
 
     public async findById(id: string): Promise<Role | null> {

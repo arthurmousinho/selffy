@@ -1,9 +1,10 @@
 import { Role } from "@application/entities/role/role.entity";
 import { UserType } from "@application/entities/user/user.entity";
 import { RoleRepository } from "@application/repositories/role.repository";
+import { Pageable } from "@application/types/pageable.type";
 
 export class InMemoryRoleRepository implements RoleRepository {
-    
+
     private roles: Role[] = [];
 
     public async create(role: Role): Promise<void> {
@@ -13,7 +14,7 @@ export class InMemoryRoleRepository implements RoleRepository {
     public async createMany(roles: Role[]): Promise<void> {
         this.roles.push(...roles);
     }
-    
+
     public async findById(id: string): Promise<Role | null> {
         const role = this.roles.find(
             (item) => item.getId() === id
@@ -35,8 +36,17 @@ export class InMemoryRoleRepository implements RoleRepository {
         return roles;
     }
 
-    public async findAll(): Promise<Role[]> {
-        return this.roles;
+    public async findAll(page: number, limit: number): Promise<Pageable<Role>> {
+        const roles = this.roles.slice((page - 1) * limit, page * limit);
+        return {
+            data: roles,
+            meta: {
+                page,
+                limit,
+                total: this.roles.length,
+                totalPages: Math.ceil(this.roles.length / limit)
+            }
+        }
     }
 
     public async update(role: Role): Promise<void> {

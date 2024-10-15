@@ -12,8 +12,8 @@ export class RoleSeeder {
     ) {}
 
     public async run() {
-        const roles = await this.roleRepository.findAll();
-        if (roles.length > 0) {
+        const rolesCount = await this.roleRepository.count();
+        if (rolesCount > 0) {
             return;
         }
 

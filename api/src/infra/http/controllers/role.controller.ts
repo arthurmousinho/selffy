@@ -1,5 +1,5 @@
 import { CreateRoleUseCase } from "@application/use-cases/role/create-role/create-role.usecase";
-import { Body, Controller, Delete, Get, Param, Post, Put } from "@nestjs/common";
+import { Body, Controller, Delete, Get, Param, Post, Put, Query } from "@nestjs/common";
 import { CreateRoleBody } from "../dtos/role/create-role-body.dto";
 import { FindAllRolesUseCase } from "@application/use-cases/role/find-all-roles/find-all-roles.usecase";
 import { RoleViewModel } from "../view-models/role.viewmodel";
@@ -21,9 +21,15 @@ export class RoleController {
     ) {}
 
     @Get()
-    public async getRoles() {
-        const roles = await this.findAllRolesUseCase.execute();
-        return { roles: roles.map(RoleViewModel.toHTTP) };
+    public async getRoles(@Query('page') page = 1, @Query('limit') limit = 10) {
+        const pageableRoles = await this.findAllRolesUseCase.execute(
+            Number(page), 
+            Number(limit)
+        );
+        return { 
+            roles: pageableRoles.data.map(RoleViewModel.toHTTP), 
+            meta: pageableRoles.meta 
+        };
     }
 
     @Get(':key')
