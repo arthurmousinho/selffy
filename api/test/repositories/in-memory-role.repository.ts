@@ -29,11 +29,20 @@ export class InMemoryRoleRepository implements RoleRepository {
         return role || null;
     }
 
-    public async findManyByKey(key: string): Promise<Role[]> {
+    public async findManyByKey(params: { key: string, page: number, limit: number }): Promise<Pageable<Role>> {
         const roles = this.roles.filter(
-            (item) => item.getKey().includes(key)
-        );
-        return roles;
+            (item) => item.getKey().includes(params.key)
+        ).slice((params.page - 1) * params.limit, params.page * params.limit);
+        
+        return {
+            data: roles,
+            meta: {
+                page: params.page,
+                limit: params.limit,
+                total: roles.length,
+                totalPages: Math.ceil(roles.length / params.limit)
+            }
+        }
     }
 
     public async findAll(page: number, limit: number): Promise<Pageable<Role>> {

@@ -13,9 +13,15 @@ describe('Search Roles By Key UseCase', () => {
     });
 
     it('should return an empty array if no roles are found with the given key', async () => {
-        const roles = await searchRoleByKeyUseCase.execute('nonexistent.key');
+        const roles = await searchRoleByKeyUseCase.execute({
+            key: 'nonexistent.key',
+            page: 1,
+            limit: 10
+        });
         
-        expect(roles).toEqual([]);
+        expect(roles.data).toEqual([]);
+        expect(roles.meta.page).toBe(1);
+        expect(roles.meta.totalPages).toBe(0);
     });
 
     it('should return roles that match the given key', async () => {
@@ -27,11 +33,17 @@ describe('Search Roles By Key UseCase', () => {
         await roleRepository.create(role2);
         await roleRepository.create(role3);
 
-        const roles = await searchRoleByKeyUseCase.execute('role.admin');
+        const roles = await searchRoleByKeyUseCase.execute({
+            key: 'role.admin',
+            page: 1,
+            limit: 10
+        });
 
-        expect(roles.length).toBe(2); 
-        expect(roles[0].getKey()).toBe('role.admin');
-        expect(roles[1].getKey()).toBe('role.admin');
+        expect(roles.data.length).toBe(2); 
+        expect(roles.data[0].getKey()).toBe('role.admin');
+        expect(roles.data[1].getKey()).toBe('role.admin');
+        expect(roles.meta.page).toBe(1);
+        expect(roles.meta.totalPages).toBe(1);
     });
 
 });

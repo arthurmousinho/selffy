@@ -33,9 +33,20 @@ export class RoleController {
     }
 
     @Get(':key')
-    public async searchByKey(@Param('key') key: string) {
-        const rolesFound = await this.searchRolesByKeyUseCase.execute(key);
-        return { roles: rolesFound.map(RoleViewModel.toHTTP) };
+    public async searchByKey(
+        @Param('key') key: string, 
+        @Query('page') page: number = 1, 
+        @Query('limit') limit: number = 10
+    ) {
+        const pageableRoles = await this.searchRolesByKeyUseCase.execute({
+            key,
+            page: Number(page),
+            limit: Number(limit)
+        });
+        return { 
+            roles: pageableRoles.data.map(RoleViewModel.toHTTP),
+            meta: pageableRoles.meta
+        };
     }
 
     @Post()

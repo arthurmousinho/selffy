@@ -8,7 +8,7 @@ export abstract class RoleRepository {
     abstract createMany(roles: Role[]): Promise<void>;
     abstract findById(id: string): Promise<Role | null>;
     abstract findByKey(key: string): Promise<Role | null>;
-    abstract findManyByKey(key: string): Promise<Role[]>;
+    abstract findManyByKey(params: { key: string, page: number, limit: number }): Promise<Pageable<Role>>;
     abstract update(role: Role): Promise<void>;
     abstract delete(id: string): Promise<void>;
     abstract getRolesForAdminUser(): Promise<Role[]>;

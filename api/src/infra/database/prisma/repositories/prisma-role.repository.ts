@@ -28,7 +28,7 @@ export class PrismaRoleRepository implements RoleRepository {
     }
 
     public async findAll(page: number = 1, limit: number = 1): Promise<Pageable<Role>> {
-        const [ roles, total ] = await Promise.all([
+        const [roles, total] = await Promise.all([
             await this.prismaService.role.findMany({
                 skip: (page - 1) * limit,
                 take: limit,
@@ -74,16 +74,27 @@ export class PrismaRoleRepository implements RoleRepository {
         return PrismaRoleMapper.toDomain(role);
     }
 
-    public async findManyByKey(key: string): Promise<Role[]> {
+    public async findManyByKey(params: { key: string, page: number, limit: number }): Promise<Pageable<Role>> {
         const roles = await this.prismaService.role.findMany({
+            skip: (params.page - 1) * params.limit,
+            take: params.limit,
             where: {
                 key: {
-                    contains: key,
+                    contains: params.key,
                     mode: "insensitive"
                 }
             }
         });
-        return roles.map(PrismaRoleMapper.toDomain);
+
+        return {
+            data: roles.map(PrismaRoleMapper.toDomain),
+            meta: {
+                total: roles.length,
+                page: params.page,
+                limit: params.limit,
+                totalPages: Math.ceil(roles.length / params.limit)
+            }
+        };
     }
 
     public async update(role: Role): Promise<void> {
