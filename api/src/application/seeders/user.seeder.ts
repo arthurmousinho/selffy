@@ -1,6 +1,8 @@
+import { PlanType, UserType } from '@application/entities/user/user.entity';
 import { UserRepository } from '@application/repositories/user.repository';
 import { CreateUserUseCase } from '@application/use-cases/user/create-user/create-user.usecase';
 import { Injectable } from '@nestjs/common';
+import { MOCK_USERS } from 'src/mocks/user.mock';
 
 @Injectable()
 export class UserSeeder {
@@ -11,7 +13,21 @@ export class UserSeeder {
     ) { }
 
     public async run() {
+        if (await this.userRepository.count() > 0) {
+            return;
+        }
+
         await this.createAdminUser();
+
+        MOCK_USERS.map(async (user) => {
+            await this.createUserUseCase.execute({
+                name: user.name,
+                email: user.email,
+                password: user.password,
+                type: user.userType as UserType,
+                plan: user.plan as PlanType
+            })
+        })
     }
 
     private async createAdminUser() {
