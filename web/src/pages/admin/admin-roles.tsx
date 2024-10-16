@@ -21,7 +21,7 @@ import {
 import { DetailsDialog } from "@/components/global/details-dialog";
 import { DeleteAlertDialog } from "@/components/global/delete-alert-dialog";
 import { Badge } from "@/components/ui/badge";
-import { deleteRole, getAllRoles, RoleProps, SearchRoleByKeyResponse, searchRolesByKey } from "@/hooks/use-role";
+import { deleteRole, getAllRoles, GetAllRolesResponse, RoleProps, searchRolesByKey } from "@/hooks/use-role";
 import { UserType } from "@/hooks/use-user";
 import { NewRoleDialog } from "@/components/admin/role/new-role-dialog";
 import { EditRoleDialog } from "@/components/admin/role/edit-role-dialog";
@@ -34,7 +34,7 @@ export function AdminRoles() {
     const [page, setPage] = useState(1);
     const [limit, setLimit] = useState(5);
 
-    const [data, setData] = useState<SearchRoleByKeyResponse>();
+    const [data, setData] = useState<GetAllRolesResponse>();
     const [searchTerm, setSearchTerm] = useState<string>('');
 
     const { data: fetchRolesData, refetch: refetchRoles } = getAllRoles(page, limit);

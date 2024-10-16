@@ -3,10 +3,6 @@ import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card"
 import { Input } from "@/components/ui/input";
 import {
     ChevronDown,
-    ChevronLeft,
-    ChevronRight,
-    ChevronsLeft,
-    ChevronsRight,
     Filter,
     Folder,
     Pencil,
@@ -30,36 +26,36 @@ import {
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { Badge } from "@/components/ui/badge";
-import {
-    Select,
-    SelectContent,
-    SelectItem,
-    SelectTrigger,
-    SelectValue,
-} from "@/components/ui/select"
-import { Label } from "@/components/ui/label";
 import { DetailsDialog } from "@/components/global/details-dialog";
-import { deleteUser, getAllUsers, searchUsersByName, UserProps } from "@/hooks/use-user";
+import { deleteUser, getAllUsers, GetAllUsersResponse, searchUsersByName, UserProps } from "@/hooks/use-user";
 import { DeleteAlertDialog } from "@/components/global/delete-alert-dialog";
 import { useEffect, useState } from "react";
 import { NewUserDialog } from "@/components/admin/user/new-user-dialog";
 import { EditUserDialog } from "@/components/admin/user/edit-user-dialog";
+import { Paginator } from "@/components/global/paginator";
 
 export function AdminUsers() {
 
-    const [usersData, setUsersData] = useState<UserProps[]>([]);
+    const [page, setPage] = useState(1);
+    const [limit, setLimit] = useState(5);
+
+    const [data, setData] = useState<GetAllUsersResponse>();
     const [searchTerm, setSearchTerm] = useState<string>('');
 
-    const { data: fetchUsersData, refetch: refetchUsers } = getAllUsers();
+    const { data: fetchUsersData, refetch: refetchUsers } = getAllUsers(page, limit);
     const { mutate: deleteUserFn } = deleteUser();
-    const { data: searchUsersByNameData } = searchUsersByName(searchTerm);
+    const { data: searchUsersByNameData } = searchUsersByName({
+        name: searchTerm,
+        page: page,
+        limit: limit
+    });
 
     useEffect(() => {
         if (!searchTerm && fetchUsersData) {
-            setUsersData(fetchUsersData.users);
+            setData(fetchUsersData);
         }
         if (searchUsersByNameData) {
-            setUsersData(searchUsersByNameData.users);
+            setData(searchUsersByNameData);
         }
     }, [fetchUsersData, searchUsersByNameData, searchTerm]);
 
@@ -126,7 +122,7 @@ export function AdminUsers() {
                     </TableHeader>
                     <TableBody>
                         {
-                            usersData.map((user: UserProps) => (
+                            data?.users.map((user: UserProps) => (
                                 <TableRow key={user.id}>
                                     <TableCell>{user.name}</TableCell>
                                     <TableCell>{user.email}</TableCell>
@@ -203,41 +199,16 @@ export function AdminUsers() {
                     </TableBody>
                 </Table>
             </CardContent>
-            <CardFooter className="flex items-center justify-between">
-                <span className="text-sm text-muted-foreground">
-                    Showing 5 of 1200 items
-                </span>
-                <footer className="flex flex-row items-center gap-4">
-                    <div className="flex flex-row items-center gap-2">
-                        <Label htmlFor="rows-per-page-input">
-                            Rows per page
-                        </Label>
-                        <Select defaultValue="5">
-                            <SelectTrigger className="w-[100px] h-12" id="rows-per-page-input">
-                                <SelectValue placeholder="Rows per page" />
-                            </SelectTrigger>
-                            <SelectContent>
-                                <SelectItem value="5">5 rows</SelectItem>
-                                <SelectItem value="10">10 rows</SelectItem>
-                                <SelectItem value="15">15 rows</SelectItem>
-                            </SelectContent>
-                        </Select>
-                    </div>
-                    <div className="space-x-2">
-                        <Button variant={'outline'}>
-                            <ChevronsLeft size={20} />
-                        </Button>
-                        <Button variant={'outline'}>
-                            <ChevronLeft size={20} />
-                        </Button>
-                        <Button variant={'outline'}>
-                            <ChevronRight size={20} />
-                        </Button>
-                        <Button variant={'outline'}>
-                            <ChevronsRight size={20} />
-                        </Button>
-                    </div>
-                </footer>
+            <CardFooter>
+                <Paginator
+                    showing={data?.users.length || 0}
+                    total={data?.meta.total || 0}
+                    currentPage={page}
+                    currentLimit={limit}
+                    totalPages={data?.meta.totalPages || 0}
+                    onPageChange={page => setPage(page)}
+                    onLimitChange={limit => setLimit(limit)}
+                />
             </CardFooter>
         </Card>
     );

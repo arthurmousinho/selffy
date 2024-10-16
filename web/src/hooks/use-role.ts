@@ -11,7 +11,7 @@ export interface RoleProps {
     userTypes: UserType[];
 }
 
-interface GetAllRolesResponse {
+export interface GetAllRolesResponse {
     roles: RoleProps[],
     meta: PageableMeta
 }

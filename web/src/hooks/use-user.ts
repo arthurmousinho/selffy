@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { jwtDecode } from 'jwt-decode';
 import { axios } from "@/lib/axios";
 import { saveToken, TokenProps } from "./use-token";
+import { PageableMeta } from "@/types/pageable.type";
 
 export type UserType = "ADMIN" | "DEFAULT";
 export type PlanType = "FREE" | "PREMIUM";
@@ -21,19 +22,21 @@ export interface UserProps {
     plan: PlanType;
 }
 
-interface GetAllUsersResponse {
-    users: UserProps[]
+export interface GetAllUsersResponse {
+    users: UserProps[],
+    meta: PageableMeta
 }
 
 interface SearchUserByNameResponse {
-    users: UserProps[]
+    users: UserProps[],
+    meta: PageableMeta
 }
 
-export function getAllUsers() {
+export function getAllUsers(page: number, limit: number) {
     const query = useQuery({
-        queryKey: ['users'],
+        queryKey: ['users', page, limit],
         queryFn: async () => {
-            const response = await axios.get('/users');
+            const response = await axios.get(`/users?page=${page}&limit=${limit}`);
             return response.data as GetAllUsersResponse;
         }
     })
@@ -97,14 +100,21 @@ export function deleteUser() {
     return query;
 }
 
-export function searchUsersByName(name?: string) {
+export function searchUsersByName(params: {  name?: string, page?: number, limit?: number }) {
+    const { name, page, limit } = params;
     const query = useQuery({
-        queryKey: ['users', name],
+        queryKey: ['users', name, page, limit],
         queryFn: async () => {
-            const response = await axios.get(`/users/${name}`);
+            const response = await axios.get(`/users/${name}`, {
+                params: {
+                    name,
+                    page,
+                    limit
+                }
+            });
             return response.data as SearchUserByNameResponse;
         },
-        enabled: !!name,
+        enabled: !!name && !!page && !!limit,
         staleTime: 5000
     });
 
