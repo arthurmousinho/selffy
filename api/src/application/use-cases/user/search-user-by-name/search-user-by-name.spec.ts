@@ -34,16 +34,26 @@ describe('SearchUserByNameUseCase', () => {
         await userRepository.create(user1);
         await userRepository.create(user2);
 
-        const foundUsers = await searchUserByNameUseCase.execute('John Doe');
+        const foundUsers = await searchUserByNameUseCase.execute({
+            name: 'John Doe',
+            page: 1,
+            limit: 10
+        });
 
-        expect(foundUsers.length).toBe(2);
-        expect(foundUsers[0].getName()).toBe('John Doe');
-        expect(foundUsers[1].getName()).toBe('John Doe');
+        expect(foundUsers.data.length).toBe(2);
+        expect(foundUsers.data[0].getName()).toBe('John Doe');
+        expect(foundUsers.data[1].getName()).toBe('John Doe');
+        expect(foundUsers.meta.page).toBe(1);
+        expect(foundUsers.meta.totalPages).toBe(1);
     });
 
     it('should return an empty array if no users with the given name exist', async () => {
-        const foundUsers = await searchUserByNameUseCase.execute('Non-existent User');
-        expect(foundUsers.length).toBe(0);
+        const foundUsers = await searchUserByNameUseCase.execute({
+            name: 'Non-existent User',
+            page: 1,
+            limit: 10
+        });
+        expect(foundUsers.data.length).toBe(0);
     });
 
 });

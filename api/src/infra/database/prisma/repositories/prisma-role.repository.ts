@@ -36,7 +36,7 @@ export class PrismaRoleRepository implements RoleRepository {
                     createdAt: "desc"
                 }
             }),
-            await this.prismaService.role.count()
+            await this.count()
         ])
 
         return {

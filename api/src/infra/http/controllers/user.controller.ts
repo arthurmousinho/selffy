@@ -35,9 +35,20 @@ export class UserController {
     }
 
     @Get(':name')
-    public async searchByName(@Param('name') name: string) {
-        const usersFound = await this.searchUserByNameUseCase.execute(name);
-        return { users: usersFound.map(UserViewModel.toHTTP) };
+    public async searchByName(
+        @Param('name') name: string, 
+        @Query('page') page = 1, 
+        @Query('limit') limit = 10
+    ) {
+        const pageableUsers = await this.searchUserByNameUseCase.execute({
+            name,
+            page: Number(page),
+            limit: Number(limit)
+        });
+        return {
+            users: pageableUsers.data.map(UserViewModel.toHTTP),
+            meta: pageableUsers.meta
+        };
     }
 
     @Post('/signup')

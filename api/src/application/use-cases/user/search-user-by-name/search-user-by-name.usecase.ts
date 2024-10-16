@@ -1,6 +1,12 @@
 import { UserRepository } from "@application/repositories/user.repository";
 import { Injectable } from "@nestjs/common";
 
+interface SearchUserByNameUseCaseRequest {
+    name: string;
+    page: number;
+    limit: number;
+}
+
 @Injectable()
 export class SearchUserByNameUseCase {
 
@@ -8,9 +14,9 @@ export class SearchUserByNameUseCase {
         private usersRepository: UserRepository
     ) {}
 
-    public async execute(name: string) {
-        const user = await this.usersRepository.findManyByName(name);
-        return user;
+    public async execute(request: SearchUserByNameUseCaseRequest) {
+        const pageableUsers = await this.usersRepository.findManyByName(request);
+        return pageableUsers;
     }
 
 }

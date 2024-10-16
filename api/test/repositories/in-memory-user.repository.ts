@@ -16,11 +16,20 @@ export class InMemoryUserRepository implements UserRepository {
         return user ?? null;
     }
 
-    public async findManyByName(name: string) {
+    public async findManyByName(params: { name: string, page: number, limit: number }) {
         const users = this.users.filter(
-            (user) => user.getName() === name
+            (user) => user.getName().toLowerCase().includes(params.name.toLowerCase())
         );
-        return users;
+        const pageableUsers = users.slice((params.page - 1) * params.limit, params.page * params.limit);
+        return {
+            data: pageableUsers,
+            meta: {
+                page: params.page,
+                limit: params.limit,
+                total: users.length,
+                totalPages: Math.ceil(users.length / params.limit)
+            }
+        }
     }
 
     public async findById(id: string) {

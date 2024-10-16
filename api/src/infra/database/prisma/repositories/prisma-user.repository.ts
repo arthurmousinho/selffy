@@ -44,19 +44,40 @@ export class PrismaUserRepository implements UserRepository {
         return PrismaUserMapper.toDomain(user);
     }
 
-    public async findManyByName(name: string): Promise<User[]> {
-        const users = await this.prismaService.user.findMany({
-            where: {
-                name: {
-                    contains: name,
-                    mode: 'insensitive'
+    public async findManyByName(params: { name: string, page: number, limit: number }): Promise<Pageable<User>> {
+        const [ users, total ] = await Promise.all([
+            this.prismaService.user.findMany({
+                skip: (params.page - 1) * params.limit,
+                take: params.limit,
+                where: {
+                    name: {
+                        contains: params.name,
+                        mode: 'insensitive'
+                    }
+                },
+                include: {
+                    roles: true
                 }
-            },
-            include: {
-                roles: true
+            }),
+            this.prismaService.user.count({
+                where: {
+                    name: {
+                        contains: params.name,
+                        mode: 'insensitive'
+                    }
+                }
+            })
+        ])
+
+        return {
+            data: users.map(PrismaUserMapper.toDomain),
+            meta: {
+                total,
+                page: params.page,
+                limit: params.limit,
+                totalPages: Math.ceil(total / params.limit)
             }
-        });
-        return users.map(PrismaUserMapper.toDomain);
+        };
     }
 
     public async findById(id: string): Promise<User | null> {
@@ -75,7 +96,7 @@ export class PrismaUserRepository implements UserRepository {
     }
 
     public async findAll(page: number = 1, limit: number = 1): Promise<Pageable<User>> {
-        const [ users, total ] = await Promise.all([
+        const [users, total] = await Promise.all([
             this.prismaService.user.findMany({
                 skip: (page - 1) * limit,
                 take: limit,
@@ -86,7 +107,7 @@ export class PrismaUserRepository implements UserRepository {
                     roles: true
                 }
             }),
-            this.prismaService.user.count()
+            this.count()
         ])
 
         return {

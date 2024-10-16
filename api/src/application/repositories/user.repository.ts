@@ -5,7 +5,7 @@ export abstract class UserRepository {
     abstract create(user: User): Promise<void>;
     abstract findAll(page: number, limit: number): Promise<Pageable<User>>;
     abstract findByEmail(email: string): Promise<User | null>;
-    abstract findManyByName(name: string): Promise<User[]>;
+    abstract findManyByName(params: { name: string, page: number, limit: number }): Promise<Pageable<User>>;
     abstract findById(id: string): Promise<any>;
     abstract update(user: User): Promise<void>;
     abstract delete(id: string): Promise<void>;
