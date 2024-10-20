@@ -2,6 +2,7 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import { useToast } from "./use-toast";
 import { axios } from "@/lib/axios";
 import { queryClient } from "@/main";
+import { PageableMeta } from "@/types/pageable.type";
 
 
 export interface ProjectProps {
@@ -18,15 +19,16 @@ export interface ProjectProps {
     updatedAt: Date;
 }
 
-interface GetAllProjectsResponse {
-    projects: ProjectProps[]
+export interface GetAllProjectsResponse {
+    projects: ProjectProps[],
+    meta: PageableMeta
 }
 
-export function getAllProjects() {
+export function getAllProjects(page: number, limit: number) {
     const query = useQuery({
-        queryKey: ['projects'],
+        queryKey: ['projects', page, limit],
         queryFn: async () => {
-            const response = await axios.get('/projects');
+            const response = await axios.get(`/projects?page=${page}&limit=${limit}`);
             return response.data as GetAllProjectsResponse;
         }
     })
@@ -121,17 +123,19 @@ export function updateProject() {
 }
 
 interface SearchProjectByTitleResponse {
-    projects: ProjectProps[]
+    projects: ProjectProps[],
+    meta: PageableMeta
 }
 
-export function searchProjectsByTitle(title?: string) {
+export function searchProjectsByTitle(props: { title?: string, page?: number, limit?: number }) {
+    const { title, page, limit } = props;
     const query = useQuery({
         queryKey: ['projects', title],
         queryFn: async () => {
-            const response = await axios.get(`/projects/${title}`);
+            const response = await axios.get(`/projects/${title}?page=${page}&limit=${limit}`);
             return response.data as SearchProjectByTitleResponse;
         },
-        enabled: !!title,
+        enabled: !!title && !!page && !!limit,
         staleTime: 5000
     });
 
