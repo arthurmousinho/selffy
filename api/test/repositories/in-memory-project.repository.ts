@@ -1,5 +1,6 @@
 import { Project, ProjectStatus } from "@application/entities/project/project.entity";
 import { ProjectRepository } from "@application/repositories/project.repository";
+import { Pageable } from "@application/types/pageable.type";
 
 export class InMemoryProjectRepository implements ProjectRepository {
 
@@ -9,8 +10,17 @@ export class InMemoryProjectRepository implements ProjectRepository {
         this.projects.push(project);
     }
 
-    public async findAll(): Promise<Project[]> {
-        return this.projects;
+    public async findAll(page: number, limit: number): Promise<Pageable<Project>> {
+        const projects = this.projects.slice((page - 1) * limit, page * limit);
+        return {
+            data: projects,
+            meta: {
+                page,
+                limit,
+                total: this.projects.length,
+                totalPages: Math.ceil(this.projects.length / limit)
+            }
+        }
     }
 
     public async findById(id: string): Promise<Project | null> {
@@ -42,10 +52,20 @@ export class InMemoryProjectRepository implements ProjectRepository {
         return this.projects.length;
     }
 
-    public async findManyByTitle(title: string): Promise<Project[]> {
-        return this.projects.filter(
-            (project) => project.getTitle().includes(title)
+    public async findManyByTitle(params: { title: string, page: number, limit: number }): Promise<Pageable<Project>> {
+        const projects = this.projects.filter(
+            (project) => project.getTitle().toLowerCase().includes(params.title.toLowerCase())
         );
+        const pageableProjects = projects.slice((params.page - 1) * params.limit, params.page * params.limit);
+        return {
+            data: pageableProjects,
+            meta: {
+                page: params.page,
+                limit: params.limit,
+                total: projects.length,
+                totalPages: Math.ceil(projects.length / params.limit)
+            }
+        }
     }
 
     public async countByStatus(status: ProjectStatus): Promise<number> {

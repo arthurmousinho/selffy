@@ -13,24 +13,24 @@ describe('Create Project UseCase', () => {
     });
 
     it('should create a new project', async () => {
-        const newProject = makeProject()
+        const newProject = makeProject();
         const projectRequest = {
             title: newProject.getTitle(),
             description: newProject.getDescription(),
             revenue: newProject.getRevenue(),
             icon: newProject.getIcon(),
             color: newProject.getColor(),
-            owner: newProject.getOwner()
-        }; 
+            owner: newProject.getOwner(),
+        };
 
         await createProjectUseCase.execute(projectRequest);
 
-        const projects = await projectRepository.findAll();
-        
-        expect(projects.length).toBe(1);
-        expect(projects[0].getTitle()).toBe(projectRequest.title);
-        expect(projects[0].getDescription()).toBe(projectRequest.description);
-        expect(projects[0].getOwner()).toBe(projectRequest.owner);
+        const result = await projectRepository.findAll(1, 10); 
+
+        expect(result.data.length).toBe(1); 
+        expect(result.data[0].getTitle()).toBe(projectRequest.title);
+        expect(result.data[0].getDescription()).toBe(projectRequest.description);
+        expect(result.data[0].getOwner()).toBe(projectRequest.owner);
     });
 
 });

@@ -4,7 +4,7 @@ import { makeProject } from '@test/factories/project.factory';
 import { SearchProjectByTitleUseCase } from './search-project-by-title.usecase';
 
 describe('SearchProjectsByTitleUseCase', () => {
-  
+
   let searchProjectsByTitleUseCase: SearchProjectByTitleUseCase;
   let projectRepository: ProjectRepository;
 
@@ -14,8 +14,12 @@ describe('SearchProjectsByTitleUseCase', () => {
   });
 
   it('should return an empty list if no projects match the title', async () => {
-    const projects = await searchProjectsByTitleUseCase.execute('Non-existent title');
-    expect(projects).toEqual([]);
+    const result = await searchProjectsByTitleUseCase.execute({ title: 'Non-existent title', page: 1, limit: 10 });
+
+    expect(result.data).toEqual([]);
+    expect(result.meta.total).toBe(0);
+    expect(result.meta.page).toBe(1);
+    expect(result.meta.totalPages).toBe(0);
   });
 
   it('should return projects that match the title', async () => {
@@ -25,10 +29,13 @@ describe('SearchProjectsByTitleUseCase', () => {
     await projectRepository.create(project1);
     await projectRepository.create(project2);
 
-    const projects = await searchProjectsByTitleUseCase.execute('First Project');
+    const result = await searchProjectsByTitleUseCase.execute({ title: 'First Project', page: 1, limit: 10 });
 
-    expect(projects.length).toBe(1);
-    expect(projects).toContainEqual(project1);
+    expect(result.data.length).toBe(1);
+    expect(result.data).toContainEqual(project1);
+    expect(result.meta.total).toBe(1);
+    expect(result.meta.page).toBe(1);
+    expect(result.meta.totalPages).toBe(1);
   });
 
   it('should return multiple projects if more than one match the title', async () => {
@@ -40,11 +47,14 @@ describe('SearchProjectsByTitleUseCase', () => {
     await projectRepository.create(project2);
     await projectRepository.create(project3);
 
-    const projects = await searchProjectsByTitleUseCase.execute('Project Alpha');
+    const result = await searchProjectsByTitleUseCase.execute({ title: 'Project Alpha', page: 1, limit: 10 });
 
-    expect(projects.length).toBe(2);
-    expect(projects).toContainEqual(project1);
-    expect(projects).toContainEqual(project3);
+    expect(result.data.length).toBe(2);
+    expect(result.data).toContainEqual(project1);
+    expect(result.data).toContainEqual(project3);
+    expect(result.meta.total).toBe(2);
+    expect(result.meta.page).toBe(1);
+    expect(result.meta.totalPages).toBe(1);
   });
 
 });

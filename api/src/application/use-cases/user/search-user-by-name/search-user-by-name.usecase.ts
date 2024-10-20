@@ -15,6 +15,14 @@ export class SearchUserByNameUseCase {
     ) {}
 
     public async execute(request: SearchUserByNameUseCaseRequest) {
+        if (!request.page || request.page < 1) {
+            request.page = 1;
+        }
+
+        if (!request.limit || request.limit < 1) {
+            request.limit = 10;
+        }
+
         const pageableUsers = await this.usersRepository.findManyByName(request);
         return pageableUsers;
     }
