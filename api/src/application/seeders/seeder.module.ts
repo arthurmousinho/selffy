@@ -3,16 +3,24 @@ import { RoleSeeder } from './role.seeder';
 import { Seeder } from './seeder';
 import { DatabaseModule } from '@infra/database/database.module';
 import { UserSeeder } from './user.seeder';
-import { CreateUserUseCase } from '@application/use-cases/user/create-user/create-user.usecase';
-import { GetRolesForUserTypeUseCase } from '@application/use-cases/role/get-roles-for-user-type/get-roles-for-user-type';
+import { ProjectSeeder } from './project.seeder';
+import { UserModule } from '@application/use-cases/user/user.module';
+import { RoleModule } from '@application/use-cases/role/role.module';
+import { ProjectModule } from '@application/use-cases/project/project.module';
 
 @Module({
+    imports: [
+        UserModule,
+        RoleModule,
+        ProjectModule
+    ],
     providers: [
         DatabaseModule,
-        CreateUserUseCase,
-        GetRolesForUserTypeUseCase,
+
         RoleSeeder,
         UserSeeder,
+        ProjectSeeder,
+
         Seeder 
     ],
     exports: [Seeder], 
