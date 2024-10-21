@@ -10,6 +10,10 @@ export class InMemoryProjectRepository implements ProjectRepository {
         this.projects.push(project);
     }
 
+    public async createMany(projects: Project[]): Promise<void> {
+        this.projects.push(...projects);
+    }
+
     public async findAll(page: number, limit: number): Promise<Pageable<Project>> {
         const projects = this.projects.slice((page - 1) * limit, page * limit);
         return {

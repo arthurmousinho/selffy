@@ -3,6 +3,7 @@ import { Pageable } from "@application/types/pageable.type";
 
 export abstract class ProjectRepository {
     abstract create(project: Project): Promise<void>;
+    abstract createMany(projects: Project[]): Promise<void>;
     abstract findAll(page: number, limit: number): Promise<Pageable<Project>>;
     abstract findById(id: string): Promise<Project | null>;
     abstract update(project: Project): Promise<void>;

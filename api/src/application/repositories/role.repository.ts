@@ -4,8 +4,8 @@ import { Pageable } from "@application/types/pageable.type";
 
 export abstract class RoleRepository {
     abstract create(role: Role): Promise<void>;
-    abstract findAll(page: number, limit: number): Promise<Pageable<Role>>;
     abstract createMany(roles: Role[]): Promise<void>;
+    abstract findAll(page: number, limit: number): Promise<Pageable<Role>>;
     abstract findById(id: string): Promise<Role | null>;
     abstract findByKey(key: string): Promise<Role | null>;
     abstract findManyByKey(params: { key: string, page: number, limit: number }): Promise<Pageable<Role>>;

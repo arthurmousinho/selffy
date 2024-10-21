@@ -1,7 +1,9 @@
-import { ProjectRepository } from "@application/repositories/project.repository"
-import { CreateProjectUseCase } from "@application/use-cases/project/create-project/create-project.usecase";
+import { ProjectRepository } from "@application/repositories/project.repository";
 import { FindAllUsersUseCase } from "@application/use-cases/user/find-all-users/find-all-users.usecase";
+import { PrismaProjectMapper } from "@infra/database/prisma/mappers/prisma-project.mapper";
+import { PrismaUserMapper } from "@infra/database/prisma/mappers/prisma-user.mapper";
 import { Injectable } from "@nestjs/common";
+import { randomUUID } from "crypto";
 import { MOCK_PROJECTS } from "src/mocks/project.mock";
 
 @Injectable()
@@ -9,7 +11,6 @@ export class ProjectSeeder {
 
     constructor(
         private projectRepository: ProjectRepository,
-        private createPrejectUseCase: CreateProjectUseCase,
         private findAllUsersUseCase: FindAllUsersUseCase
     ) { }
 
@@ -19,19 +20,28 @@ export class ProjectSeeder {
             return;
         }
 
-        // TODO: Create createMany() in ProjectRepository
- 
-        MOCK_PROJECTS.map(async (project) => {
-            await this.createPrejectUseCase.execute({
-                owner: await this.getRandomUser(),
-                title: project.title,
-                description: project.description,
-                revenue: project.revenue,
-                icon: project.icon,
-                color: project.color,
-            });
-        });
+        const projectsInstaces = await Promise.all(MOCK_PROJECTS.map(
+            async (project) => {
+                const randomUser = await this.getRandomUser();
+                const randomUserMappedToPrisma = PrismaUserMapper.toPrisma(randomUser);
 
+                return PrismaProjectMapper.toDomain({
+                    id: randomUUID(),
+                    title: project.title,
+                    description: project.description,
+                    status: project.status,
+                    revenue: project.revenue,
+                    icon: project.icon,
+                    color: project.color,
+                    createdAt: new Date(),
+                    updatedAt: new Date(),
+                    owner: randomUserMappedToPrisma,
+                    ownerId: randomUserMappedToPrisma.id,
+                });
+            }
+        ));
+
+        await this.projectRepository.createMany(projectsInstaces); 
     }
 
     private async getRandomUser() {
@@ -39,5 +49,4 @@ export class ProjectSeeder {
         const randomUser = users.data[Math.floor(Math.random() * users.data.length)];
         return randomUser;
     }
-
 }

@@ -19,6 +19,13 @@ export class PrismaProjectRepository implements ProjectRepository {
         })
     }
 
+    public async createMany(projects: Project[]): Promise<void> {
+        const raw = projects.map(PrismaProjectMapper.toPrisma);
+        await this.prismaService.project.createMany({
+            data: raw
+        })
+    }
+
     public async findById(id: string): Promise<Project | null> {
        const project = await this.prismaService.project.findUnique({
             where: {

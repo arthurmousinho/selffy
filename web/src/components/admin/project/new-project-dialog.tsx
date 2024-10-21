@@ -51,7 +51,7 @@ export function NewProjectDialog(props: NewProjectDialogProps) {
 
     const [selectedColor, setSelectedColor] = useState<string | null>(null);
 
-    const { data: getAllUsersData } = getAllUsers();
+    const { data: getAllUsersData } = getAllUsers(1, 10);
     const { mutate: createProjectFn } = createProject();
 
     const formSchema = z.object({

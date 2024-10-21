@@ -1,11 +1,28 @@
-const getRandomColor = () => {
-    const colors = ['#FF5733', '#33FF57', '#3357FF', '#FF33A5', '#F5A623', '#8E44AD', '#2980B9'];
+import { ProjectStatus } from "@application/entities/project/project.entity";
+
+function getRandomColor() {
+    const colors = [
+        '#fca5a5', 
+        '#7dd3fc', 
+        '#fcd34d', 
+        '#f9a8d4', 
+        '#86efac', 
+        '#fda4af', 
+        '#d8b4fe', 
+        '#fdba74', 
+        '#93c5fd'
+    ];
     return colors[Math.floor(Math.random() * colors.length)];
 };
 
-const getRandomIcon = () => {
+function getRandomIcon() {
     const icons = ['📱', '💻', '📊', '🎨', '🛠️', '📦', '📇'];
     return icons[Math.floor(Math.random() * icons.length)];
+};
+
+function getRandomStatus() {
+    const statuses = ['IN_PROGRESS', 'FINISHED'];
+    return statuses[Math.floor(Math.random() * statuses.length)] as ProjectStatus;
 };
 
 export const MOCK_PROJECTS = Array.from({ length: 30 }).map((_, index) => ({
@@ -14,4 +31,5 @@ export const MOCK_PROJECTS = Array.from({ length: 30 }).map((_, index) => ({
     revenue: 200,
     icon: getRandomIcon(),
     color: getRandomColor(),
+    status: getRandomStatus(),
 }));
