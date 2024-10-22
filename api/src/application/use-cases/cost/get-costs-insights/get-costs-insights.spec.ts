@@ -34,7 +34,7 @@ describe('GetCostsInsightsUseCase', () => {
     expect(countCostsUseCase.execute).toHaveBeenCalled();
     expect(getCostsTotalValueUseCase.execute).toHaveBeenCalled();
     expect(result).toEqual({
-      tatal: mockCostsCount,
+      total: mockCostsCount,
       totalValue: mockCostsTotalValue,
     });
   });

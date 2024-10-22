@@ -3,7 +3,7 @@ import { CountCostsUseCase } from "../count-costs/count-costs.usecase";
 import { GetCostsTotalValueUseCase } from "../get-costs-total-value/get-costs-total-value.usecase";
 
 export interface CostsInsights {
-    tatal: number;
+    total: number;
     totalValue: number;
 }
 
@@ -25,7 +25,7 @@ export class GetCostsInsightsUseCase {
         ])
 
         return {
-            tatal: costsCount,
+            total: costsCount,
             totalValue: costsTotalValue
         }
     }
