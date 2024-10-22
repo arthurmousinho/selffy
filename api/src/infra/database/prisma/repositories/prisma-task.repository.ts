@@ -3,6 +3,7 @@ import { PrismaService } from "../prisma.service";
 import { Task, TaskPriority, TaskStatus } from "@application/entities/task/task.entity";
 import { PrismaTaskMapper } from "../mappers/prisma-task.mapper";
 import { Injectable } from "@nestjs/common";
+import { Pageable } from "@application/types/pageable.type";
 
 @Injectable()
 export class PrismaTaskRepository implements TaskRepository {
@@ -25,13 +26,27 @@ export class PrismaTaskRepository implements TaskRepository {
         })
     }
 
-    public async findAll(): Promise<Task[]> {
-        const tasks = await this.prismaService.task.findMany({
-            orderBy: {
-                createdAt: 'desc'
+    public async findAll(page: number, limit: number): Promise<Pageable<Task>> {
+        const [tasks, total] = await Promise.all([
+            this.prismaService.task.findMany({
+                skip: (page - 1) * limit,
+                take: limit,
+                orderBy: {
+                    createdAt: 'desc'
+                }
+            }),
+            this.prismaService.project.count()
+        ]);
+
+        return {
+            data: tasks.map(PrismaTaskMapper.toDomain),
+            meta: {
+                total,
+                page,
+                limit,
+                totalPages: Math.ceil(total / limit)
             }
-        })
-        return tasks.map(task => PrismaTaskMapper.toDomain(task))
+        }
     }
 
     public async findById(id: string): Promise<Task | null> {
@@ -64,16 +79,37 @@ export class PrismaTaskRepository implements TaskRepository {
         })
     }
 
-    public async findManyByTitle(title: string): Promise<Task[]> {
-        const tasks = await this.prismaService.task.findMany({
-            where: {
-                title: {
-                    contains: title,
-                    mode: 'insensitive'
+    public async findManyByTitle(params: { title: string, page: number, limit: number }): Promise<Pageable<Task>> {
+        const [tasks, total] = await Promise.all([
+            this.prismaService.task.findMany({
+                skip: (params.page - 1) * params.limit,
+                take: params.limit,
+                where: {
+                    title: {
+                        contains: params.title,
+                        mode: 'insensitive'
+                    }
                 }
+            }),
+            this.prismaService.task.count({
+                where: {
+                    title: {
+                        contains: params.title,
+                        mode: 'insensitive'
+                    }
+                }
+            })
+        ])
+
+        return {
+            data: tasks.map(PrismaTaskMapper.toDomain),
+            meta: {
+                total,
+                page: params.page,
+                limit: params.limit,
+                totalPages: Math.ceil(total / params.limit)
             }
-        })
-        return tasks.map(task => PrismaTaskMapper.toDomain(task))
+        };
     }
 
     public async count(): Promise<number> {

@@ -114,9 +114,9 @@ export class PrismaCostRepository implements CostRepository {
                     }
                 }
             }),
-            this.prismaService.user.count({
+            this.prismaService.cost.count({
                 where: {
-                    name: {
+                    title: {
                         contains: params.title,
                         mode: 'insensitive'
                     }

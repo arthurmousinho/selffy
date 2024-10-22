@@ -1,6 +1,12 @@
 import { TaskRepository } from "@application/repositories/task.repository";
 import { Injectable } from "@nestjs/common";
 
+interface SearchTasksByTitleUseCaseRequest {
+    title: string;
+    page: number;
+    limit: number;
+}
+
 @Injectable()
 export class SearchTasksByTitleUseCase {
 
@@ -8,9 +14,16 @@ export class SearchTasksByTitleUseCase {
         private taskRepository: TaskRepository
     ) { }
 
-    public async execute(title: string) {
-        const tasks = await this.taskRepository.findManyByTitle(title);
-        return tasks;
+    public async execute(request: SearchTasksByTitleUseCaseRequest) {
+        if (!request.page || request.page < 1) {
+            request.page = 1;
+        }
+
+        if (!request.limit || request.limit < 1) {
+            request.limit = 10;
+        }
+
+        return await this.taskRepository.findManyByTitle(request);
     }
 
 }

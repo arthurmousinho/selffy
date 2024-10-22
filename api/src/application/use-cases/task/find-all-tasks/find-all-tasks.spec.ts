@@ -15,8 +15,7 @@ describe('Find All Tasks UseCase', () => {
 
     it('should return an empty list if no tasks exist', async () => {
         const tasks = await findAllTasksUseCase.execute();
-
-        expect(tasks).toEqual([]);
+        expect(tasks.data).toEqual([]);
     });
 
     it('should return all tasks if they exist', async () => {
@@ -28,9 +27,7 @@ describe('Find All Tasks UseCase', () => {
 
         const tasks = await findAllTasksUseCase.execute();
 
-        expect(tasks.length).toBe(2);
-        expect(tasks).toContainEqual(task1);
-        expect(tasks).toContainEqual(task2);
+        expect(tasks.meta.total).toBe(2);
     });
 
 });

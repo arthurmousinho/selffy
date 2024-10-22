@@ -39,13 +39,13 @@ describe('Create Task UseCase', () => {
             projectId: activeProject.getId(),
         });
 
-        const tasks = await taskRepository.findAll();
-        expect(tasks.length).toBe(1);
-        expect(tasks[0].getTitle()).toBe(newTask.getTitle());
-        expect(tasks[0].getDescription()).toBe(newTask.getDescription());
-        expect(tasks[0].getDueDate()).toEqual(newTask.getDueDate());
-        expect(tasks[0].getPriority()).toBe(newTask.getPriority());
-        expect(tasks[0].getProjectId()).toBe(activeProject.getId());
+        const tasks = await taskRepository.findAll(1, 10);
+        expect(tasks.data.length).toBe(1);
+        expect(tasks.data[0].getTitle()).toBe(newTask.getTitle());
+        expect(tasks.data[0].getDescription()).toBe(newTask.getDescription());
+        expect(tasks.data[0].getDueDate()).toEqual(newTask.getDueDate());
+        expect(tasks.data[0].getPriority()).toBe(newTask.getPriority());
+        expect(tasks.data[0].getProjectId()).toBe(activeProject.getId());
     });
 
     it('should throw an error if the project is already finished', async () => {
@@ -62,8 +62,8 @@ describe('Create Task UseCase', () => {
             projectId: finishedProject.getId(),
         })).rejects.toThrow(ProjectAlreadyFinishedError);
 
-        const tasks = await taskRepository.findAll();
-        expect(tasks.length).toBe(0);
+        const tasks = await taskRepository.findAll(1, 10);
+        expect(tasks.data.length).toBe(0);
     });
 
     it('should throw an error if the due date is in the past', async () => {
@@ -83,8 +83,8 @@ describe('Create Task UseCase', () => {
             projectId: activeProject.getId(),
         })).rejects.toThrow(TaskDueDateInPastError);
 
-        const tasks = await taskRepository.findAll();
-        expect(tasks.length).toBe(0);
+        const tasks = await taskRepository.findAll(1, 10);
+        expect(tasks.data.length).toBe(0);
     });
 
 });

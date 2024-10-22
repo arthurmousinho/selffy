@@ -45,7 +45,7 @@ export class InMemoryCostRepository implements CostRepository {
 
     public async findManyByTitle(params: { title: string, page: number, limit: number }): Promise<Pageable<Cost>> {
         const costs = this.costs.filter(
-            (project) => project.getTitle().toLowerCase().includes(params.title.toLowerCase())
+            (cost) => cost.getTitle().toLowerCase().includes(params.title.toLowerCase())
         );
         const pageableCosts = costs.slice((params.page - 1) * params.limit, params.page * params.limit);
         return {

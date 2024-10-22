@@ -1,5 +1,6 @@
 import { Task, TaskPriority, TaskStatus } from "@application/entities/task/task.entity";
 import { TaskRepository } from "@application/repositories/task.repository";
+import { Pageable } from "@application/types/pageable.type";
 
 export class InMemoryTaskRepository implements TaskRepository {
 
@@ -13,8 +14,17 @@ export class InMemoryTaskRepository implements TaskRepository {
         this.tasks.push(...tasks);
     }
 
-    public async findAll(): Promise<Task[]> {
-        return this.tasks;
+    public async findAll(page: number, limit: number): Promise<Pageable<Task>> {
+        const tasks = this.tasks.slice((page - 1) * limit, page * limit);
+        return {
+            data: tasks,
+            meta: {
+                page,
+                limit,
+                total: this.tasks.length,
+                totalPages: Math.ceil(this.tasks.length / limit)
+            }
+        }
     }
 
     public async findById(id: string): Promise<Task | null> {
@@ -42,11 +52,20 @@ export class InMemoryTaskRepository implements TaskRepository {
         }
     }
 
-    public async findManyByTitle(title: string): Promise<Task[]> {
+    public async findManyByTitle(params: { title: string, page: number, limit: number }): Promise<Pageable<Task>> {
         const tasks = this.tasks.filter(
-            (task) => task.getTitle() === title
+            (task) => task.getTitle().toLowerCase().includes(params.title.toLowerCase())
         );
-        return tasks;
+        const pageableTasks = tasks.slice((params.page - 1) * params.limit, params.page * params.limit);
+        return {
+            data: pageableTasks,
+            meta: {
+                page: params.page,
+                limit: params.limit,
+                total: tasks.length,
+                totalPages: Math.ceil(tasks.length / params.limit)
+            }
+        }
     }
 
     public async count(): Promise<number> {

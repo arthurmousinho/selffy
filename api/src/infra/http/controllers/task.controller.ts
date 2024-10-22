@@ -1,5 +1,5 @@
 import { CreateTaskUseCase } from "@application/use-cases/task/create-task/create-task.usecase";
-import { Body, Controller, Delete, Get, Param, Post, Put } from "@nestjs/common";
+import { Body, Controller, Delete, Get, Param, Post, Put, Query } from "@nestjs/common";
 import { CreateTaskBody } from "../dtos/task/create-task.dto";
 import { FindAllTasksUseCase } from "@application/use-cases/task/find-all-tasks/find-all-tasks.usecase";
 import { TaskViewModel } from "../view-models/task.viewmodel";
@@ -20,15 +20,32 @@ export class TaskController {
     ) { }
 
     @Get()
-    public async getTasks() {
-        const tasks = await this.findAllTasksUseCase.execute();
-        return { tasks: tasks.map(TaskViewModel.toHTTP) };
+    public async getCosts(@Query('page') page = 1, @Query('limit') limit = 10) {
+        const pageableTasks = await this.findAllTasksUseCase.execute(
+            Number(page),
+            Number(limit)
+        );
+        return {
+            tasks: pageableTasks.data.map(TaskViewModel.toHTTP),
+            meta: pageableTasks.meta
+        };
     }
 
     @Get(':title')
-    public async getTaskByTitle(@Param('title') title: string) {
-        const tasks = await this.searchTasksByTitleUseCase.execute(title);
-        return { tasks: tasks.map(TaskViewModel.toHTTP) };
+    public async searchByTitle(
+        @Param('title') title: string,
+        @Query('page') page = 1,
+        @Query('limit') limit = 10
+    ) {
+        const pageableProjectsFound = await this.searchTasksByTitleUseCase.execute({
+            title,
+            page: Number(page),
+            limit: Number(limit)
+        });
+        return {
+            tasks: pageableProjectsFound.data.map(TaskViewModel.toHTTP),
+            meta: pageableProjectsFound.meta
+        };
     }
 
     @Post()
