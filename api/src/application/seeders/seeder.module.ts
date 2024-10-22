@@ -9,13 +9,16 @@ import { RoleModule } from '@application/use-cases/role/role.module';
 import { ProjectModule } from '@application/use-cases/project/project.module';
 import { CostSeeder } from './cost.seeder';
 import { CostModule } from '@application/use-cases/cost/cost.module';
+import { TaskModule } from '@application/use-cases/task/task.module';
+import { TaskSeeder } from './task.seeder';
 
 @Module({
     imports: [
         UserModule,
         RoleModule,
         ProjectModule,
-        CostModule
+        CostModule,
+        TaskModule
     ],
     providers: [
         DatabaseModule,
@@ -24,6 +27,7 @@ import { CostModule } from '@application/use-cases/cost/cost.module';
         UserSeeder,
         ProjectSeeder,
         CostSeeder,
+        TaskSeeder,
 
         Seeder 
     ],
