@@ -9,6 +9,10 @@ export class InMemoryCostRepository implements CostRepository {
         this.costs.push(cost);
     }
 
+    public async createMany(costs: Cost[]): Promise<void> {
+        this.costs.push(...costs);
+    }
+
     public async findAll(): Promise<Cost[]> {
         return this.costs;
     }

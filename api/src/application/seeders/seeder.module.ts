@@ -7,12 +7,15 @@ import { ProjectSeeder } from './project.seeder';
 import { UserModule } from '@application/use-cases/user/user.module';
 import { RoleModule } from '@application/use-cases/role/role.module';
 import { ProjectModule } from '@application/use-cases/project/project.module';
+import { CostSeeder } from './cost.seeder';
+import { CostModule } from '@application/use-cases/cost/cost.module';
 
 @Module({
     imports: [
         UserModule,
         RoleModule,
-        ProjectModule
+        ProjectModule,
+        CostModule
     ],
     providers: [
         DatabaseModule,
@@ -20,6 +23,7 @@ import { ProjectModule } from '@application/use-cases/project/project.module';
         RoleSeeder,
         UserSeeder,
         ProjectSeeder,
+        CostSeeder,
 
         Seeder 
     ],

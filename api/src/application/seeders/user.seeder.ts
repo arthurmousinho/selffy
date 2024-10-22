@@ -19,8 +19,6 @@ export class UserSeeder {
 
         await this.createAdminUser();
 
-
-        // TODO: Create createMany() in UserRepository
         MOCK_USERS.map(async (user) => {
             await this.createUserUseCase.execute({
                 name: user.name,

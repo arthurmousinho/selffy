@@ -18,6 +18,13 @@ export class PrismaCostRepository implements CostRepository {
         });
     }
 
+    public async createMany(costs: Cost[]): Promise<void> {
+        const raw = costs.map(PrismaCostMapper.toPrisma);
+        await this.prismaService.cost.createMany({
+            data: raw
+        });
+    }
+
     public async findAll(): Promise<Cost[]> {
         const costs = await this.prismaService.cost.findMany({
             orderBy: {
