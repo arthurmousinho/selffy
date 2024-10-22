@@ -22,10 +22,10 @@ describe('Create Cost UseCase', () => {
             project: newCost.getProject()
         });
 
-        const costs = await costRepository.findAll();
-        expect(costs.length).toBe(1);
-        expect(costs[0].getTitle()).toBe(newCost.getTitle());
-        expect(costs[0].getValue()).toBe(newCost.getValue());
+        const costs = await costRepository.findAll(1, 10);
+        expect(costs.data.length).toBe(1);
+        expect(costs.data[0].getTitle()).toBe(newCost.getTitle());
+        expect(costs.data[0].getValue()).toBe(newCost.getValue());
     });
 
 });

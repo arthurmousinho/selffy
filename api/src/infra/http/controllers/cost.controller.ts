@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Post, Put } from "@nestjs/common";
+import { Body, Controller, Delete, Get, Param, Post, Put, Query } from "@nestjs/common";
 import { CreateCostBody } from "../dtos/cost/create-cost.dto";
 import { CreateCostUseCase } from "@application/use-cases/cost/create-cost/create-cost.usecase";
 import { FindAllCostsUseCase } from "@application/use-cases/cost/find-all-costs/find-all-costs.usecase";
@@ -23,9 +23,15 @@ export class CostController {
     ) { }
 
     @Get()
-    public async getCosts() {
-        const costs = await this.findAllCostUseCase.execute();
-        return { costs: costs.map(CostViewModel.toHTTP) };
+    public async getCosts(@Query('page') page = 1, @Query('limit') limit = 10) {
+        const pageableCosts = await this.findAllCostUseCase.execute(
+            Number(page),
+            Number(limit)
+        );
+        return {
+            costs: pageableCosts.data.map(CostViewModel.toHTTP),
+            meta: pageableCosts.meta
+        };
     }
 
     @Post()
@@ -50,9 +56,20 @@ export class CostController {
     }
 
     @Get(':title')
-    public async searchByTitle(@Param('title') title: string) {
-        const costsFound = await this.searchCostByTitle.execute(title);
-        return { costs: costsFound.map(CostViewModel.toHTTP) };
+    public async searchByTitle(
+        @Param('title') title: string,
+        @Query('page') page = 1,
+        @Query('limit') limit = 10
+    ) {
+        const pageableProjectsFound = await this.searchCostByTitle.execute({
+            title,
+            page: Number(page),
+            limit: Number(limit)
+        });
+        return {
+            projects: pageableProjectsFound.data.map(CostViewModel.toHTTP),
+            meta: pageableProjectsFound.meta
+        };
     }
 
 }

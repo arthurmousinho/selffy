@@ -9,13 +9,16 @@ describe('Find All Costs UseCase', () => {
     let costRepository: CostRepository;
 
     beforeEach(() => {
-        costRepository = new InMemoryCostRepository(); 
+        costRepository = new InMemoryCostRepository();
         findAllCostsUseCase = new FindAllCostsUseCase(costRepository);
     });
 
     it('should return an empty list if no costs exist', async () => {
-        const costs = await findAllCostsUseCase.execute();
-        expect(costs).toEqual([]);
+        const result = await findAllCostsUseCase.execute();
+        expect(result.data).toEqual([]);
+        expect(result.meta.total).toBe(0);
+        expect(result.meta.page).toBe(1);
+        expect(result.meta.totalPages).toBe(0)
     });
 
     it('should return a list of costs if they exist', async () => {
@@ -25,10 +28,14 @@ describe('Find All Costs UseCase', () => {
         await costRepository.create(cost1);
         await costRepository.create(cost2);
 
-        const costs = await findAllCostsUseCase.execute();
-        expect(costs).toHaveLength(2);
-        expect(costs).toContainEqual(cost1);
-        expect(costs).toContainEqual(cost2);
+        const pageable = await findAllCostsUseCase.execute(1, 10);
+        expect(pageable.data).toHaveLength(2);
+        expect(pageable.data).toContainEqual(cost1);
+        expect(pageable.data).toContainEqual(cost2);
+        expect(pageable.meta.page).toBe(1);
+        expect(pageable.meta.totalPages).toBe(1);
+        expect(pageable.meta.limit).toBe(10);
+        expect(pageable.meta.total).toBe(2);
     });
 
 });

@@ -3,6 +3,7 @@ import { PrismaService } from "../prisma.service";
 import { Cost } from "@application/entities/cost/cost.entity";
 import { PrismaCostMapper } from "../mappers/prisma-cost.mapper";
 import { Injectable } from "@nestjs/common";
+import { Pageable } from "@application/types/pageable.type";
 
 @Injectable()
 export class PrismaCostRepository implements CostRepository {
@@ -25,20 +26,34 @@ export class PrismaCostRepository implements CostRepository {
         });
     }
 
-    public async findAll(): Promise<Cost[]> {
-        const costs = await this.prismaService.cost.findMany({
-            orderBy: {
-                createdAt: 'desc'
-            },
-            include: {
-                project: {
-                    include: {
-                        owner: true
+    public async findAll(page: number, limit: number): Promise<Pageable<Cost>> {
+        const [costs, total] = await Promise.all([
+            this.prismaService.cost.findMany({
+                skip: (page - 1) * limit,
+                take: limit,
+                orderBy: {
+                    createdAt: 'desc'
+                },
+                include: {
+                    project: {
+                        include: {
+                            owner: true
+                        }
                     }
                 }
+            }),
+            this.prismaService.project.count()
+        ]);
+
+        return {
+            data: costs.map(PrismaCostMapper.toDomain),
+            meta: {
+                total,
+                page,
+                limit,
+                totalPages: Math.ceil(total / limit)
             }
-        });
-        return costs.map(PrismaCostMapper.toDomain);
+        }
     }
 
     public async findById(id: string): Promise<Cost | null> {
@@ -80,23 +95,44 @@ export class PrismaCostRepository implements CostRepository {
         });
     }
 
-    public async searchByTitle(title: string): Promise<Cost[]> {
-        const costs = await this.prismaService.cost.findMany({
-            where: {
-                title: {
-                    contains: title,
-                    mode: 'insensitive'
-                }
-            },
-            include: {
-                project: {
-                    include: {
-                        owner: true
+    public async findManyByTitle(params: { title: string, page: number, limit: number }): Promise<Pageable<Cost>> {
+        const [costs, total] = await Promise.all([
+            this.prismaService.cost.findMany({
+                skip: (params.page - 1) * params.limit,
+                take: params.limit,
+                where: {
+                    title: {
+                        contains: params.title,
+                        mode: 'insensitive'
+                    }
+                },
+                include: {
+                    project: {
+                        include: {
+                            owner: true
+                        }
                     }
                 }
+            }),
+            this.prismaService.user.count({
+                where: {
+                    name: {
+                        contains: params.title,
+                        mode: 'insensitive'
+                    }
+                }
+            })
+        ])
+
+        return {
+            data: costs.map(PrismaCostMapper.toDomain),
+            meta: {
+                total,
+                page: params.page,
+                limit: params.limit,
+                totalPages: Math.ceil(total / params.limit)
             }
-        });
-        return costs.map(PrismaCostMapper.toDomain);
+        };
     }
 
     public async count(): Promise<number> {

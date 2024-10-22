@@ -1,5 +1,6 @@
 import { Cost } from "@application/entities/cost/cost.entity";
 import { CostRepository } from "@application/repositories/cost.repository";
+import { Pageable } from "@application/types/pageable.type";
 
 export class InMemoryCostRepository implements CostRepository {
 
@@ -13,8 +14,17 @@ export class InMemoryCostRepository implements CostRepository {
         this.costs.push(...costs);
     }
 
-    public async findAll(): Promise<Cost[]> {
-        return this.costs;
+    public async findAll(page: number, limit: number): Promise<Pageable<Cost>> {
+        const costs = this.costs.slice((page - 1) * limit, page * limit);
+        return {
+            data: costs,
+            meta: {
+                page,
+                limit,
+                total: this.costs.length,
+                totalPages: Math.ceil(this.costs.length / limit)
+            }
+        }
     }
 
     public async findById(id: string): Promise<Cost | null> {
@@ -33,10 +43,22 @@ export class InMemoryCostRepository implements CostRepository {
         this.costs = this.costs.filter(cost => cost.getId() !== id);
     }
 
-    public async searchByTitle(title: string): Promise<Cost[]> {
-        return this.costs.filter(cost => cost.getTitle().toLowerCase().includes(title.toLowerCase()));
+    public async findManyByTitle(params: { title: string, page: number, limit: number }): Promise<Pageable<Cost>> {
+        const costs = this.costs.filter(
+            (project) => project.getTitle().toLowerCase().includes(params.title.toLowerCase())
+        );
+        const pageableCosts = costs.slice((params.page - 1) * params.limit, params.page * params.limit);
+        return {
+            data: pageableCosts,
+            meta: {
+                page: params.page,
+                limit: params.limit,
+                total: costs.length,
+                totalPages: Math.ceil(costs.length / params.limit)
+            }
+        }
     }
-
+    
     public async count(): Promise<number> {
         return this.costs.length;
     }
