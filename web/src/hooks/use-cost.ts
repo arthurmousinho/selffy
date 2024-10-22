@@ -2,6 +2,7 @@ import { axios } from "@/lib/axios";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { useToast } from "./use-toast";
 import { queryClient } from "@/main";
+import { PageableMeta } from "@/types/pageable.type";
 
 export interface CostProps {
     id: string;
@@ -12,15 +13,16 @@ export interface CostProps {
     updatedAt: Date;
 }
 
-interface GetAllCostsResponse {
-    costs: CostProps[]
+export interface GetAllCostsResponse {
+    costs: CostProps[];
+    meta: PageableMeta;
 }
 
-export function getAllCosts() {
+export function getAllCosts(page: number, limit: number) {
     const query = useQuery({
-        queryKey: ['costs'],
+        queryKey: ['costs', page, limit],
         queryFn: async () => {
-            const response = await axios.get('/costs');
+            const response = await axios.get(`/costs?page=${page}&limit=${limit}`);
             return response.data as GetAllCostsResponse;
         }
     })
@@ -111,17 +113,19 @@ export function updateCost() {
 }
 
 interface SearchCostsByTitleResponse {
-    costs: CostProps[]
+    costs: CostProps[];
+    meta: PageableMeta;
 }
 
-export function searchCostsByTitle(title?: string) {
+export function searchCostsByTitle(props: { title?: string, page?: number, limit?: number }) {
+    const { title, page, limit } = props;
     const query = useQuery({
         queryKey: ['costs', title],
         queryFn: async () => {
-            const response = await axios.get(`/costs/${title}`);
+            const response = await axios.get(`/costs/${title}?page=${page}&limit=${limit}`);
             return response.data as SearchCostsByTitleResponse;
         },
-        enabled: !!title,
+        enabled: !!title && !!page && !!limit,
         staleTime: 5000
     });
 

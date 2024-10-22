@@ -7,10 +7,6 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import {
-    ChevronLeft,
-    ChevronRight,
-    ChevronsLeft,
-    ChevronsRight,
     Filter,
     Folder,
     FolderOpen,
@@ -27,37 +23,37 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table"
-import {
-    Select,
-    SelectContent,
-    SelectItem,
-    SelectTrigger,
-    SelectValue,
-} from "@/components/ui/select"
-import { Label } from "@/components/ui/label";
 import { DetailsDialog } from "@/components/global/details-dialog";
 import { formatCurrency } from "@/utils/format-currency";
 import { NewCostDialog } from "@/components/admin/cost/new-cost-dialog";
-import { CostProps, deleteCost, getAllCosts, searchCostsByTitle } from "@/hooks/use-cost";
+import { deleteCost, getAllCosts, GetAllCostsResponse, searchCostsByTitle } from "@/hooks/use-cost";
 import { DeleteAlertDialog } from "@/components/global/delete-alert-dialog";
 import { EditCostDialog } from "@/components/admin/cost/edit-cost-dialog";
 import { useEffect, useState } from "react";
+import { Paginator } from "@/components/global/paginator";
 
 export function AdminCosts() {
 
-    const [costsData, setCostsData] = useState<CostProps[]>([]);
+    const [page, setPage] = useState(1);
+    const [limit, setLimit] = useState(5);
+
+    const [data, setData] = useState<GetAllCostsResponse>();
     const [searchTerm, setSearchTerm] = useState<string>('');
 
-    const { data: getAllCostsData, refetch: refetchCosts } = getAllCosts();
+    const { data: getAllCostsData, refetch: refetchCosts } = getAllCosts(page, limit);
     const { mutate: deleteCostFn } = deleteCost();
-    const { data: searchCostsByTitleData } = searchCostsByTitle(searchTerm);
+    const { data: searchCostsByTitleData } = searchCostsByTitle({
+        title: searchTerm,
+        page,
+        limit
+    });
 
     useEffect(() => {
         if (!searchTerm && getAllCostsData) {
-            setCostsData(getAllCostsData?.costs);
+            setData(getAllCostsData);
         }
         if (searchCostsByTitleData) {
-            setCostsData(searchCostsByTitleData.costs);
+            setData(searchCostsByTitleData);
         }
     }, [getAllCostsData, searchCostsByTitleData, searchTerm]);
 
@@ -115,7 +111,7 @@ export function AdminCosts() {
                     </TableHeader>
                     <TableBody>
                         {
-                            costsData.map((cost) => (
+                            data?.costs.map((cost) => (
                                 <TableRow key={cost.id}>
                                     <TableCell>{cost.title}</TableCell>
                                     <TableCell>{formatCurrency(cost.value)}</TableCell>
@@ -128,7 +124,7 @@ export function AdminCosts() {
                                         </DetailsDialog>
                                     </TableCell>
                                     <TableCell className="text-right">
-                                        <EditCostDialog data={cost} > 
+                                        <EditCostDialog data={cost} >
                                             <Button className="text-muted-foreground" variant={'outline'}>
                                                 <Pencil size={20} />
                                             </Button>
@@ -149,41 +145,16 @@ export function AdminCosts() {
                     </TableBody>
                 </Table>
             </CardContent>
-            <CardFooter className="flex items-center justify-between">
-                <span className="text-sm text-muted-foreground">
-                    Showing 5 of 1200 items
-                </span>
-                <footer className="flex flex-row items-center gap-4">
-                    <div className="flex flex-row items-center gap-2">
-                        <Label htmlFor="rows-per-page-input">
-                            Rows per page
-                        </Label>
-                        <Select defaultValue="5">
-                            <SelectTrigger className="w-[100px] h-12" id="rows-per-page-input">
-                                <SelectValue placeholder="Rows per page" />
-                            </SelectTrigger>
-                            <SelectContent>
-                                <SelectItem value="5">5 rows</SelectItem>
-                                <SelectItem value="10">10 rows</SelectItem>
-                                <SelectItem value="15">15 rows</SelectItem>
-                            </SelectContent>
-                        </Select>
-                    </div>
-                    <div className="space-x-2">
-                        <Button variant={'outline'}>
-                            <ChevronsLeft size={20} />
-                        </Button>
-                        <Button variant={'outline'}>
-                            <ChevronLeft size={20} />
-                        </Button>
-                        <Button variant={'outline'}>
-                            <ChevronRight size={20} />
-                        </Button>
-                        <Button variant={'outline'}>
-                            <ChevronsRight size={20} />
-                        </Button>
-                    </div>
-                </footer>
+            <CardFooter>
+                <Paginator
+                    showing={data?.costs.length || 0}
+                    total={data?.meta.total || 0}
+                    currentPage={page}
+                    currentLimit={limit}
+                    totalPages={data?.meta.totalPages || 0}
+                    onPageChange={page => setPage(page)}
+                    onLimitChange={limit => setLimit(limit)}
+                />
             </CardFooter>
         </Card>
     );

@@ -67,7 +67,7 @@ export class CostController {
             limit: Number(limit)
         });
         return {
-            projects: pageableProjectsFound.data.map(CostViewModel.toHTTP),
+            costs: pageableProjectsFound.data.map(CostViewModel.toHTTP),
             meta: pageableProjectsFound.meta
         };
     }
