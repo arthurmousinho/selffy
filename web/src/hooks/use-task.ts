@@ -2,28 +2,33 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import { useToast } from "./use-toast";
 import { axios } from "@/lib/axios";
 import { queryClient } from "@/main";
+import { PageableMeta } from "@/types/pageable.type";
+
+type TaskStatus = "PENDING" | "COMPLETED";
+type TaskPriority = "LOW" | "MEDIUM" | "HIGH";
 
 export interface TaskProps {
     id: string;
     title: string;
     description: string;
     dueDate: Date;
-    priority: "LOW" | "MEDIUM" | "HIGH";
-    status: "PENDING" | "COMPLETED";
+    status: TaskStatus;
+    priority: TaskPriority;
     projectId: string;
     createdAt: Date;
     updatedAt: Date;
 }
 
-interface GetAllTasksResponse {
-    tasks: TaskProps[]
+export interface GetAllTasksResponse {
+    tasks: TaskProps[];
+    meta: PageableMeta;
 }
 
-export function getAllTasks() {
+export function getAllTasks(page: number, limit: number) {
     const query = useQuery({
-        queryKey: ['tasks'],
+        queryKey: ['tasks', page, limit],
         queryFn: async () => {
-            const response = await axios.get('/tasks');
+            const response = await axios.get(`/tasks?page=${page}&limit=${limit}`);
             return response.data as GetAllTasksResponse;
         }
     })
@@ -34,7 +39,7 @@ interface CreateTaskProps {
     title: string;
     description: string;
     dueDate: Date;
-    priority: "LOW" | "MEDIUM" | "HIGH";
+    priority: TaskPriority;
     projectId: string;
 }
 
@@ -89,9 +94,9 @@ interface UpdateTaskProps {
     id: string;
     title: string;
     description: string;
-    status: "PENDING" | "COMPLETED";
+    status: TaskStatus;
     dueDate: Date;
-    priority: "LOW" | "MEDIUM" | "HIGH";
+    priority: TaskPriority;
     projectId: string;
 }
 
@@ -118,15 +123,17 @@ export function updateTask() {
     return query;
 }
 
-export function searchTasksByTitle(title?: string) {
+export function searchTasksByTitle(props: { title?: string, page?: number, limit?: number }) {
+    const { title, page, limit } = props;
     const query = useQuery({
         queryKey: ['tasks', title],
         queryFn: async () => {
-            const response = await axios.get(`/tasks/${title}`);
+            const response = await axios.get(`/tasks/${title}?page=${page}&limit=${limit}`);
             return response.data as GetAllTasksResponse;
         },
-        enabled: !!title,
+        enabled: !!title && !!page && !!limit,
         staleTime: 5000
-    })
+    });
+
     return query;
 }

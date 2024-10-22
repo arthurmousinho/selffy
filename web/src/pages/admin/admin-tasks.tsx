@@ -8,10 +8,6 @@ import {
 import { Input } from "@/components/ui/input";
 import {
     CheckCheck,
-    ChevronLeft,
-    ChevronRight,
-    ChevronsLeft,
-    ChevronsRight,
     Filter,
     Folder,
     Pencil,
@@ -28,36 +24,36 @@ import {
     TableRow,
 } from "@/components/ui/table"
 import { Badge } from "@/components/ui/badge";
-import {
-    Select,
-    SelectContent,
-    SelectItem,
-    SelectTrigger,
-    SelectValue,
-} from "@/components/ui/select"
-import { Label } from "@/components/ui/label";
 import { DetailsDialog } from "@/components/global/details-dialog";
 import { NewTaskDialog } from "@/components/admin/task/new-task-dialog";
-import { deleteTask, getAllTasks, searchTasksByTitle, TaskProps } from "@/hooks/use-task";
+import { deleteTask, getAllTasks, GetAllTasksResponse, searchTasksByTitle, TaskProps } from "@/hooks/use-task";
 import { DeleteAlertDialog } from "@/components/global/delete-alert-dialog";
 import { EditTaskDialog } from "@/components/admin/task/edit-task-dialog";
 import { useEffect, useState } from "react";
+import { Paginator } from "@/components/global/paginator";
 
 export function AdminTasks() {
 
-    const [tasksData, setTasksData] = useState<TaskProps[]>([]);
+    const [page, setPage] = useState(1);
+    const [limit, setLimit] = useState(5);
+
+    const [data, setData] = useState<GetAllTasksResponse>();
     const [searchTerm, setSearchTerm] = useState<string>('');
 
     const { mutate: deleteTaskFn } = deleteTask();
-    const { data: getAllTasksData, refetch: refetchTasksFn } = getAllTasks();
-    const { data: searchTasksByTitleData } = searchTasksByTitle(searchTerm);
+    const { data: getAllTasksData, refetch: refetchTasksFn } = getAllTasks(page, limit);
+    const { data: searchTasksByTitleData } = searchTasksByTitle({
+        title: searchTerm,
+        page,
+        limit
+    });
 
     useEffect(() => {
         if (!searchTerm && getAllTasksData) {
-            setTasksData(getAllTasksData?.tasks);
+            setData(getAllTasksData); 
         }
         if (searchTasksByTitleData) {
-            setTasksData(searchTasksByTitleData.tasks);
+            setData(searchTasksByTitleData);
         }
     }, [getAllTasksData, searchTasksByTitleData, searchTerm]);
 
@@ -116,7 +112,7 @@ export function AdminTasks() {
                     </TableHeader>
                     <TableBody>
                         {
-                            tasksData.map((task: TaskProps) => (
+                            data?.tasks.map((task: TaskProps) => (
                                 <TableRow key={task.id}>
                                     <TableCell className="truncate max-w-[200px]">{task.title}</TableCell>
                                     <TableCell>
@@ -180,40 +176,15 @@ export function AdminTasks() {
                 </Table>
             </CardContent>
             <CardFooter className="flex items-center justify-between">
-                <span className="text-sm text-muted-foreground">
-                    Showing 5 of 500 items
-                </span>
-                <footer className="flex flex-row items-center gap-4">
-                    <div className="flex flex-row items-center gap-2">
-                        <Label htmlFor="rows-per-page-input">
-                            Rows per page
-                        </Label>
-                        <Select defaultValue="5">
-                            <SelectTrigger className="w-[100px] h-12" id="rows-per-page-input">
-                                <SelectValue placeholder="Rows per page" />
-                            </SelectTrigger>
-                            <SelectContent>
-                                <SelectItem value="5">5 rows</SelectItem>
-                                <SelectItem value="10">10 rows</SelectItem>
-                                <SelectItem value="15">15 rows</SelectItem>
-                            </SelectContent>
-                        </Select>
-                    </div>
-                    <div className="space-x-2">
-                        <Button variant={'outline'}>
-                            <ChevronsLeft size={20} />
-                        </Button>
-                        <Button variant={'outline'}>
-                            <ChevronLeft size={20} />
-                        </Button>
-                        <Button variant={'outline'}>
-                            <ChevronRight size={20} />
-                        </Button>
-                        <Button variant={'outline'}>
-                            <ChevronsRight size={20} />
-                        </Button>
-                    </div>
-                </footer>
+                <Paginator
+                    showing={data?.tasks.length || 0}
+                    total={data?.meta.total || 0}
+                    currentPage={page}
+                    currentLimit={limit}
+                    totalPages={data?.meta.totalPages || 0}
+                    onPageChange={page => setPage(page)}
+                    onLimitChange={limit => setLimit(limit)}
+                />
             </CardFooter>
         </Card>
     );
