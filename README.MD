@@ -1,47 +1,78 @@
-# Selffy
+<div style="display: flex; align-items: center; justify-content: start; flex-direction: row; gap: 10px;">
+<p align="center">
+  <img src="./docs/logo-icon.svg" width="50" />
+</p>
+<h1>
+Selffy
+</h1>
+</div>
 
-A self work management web app (in development)
+Selffy is a comprehensive platform designed to help you manage all your personal and professional freelance projects seamlessly in one place. With Selffy, you can streamline your workflow, stay organized, and efficiently track your progress, ensuring you never miss a deadline. 
 
-## 🛠️ Tech Stack
-### Web
-- React
-- Shadcn/UI
-- TailwindCSS
+🚧 **Selffy is under development** 🚧
 
-### API
-- Nest.Js
-- PostgreSQL
-- Docker
+## Tech Stack
+- ```React```: 
+- ```VITE```: 
+- ```Typescript```: 
+- ```Shadcn/UI```: 
+- ```TailwindCSS```: 
+- ```Nest.Js```: 
+- ```Prisma ORM```: 
+- ```PostgreSQL```: 
+- ```Docker```: 
 
-## 📦 Dependencies
+## Dependencies
 - [Node/NPM](https://nodejs.org/)
 - [Docker](https://www.docker.com/)
 
-## ✅ Running Guide (development environment)
-### Web
-1. Change to web directory
+## How to run it?
+Clone the repository
 ```bash
-cd web
+https://github.com/arthurmousinho/selffy.git
 ```
-
-2. Installing Packages
-```bash
-npm install
-```
-
-3. Run project
-```bash
-npm run dev
-```
-✅ Web project will be available at: [http://localhost:5173](http://localhost:5173)
 
 ### API
-1. Change to api directory
+Go to **api** folder
 ```bash
 cd api
 ```
-
-2. Installing Packages
+Install dependencies 
 ```bash
 npm install
+```
+Run docker container
+```bash
+docker-compose up -d
+```
+Add the migrations 
+```bash
+npx prisma migrate dev
+```
+Create a .env file in the root of the project and add the following variables:
+```python
+DATABASE_URL="postgresql://docker:docker@localhost:5432/selffy-db"
+JWT_SECRET="secret"
+```
+Run the API
+```bash
+npm run start:dev
+```
+
+## Web
+Go to **web** folder
+```bash
+cd web
+```
+Install dependencies
+```bash
+npm install
+```
+Create a .env.local file in the root of the project and add the following variables:
+```python
+VITE_API_BASE_URL="http://localhost:3000"
+```
+Run the Web
+```bash
+npm run dev
 ```
