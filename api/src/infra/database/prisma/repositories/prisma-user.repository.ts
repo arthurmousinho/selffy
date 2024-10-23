@@ -127,7 +127,12 @@ export class PrismaUserRepository implements UserRepository {
             where: {
                 id: raw.id
             },
-            data: raw
+            data: {
+                ...raw,
+                roles: {
+                    set: user.getRoles().map(role => ({ id: role.getId() }))
+                }
+            }
         });
     }
 

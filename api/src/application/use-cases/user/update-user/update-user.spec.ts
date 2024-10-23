@@ -3,15 +3,21 @@ import { UpdateUserUseCase } from "./update-user.usecase";
 import { InMemoryUserRepository } from "@test/repositories/in-memory-user.repository";
 import { makeUser } from "@test/factories/user.factory";
 import { UserNotFoundError } from "@application/errors/user/user-not-found.error";
+import { GetRolesForUserTypeUseCase } from "@application/use-cases/role/get-roles-for-user-type/get-roles-for-user-type";
 
 describe('Update User UseCase', () => {
-    
+
     let updateUserUseCase: UpdateUserUseCase;
     let userRepository: UserRepository;
+    let getRolesForUserTypeUseCase: GetRolesForUserTypeUseCase;
 
     beforeEach(() => {
         userRepository = new InMemoryUserRepository();
-        updateUserUseCase = new UpdateUserUseCase(userRepository);
+        getRolesForUserTypeUseCase = {
+            execute: jest.fn().mockResolvedValue(['default-role'])
+        } as unknown as GetRolesForUserTypeUseCase;
+        
+        updateUserUseCase = new UpdateUserUseCase(userRepository, getRolesForUserTypeUseCase);
     });
 
     it('should throw an error if the user does not exist', async () => {
@@ -32,7 +38,7 @@ describe('Update User UseCase', () => {
             id: existingUser.getId(),
             name: 'Updated Name',
             email: 'updated@example.com',
-            type: 'DEFAULT',
+            type: existingUser.getType(),  
             plan: 'FREE',
         });
 
@@ -40,6 +46,26 @@ describe('Update User UseCase', () => {
         expect(updatedUser).toBeDefined();
         expect(updatedUser.getName()).toBe('Updated Name');
         expect(updatedUser.getEmail()).toBe('updated@example.com');
+    });
+
+    it('should update the roles if the user type changes', async () => {
+        const existingUser = makeUser(); // DEFAULT user
+        await userRepository.create(existingUser);
+
+        await updateUserUseCase.execute({
+            id: existingUser.getId(),
+            name: 'Updated Name',
+            email: 'updated@example.com',
+            type: 'ADMIN',  
+            plan: 'FREE',
+        });
+
+        const adminRoles = await getRolesForUserTypeUseCase.execute('ADMIN');
+
+        const updatedUser = await userRepository.findById(existingUser.getId());
+        expect(updatedUser).toBeDefined();
+        expect(updatedUser.getType()).toBe('ADMIN');
+        expect(updatedUser.getRoles()).toEqual(adminRoles);  
     });
 
 });
