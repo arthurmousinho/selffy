@@ -6,6 +6,7 @@ import { jwtDecode } from 'jwt-decode';
 import { axios } from "@/lib/axios";
 import { saveToken, TokenProps } from "./use-token";
 import { PageableMeta } from "@/types/pageable.type";
+import { HttpError } from "@/types/http-error.type";
 
 export type UserType = "ADMIN" | "DEFAULT";
 export type PlanType = "FREE" | "PREMIUM";
@@ -33,11 +34,21 @@ interface SearchUserByNameResponse {
 }
 
 export function getAllUsers(page: number, limit: number) {
+    const { toast } = useToast();
+
     const query = useQuery({
         queryKey: ['users', page, limit],
         queryFn: async () => {
-            const response = await axios.get(`/users?page=${page}&limit=${limit}`);
-            return response.data as GetAllUsersResponse;
+            try {
+                const response = await axios.get(`/users?page=${page}&limit=${limit}`);
+                return response.data as GetAllUsersResponse;
+            } catch (error: any) {
+                const responseData: HttpError = error.response.data;
+                toast({
+                    title: `❌ Error: ${responseData.statusCode}`,
+                    description: responseData.message,
+                });
+            }
         }
     })
 
@@ -65,10 +76,11 @@ export function createUser() {
                 description: "User was created successfully",
             })
         },
-        onError: () => {
+        onError: (error: any) => {
+            const responseData: HttpError = error.response.data;
             toast({
-                title: "❌ Error",
-                description: "Something went wrong",
+                title: `❌ Error: ${responseData.statusCode}`,
+                description: responseData.message,
             });
         }
     })
@@ -89,10 +101,11 @@ export function deleteUser() {
                 description: "User was deleted successfully",
             });
         },
-        onError: () => {
+        onError: (error: any) => {
+            const responseData: HttpError = error.response.data;
             toast({
-                title: "❌ Error",
-                description: "Something went wrong",
+                title: `❌ Error: ${responseData.statusCode}`,
+                description: responseData.message,
             });
         }
     });
@@ -100,19 +113,29 @@ export function deleteUser() {
     return query;
 }
 
-export function searchUsersByName(params: {  name?: string, page?: number, limit?: number }) {
+export function searchUsersByName(params: { name?: string, page?: number, limit?: number }) {
+    const { toast } = useToast();
     const { name, page, limit } = params;
+
     const query = useQuery({
         queryKey: ['users', name, page, limit],
         queryFn: async () => {
-            const response = await axios.get(`/users/${name}`, {
-                params: {
-                    name,
-                    page,
-                    limit
-                }
-            });
-            return response.data as SearchUserByNameResponse;
+            try {
+                const response = await axios.get(`/users/${name}`, {
+                    params: {
+                        name,
+                        page,
+                        limit
+                    }
+                });
+                return response.data as SearchUserByNameResponse;
+            } catch (error: any) {
+                const responseData: HttpError = error.response.data;
+                toast({
+                    title: `❌ Error: ${responseData.statusCode}`,
+                    description: responseData.message,
+                });
+            }
         },
         enabled: !!name && !!page && !!limit,
         staleTime: 5000
@@ -142,6 +165,13 @@ export function updateUser() {
                 description: "User was updated successfully",
             });
         },
+        onError: (error: any) => {
+            const responseData: HttpError = error.response.data;
+            toast({
+                title: `❌ Error: ${responseData.statusCode}`,
+                description: responseData.message,
+            });
+        }
     });
 
     return query;
@@ -171,10 +201,11 @@ export function authUser() {
             if (decodedToken.type === 'ADMIN') navigate('/admin');
             if (decodedToken.type === 'DEFAULT') navigate('/');
         },
-        onError: () => {
+        onError: (error: any) => {
+            const responseData: HttpError = error.response.data;
             toast({
-                title: "❌ Error",
-                description: "Something went wrong",
+                title: `❌ Error: ${responseData.statusCode}`,
+                description: responseData.message,
             });
         }
     });

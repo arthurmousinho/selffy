@@ -13,6 +13,10 @@ export interface TokenProps {
 
 const cookieKey = 'selffy_token';
 
+export function getToken() {
+    return Cookies.get(cookieKey);
+}
+
 export function saveToken(token: string) {
     const decodedToken = jwtDecode<TokenProps>(token);
     const expirationDate = new Date(decodedToken.exp * 1000);

@@ -12,8 +12,12 @@ import { CostController } from './controllers/cost.controller';
 import { CostModule } from '@application/use-cases/cost/cost.module';
 import { TaskModule } from '@application/use-cases/task/task.module';
 import { TaskController } from './controllers/task.controller';
+import { JwtService } from '@nestjs/jwt';
 
 @Module({
+  providers: [
+    JwtService
+  ],
   imports: [
     DatabaseModule,
     UserModule,

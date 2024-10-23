@@ -1,11 +1,11 @@
 import { HttpException, HttpStatus } from "@nestjs/common";
 
-export class InvalidUserCredentialsError extends HttpException {
+export class UnauthorizedUserError extends HttpException {
     constructor() {
         super({
-            message: 'invalid credentials',
+            message: 'unauthorized user',
             error: 'Unauthorized',
             statusCode: HttpStatus.UNAUTHORIZED,
-        }, HttpStatus.UNAUTHORIZED);
+        }, HttpStatus.CONFLICT);
     }
 }
