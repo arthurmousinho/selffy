@@ -5,8 +5,12 @@ import { GetCostsInsightsUseCase } from "@application/use-cases/cost/get-costs-i
 import { GetTasksInsightsUseCase } from "@application/use-cases/task/get-tasks-insights/get-tasks-insights.usecase";
 import { GetRolesInsightsUseCase } from "@application/use-cases/role/get-roles-insights/get-roles-insights.usecase";
 import { JwtAuthGuard } from "../guards/jwt-auth.guard";
+import { UserTypeGuard } from "../guards/user-type.guard";
 
-@UseGuards(JwtAuthGuard)
+@UseGuards(
+    JwtAuthGuard,
+    new UserTypeGuard('ADMIN')
+)
 @Controller("/admin/dashboard")
 export class AdminDashboardController {
 

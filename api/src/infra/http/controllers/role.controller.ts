@@ -8,8 +8,9 @@ import { UpdateRoleUseCase } from "@application/use-cases/role/update-role/updat
 import { DeleteRoleUseCase } from "@application/use-cases/role/delete-role/delete-role.usecase";
 import { SearchRolesByKeyUseCase } from "@application/use-cases/role/search-roles-by-key/search-roles-by-key.usecase";
 import { JwtAuthGuard } from "../guards/jwt-auth.guard";
+import { UserTypeGuard } from "../guards/user-type.guard";
 
-@UseGuards(JwtAuthGuard)
+@UseGuards(JwtAuthGuard, new UserTypeGuard('ADMIN'))
 @Controller('roles')
 export class RoleController {
 
@@ -19,24 +20,24 @@ export class RoleController {
         private updateRoleUseCase: UpdateRoleUseCase,
         private deleteRoleUseCase: DeleteRoleUseCase,
         private searchRolesByKeyUseCase: SearchRolesByKeyUseCase
-    ) {}
+    ) { }
 
     @Get()
     public async getRoles(@Query('page') page = 1, @Query('limit') limit = 10) {
         const pageableRoles = await this.findAllRolesUseCase.execute(
-            Number(page), 
+            Number(page),
             Number(limit)
         );
-        return { 
-            roles: pageableRoles.data.map(RoleViewModel.toHTTP), 
-            meta: pageableRoles.meta 
+        return {
+            roles: pageableRoles.data.map(RoleViewModel.toHTTP),
+            meta: pageableRoles.meta
         };
     }
 
     @Get(':key')
     public async searchByKey(
-        @Param('key') key: string, 
-        @Query('page') page: number = 1, 
+        @Param('key') key: string,
+        @Query('page') page: number = 1,
         @Query('limit') limit: number = 10
     ) {
         const pageableRoles = await this.searchRolesByKeyUseCase.execute({
@@ -44,7 +45,7 @@ export class RoleController {
             page: Number(page),
             limit: Number(limit)
         });
-        return { 
+        return {
             roles: pageableRoles.data.map(RoleViewModel.toHTTP),
             meta: pageableRoles.meta
         };
@@ -62,7 +63,7 @@ export class RoleController {
 
     @Put()
     public async update(@Body() body: UpdateRoleBody) {
-        const { id ,key, userTypes } = body;
+        const { id, key, userTypes } = body;
 
         await this.updateRoleUseCase.execute({
             id,
