@@ -9,7 +9,9 @@ import { UpdateCostBody } from "../dtos/cost/update-cost.dto";
 import { UpdateCostUseCase } from "@application/use-cases/cost/update-cost/update-cost.usecase";
 import { SearchCostsByTitleUseCase } from "@application/use-cases/cost/search-costs-by-title/search-costs-by-title.usecase";
 import { JwtAuthGuard } from "../guards/jwt-auth.guard";
+import { ApiTags } from "@nestjs/swagger";
 
+@ApiTags('Costs')
 @UseGuards(JwtAuthGuard)
 @Controller('costs')
 export class CostController {

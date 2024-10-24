@@ -10,7 +10,9 @@ import { SearchUserByNameUseCase } from "@application/use-cases/user/search-user
 import { UpdateUserBody } from "../dtos/user/update-user-body.dto";
 import { UpdateUserUseCase } from "@application/use-cases/user/update-user/update-user.usecase";
 import { JwtAuthGuard } from "../guards/jwt-auth.guard";
+import { ApiTags } from "@nestjs/swagger";
 
+@ApiTags('Users')
 @Controller('users')
 export class UserController {
 

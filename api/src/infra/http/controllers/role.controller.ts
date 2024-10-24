@@ -9,7 +9,9 @@ import { DeleteRoleUseCase } from "@application/use-cases/role/delete-role/delet
 import { SearchRolesByKeyUseCase } from "@application/use-cases/role/search-roles-by-key/search-roles-by-key.usecase";
 import { JwtAuthGuard } from "../guards/jwt-auth.guard";
 import { UserTypeGuard } from "../guards/user-type.guard";
+import { ApiTags } from "@nestjs/swagger";
 
+@ApiTags('Roles')
 @UseGuards(JwtAuthGuard, new UserTypeGuard('ADMIN'))
 @Controller('roles')
 export class RoleController {

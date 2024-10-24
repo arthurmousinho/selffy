@@ -8,7 +8,9 @@ import { UpdateTaskBody } from "../dtos/task/update-task.dto";
 import { UpdateTaskUseCase } from "@application/use-cases/task/update-task/update-task.usecase";
 import { SearchTasksByTitleUseCase } from "@application/use-cases/task/search-tasks-by-title/search-tasks-by-title.usecase";
 import { JwtAuthGuard } from "../guards/jwt-auth.guard";
+import { ApiTags } from "@nestjs/swagger";
 
+@ApiTags('Tasks')
 @UseGuards(JwtAuthGuard)
 @Controller('tasks')
 export class TaskController {

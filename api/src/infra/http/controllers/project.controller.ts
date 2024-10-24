@@ -11,7 +11,9 @@ import { SearchProjectByTitleUseCase } from "@application/use-cases/project/sear
 import { FindProjectsByStatusParams } from "../dtos/project/find-projects-by-status.dto";
 import { FindProjectsByStatusUseCase } from "@application/use-cases/project/find-projects-by-status/find-projects-by-status.usecase";
 import { JwtAuthGuard } from "../guards/jwt-auth.guard";
+import { ApiTags } from "@nestjs/swagger";
 
+@ApiTags('Projects')
 @UseGuards(JwtAuthGuard)
 @Controller('projects')
 export class ProjectController {

@@ -58,6 +58,8 @@ Run the API
 ```bash
 npm run start:dev
 ```
+Open API Swagger Documentation
+[http://localhost:3000/docs/swagger](http://localhost:3000/docs/swagger)
 
 ## Web
 Go to **web** folder

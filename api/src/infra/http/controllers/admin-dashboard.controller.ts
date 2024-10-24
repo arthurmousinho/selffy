@@ -6,7 +6,9 @@ import { GetTasksInsightsUseCase } from "@application/use-cases/task/get-tasks-i
 import { GetRolesInsightsUseCase } from "@application/use-cases/role/get-roles-insights/get-roles-insights.usecase";
 import { JwtAuthGuard } from "../guards/jwt-auth.guard";
 import { UserTypeGuard } from "../guards/user-type.guard";
+import { ApiTags } from "@nestjs/swagger";
 
+@ApiTags('Admin Dashboard')
 @UseGuards(
     JwtAuthGuard,
     new UserTypeGuard('ADMIN')
