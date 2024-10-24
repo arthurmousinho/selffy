@@ -4,10 +4,6 @@ import { PlanType, UserType } from "@prisma/client";
 export class UpdateUserBody {
 
     @IsNotEmpty()
-    @IsUUID()
-    id: string;
-
-    @IsNotEmpty()
     name: string;
 
     @IsNotEmpty()

@@ -81,10 +81,13 @@ export class UserController {
         return { token };
     }
 
-    @Put()
+    @Put(':id')
     @UseGuards(JwtAuthGuard)
-    public async update(@Body() body: UpdateUserBody) {
-        const { id, name, email, type, plan } = body;
+    public async update(
+        @Param('id') id: string,
+        @Body() body: UpdateUserBody
+    ) {
+        const { name, email, type, plan } = body;
         await this.updateUserUseCase.execute({
             id,
             name,

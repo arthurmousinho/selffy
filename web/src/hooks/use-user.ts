@@ -156,7 +156,12 @@ export function updateUser() {
     const { toast } = useToast();
     const query = useMutation({
         mutationFn: async (data: UpdateUserProps) => {
-            return await axios.put('/users', data);
+            return await axios.put(`/users/${data.id}`, {
+                email: data.email,
+                name: data.name,
+                type: data.type,
+                plan: data.plan
+            });
         },
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ['users'] });
