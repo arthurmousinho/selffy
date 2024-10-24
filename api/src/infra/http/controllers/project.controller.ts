@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Post, Put, Query, UsePipes, ValidationPipe } from "@nestjs/common";
+import { Body, Controller, Delete, Get, Param, Post, Put, Query, UseGuards, UsePipes, ValidationPipe } from "@nestjs/common";
 import { CreateProjectBody } from "../dtos/project/create-project.dto";
 import { CreateProjectUseCase } from "@application/use-cases/project/create-project/create-project.usecase";
 import { FindUserByIdUseCase } from "@application/use-cases/user/find-user-by-id/find-user-by-id.usecase";
@@ -10,7 +10,9 @@ import { UpdateProjectUseCase } from "@application/use-cases/project/update-proj
 import { SearchProjectByTitleUseCase } from "@application/use-cases/project/search-project-by-title/search-project-by-title.usecase";
 import { FindProjectsByStatusParams } from "../dtos/project/find-projects-by-status.dto";
 import { FindProjectsByStatusUseCase } from "@application/use-cases/project/find-projects-by-status/find-projects-by-status.usecase";
+import { JwtAuthGuard } from "../guards/jwt-auth.guard";
 
+@UseGuards(JwtAuthGuard)
 @Controller('projects')
 export class ProjectController {
 

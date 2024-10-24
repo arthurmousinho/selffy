@@ -1,5 +1,5 @@
 import { CreateRoleUseCase } from "@application/use-cases/role/create-role/create-role.usecase";
-import { Body, Controller, Delete, Get, Param, Post, Put, Query } from "@nestjs/common";
+import { Body, Controller, Delete, Get, Param, Post, Put, Query, UseGuards } from "@nestjs/common";
 import { CreateRoleBody } from "../dtos/role/create-role-body.dto";
 import { FindAllRolesUseCase } from "@application/use-cases/role/find-all-roles/find-all-roles.usecase";
 import { RoleViewModel } from "../view-models/role.viewmodel";
@@ -7,8 +7,9 @@ import { UpdateRoleBody } from "../dtos/role/update-role-body.dto";
 import { UpdateRoleUseCase } from "@application/use-cases/role/update-role/update-role.usecase";
 import { DeleteRoleUseCase } from "@application/use-cases/role/delete-role/delete-role.usecase";
 import { SearchRolesByKeyUseCase } from "@application/use-cases/role/search-roles-by-key/search-roles-by-key.usecase";
+import { JwtAuthGuard } from "../guards/jwt-auth.guard";
 
-
+@UseGuards(JwtAuthGuard)
 @Controller('roles')
 export class RoleController {
 

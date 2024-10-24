@@ -1,5 +1,5 @@
 import { CreateTaskUseCase } from "@application/use-cases/task/create-task/create-task.usecase";
-import { Body, Controller, Delete, Get, Param, Post, Put, Query } from "@nestjs/common";
+import { Body, Controller, Delete, Get, Param, Post, Put, Query, UseGuards } from "@nestjs/common";
 import { CreateTaskBody } from "../dtos/task/create-task.dto";
 import { FindAllTasksUseCase } from "@application/use-cases/task/find-all-tasks/find-all-tasks.usecase";
 import { TaskViewModel } from "../view-models/task.viewmodel";
@@ -7,7 +7,9 @@ import { DeleteTaskUseCase } from "@application/use-cases/task/delete-task/delet
 import { UpdateTaskBody } from "../dtos/task/update-task.dto";
 import { UpdateTaskUseCase } from "@application/use-cases/task/update-task/update-task.usecase";
 import { SearchTasksByTitleUseCase } from "@application/use-cases/task/search-tasks-by-title/search-tasks-by-title.usecase";
+import { JwtAuthGuard } from "../guards/jwt-auth.guard";
 
+@UseGuards(JwtAuthGuard)
 @Controller('tasks')
 export class TaskController {
 

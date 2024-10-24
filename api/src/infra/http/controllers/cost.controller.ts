@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Post, Put, Query } from "@nestjs/common";
+import { Body, Controller, Delete, Get, Param, Post, Put, Query, UseGuards } from "@nestjs/common";
 import { CreateCostBody } from "../dtos/cost/create-cost.dto";
 import { CreateCostUseCase } from "@application/use-cases/cost/create-cost/create-cost.usecase";
 import { FindAllCostsUseCase } from "@application/use-cases/cost/find-all-costs/find-all-costs.usecase";
@@ -8,8 +8,9 @@ import { DeleteCostUseCase } from "@application/use-cases/cost/delete-cost/delet
 import { UpdateCostBody } from "../dtos/cost/update-cost.dto";
 import { UpdateCostUseCase } from "@application/use-cases/cost/update-cost/update-cost.usecase";
 import { SearchCostsByTitleUseCase } from "@application/use-cases/cost/search-costs-by-title/search-costs-by-title.usecase";
+import { JwtAuthGuard } from "../guards/jwt-auth.guard";
 
-
+@UseGuards(JwtAuthGuard)
 @Controller('costs')
 export class CostController {
 
