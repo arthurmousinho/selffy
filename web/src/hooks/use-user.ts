@@ -204,7 +204,7 @@ export function authUser() {
             saveToken(token);
 
             if (decodedToken.type === 'ADMIN') navigate('/admin');
-            if (decodedToken.type === 'DEFAULT') navigate('/');
+            if (decodedToken.type === 'DEFAULT') navigate('/app');
         },
         onError: (error: any) => {
             const responseData: HttpError = error.response.data;

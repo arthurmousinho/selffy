@@ -43,7 +43,7 @@ export default function OrbitingCircles({
 
 export function OrbitingIconsBackground(props: { children: ReactNode }) {
   return (
-    <div className="relative h-screen w-screen overflow-hidden border border-red-500">
+    <div className="relative h-screen w-screen overflow-hidden">
 
       <div className="absolute inset-0 flex items-center justify-center z-10">
         { props.children }

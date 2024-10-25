@@ -22,12 +22,12 @@ export function Header() {
         const mainRoute = `/${firstRoute[1]}`;
       
         const titles: { [key: string]: string } = {
-          '/dashboard': 'Dashboard',
-          '/projects': 'Projects',
-          '/notifications': 'Notifications',
-          '/profile': 'Profile',
-          '/settings': 'Settings',
-          '/priorities': 'Priorities',
+          '/app/dashboard': 'Dashboard',
+          '/app/projects': 'Projects',
+          '/app/notifications': 'Notifications',
+          '/app/profile': 'Profile',
+          '/app/settings': 'Settings',
+          '/app/priorities': 'Priorities',
         };
       
         return titles[pathname] || titles[mainRoute];

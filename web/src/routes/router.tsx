@@ -21,13 +21,18 @@ import { AdminCosts } from "@/pages/admin/admin-costs";
 import { AuthzGuard } from "./guards/authz-guard";
 import { AuthGuard } from "./guards/auth-guard";
 import { AdminSettings } from "@/pages/admin/admin-settings";
+import { Home } from "@/pages/home/home";
 
 export const ROUTER = createBrowserRouter([
     {
         path: '',
+        element: <Home />
+    },
+    {
+        path: '/app',
         element: <AuthGuard><BaseLayout/></AuthGuard>,
         children: [
-            { path: '', element: <Navigate to={'/dashboard'} /> },
+            { path: '', element: <Navigate to={'dashboard'} /> },
             { path: 'dashboard', element: <Dashboard /> },
             { path: 'projects', element: <Projects /> },
             { path: 'priorities', element: <Priorities /> },

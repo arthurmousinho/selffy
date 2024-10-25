@@ -12,12 +12,12 @@ import { NavLink } from "react-router-dom";
 import { ProjectPin } from "../projects/project-pin";
 
 const sidebarLinks = [
-    { to: '/dashboard', label: 'Dashboard', icon: <Home size={20} className="text-black" /> },
-    { to: '/projects', label: 'Projects', icon: <Folder size={20} className="text-black" /> },
-    { to: '/priorities', label: 'Priorities', icon: <Star size={20} className="text-black" /> },
-    { to: '/notifications', label: 'Notifications', icon: <Bell size={20} className="text-black" /> },
-    { to: '/settings', label: 'Settings', icon: <Settings size={20} className="text-black" /> },
-    { to: '/auth/signin', label: 'Exit', icon: <LogOut size={20} className="text-black" /> },
+    { to: '/app/dashboard', label: 'Dashboard', icon: <Home size={20} className="text-black" /> },
+    { to: '/app/projects', label: 'Projects', icon: <Folder size={20} className="text-black" /> },
+    { to: '/app/priorities', label: 'Priorities', icon: <Star size={20} className="text-black" /> },
+    { to: '/app/notifications', label: 'Notifications', icon: <Bell size={20} className="text-black" /> },
+    { to: '/app/settings', label: 'Settings', icon: <Settings size={20} className="text-black" /> },
+    { to: '/app/auth/signin', label: 'Exit', icon: <LogOut size={20} className="text-black" /> },
 ];
 
 const pinnedProjects = [
