@@ -4,7 +4,7 @@ import { GitHubLogoIcon } from "@radix-ui/react-icons";
 import AnimatedGradientText from "../ui/animated-gradient-text";
 import { cn } from "@/lib/utils";
 import { ChevronRight } from "lucide-react";
-import img from "../../assets/home/screenshot-hero.png"
+import img from "../../assets/home/hero.png"
 
 export function Hero() {
     return (
