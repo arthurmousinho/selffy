@@ -1,5 +1,5 @@
 import { CreateUserUseCase } from "@application/use-cases/user/create-user/create-user.usecase";
-import { Body, Controller, Delete, Get, Param, Post, Put, Query, UseGuards } from "@nestjs/common";
+import { Body, Controller, Delete, Get, Param, Post, Put, Query, Request, UseGuards } from "@nestjs/common";
 import { SignUpUserBody } from "../dtos/user/signup-user-body.dto";
 import { LoginUserBody } from "../dtos/user/login-user-body.dto";
 import { AuthUserUseCase } from "@application/use-cases/user/auth-user/auth-user.usecase";
@@ -11,6 +11,7 @@ import { UpdateUserBody } from "../dtos/user/update-user-body.dto";
 import { UpdateUserUseCase } from "@application/use-cases/user/update-user/update-user.usecase";
 import { JwtAuthGuard } from "../guards/jwt-auth.guard";
 import { ApiTags } from "@nestjs/swagger";
+import { UserTypeGuard } from "../guards/user-type.guard";
 
 @ApiTags('Users')
 @Controller('users')
@@ -26,7 +27,7 @@ export class UserController {
     ) { }
 
     @Get()
-    @UseGuards(JwtAuthGuard)
+    @UseGuards(JwtAuthGuard, new UserTypeGuard('ADMIN'))
     public async getUsers(@Query('page') page = 1, @Query('limit') limit = 10) {
         const pageblaUsers = await this.findAllUsersUseCase.execute(
             Number(page),
@@ -39,7 +40,7 @@ export class UserController {
     }
 
     @Get(':name')
-    @UseGuards(JwtAuthGuard)
+    @UseGuards(JwtAuthGuard, new UserTypeGuard('ADMIN'))
     public async searchByName(
         @Param('name') name: string,
         @Query('page') page = 1,
@@ -84,10 +85,10 @@ export class UserController {
     }
 
     @Put(':id')
-    @UseGuards(JwtAuthGuard)
+    @UseGuards(JwtAuthGuard, new UserTypeGuard('ADMIN'))
     public async update(
         @Param('id') id: string,
-        @Body() body: UpdateUserBody
+        @Body() body: UpdateUserBody,
     ) {
         const { name, email, type, plan } = body;
         await this.updateUserUseCase.execute({
@@ -101,6 +102,7 @@ export class UserController {
 
     @Delete(':id')
     @UseGuards(JwtAuthGuard)
+    @UseGuards(JwtAuthGuard, new UserTypeGuard('ADMIN'))
     public async delete(@Param('id') id: string) {
         await this.deleteUserUserCase.execute(id);
     }
