@@ -5,6 +5,7 @@ import AnimatedGradientText from "../ui/animated-gradient-text";
 import { cn } from "@/lib/utils";
 import { ChevronRight } from "lucide-react";
 import img from "../../assets/home/hero.png"
+import { WordRotate } from "../ui/word-rotate";
 
 export function Hero() {
     return (
@@ -21,8 +22,11 @@ export function Hero() {
                     </span>
                     <ChevronRight className="ml-1 size-3 transition-transform duration-300 ease-in-out group-hover:translate-x-0.5" />
                 </AnimatedGradientText>
-                <h1 className="text-6xl font-extrabold text-center">
-                    Manage all your freelance projets by yourself
+                <h1 className="text-6xl font-extrabold text-center flex items-center gap-2 flex-wrap justify-center">
+                    Manage all your <WordRotate
+                        className="text-6xl font-extrabold text-black dark:text-white inline-flex"
+                        words={["freelances", "projects", "tasks", "costs", "revenues"]}
+                    /> by yourself
                 </h1>
                 <p className="text-xl text-muted-foreground text-center w-[90%]">
                     Streamline your workflow, stay organized, and efficiently track your progress, ensuring you never miss a deadline
@@ -37,7 +41,7 @@ export function Hero() {
                     </Button>
                 </footer>
             </header>
-            <img 
+            <img
                 src={img}
             />
         </section>
