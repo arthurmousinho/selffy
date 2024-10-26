@@ -21,6 +21,7 @@ export function AdminDashboard() {
       <section className="grid grid-cols-3 gap-4">
         <AdminUsersCard
           total={data?.users.total || 0}
+          monthlyGrowth={data?.users.monthlyGrowth || 0}
         />
         <AdminProjectsCard
           total={data?.projects.total || 0}
