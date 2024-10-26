@@ -10,6 +10,7 @@ import { CountTasksByPriorityUseCase } from './count-tasks-by-priority/count-tas
 import { CountTasksByStatusUseCase } from './count-tasks-by-status/count-tasks-by-status.usecase';
 import { CountTasksUseCase } from './count-tasks/count-tasks.usecase';
 import { GetTasksInsightsUseCase } from './get-tasks-insights/get-tasks-insights.usecase';
+import { GetTasksGrowthUseCase } from './get-tasks-growth/get-tasks-growth.usecase';
 
 @Module({
     imports: [
@@ -25,7 +26,8 @@ import { GetTasksInsightsUseCase } from './get-tasks-insights/get-tasks-insights
         CountTasksByPriorityUseCase,
         CountTasksByStatusUseCase,
         CountTasksUseCase,
-        GetTasksInsightsUseCase
+        GetTasksInsightsUseCase,
+        GetTasksGrowthUseCase
     ],
     exports: [
         CreateTaskUseCase,
@@ -37,7 +39,8 @@ import { GetTasksInsightsUseCase } from './get-tasks-insights/get-tasks-insights
         CountTasksByPriorityUseCase,
         CountTasksByStatusUseCase,
         CountTasksUseCase,
-        GetTasksInsightsUseCase
+        GetTasksInsightsUseCase,
+        GetTasksGrowthUseCase
     ]
 })
 

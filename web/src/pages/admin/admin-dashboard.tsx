@@ -27,14 +27,15 @@ export function AdminDashboard() {
           total={data?.projects.total || 0}
           monthlyGrowth={data?.projects.monthlyGrowth || 0}
         />
-        <AdminProjectsRevenueCard
-          revenue={data?.projects.totalRevenue || 0}
-        />
         <AdminTasksCard
           total={data?.tasks.total || 0}
+          monthlyGrowth={data?.tasks.monthlyGrowth || 0}
         />
         <AdminCostsCard
           total={data?.costs.total || 0}
+        />
+        <AdminProjectsRevenueCard
+          revenue={data?.projects.totalRevenue || 0}
         />
         <AdminCostsValueCard
           total={data?.costs.totalValue || 0}

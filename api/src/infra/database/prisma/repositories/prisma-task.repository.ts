@@ -135,4 +135,14 @@ export class PrismaTaskRepository implements TaskRepository {
         return count
     }
 
+    public async countTasksCreatedAfter(date: Date): Promise<number> {
+        return await this.prismaService.task.count({
+            where: {
+                createdAt: {
+                    gte: date
+                }
+            }
+        })
+    }
+
 }

@@ -2,6 +2,7 @@ import { Injectable } from "@nestjs/common";
 import { CountTasksByPriorityUseCase } from "../count-tasks-by-priority/count-tasks-by-priority.usecase";
 import { CountTasksByStatusUseCase } from "../count-tasks-by-status/count-tasks-by-status.usecase";
 import { CountTasksUseCase } from "../count-tasks/count-tasks.usecase";
+import { GetTasksGrowthUseCase } from "../get-tasks-growth/get-tasks-growth.usecase";
 
 export interface TasksInsights {
     total: number;
@@ -10,6 +11,7 @@ export interface TasksInsights {
     lowPriority: number;
     pending: number;
     completed: number;
+    monthlyGrowth: number;
 }
 
 @Injectable()
@@ -19,6 +21,7 @@ export class GetTasksInsightsUseCase {
         private countTasksUseCase: CountTasksUseCase,
         private countTasksByPriorityUseCase: CountTasksByPriorityUseCase,
         private countTasksByStatusUseCase: CountTasksByStatusUseCase,
+        private getTasksGrowthUseCase: GetTasksGrowthUseCase
     ) { }
 
     public async execute(): Promise<TasksInsights> {
@@ -29,6 +32,7 @@ export class GetTasksInsightsUseCase {
             lowPriorityTasksCount,
             pendingTasksCount,
             completedTasksCount,
+            taksMonthlyGrowth
         ] = await Promise.all([
             this.countTasksUseCase.execute(),
             this.countTasksByPriorityUseCase.execute('HIGH'),
@@ -36,6 +40,7 @@ export class GetTasksInsightsUseCase {
             this.countTasksByPriorityUseCase.execute('LOW'),
             this.countTasksByStatusUseCase.execute('PENDING'),
             this.countTasksByStatusUseCase.execute('COMPLETED'),
+            this.getTasksGrowthUseCase.execute('MONTHLY')
         ])
 
         return {
@@ -45,6 +50,7 @@ export class GetTasksInsightsUseCase {
             lowPriority: lowPriorityTasksCount,
             pending: pendingTasksCount,
             completed: completedTasksCount,
+            monthlyGrowth: taksMonthlyGrowth
         }
     }
 

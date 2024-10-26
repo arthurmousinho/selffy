@@ -12,4 +12,5 @@ export abstract class TaskRepository {
     abstract count(): Promise<number>;
     abstract countByStatus(status: TaskStatus): Promise<number>;
     abstract countByPriority(priority: TaskPriority): Promise<number>;
+    abstract countTasksCreatedAfter(date: Date): Promise<number>;
 }

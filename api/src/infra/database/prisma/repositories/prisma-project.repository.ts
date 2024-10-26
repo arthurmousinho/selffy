@@ -89,7 +89,7 @@ export class PrismaProjectRepository implements ProjectRepository {
     }
 
     public async countProjectsCreatedAfter(date: Date): Promise<number> {
-        return this.prismaService.project.count({
+        return await this.prismaService.project.count({
             where: {
                 createdAt: {
                     gte: date

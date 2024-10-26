@@ -84,4 +84,10 @@ export class InMemoryTaskRepository implements TaskRepository {
         ).length;
     }
 
+    public async countTasksCreatedAfter(date: Date): Promise<number> {
+        return this.tasks.filter(
+            (task) => task.getCreatedAt() > date
+        ).length;
+    }
+    
 }

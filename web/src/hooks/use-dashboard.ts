@@ -17,10 +17,6 @@ interface GetAdminDashboardResponse {
         totalRevenue: number;
         monthlyGrowth: number;
     },
-    costs: {
-        total: number;
-        totalValue: number;
-    },
     tasks: {
         total: number;
         highPriority: number;
@@ -28,6 +24,11 @@ interface GetAdminDashboardResponse {
         lowPriority: number;
         pending: number;
         completed: number;
+        monthlyGrowth: number;
+    },
+    costs: {
+        total: number;
+        totalValue: number;
     },
     roles: {
         total: number;

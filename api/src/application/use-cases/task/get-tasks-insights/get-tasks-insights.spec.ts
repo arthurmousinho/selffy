@@ -2,12 +2,14 @@ import { GetTasksInsightsUseCase } from './get-tasks-insights.usecase';
 import { CountTasksUseCase } from '../count-tasks/count-tasks.usecase';
 import { CountTasksByPriorityUseCase } from '../count-tasks-by-priority/count-tasks-by-priority.usecase';
 import { CountTasksByStatusUseCase } from '../count-tasks-by-status/count-tasks-by-status.usecase';
+import { GetTasksGrowthUseCase } from '../get-tasks-growth/get-tasks-growth.usecase';
 
 describe('GetTasksInsightsUseCase', () => {
   let getTasksInsightsUseCase: GetTasksInsightsUseCase;
   let countTasksUseCase: CountTasksUseCase;
   let countTasksByPriorityUseCase: CountTasksByPriorityUseCase;
   let countTasksByStatusUseCase: CountTasksByStatusUseCase;
+  let getTasksGrowthUseCase: GetTasksGrowthUseCase
 
   beforeEach(() => {
     countTasksUseCase = {
@@ -22,10 +24,15 @@ describe('GetTasksInsightsUseCase', () => {
       execute: jest.fn(),
     } as unknown as CountTasksByStatusUseCase;
 
+    getTasksGrowthUseCase = {
+      execute: jest.fn(),
+    } as unknown as GetTasksGrowthUseCase;
+
     getTasksInsightsUseCase = new GetTasksInsightsUseCase(
       countTasksUseCase,
       countTasksByPriorityUseCase,
-      countTasksByStatusUseCase
+      countTasksByStatusUseCase,
+      getTasksGrowthUseCase
     );
   });
 
@@ -56,7 +63,7 @@ describe('GetTasksInsightsUseCase', () => {
     expect(countTasksByPriorityUseCase.execute).toHaveBeenCalledWith('LOW');
     expect(countTasksByStatusUseCase.execute).toHaveBeenCalledWith('PENDING');
     expect(countTasksByStatusUseCase.execute).toHaveBeenCalledWith('COMPLETED');
-    
+
     expect(result).toEqual({
       total: mockTasksCount,
       highPriority: mockHighPriorityCount,
