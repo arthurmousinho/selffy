@@ -15,6 +15,7 @@ interface GetAdminDashboardResponse {
         inProgress: number;
         finished: number;
         totalRevenue: number;
+        monthlyGrowth: number;
     },
     costs: {
         total: number;

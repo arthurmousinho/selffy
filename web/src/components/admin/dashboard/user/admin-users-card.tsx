@@ -17,17 +17,9 @@ export function AdminUsersCard(props: AdminUsersCardProps) {
                 <span className="text-2xl font-bold">
                     {props.total} Users
                 </span>
-                {
-                    props.monthlyGrowth > 0 ? (
-                        <span className="text-sm font-medium text-muted-foreground">
-                            +{props.monthlyGrowth}% from last month
-                        </span>
-                    ) : (
-                        <span className="text-sm font-medium text-muted-foreground">
-                            -{props.monthlyGrowth}% from last month
-                        </span>
-                    )
-                }
+                <span className="text-sm font-medium text-muted-foreground">
+                    +{props.monthlyGrowth} from last month
+                </span>
             </CardHeader>
         </Card>
     )

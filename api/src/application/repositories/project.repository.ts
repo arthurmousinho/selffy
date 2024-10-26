@@ -12,5 +12,6 @@ export abstract class ProjectRepository {
     abstract findManyByTitle(params: { title: string, page: number, limit: number }): Promise<Pageable<Project>>;
     abstract findByStatus(status: ProjectStatus): Promise<Project[]>;
     abstract countByStatus(status: ProjectStatus): Promise<number>;
+    abstract countProjectsCreatedAfter(date: Date): Promise<number>;
     abstract sumRevenues(): Promise<number>;
 }

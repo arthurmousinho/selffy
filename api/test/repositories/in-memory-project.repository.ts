@@ -56,6 +56,12 @@ export class InMemoryProjectRepository implements ProjectRepository {
         return this.projects.length;
     }
 
+    public async countProjectsCreatedAfter(date: Date): Promise<number> {
+        return this.projects.filter(
+            (project) => project.getCreatedAt() > date
+        ).length;
+    }
+
     public async findManyByTitle(params: { title: string, page: number, limit: number }): Promise<Pageable<Project>> {
         const projects = this.projects.filter(
             (project) => project.getTitle().toLowerCase().includes(params.title.toLowerCase())

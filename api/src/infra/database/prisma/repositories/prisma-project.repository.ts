@@ -10,7 +10,7 @@ export class PrismaProjectRepository implements ProjectRepository {
 
     constructor(
         private readonly prismaService: PrismaService
-    ) {}
+    ) { }
 
     public async create(project: Project): Promise<void> {
         const raw = PrismaProjectMapper.toPrisma(project);
@@ -27,7 +27,7 @@ export class PrismaProjectRepository implements ProjectRepository {
     }
 
     public async findById(id: string): Promise<Project | null> {
-       const project = await this.prismaService.project.findUnique({
+        const project = await this.prismaService.project.findUnique({
             where: {
                 id
             },
@@ -40,9 +40,9 @@ export class PrismaProjectRepository implements ProjectRepository {
         }
         return PrismaProjectMapper.toDomain(project);
     }
-    
+
     public async findAll(page: number = 1, limit: number = 1): Promise<Pageable<Project>> {
-        const [ projects, total ] = await Promise.all([
+        const [projects, total] = await Promise.all([
             this.prismaService.project.findMany({
                 skip: (page - 1) * limit,
                 take: limit,
@@ -88,8 +88,18 @@ export class PrismaProjectRepository implements ProjectRepository {
         return await this.prismaService.project.count();
     }
 
+    public async countProjectsCreatedAfter(date: Date): Promise<number> {
+        return this.prismaService.project.count({
+            where: {
+                createdAt: {
+                    gte: date
+                }
+            }
+        });
+    }
+
     public async findManyByTitle(params: { title: string; page: number; limit: number; }): Promise<Pageable<Project>> {
-        const [ projects, total ] = await Promise.all([
+        const [projects, total] = await Promise.all([
             this.prismaService.project.findMany({
                 where: {
                     title: {
@@ -146,7 +156,7 @@ export class PrismaProjectRepository implements ProjectRepository {
         return projects.map(PrismaProjectMapper.toDomain);
     }
 
-    public async sumRevenues(){
+    public async sumRevenues() {
         const sum = await this.prismaService.project.aggregate({
             _sum: {
                 revenue: true

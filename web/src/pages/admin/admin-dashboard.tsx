@@ -25,6 +25,7 @@ export function AdminDashboard() {
         />
         <AdminProjectsCard
           total={data?.projects.total || 0}
+          monthlyGrowth={data?.projects.monthlyGrowth || 0}
         />
         <AdminProjectsRevenueCard
           revenue={data?.projects.totalRevenue || 0}

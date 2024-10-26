@@ -2,23 +2,27 @@ import { CountProjectsUseCase } from '../count-projects/count-projects.usecase';
 import { CountProjectByStatusUseCase } from '../count-projects-by-status/count-projects-by-status.usecase';
 import { GetTotalRevenueUseCase } from '../get-total-revenue/get-total-revenue.usecase';
 import { GetProjectsInsightsUseCase, ProjectsInsights } from './get-projects-insights.usecase';
+import { GetProjectsGrowthUseCase } from '../get-projects-growth/get-projects-growth.usecase';
 
 describe('GetProjectsInsightsUseCase', () => {
-    
+
   let getProjectsInsightsUseCase: GetProjectsInsightsUseCase;
   let countProjectsUseCase: CountProjectsUseCase;
   let countProjectsByStatusUseCase: CountProjectByStatusUseCase;
   let getTotalRevenueUseCase: GetTotalRevenueUseCase;
+  let getProjectsGrowthUseCase: GetProjectsGrowthUseCase;
 
   beforeEach(() => {
     countProjectsUseCase = { execute: jest.fn() } as unknown as CountProjectsUseCase;
     countProjectsByStatusUseCase = { execute: jest.fn() } as unknown as CountProjectByStatusUseCase;
     getTotalRevenueUseCase = { execute: jest.fn() } as unknown as GetTotalRevenueUseCase;
+    getProjectsGrowthUseCase = { execute: jest.fn() } as unknown as GetProjectsGrowthUseCase;
 
     getProjectsInsightsUseCase = new GetProjectsInsightsUseCase(
       countProjectsUseCase,
       countProjectsByStatusUseCase,
-      getTotalRevenueUseCase
+      getTotalRevenueUseCase,
+      getProjectsGrowthUseCase
     );
   });
 
