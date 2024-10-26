@@ -45,7 +45,7 @@ JWT_SECRET="secret"
 > - ✅ The API will be running on http://localhost:3000
 > - 📖 The Swagger documentation will be available at http://localhost:3000/docs/swagger
 
-## Web
+### Web
 1. Go to **web** folder: ```cd web```
 2. Install dependencies: ```npm install```
 3. Create a **.env.local** file in the root of the project and add the following variables:
