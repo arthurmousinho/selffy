@@ -4,7 +4,7 @@ import { Controller, Get } from "@nestjs/common"
 export class AppController {
 
     @Get('/')
-    public async getDashboard() {
+    public async checkHealthy() {
         return {
             message: '👋 Welcome to Selffy API',
             time: new Date(),
