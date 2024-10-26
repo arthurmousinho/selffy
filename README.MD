@@ -7,6 +7,9 @@ Selffy
 </h1>
 </div>
 
+![preview](./docs/preview.png)
+
+## About
 Selffy is a comprehensive platform designed to help you manage all your personal and professional freelance projects seamlessly in one place. With Selffy, you can streamline your workflow, stay organized, and efficiently track your progress, ensuring you never miss a deadline. 
 
 🚧 **Selffy is under development** 🚧
