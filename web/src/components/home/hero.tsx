@@ -1,11 +1,11 @@
 
 import { Button } from "@/components/ui/button";
 import { GitHubLogoIcon } from "@radix-ui/react-icons";
-import AnimatedGradientText from "../ui/animated-gradient-text";
+import AnimatedGradientText from "../magicui/animated-gradient-text";
 import { cn } from "@/lib/utils";
 import { ChevronRight } from "lucide-react";
 import img from "../../assets/home/hero.png"
-import { WordRotate } from "../ui/word-rotate";
+import { WordRotate } from "../magicui/word-rotate";
 
 export function Hero() {
     return (
