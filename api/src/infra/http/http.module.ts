@@ -13,6 +13,7 @@ import { CostModule } from '@application/use-cases/cost/cost.module';
 import { TaskModule } from '@application/use-cases/task/task.module';
 import { TaskController } from './controllers/task.controller';
 import { JwtService } from '@nestjs/jwt';
+import { AppController } from './controllers/app.controller';
 
 @Module({
   providers: [
@@ -32,7 +33,8 @@ import { JwtService } from '@nestjs/jwt';
     ProjectController,
     CostController,
     AdminDashboardController,
-    TaskController
+    TaskController,
+    AppController
   ]
 })
 export class HttpModule { }
