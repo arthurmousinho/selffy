@@ -24,7 +24,24 @@ export class UpdateUserUseCase {
             throw new UserNotFoundError();
         }
 
-        const userInstance = new User({
+        let userInstance: User;
+        const mustUpdateOnlySelf = userExists.getRole() === 'FREE' || userExists.getRole() === 'PREMIUM'
+
+        if (mustUpdateOnlySelf) {
+            userInstance = new User({
+                name: request.name,
+                email: request.email,
+                password: userExists.getPassword(),
+                role: userExists.getRole(),
+                createdAt: userExists.getCreatedAt(),
+                updatedAt: new Date(),
+            }, request.id);
+
+            await this.userRepository.update(userInstance);
+            return;
+        } 
+
+        userInstance = new User({
             name: request.name,
             email: request.email,
             password: userExists.getPassword(),
@@ -34,6 +51,7 @@ export class UpdateUserUseCase {
         }, request.id);
         
         await this.userRepository.update(userInstance);
+
     }
 
 }

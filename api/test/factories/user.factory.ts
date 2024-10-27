@@ -1,7 +1,7 @@
-import { User } from "@application/entities/user/user.entity";
+import { Role, User } from "@application/entities/user/user.entity";
 import { randomUUID } from "crypto";
 
-export function makeUser(props?: { id?: string, email?: string, name?: string }): User {
+export function makeUser(props?: { id?: string, email?: string, name?: string, role?: Role }): User {
     const date = new Date();
     date.setDate(date.getDate() - 1); // yesterday
 
@@ -9,7 +9,7 @@ export function makeUser(props?: { id?: string, email?: string, name?: string })
         email: props?.email ?? 'test@test.com',
         name: props?.name ?? 'test',
         password: '123456',
-        role: 'FREE',
+        role: props?.role ?? 'FREE',
         updatedAt: date,
         createdAt: date,
     }, props?.id ?? randomUUID());
