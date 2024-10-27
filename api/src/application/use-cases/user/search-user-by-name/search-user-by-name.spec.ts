@@ -1,16 +1,14 @@
-import { makeUser } from "@test/factories/user.factory";
 import { SearchUserByNameUseCase } from "./search-user-by-name.usecase";
 import { UserRepository } from "@application/repositories/user.repository";
 import { InMemoryUserRepository } from "@test/repositories/in-memory-user.repository";
 import { User } from "@application/entities/user/user.entity";
-import { makeRole } from "@test/factories/role.factory";
 
 describe('SearchUserByNameUseCase', () => {
     let searchUserByNameUseCase: SearchUserByNameUseCase;
     let userRepository: UserRepository;
 
     beforeEach(() => {
-        userRepository = new InMemoryUserRepository(); // Repositório em memória para testes
+        userRepository = new InMemoryUserRepository(); 
         searchUserByNameUseCase = new SearchUserByNameUseCase(userRepository);
     });
 
@@ -19,7 +17,6 @@ describe('SearchUserByNameUseCase', () => {
             name: 'John Doe',
             email: 'john@example.com',
             password: 'password123',
-            roles: [makeRole()],
             projects: [],
         });
 
@@ -27,7 +24,6 @@ describe('SearchUserByNameUseCase', () => {
             name: 'John Doe',
             email: 'john.doe@example.com',
             password: 'password456',
-            roles: [makeRole()],
             projects: [],
         });
 

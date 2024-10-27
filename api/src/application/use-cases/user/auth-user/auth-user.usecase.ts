@@ -35,8 +35,7 @@ export class AuthUserUseCase {
             {
                 sub: user.getId(),
                 email: user.getEmail(),
-                type: user.getType(),
-                roles: user.getRoles().map(role => role.getKey())
+                role: user.getRole()
             },
             {
                 secret: process.env.JWT_SECRET,

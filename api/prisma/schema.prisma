@@ -12,22 +12,16 @@ model User {
   name      String
   email     String    @unique
   password  String
-  roles     Role[]
   createdAt DateTime
   updatedAt DateTime
-  type      UserType
   projects  Project[]
-  plan      PlanType
+  role      Role
 }
 
-enum PlanType {
+enum Role {
+  ADMIN
   FREE
   PREMIUM
-}
-
-enum UserType {
-  ADMIN
-  DEFAULT
 }
 
 model Project {
@@ -85,14 +79,4 @@ model Cost {
 
   project   Project @relation(fields: [projectId], references: [id])
   projectId String
-}
-
-model Role {
-  id        String     @id
-  key       String     @unique
-  createdAt DateTime
-  updatedAt DateTime
-  userTypes UserType[]
-
-  users User[]
 }

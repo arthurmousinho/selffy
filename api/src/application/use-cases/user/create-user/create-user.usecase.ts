@@ -1,17 +1,14 @@
-import { User, UserType } from "@application/entities/user/user.entity";
+import { Role, User } from "@application/entities/user/user.entity";
 import { UserAlreadyExistsError } from "@application/errors/user/user-already-exists.error";
 import { UserRepository } from "@application/repositories/user.repository";
-import { GetRolesForUserTypeUseCase } from "@application/use-cases/role/get-roles-for-user-type/get-roles-for-user-type";
 import { Injectable } from "@nestjs/common";
-import { PlanType } from "@prisma/client";
 import * as bcrypt from 'bcryptjs';
 
 interface CreateUserRequest {
     name: string;
     email: string;
     password: string;
-    type: UserType;
-    plan: PlanType;
+    role: Role;
 }
 
 interface CreateUserResponse {
@@ -23,11 +20,10 @@ export class CreateUserUseCase {
 
     constructor(
         private userRepository: UserRepository,
-        private getRolesForUserTypeUseCase: GetRolesForUserTypeUseCase,
     ) {}
 
     public async execute(request: CreateUserRequest): Promise<CreateUserResponse> {
-        const { name, email, password, type, plan } = request;
+        const { name, email, password, role } = request;
 
         const userAlreadyExists = await this.userRepository.findByEmail(email);
         if (userAlreadyExists) {
@@ -36,15 +32,11 @@ export class CreateUserUseCase {
 
         const hashedPassword = await this.hashPassword(password);
 
-        const roles = await this.getRolesForUserTypeUseCase.execute(type);
-
         const newUser = new User({
             name,
             email,
             password: hashedPassword,
-            type,
-            roles,
-            plan
+            role
         });
 
         await this.userRepository.create(newUser);

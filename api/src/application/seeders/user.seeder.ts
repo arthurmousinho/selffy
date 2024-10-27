@@ -1,4 +1,3 @@
-import { PlanType, UserType } from '@application/entities/user/user.entity';
 import { UserRepository } from '@application/repositories/user.repository';
 import { CreateUserUseCase } from '@application/use-cases/user/create-user/create-user.usecase';
 import { Injectable } from '@nestjs/common';
@@ -24,8 +23,7 @@ export class UserSeeder {
                 name: user.name,
                 email: user.email,
                 password: user.password,
-                type: user.userType as UserType,
-                plan: user.plan as PlanType
+                role: user.role
             })
         })
     }
@@ -40,8 +38,7 @@ export class UserSeeder {
             name: 'Admin',
             email: 'admin@selffy.com',
             password: 'admin123',
-            type: 'ADMIN',
-            plan: 'PREMIUM'
+            role: 'ADMIN'
         });
     }
 

@@ -43,7 +43,7 @@ export class UpdateProjectUseCase {
             name: projectExists.getOwner().getName(),
             email: projectExists.getOwner().getEmail(),
             password: projectExists.getOwner().getPassword(),
-            type: projectExists.getOwner().getType(),
+            role: projectExists.getOwner().getRole(),
             createdAt: projectExists.getOwner().getCreatedAt(),
             updatedAt: projectExists.getOwner().getUpdatedAt(),
         }, ownerId);

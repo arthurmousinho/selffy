@@ -11,7 +11,7 @@ import { UpdateUserBody } from "../dtos/user/update-user-body.dto";
 import { UpdateUserUseCase } from "@application/use-cases/user/update-user/update-user.usecase";
 import { JwtAuthGuard } from "../guards/jwt-auth.guard";
 import { ApiTags } from "@nestjs/swagger";
-import { UserTypeGuard } from "../guards/user-type.guard";
+import { RoleGuard } from "../guards/role.guard";
 
 @ApiTags('Users')
 @Controller('users')
@@ -27,7 +27,7 @@ export class UserController {
     ) { }
 
     @Get()
-    @UseGuards(JwtAuthGuard, new UserTypeGuard('ADMIN'))
+    @UseGuards(JwtAuthGuard, new RoleGuard('ADMIN'))
     public async getUsers(@Query('page') page = 1, @Query('limit') limit = 10) {
         const pageblaUsers = await this.findAllUsersUseCase.execute(
             Number(page),
@@ -40,7 +40,7 @@ export class UserController {
     }
 
     @Get(':name')
-    @UseGuards(JwtAuthGuard, new UserTypeGuard('ADMIN'))
+    @UseGuards(JwtAuthGuard, new RoleGuard('ADMIN'))
     public async searchByName(
         @Param('name') name: string,
         @Query('page') page = 1,
@@ -59,14 +59,13 @@ export class UserController {
 
     @Post('/signup')
     public async signup(@Body() body: SignUpUserBody) {
-        const { name, email, password, type, plan } = body;
+        const { name, email, password, role } = body;
 
         const { user } = await this.createUserUseCase.execute({
             name,
             email,
             password,
-            type,
-            plan
+            role
         });
 
         return { user }
@@ -85,24 +84,23 @@ export class UserController {
     }
 
     @Put(':id')
-    @UseGuards(JwtAuthGuard, new UserTypeGuard('ADMIN'))
+    @UseGuards(JwtAuthGuard, new RoleGuard('ADMIN'))
     public async update(
         @Param('id') id: string,
         @Body() body: UpdateUserBody,
     ) {
-        const { name, email, type, plan } = body;
+        const { name, email, role } = body;
         await this.updateUserUseCase.execute({
             id,
             name,
             email,
-            type,
-            plan
+            role
         });
     }
 
     @Delete(':id')
     @UseGuards(JwtAuthGuard)
-    @UseGuards(JwtAuthGuard, new UserTypeGuard('ADMIN'))
+    @UseGuards(JwtAuthGuard, new RoleGuard('ADMIN'))
     public async delete(@Param('id') id: string) {
         await this.deleteUserUserCase.execute(id);
     }

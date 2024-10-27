@@ -3,15 +3,14 @@ import { GetUsersInsightsUseCase } from "@application/use-cases/user/get-users-i
 import { GetProjectsInsightsUseCase } from "@application/use-cases/project/get-projects-insights/get-projects-insights.usecase";
 import { GetCostsInsightsUseCase } from "@application/use-cases/cost/get-costs-insights/get-costs-insights.usecase";
 import { GetTasksInsightsUseCase } from "@application/use-cases/task/get-tasks-insights/get-tasks-insights.usecase";
-import { GetRolesInsightsUseCase } from "@application/use-cases/role/get-roles-insights/get-roles-insights.usecase";
 import { JwtAuthGuard } from "../guards/jwt-auth.guard";
-import { UserTypeGuard } from "../guards/user-type.guard";
 import { ApiTags } from "@nestjs/swagger";
+import { RoleGuard } from "../guards/role.guard";
 
 @ApiTags('Admin Dashboard')
 @UseGuards(
     JwtAuthGuard,
-    new UserTypeGuard('ADMIN')
+    new RoleGuard('ADMIN')
 )
 @Controller("/admin/dashboard")
 export class AdminDashboardController {
@@ -21,7 +20,6 @@ export class AdminDashboardController {
         private getProjectsInsightsUseCase: GetProjectsInsightsUseCase,
         private getCostsInsightsUseCase: GetCostsInsightsUseCase,
         private getTasksInsightsUseCase: GetTasksInsightsUseCase,
-        private getRolesInsightsUseCase: GetRolesInsightsUseCase,
     ) { }
 
     @Get()
@@ -31,13 +29,11 @@ export class AdminDashboardController {
             projectsInsights,
             costsInsights,
             tasksInsights,
-            rolesInsights
         ] = await Promise.all([
             this.getUsersInsightsUseCase.execute(),
             this.getProjectsInsightsUseCase.execute(),
             this.getCostsInsightsUseCase.execute(),
             this.getTasksInsightsUseCase.execute(),
-            this.getRolesInsightsUseCase.execute(),
         ])
 
         return {
@@ -45,7 +41,6 @@ export class AdminDashboardController {
             projects: projectsInsights,
             costs: costsInsights,
             tasks: tasksInsights,
-            roles: rolesInsights
         }
     }
 }

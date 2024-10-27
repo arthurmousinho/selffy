@@ -8,7 +8,7 @@ describe('User', () => {
         expect(user.getName()).toBe('test');
         expect(user.getEmail()).toBe('test@test.com');
         expect(user.getPassword()).toBe('123456');
-        expect(user.getPlan()).toBe('FREE'); 
+        expect(user.getRole()).toBe('FREE');
     });
 
     it('should correctly update user name', () => {
@@ -29,7 +29,7 @@ describe('User', () => {
         user.addProject(project);
         expect(user.getProjects()).toContain(project);
     });
-    
+
     it('should correctly update the updatedAt property', () => {
         const user = makeUser();
         const initialUpdatedAt = user.getUpdatedAt();
@@ -40,10 +40,10 @@ describe('User', () => {
         expect(user.getUpdatedAt()).toBeInstanceOf(Date);
     });
 
-    it('should correctly set and retrieve the user plan', () => {
+    it('should correctly set and retrieve the user role', () => {
         const user = makeUser();
-        user.setPlan('PREMIUM');
-        expect(user.getPlan()).toBe('PREMIUM'); 
+        user.setRole('PREMIUM');
+        expect(user.getRole()).toBe('PREMIUM');
     });
 
 });

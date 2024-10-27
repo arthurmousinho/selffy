@@ -1,16 +1,16 @@
 import { Injectable, CanActivate, ExecutionContext } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { UserType } from '@application/entities/user/user.entity';
 import { UnauthorizedUserError } from '@application/errors/user/unauthorized-user.error';
+import { Role } from '@application/entities/user/user.entity';
 
 @Injectable()
-export class UserTypeGuard implements CanActivate {
-    private type: UserType;
+export class RoleGuard implements CanActivate {
+    private role: Role;
 
     constructor(
-        type: UserType
+        role: Role
     ) {
-        this.type = type;
+        this.role = role;
     }
 
     public canActivate(context: ExecutionContext): boolean {
@@ -22,7 +22,7 @@ export class UserTypeGuard implements CanActivate {
         }
 
         const decoded = this.decodeToken(token);
-        if (!decoded || decoded.type !== this.type) {
+        if (!decoded || decoded.role !== this.role) {
             throw new UnauthorizedUserError();
         }
 

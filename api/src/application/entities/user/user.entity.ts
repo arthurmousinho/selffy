@@ -1,22 +1,17 @@
 import { randomUUID } from "crypto";
 import { Replace } from "src/utils/replace";
 import { Project } from "../project/project.entity";
-import { Role } from "../role/role.entity";
-import { makeRole } from "@test/factories/role.factory";
 
-export type UserType = 'ADMIN' | 'DEFAULT';
-export type PlanType = 'FREE' | 'PREMIUM';
+export type Role = 'ADMIN' | 'FREE' | 'PREMIUM';
 
 export interface UserProps {
     name: string;
     email: string;
     password: string;
-    roles: Role[];
     createdAt: Date;
     updatedAt: Date;
     projects: Project[];
-    type: UserType;
-    plan: PlanType;
+    role: Role;
 }
 
 export class User {
@@ -27,28 +22,20 @@ export class User {
     constructor(
         props: Replace<UserProps, {
             id?: string,
-            roles?: Role[],
             createdAt?: Date,
-            type?: UserType,
             updatedAt?: Date,
             projects?: Project[],
-            plan?: PlanType,
+            role?: Role
         }>,
         id?: string,
     ) {
         this._id = id ?? randomUUID();
-        const defaultRoles = [
-            makeRole(),
-        ];
-
         this.props = {
             ...props,
-            type: props.type ?? 'DEFAULT',
+            role: 'FREE',
             createdAt: props.createdAt ?? new Date(),
             updatedAt: props.updatedAt ?? new Date(),
-            roles: props?.roles ?? defaultRoles,
-            projects: props.projects ?? [],
-            plan: props.plan ?? 'FREE',
+            projects: props.projects ?? []
         };
     }
 
@@ -80,16 +67,12 @@ export class User {
         this.props.password = password
     }
 
-    public getRoles() {
-        return this.props.roles
+    public setRole(role: Role) {
+        this.props.role = role;
     }
 
-    public addRole(role: Role) {
-        this.props.roles.push(role)
-    }
-
-    public removeRole(role: Role) {
-        this.props.roles = this.props.roles.filter(r => r.getId() !== role.getId())
+    public getRole() {
+        return this.props.role;
     }
 
     public getCreatedAt() {
@@ -114,22 +97,6 @@ export class User {
 
     public removeProject(project: any) {
         this.props.projects = this.props.projects.filter(p => p.getId() !== project.getId())
-    }
-
-    public getType() {
-        return this.props.type
-    }
-
-    public setType(type: UserType) {
-        this.props.type = type
-    }
-
-    public getPlan() {
-        return this.props.plan
-    }
-
-    public setPlan(plan: PlanType) {
-        this.props.plan = plan
     }
 
 }

@@ -7,12 +7,10 @@ export class UserViewModel {
             id: user.getId(),
             name: user.getName(),
             email: user.getEmail(),
-            type: user.getType(),
-            plan: user.getPlan(),
+            role: user.getRole(),
             password: user.getPassword(),
             createdAt: user.getCreatedAt(),
-            updatedAt: user.getUpdatedAt(),
-            roles: user.getRoles().map(role => role.getKey())
+            updatedAt: user.getUpdatedAt()
         }
     }
 

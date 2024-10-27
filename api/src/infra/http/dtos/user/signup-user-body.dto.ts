@@ -1,5 +1,5 @@
+import { Role } from "@prisma/client";
 import { IsEmail, IsEnum, IsNotEmpty } from "class-validator";
-import { PlanType, UserType } from "@prisma/client";
 
 export class SignUpUserBody {
 
@@ -14,11 +14,7 @@ export class SignUpUserBody {
     password: string;
 
     @IsNotEmpty()
-    @IsEnum(UserType, { each: true })
-    type: UserType;
-
-    @IsNotEmpty()
-    @IsEnum(PlanType, { each: true })
-    plan: PlanType
+    @IsEnum(Role, { each: true })
+    role: Role;
 
 }

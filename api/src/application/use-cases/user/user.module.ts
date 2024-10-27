@@ -8,17 +8,11 @@ import { SearchUserByNameUseCase } from './search-user-by-name/search-user-by-na
 import { UpdateUserUseCase } from './update-user/update-user.usecase';
 import { FindUserByIdUseCase } from './find-user-by-id/find-user-by-id.usecase';
 import { CountUsersUseCase } from './count-users/count-users.usecase';
-import { CountUsersByPlanUseCase } from './count-users-by-plan/count-users-by-plan.usecase';
-import { RoleModule } from '../role/role.module';
 import { JwtService } from '@nestjs/jwt';
-import { CountUsersByTypeUseCase } from './count-users-by-type/count-users-by-type.usecase';
 import { GetUserGrowthUseCase } from './get-user-growth/get-user-growth.usecase';
 import { GetUsersInsightsUseCase } from './get-users-insights/get-users-insights.usecase';
 
 @Module({
-    imports: [
-        RoleModule,
-    ],
     providers: [
         JwtService,
         CreateUserUseCase,
@@ -29,8 +23,6 @@ import { GetUsersInsightsUseCase } from './get-users-insights/get-users-insights
         UpdateUserUseCase,
         FindUserByIdUseCase,
         CountUsersUseCase,
-        CountUsersByPlanUseCase,
-        CountUsersByTypeUseCase,
         GetUserGrowthUseCase,
         GetUsersInsightsUseCase
     ],
@@ -43,8 +35,6 @@ import { GetUsersInsightsUseCase } from './get-users-insights/get-users-insights
         UpdateUserUseCase,
         FindUserByIdUseCase,
         CountUsersUseCase,
-        CountUsersByPlanUseCase,
-        CountUsersByTypeUseCase,
         GetUserGrowthUseCase,
         GetUsersInsightsUseCase
     ]

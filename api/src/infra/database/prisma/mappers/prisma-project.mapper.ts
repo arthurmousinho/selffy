@@ -28,8 +28,7 @@ export class PrismaProjectMapper {
             password: raw.owner.password,
             createdAt: raw.owner.createdAt,
             updatedAt: raw.owner.updatedAt,
-            plan: raw.owner.plan,
-            type: raw.owner.type,
+            role: raw.owner.role,
         });
 
         return new Project({

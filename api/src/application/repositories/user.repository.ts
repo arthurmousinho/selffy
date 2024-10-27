@@ -1,5 +1,5 @@
 import { Pageable } from "@application/types/pageable.type";
-import { PlanType, User, UserType } from "../entities/user/user.entity";
+import { Role, User } from "../entities/user/user.entity";
 
 export abstract class UserRepository {
     abstract create(user: User): Promise<void>;
@@ -10,7 +10,6 @@ export abstract class UserRepository {
     abstract update(user: User): Promise<void>;
     abstract delete(id: string): Promise<void>;
     abstract count(): Promise<number>;
-    abstract countByPlan(plan: PlanType): Promise<number>;
-    abstract countByType(type: UserType): Promise<number>;
+    abstract countByRole(role: Role): Promise<number>;
     abstract countUsersCreatedAfter(date: Date): Promise<number>;
 }

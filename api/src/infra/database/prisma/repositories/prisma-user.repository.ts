@@ -1,6 +1,6 @@
 import { UserRepository } from "@application/repositories/user.repository";
 import { PrismaService } from "../prisma.service";
-import { PlanType, User, UserType } from "@application/entities/user/user.entity";
+import { Role, User } from "@application/entities/user/user.entity";
 import { PrismaUserMapper } from "../mappers/prisma-user.mapper";
 import { Injectable } from "@nestjs/common";
 import { Pageable } from "@application/types/pageable.type";
@@ -15,15 +15,7 @@ export class PrismaUserRepository implements UserRepository {
     public async create(user: User): Promise<void> {
         const raw = PrismaUserMapper.toPrisma(user);
         await this.prismaService.user.create({
-            data: {
-                ...raw,
-                roles: {
-                    connect: user.getRoles().map(role => ({ id: role.getId() }))
-                }
-            },
-            include: {
-                roles: true
-            }
+            data: raw
         })
     }
 
@@ -31,9 +23,6 @@ export class PrismaUserRepository implements UserRepository {
         const user = await this.prismaService.user.findUnique({
             where: {
                 email
-            },
-            include: {
-                roles: true
             }
         });
 
@@ -54,9 +43,6 @@ export class PrismaUserRepository implements UserRepository {
                         contains: params.name,
                         mode: 'insensitive'
                     }
-                },
-                include: {
-                    roles: true
                 }
             }),
             this.prismaService.user.count({
@@ -84,9 +70,6 @@ export class PrismaUserRepository implements UserRepository {
         const user = await this.prismaService.user.findUnique({
             where: {
                 id
-            },
-            include: {
-                roles: true
             }
         });
         if (!user) {
@@ -102,9 +85,6 @@ export class PrismaUserRepository implements UserRepository {
                 take: limit,
                 orderBy: {
                     createdAt: "desc"
-                },
-                include: {
-                    roles: true
                 }
             }),
             this.count()
@@ -127,12 +107,7 @@ export class PrismaUserRepository implements UserRepository {
             where: {
                 id: raw.id
             },
-            data: {
-                ...raw,
-                roles: {
-                    set: user.getRoles().map(role => ({ id: role.getId() }))
-                }
-            }
+            data: raw
         });
     }
 
@@ -148,18 +123,10 @@ export class PrismaUserRepository implements UserRepository {
         return this.prismaService.user.count();
     }
 
-    public async countByPlan(plan: PlanType): Promise<number> {
-        return this.prismaService.user.count({
+    public async countByRole(role: Role): Promise<number> {
+        return await this.prismaService.user.count({
             where: {
-                plan
-            }
-        });
-    }
-
-    public async countByType(type: UserType): Promise<number> {
-        return this.prismaService.user.count({
-            where: {
-                type
+                role
             }
         });
     }

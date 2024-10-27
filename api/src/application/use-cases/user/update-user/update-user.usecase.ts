@@ -1,48 +1,39 @@
-import { User, UserType, PlanType } from "@application/entities/user/user.entity";
+import { Role, User } from "@application/entities/user/user.entity";
 import { UserNotFoundError } from "@application/errors/user/user-not-found.error";
 import { UserRepository } from "@application/repositories/user.repository";
-import { GetRolesForUserTypeUseCase } from "@application/use-cases/role/get-roles-for-user-type/get-roles-for-user-type";
 import { Injectable } from "@nestjs/common";
 
 interface UpdateUserUseCaseRequest {
     id: string;
     name: string;
     email: string;
-    type: UserType;
-    plan: PlanType;
+    role: Role;
 }
 
 @Injectable()
 export class UpdateUserUseCase {
 
     constructor(
-        private userRepository: UserRepository,
-        private getRolesForUserTypeUseCase: GetRolesForUserTypeUseCase
+        private userRepository: UserRepository
     ) { }
 
     public async execute(request: UpdateUserUseCaseRequest): Promise<void> {
-        const { id, name, email, type, plan } = request;
+        const { id, name, email, role } = request;
         const userExists: User | null = await this.userRepository.findById(id);
 
         if (!userExists) {
             throw new UserNotFoundError();
         }
 
-        let roles = userExists.getRoles();
-        if (userExists.getType() !== type) {
-            roles = await this.getRolesForUserTypeUseCase.execute(type);
-        }
-
         const userInstance = new User({
             name,
             email,
             password: userExists.getPassword(),
-            type,
+            role,
             createdAt: userExists.getCreatedAt(),
-            updatedAt: new Date(),
-            plan,
-            roles
         }, id);
+
+        userInstance.update()
 
         await this.userRepository.update(userInstance);
     }
