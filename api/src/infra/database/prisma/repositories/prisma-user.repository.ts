@@ -107,7 +107,9 @@ export class PrismaUserRepository implements UserRepository {
             where: {
                 id: raw.id
             },
-            data: raw
+            data: {
+                ...raw
+            }
         });
     }
 

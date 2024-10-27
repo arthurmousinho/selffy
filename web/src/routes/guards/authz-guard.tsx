@@ -1,21 +1,24 @@
 import { decodeToken, hasToken, hasTokenExpired } from "@/hooks/use-token";
-import { UserType } from "@/hooks/use-user";
+import { UserRole } from "@/hooks/use-user";
 import { ReactNode } from "react";
 import { Navigate } from "react-router-dom";
 
 interface AuthzGuardProps {
-    userType: UserType;
+    roles: UserRole[];
     children: ReactNode;
+    redirectPath?: string;
 }
 
-export function AuthzGuard(props: AuthzGuardProps) {
-    if (
-        hasToken() && 
-        !hasTokenExpired() && 
-        decodeToken()?.type === props.userType
-    ) {
-        return props.children;
-    } else {
-        return <Navigate to={'/forbidden'} replace={true} />;
+export function AuthzGuard({ roles, children, redirectPath = '/forbidden' }: AuthzGuardProps) {
+    const isAuthenticated = hasToken() && !hasTokenExpired();
+    const decodedToken = decodeToken();
+    const hasPermission = decodedToken && roles.includes(decodedToken.role);
+
+    const canAccess = isAuthenticated && hasPermission;
+
+    if (canAccess) {
+        return children;
     }
+
+    return <Navigate to={redirectPath} replace />;
 }

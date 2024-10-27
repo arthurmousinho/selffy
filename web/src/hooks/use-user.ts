@@ -8,8 +8,7 @@ import { saveToken, TokenProps } from "./use-token";
 import { PageableMeta } from "@/types/pageable.type";
 import { HttpError } from "@/types/http-error.type";
 
-export type UserType = "ADMIN" | "DEFAULT";
-export type PlanType = "FREE" | "PREMIUM";
+export type UserRole = "ADMIN" | "FREE" | "PREMIUM";
 
 export interface UserProps {
     id: string;
@@ -18,9 +17,7 @@ export interface UserProps {
     password: string;
     createdAt: string;
     updatedAt: string;
-    type: UserType;
-    roles: string[],
-    plan: PlanType;
+    role: UserRole;
 }
 
 export interface GetAllUsersResponse {
@@ -59,8 +56,7 @@ interface CreateUserProps {
     name: string;
     email: string;
     password: string;
-    type: UserType;
-    plan: PlanType;
+    role: UserRole;
 }
 
 export function createUser() {
@@ -148,8 +144,7 @@ interface UpdateUserProps {
     id: string;
     name: string;
     email: string;
-    type: UserType;
-    plan: PlanType;
+    role: UserRole;
 }
 
 export function updateUser() {
@@ -159,8 +154,7 @@ export function updateUser() {
             return await axios.put(`/users/${data.id}`, {
                 email: data.email,
                 name: data.name,
-                type: data.type,
-                plan: data.plan
+                role: data.role
             });
         },
         onSuccess: () => {
@@ -182,8 +176,6 @@ export function updateUser() {
     return query;
 }
 
-
-
 interface AuthUserProps {
     email: string;
     password: string;
@@ -203,8 +195,13 @@ export function authUser() {
             const decodedToken = jwtDecode<TokenProps>(token);
             saveToken(token);
 
-            if (decodedToken.type === 'ADMIN') navigate('/admin');
-            if (decodedToken.type === 'DEFAULT') navigate('/app');
+            if (decodedToken.role === 'ADMIN') {
+                navigate('/admin')
+            }
+
+            if (decodedToken.role === 'FREE' || decodedToken.role === 'PREMIUM') {
+                navigate('/app')
+            }
         },
         onError: (error: any) => {
             const responseData: HttpError = error.response.data;

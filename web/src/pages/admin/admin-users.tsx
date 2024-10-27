@@ -2,7 +2,6 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import {
-    ChevronDown,
     Filter,
     Folder,
     Pencil,
@@ -19,12 +18,6 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table"
-import {
-    DropdownMenu,
-    DropdownMenuContent,
-    DropdownMenuItem,
-    DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
 import { Badge } from "@/components/ui/badge";
 import { DetailsDialog } from "@/components/global/details-dialog";
 import { deleteUser, getAllUsers, GetAllUsersResponse, searchUsersByName, UserProps } from "@/hooks/use-user";
@@ -112,9 +105,7 @@ export function AdminUsers() {
                         <TableRow>
                             <TableHead className="text-left">Name</TableHead>
                             <TableHead className="text-left">E-mail</TableHead>
-                            <TableHead className="text-left">Roles</TableHead>
-                            <TableHead className="text-left">Type</TableHead>
-                            <TableHead className="text-left">Plan</TableHead>
+                            <TableHead className="text-left">Role</TableHead>
                             <TableHead className="text-right">Details</TableHead>
                             <TableHead className="text-right">Edit</TableHead>
                             <TableHead className="text-right">Delete</TableHead>
@@ -126,51 +117,10 @@ export function AdminUsers() {
                                 <TableRow key={user.id}>
                                     <TableCell>{user.name}</TableCell>
                                     <TableCell>{user.email}</TableCell>
-                                    <TableCell>
-                                        <DropdownMenu>
-                                            <DropdownMenuTrigger className="flex flex-row items-center gap-2 text-muted-foreground justify-center">
-                                                {user.roles.length} Roles <ChevronDown size={20} />
-                                            </DropdownMenuTrigger>
-                                            <DropdownMenuContent>
-                                                {
-                                                    user.roles.map((role, index) => (
-                                                        <DropdownMenuItem key={index}>
-                                                            {role}
-                                                        </DropdownMenuItem>
-                                                    ))
-                                                }
-                                            </DropdownMenuContent>
-                                        </DropdownMenu>
-                                    </TableCell>
                                     <TableCell className="text-left">
-                                        {
-                                            user.type === 'ADMIN' ?
-                                                (
-                                                    <Badge variant={'default'}>
-                                                        {user.type}
-                                                    </Badge>
-                                                )
-                                                : (
-                                                    <Badge variant={'secondary'}>
-                                                        {user.type}
-                                                    </Badge>
-                                                )
-                                        }
-                                    </TableCell>
-                                    <TableCell className="text-left">
-                                        {
-                                            user.plan === 'PREMIUM' ?
-                                                (
-                                                    <Badge variant={'default'}>
-                                                        {user.plan}
-                                                    </Badge>
-                                                )
-                                                : (
-                                                    <Badge variant={'secondary'}>
-                                                        {user.plan}
-                                                    </Badge>
-                                                )
-                                        }
+                                        <Badge variant={'secondary'} className="space-x-4">
+                                            {user.role}
+                                        </Badge>
                                     </TableCell>
                                     <TableCell className="text-right">
                                         <DetailsDialog data={user}>

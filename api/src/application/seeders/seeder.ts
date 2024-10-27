@@ -16,10 +16,10 @@ export class Seeder {
 
   async seed() {
     console.log('Starting seeders...');
-    // await this.userSeeder.run();
-    // await this.projectSeeder.run();
-    // await this.costSeeder.run();
-    // await this.taskSeeder.run();
+    await this.userSeeder.run();
+    await this.projectSeeder.run();
+    await this.costSeeder.run();
+    await this.taskSeeder.run();
     console.log('Completed seeders.');
   }
 

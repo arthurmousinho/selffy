@@ -4,10 +4,6 @@ import { useQuery } from "@tanstack/react-query";
 interface GetAdminDashboardResponse {
     users: {
         total: number;
-        free: number;
-        premium: number;
-        default: number;
-        admin: number;
         monthlyGrowth: number;
     },
     projects: {

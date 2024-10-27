@@ -32,7 +32,7 @@ export class User {
         this._id = id ?? randomUUID();
         this.props = {
             ...props,
-            role: 'FREE',
+            role: props.role ?? 'FREE',
             createdAt: props.createdAt ?? new Date(),
             updatedAt: props.updatedAt ?? new Date(),
             projects: props.projects ?? []

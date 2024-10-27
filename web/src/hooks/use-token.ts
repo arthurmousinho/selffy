@@ -1,12 +1,11 @@
 import Cookies from 'js-cookie';
-import { UserType } from './use-user';
 import { jwtDecode } from 'jwt-decode';
+import { UserRole } from './use-user';
 
 export interface TokenProps {
     sub: string;
     email: string;
-    type: UserType;
-    roles: string[];
+    role: UserRole;
     iat: number;
     exp: number;
 }
@@ -43,10 +42,10 @@ export function removeToken() {
     Cookies.remove(cookieKey);
 }
 
-export function hasRoleKey(roleKey: string) {
+export function hasRole(role: UserRole) {
     const decodedToken = decodeToken();
-    const roles = decodedToken?.roles || [];
-    return roles.some(key => key === roleKey);
+    if (!decodedToken) return false;
+    return decodedToken.role === role;
 }
 
 export function hasTokenExpired() {

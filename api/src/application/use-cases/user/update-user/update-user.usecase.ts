@@ -18,23 +18,21 @@ export class UpdateUserUseCase {
     ) { }
 
     public async execute(request: UpdateUserUseCaseRequest): Promise<void> {
-        const { id, name, email, role } = request;
-        const userExists: User | null = await this.userRepository.findById(id);
+        const userExists: User | null = await this.userRepository.findById(request.id);
 
         if (!userExists) {
             throw new UserNotFoundError();
         }
 
         const userInstance = new User({
-            name,
-            email,
+            name: request.name,
+            email: request.email,
             password: userExists.getPassword(),
-            role,
+            role: request.role,
             createdAt: userExists.getCreatedAt(),
-        }, id);
-
-        userInstance.update()
-
+            updatedAt: new Date(),
+        }, request.id);
+        
         await this.userRepository.update(userInstance);
     }
 

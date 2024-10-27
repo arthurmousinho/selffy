@@ -5,9 +5,6 @@ import { AdminProjectsRevenueCard } from "@/components/admin/dashboard/project/a
 import { AdminTasksCard } from "@/components/admin/dashboard/task/admin-tasks-card";
 import { AdminCostsCard } from "@/components/admin/dashboard/cost/admin-costs.card";
 import { AdminCostsValueCard } from "@/components/admin/dashboard/cost/admin-costs-value-card";
-import { AdminUsersTypeCard } from "@/components/admin/dashboard/user/admin-users-type-card";
-import { AdminRolesUserTypesCard } from "@/components/admin/dashboard/role/admin-roles-user-types-card";
-import { AdminUsersPlanCard } from "@/components/admin/dashboard/user/admin-users-plan-card";
 import { AdminProjectsStatusCard } from "@/components/admin/dashboard/project/admin-projects-status-card";
 import { AdminTasksPrioritiesCard } from "@/components/admin/dashboard/task/admin-tasks-priorities-card";
 import { AdminTasksStatusCard } from "@/components/admin/dashboard/task/admin-tasks-status-card";
@@ -42,21 +39,21 @@ export function AdminDashboard() {
         />
       </section>
       <section className="grid grid-cols-3 gap-4">
-        <AdminUsersPlanCard
+        {/* <AdminUsersPlanCard
           premium={data?.users.premium || 0}
           free={data?.users.free || 0}
-        />
+        /> */}
         <div className="space-y-4 col-span-2">
-          <AdminUsersTypeCard
+          {/* <AdminUsersTypeCard
             total={data?.users.total || 0}
             admin={data?.users.admin || 0}
             default={data?.users.default || 0}
-          />
-          <AdminRolesUserTypesCard
+          /> */}
+          {/* <AdminRolesUserTypesCard
             total={data?.roles.total || 0}
             admin={data?.roles.admin || 0}
             default={data?.roles.default || 0}
-          />
+          /> */}
         </div>
       </section>
       <section className="grid grid-cols-3 gap-4">
