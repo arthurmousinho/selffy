@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsNumber, IsString, IsUUID } from "class-validator";
+import { IsNotEmpty, IsNumber, IsOptional, IsString, IsUUID } from "class-validator";
 
 export class CreateProjectBody {
 
@@ -22,7 +22,7 @@ export class CreateProjectBody {
     @IsString()
     color: string
 
-    @IsNotEmpty()
+    @IsOptional()
     @IsUUID()
     ownerId: string;
 

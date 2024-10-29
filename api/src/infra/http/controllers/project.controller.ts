@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Post, Put, Query, UseGuards, UsePipes, ValidationPipe } from "@nestjs/common";
+import { Body, Controller, Delete, Get, Headers, Param, Post, Put, Query, UseGuards, UsePipes, ValidationPipe } from "@nestjs/common";
 import { CreateProjectBody } from "../dtos/project/create-project.dto";
 import { CreateProjectUseCase } from "@application/use-cases/project/create-project/create-project.usecase";
 import { FindUserByIdUseCase } from "@application/use-cases/user/find-user-by-id/find-user-by-id.usecase";
@@ -12,6 +12,9 @@ import { FindProjectsByStatusParams } from "../dtos/project/find-projects-by-sta
 import { FindProjectsByStatusUseCase } from "@application/use-cases/project/find-projects-by-status/find-projects-by-status.usecase";
 import { JwtAuthGuard } from "../guards/jwt-auth.guard";
 import { ApiTags } from "@nestjs/swagger";
+import { JwtService } from "@nestjs/jwt";
+import { UnauthorizedUserError } from "@application/errors/user/unauthorized-user.error";
+import { UserFromToken } from "../decorators/user-from-token.decorator";
 
 @ApiTags('Projects')
 @UseGuards(JwtAuthGuard)
@@ -25,7 +28,10 @@ export class ProjectController {
         private deleteProjectUseCase: DeleteProjectUseCase,
         private updateProjectUseCase: UpdateProjectUseCase,
         private searchProjectByTitle: SearchProjectByTitleUseCase,
-        private findProjectsByStatus: FindProjectsByStatusUseCase
+        private findProjectsByStatus: FindProjectsByStatusUseCase,
+        
+
+        private jwtServive: JwtService
     ) { }
 
     @Get()
@@ -41,15 +47,25 @@ export class ProjectController {
     }
 
     @Post()
-    public async createProject(@Body() body: CreateProjectBody) {
-        const { title, description, revenue, icon, color, ownerId } = body
-        const owner = await this.findUserByIdUseCase.execute(ownerId);
+    public async createProject(
+        @Body() body: CreateProjectBody,
+        @UserFromToken() user: UserFromToken,
+    ) {
+        if (!body.ownerId) {
+            body.ownerId = user.id;
+        }
+
+        if (user.role !== 'ADMIN') {
+            body.ownerId = user.id;
+        }
+
+        const owner = await this.findUserByIdUseCase.execute(body.ownerId);
         await this.createProjectUseCase.execute({
-            title,
-            description,
-            revenue,
-            icon,
-            color,
+            title: body.title,
+            description: body.description,
+            revenue: body.revenue,
+            icon: body.icon,
+            color: body.color,
             owner
         })
     }

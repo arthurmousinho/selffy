@@ -29,7 +29,7 @@ export const ROUTER = createBrowserRouter([
     {
         path: '/app',
         element:
-            <AuthzGuard roles={['FREE', 'PREMIUM']}>
+            <AuthzGuard roles={['FREE', 'PREMIUM', 'ADMIN']}>
                 <BaseLayout />
             </AuthzGuard>,
         children: [

@@ -21,15 +21,16 @@ import { z } from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { Textarea } from "@/components/ui/textarea";
-import { 
-    Select, 
-    SelectContent, 
-    SelectItem, 
-    SelectTrigger, 
-    SelectValue 
+import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue
 } from "@/components/ui/select";
 import { getAllUsers, UserProps } from "@/hooks/use-user";
 import { createProject } from "@/hooks/use-project";
+import { decodeToken } from "@/hooks/use-token";
 
 const colorOptions = [
     { label: "Red", class: "bg-red-300", hex: "#fca5a5" },
@@ -45,13 +46,14 @@ const colorOptions = [
 
 interface NewProjectDialogProps {
     children: ReactNode;
+    adminMode: boolean;
 }
 
 export function NewProjectDialog(props: NewProjectDialogProps) {
 
     const [selectedColor, setSelectedColor] = useState<string | null>(null);
 
-    const { data: getAllUsersData } = getAllUsers(1, 10);
+    const { data: getAllUsersData } = props.adminMode ? getAllUsers(1, 10) : { data: null };
     const { mutate: createProjectFn } = createProject();
 
     const formSchema = z.object({
@@ -80,9 +82,14 @@ export function NewProjectDialog(props: NewProjectDialogProps) {
             .min(1, { message: "Owner is required" }),
     });
 
-    const form = useForm<z.infer<typeof formSchema>>({
+    let form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
     });
+
+    if (!props.adminMode) {
+        const userId = decodeToken()?.sub;
+        form.setValue("ownerId", userId ?? '');
+    }
 
     function onSubmit(values: z.infer<typeof formSchema>) {
         createProjectFn({
@@ -102,7 +109,7 @@ export function NewProjectDialog(props: NewProjectDialogProps) {
             <DialogTrigger>
                 {props.children}
             </DialogTrigger>
-            <DialogContent className="overflow-y-scroll max-h-[90vh]">
+            <DialogContent className="overflow-y-scroll max-h-[90vh] max-w-[50vw]">
                 <DialogHeader className="space-y-4">
                     <DialogTitle>New Project</DialogTitle>
                     <DialogDescription>
@@ -204,38 +211,42 @@ export function NewProjectDialog(props: NewProjectDialogProps) {
                                         </FormItem>
                                     )}
                                 />
-                                <FormField
-                                    control={form.control}
-                                    name="ownerId"
-                                    render={({ field }) => (
-                                        <FormItem>
-                                            <FormLabel>Owner</FormLabel>
-                                            <FormControl>
-                                                <Select
-                                                    onValueChange={(value) => field.onChange(value)}
-                                                >
-                                                    <SelectTrigger>
-                                                        <SelectValue placeholder="Select the owner" />
-                                                    </SelectTrigger>
-                                                    <SelectContent>
-                                                        {
-                                                            getAllUsersData?.users?.map((user: UserProps) => (
-                                                                <SelectItem
-                                                                    key={user.id}
-                                                                    value={user.id}
-                                                                    className="cursor-pointer"
-                                                                >
-                                                                    {user.name}
-                                                                </SelectItem>
-                                                            ))
-                                                        }
-                                                    </SelectContent>
-                                                </Select>
-                                            </FormControl>
-                                            <FormMessage />
-                                        </FormItem>
-                                    )}
-                                />
+                                {
+                                    props.adminMode && (
+                                        <FormField
+                                            control={form.control}
+                                            name="ownerId"
+                                            render={({ field }) => (
+                                                <FormItem>
+                                                    <FormLabel>Owner</FormLabel>
+                                                    <FormControl>
+                                                        <Select
+                                                            onValueChange={(value) => field.onChange(value)}
+                                                        >
+                                                            <SelectTrigger>
+                                                                <SelectValue placeholder="Select the owner" />
+                                                            </SelectTrigger>
+                                                            <SelectContent>
+                                                                {
+                                                                    getAllUsersData?.users?.map((user: UserProps) => (
+                                                                        <SelectItem
+                                                                            key={user.id}
+                                                                            value={user.id}
+                                                                            className="cursor-pointer"
+                                                                        >
+                                                                            {user.name}
+                                                                        </SelectItem>
+                                                                    ))
+                                                                }
+                                                            </SelectContent>
+                                                        </Select>
+                                                    </FormControl>
+                                                    <FormMessage />
+                                                </FormItem>
+                                            )}
+                                        />
+                                    )
+                                }
                                 <Button className="w-full" type="submit">
                                     Save
                                 </Button>

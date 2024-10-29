@@ -21,6 +21,11 @@ export class CreateProjectUseCase {
 
     public async execute(request: CraeteProjectRequest) {
         const { title, description, revenue, icon, color, owner } = request;
+
+        if (owner.getRole() !== 'ADMIN') {
+            throw new Error('Only admins can create projects');
+        }
+
         const newProject = new Project({
             title,
             description,

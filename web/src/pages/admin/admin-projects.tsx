@@ -82,7 +82,7 @@ export function AdminProjects() {
                         <RefreshCcw size={20} />
                         Refresh
                     </Button>
-                    <NewProjectDialog>
+                    <NewProjectDialog adminMode={true}>
                         <Button className="flex items-center gap-2">
                             <Plus size={20} />
                             New Project
