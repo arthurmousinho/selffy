@@ -156,6 +156,38 @@ export class PrismaProjectRepository implements ProjectRepository {
         return projects.map(PrismaProjectMapper.toDomain);
     }
 
+    public async findByOwnerId(params: { ownerId: string; page: number; limit: number; }): Promise<Pageable<Project>> {
+        const [ projects, total ] = await Promise.all([
+            this.prismaService.project.findMany({
+                where: {
+                    ownerId: params.ownerId
+                },
+                skip: (params.page - 1) * params.limit,
+                take: params.limit,
+                orderBy: {
+                    createdAt: 'desc'
+                },
+                include: {
+                    owner: true
+                }
+            }),
+            this.prismaService.project.count({
+                where: {
+                    ownerId: params.ownerId
+                }
+            })
+        ]);
+        return {
+            data: projects.map(PrismaProjectMapper.toDomain),
+            meta: {
+                total,
+                page: params.page,
+                limit: params.limit,
+                totalPages: Math.ceil(total / params.limit)
+            }
+        }
+    }
+
     public async sumRevenues() {
         const sum = await this.prismaService.project.aggregate({
             _sum: {
