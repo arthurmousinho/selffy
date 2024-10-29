@@ -11,7 +11,7 @@ async function bootstrap() {
   await seeder.seed();
 
   const config = new DocumentBuilder()
-    .setTitle('Selffy API')
+    .setTitle('Selffy API') 
     .setDescription('Selffy REST API documentation')
     .setVersion('1.0')
     .build();
