@@ -36,7 +36,7 @@ export class InMemoryUserRepository implements UserRepository {
         const user = this.users.find(
             (user) => user.getId() === id
         );
-        return user;
+        return user ?? null;
     }
 
     public async findAll(page: number, limit: number) {

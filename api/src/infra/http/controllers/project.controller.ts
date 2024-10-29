@@ -15,6 +15,8 @@ import { ApiTags } from "@nestjs/swagger";
 import { UserFromToken } from "../decorators/user-from-token.decorator";
 import { FindProjectsByOwnerIdUseCase } from "@application/use-cases/project/find-projects-by-owner-id/find-projects-by-owner-id.usecase";
 import { RoleGuard } from "../guards/role.guard";
+import { FindProjectByIdUseCase } from "@application/use-cases/project/find-project-by-id/find-project-by-id.usecase";
+import { UnauthorizedUserError } from "@application/errors/user/unauthorized-user.error";
 
 @ApiTags('Projects')
 @UseGuards(JwtAuthGuard)
@@ -30,6 +32,7 @@ export class ProjectController {
         private updateProjectUseCase: UpdateProjectUseCase,
         private searchProjectByTitle: SearchProjectByTitleUseCase,
         private findProjectsByStatus: FindProjectsByStatusUseCase,
+        private findProjectById: FindProjectByIdUseCase,
     ) { }
 
     @Get()
@@ -87,7 +90,21 @@ export class ProjectController {
     }
 
     @Delete(':id')
-    public async delete(@Param('id') id: string) {
+    public async delete(
+        @Param('id') id: string,
+        @UserFromToken() user: UserFromToken,
+    ) {
+        const owner = await this.findUserByIdUseCase.execute(user.id);
+        if (owner.getRole() === 'ADMIN') {
+            await this.deleteProjectUseCase.execute(id);
+            return;
+        }
+        
+        const project = await this.findProjectById.execute(id);
+        if (project.getOwner().getId() !== owner.getId()) {
+            throw new UnauthorizedUserError();
+        }
+
         await this.deleteProjectUseCase.execute(id);
     }
 
