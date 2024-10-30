@@ -35,7 +35,7 @@ export class TaskController {
         };
     }
 
-    @Get(':title')
+    @Get('/title/:title')
     public async searchByTitle(
         @Param('title') title: string,
         @Query('page') page = 1,

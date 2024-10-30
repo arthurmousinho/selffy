@@ -15,8 +15,6 @@ import { ApiTags } from "@nestjs/swagger";
 import { UserFromToken } from "../decorators/user-from-token.decorator";
 import { FindProjectsByOwnerIdUseCase } from "@application/use-cases/project/find-projects-by-owner-id/find-projects-by-owner-id.usecase";
 import { RoleGuard } from "../guards/role.guard";
-import { FindProjectByIdUseCase } from "@application/use-cases/project/find-project-by-id/find-project-by-id.usecase";
-import { UnauthorizedUserError } from "@application/errors/user/unauthorized-user.error";
 
 @ApiTags('Projects')
 @UseGuards(JwtAuthGuard)
@@ -25,14 +23,12 @@ export class ProjectController {
 
     constructor(
         private createProjectUseCase: CreateProjectUseCase,
-        private findUserByIdUseCase: FindUserByIdUseCase,
         private findProjectsByOwnerIdUseCase: FindProjectsByOwnerIdUseCase,
         private findAllProjectsUseCase: FindAllProjectsUseCase,
         private deleteProjectUseCase: DeleteProjectUseCase,
         private updateProjectUseCase: UpdateProjectUseCase,
         private searchProjectByTitle: SearchProjectByTitleUseCase,
         private findProjectsByStatus: FindProjectsByStatusUseCase,
-        private findProjectById: FindProjectByIdUseCase,
     ) { }
 
     @Get()
@@ -100,7 +96,7 @@ export class ProjectController {
         await this.updateProjectUseCase.execute(body);
     }
 
-    @Get(':title')
+    @Get('/title/:title')
     public async searchByTitle(
         @Param('title') title: string,
         @Query('page') page = 1,

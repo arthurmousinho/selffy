@@ -58,7 +58,7 @@ export class CostController {
         await this.deleteCostUseCase.execute(id);
     }
 
-    @Get(':title')
+    @Get('/title/:title')
     public async searchByTitle(
         @Param('title') title: string,
         @Query('page') page = 1,

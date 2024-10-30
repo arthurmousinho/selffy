@@ -4,7 +4,7 @@ import { ProjectRepository } from "@application/repositories/project.repository"
 import { FindUserByIdUseCase } from "@application/use-cases/user/find-user-by-id/find-user-by-id.usecase";
 import { Injectable } from "@nestjs/common";
 
-interface CraeteProjectRequest {
+interface CreateProjectRequest {
     requestUserId: string;
     ownerId: string;
     title: string;
@@ -22,7 +22,7 @@ export class CreateProjectUseCase {
         private findUserByIdUseCase: FindUserByIdUseCase,
     ) { }
 
-    public async execute(request: CraeteProjectRequest) {
+    public async execute(request: CreateProjectRequest) {
         const [owner, requestUser] = await Promise.all([
             this.findUserByIdUseCase.execute(request.ownerId),
             this.findUserByIdUseCase.execute(request.requestUserId)

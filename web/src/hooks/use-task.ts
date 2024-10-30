@@ -128,7 +128,7 @@ export function searchTasksByTitle(props: { title?: string, page?: number, limit
     const query = useQuery({
         queryKey: ['tasks', title],
         queryFn: async () => {
-            const response = await axios.get(`/tasks/${title}?page=${page}&limit=${limit}`);
+            const response = await axios.get(`/tasks/title/${title}?page=${page}&limit=${limit}`);
             return response.data as GetAllTasksResponse;
         },
         enabled: !!title && !!page && !!limit,

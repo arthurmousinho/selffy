@@ -117,7 +117,7 @@ export function searchUsersByName(params: { name?: string, page?: number, limit?
         queryKey: ['users', name, page, limit],
         queryFn: async () => {
             try {
-                const response = await axios.get(`/users/${name}`, {
+                const response = await axios.get(`/users/name/${name}`, {
                     params: {
                         name,
                         page,

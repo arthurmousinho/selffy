@@ -39,7 +39,7 @@ export class UserController {
         };
     }
 
-    @Get(':name')
+    @Get('/name/:name')
     @UseGuards(JwtAuthGuard, new RoleGuard('ADMIN'))
     public async searchByName(
         @Param('name') name: string,

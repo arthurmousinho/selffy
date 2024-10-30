@@ -122,7 +122,7 @@ export function searchCostsByTitle(props: { title?: string, page?: number, limit
     const query = useQuery({
         queryKey: ['costs', title],
         queryFn: async () => {
-            const response = await axios.get(`/costs/${title}?page=${page}&limit=${limit}`);
+            const response = await axios.get(`/costs/title/${title}?page=${page}&limit=${limit}`);
             return response.data as SearchCostsByTitleResponse;
         },
         enabled: !!title && !!page && !!limit,

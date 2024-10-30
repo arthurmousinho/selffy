@@ -132,7 +132,7 @@ export function searchProjectsByTitle(props: { title?: string, page?: number, li
     const query = useQuery({
         queryKey: ['projects', title],
         queryFn: async () => {
-            const response = await axios.get(`/projects/${title}?page=${page}&limit=${limit}`);
+            const response = await axios.get(`/projects/title/${title}?page=${page}&limit=${limit}`);
             return response.data as SearchProjectByTitleResponse;
         },
         enabled: !!title && !!page && !!limit,

@@ -13,8 +13,12 @@ import { FindProjectsByStatusUseCase } from './find-projects-by-status/find-proj
 import { GetProjectsInsightsUseCase } from './get-projects-insights/get-projects-insights.usecase';
 import { GetProjectsGrowthUseCase } from './get-projects-growth/get-projects-growth.usecase';
 import { FindProjectsByOwnerIdUseCase } from './find-projects-by-owner-id/find-projects-by-owner-id.usecase';
+import { UserModule } from '../user/user.module';
 
 @Module({
+    imports: [
+        UserModule
+    ],
     providers: [
         CreateProjectUseCase,
         FindAllProjectsUseCase,
