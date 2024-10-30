@@ -92,20 +92,12 @@ export class ProjectController {
     @Delete(':id')
     public async delete(
         @Param('id') id: string,
-        @UserFromToken() user: UserFromToken,
+        @UserFromToken() userFromToken: UserFromToken,
     ) {
-        const owner = await this.findUserByIdUseCase.execute(user.id);
-        if (owner.getRole() === 'ADMIN') {
-            await this.deleteProjectUseCase.execute(id);
-            return;
-        }
-        
-        const project = await this.findProjectById.execute(id);
-        if (project.getOwner().getId() !== owner.getId()) {
-            throw new UnauthorizedUserError();
-        }
-
-        await this.deleteProjectUseCase.execute(id);
+        await this.deleteProjectUseCase.execute({
+            projectId: id,
+            requestUserId: userFromToken.id
+        });
     }
 
     @Put()
