@@ -1,10 +1,12 @@
 import { Project } from "@application/entities/project/project.entity";
-import { User } from "@application/entities/user/user.entity";
+import { UnauthorizedUserError } from "@application/errors/user/unauthorized-user.error";
 import { ProjectRepository } from "@application/repositories/project.repository";
+import { FindUserByIdUseCase } from "@application/use-cases/user/find-user-by-id/find-user-by-id.usecase";
 import { Injectable } from "@nestjs/common";
 
 interface CraeteProjectRequest {
-    owner: User;
+    requestUserId: string;
+    ownerId: string;
     title: string;
     description: string;
     revenue: number;
@@ -14,21 +16,36 @@ interface CraeteProjectRequest {
 
 @Injectable()
 export class CreateProjectUseCase {
-    
+
     constructor(
-        private projectRepository: ProjectRepository
-    ) {}
+        private projectRepository: ProjectRepository,
+        private findUserByIdUseCase: FindUserByIdUseCase,
+    ) { }
 
     public async execute(request: CraeteProjectRequest) {
-        const { title, description, revenue, icon, color, owner } = request;
+        const [owner, requestUser] = await Promise.all([
+            this.findUserByIdUseCase.execute(request.ownerId),
+            this.findUserByIdUseCase.execute(request.requestUserId)
+        ]);
+
         const newProject = new Project({
-            title,
-            description,
-            revenue,
-            owner,
-            color,
-            icon
+            title: request.title,
+            description: request.description,
+            revenue: request.revenue,
+            owner: owner,
+            color: request.color,
+            icon: request.icon,
         })
+
+        if (requestUser.getRole() === 'ADMIN') {
+            await this.projectRepository.create(newProject);
+            return;
+        }
+
+        if (requestUser.getId() !== request.ownerId) {
+            throw new UnauthorizedUserError();
+        }
+
         await this.projectRepository.create(newProject);
         return newProject;
     }

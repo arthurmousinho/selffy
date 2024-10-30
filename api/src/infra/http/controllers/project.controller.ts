@@ -68,25 +68,20 @@ export class ProjectController {
     @Post()
     public async createProject(
         @Body() body: CreateProjectBody,
-        @UserFromToken() user: UserFromToken,
+        @UserFromToken() userFromToken: UserFromToken,
     ) {
         if (!body.ownerId) {
-            body.ownerId = user.id;
+            body.ownerId = userFromToken.id;
         }
-
-        if (user.role !== 'ADMIN') {
-            body.ownerId = user.id;
-        }
-
-        const owner = await this.findUserByIdUseCase.execute(body.ownerId);
         await this.createProjectUseCase.execute({
             title: body.title,
             description: body.description,
             revenue: body.revenue,
             icon: body.icon,
             color: body.color,
-            owner
-        })
+            ownerId: body.ownerId,
+            requestUserId: userFromToken.id
+        });
     }
 
     @Delete(':id')
