@@ -84,6 +84,12 @@ export class InMemoryProjectRepository implements ProjectRepository {
         ).length;
     }
 
+    public async countByOwnerId(ownerId: string): Promise<number> {
+        return this.projects.filter(
+            (project) => project.getOwner().getId() === ownerId
+        ).length;
+    }
+
     public async findByOwnerId(params: { ownerId: string, page: number, limit: number }): Promise<Pageable<Project>> {
         const projects = this.projects.filter(
             (project) => project.getOwner().getId() === params.ownerId

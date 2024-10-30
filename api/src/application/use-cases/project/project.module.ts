@@ -14,6 +14,7 @@ import { GetProjectsInsightsUseCase } from './get-projects-insights/get-projects
 import { GetProjectsGrowthUseCase } from './get-projects-growth/get-projects-growth.usecase';
 import { FindProjectsByOwnerIdUseCase } from './find-projects-by-owner-id/find-projects-by-owner-id.usecase';
 import { UserModule } from '../user/user.module';
+import { CountProjectsByOwnerIdUseCase } from './count-projects-by-owner-id/count-projects-by-owner-id.usecase';
 
 @Module({
     imports: [
@@ -32,7 +33,8 @@ import { UserModule } from '../user/user.module';
         FindProjectsByStatusUseCase,
         GetProjectsInsightsUseCase,
         GetProjectsGrowthUseCase,
-        FindProjectsByOwnerIdUseCase
+        FindProjectsByOwnerIdUseCase,
+        CountProjectsByOwnerIdUseCase
     ],
     exports: [
         CreateProjectUseCase,
@@ -47,7 +49,8 @@ import { UserModule } from '../user/user.module';
         FindProjectsByStatusUseCase,
         GetProjectsInsightsUseCase,
         GetProjectsGrowthUseCase,
-        FindProjectsByOwnerIdUseCase
+        FindProjectsByOwnerIdUseCase,
+        CountProjectsByOwnerIdUseCase
     ]
 })
 

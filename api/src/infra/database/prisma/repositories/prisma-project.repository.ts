@@ -144,6 +144,14 @@ export class PrismaProjectRepository implements ProjectRepository {
         });
     }
 
+    public async countByOwnerId(ownerId: string): Promise<number> {
+        return await this.prismaService.project.count({
+            where: {
+                ownerId
+            }
+        });
+    }
+
     public async findByStatus(status: ProjectStatus): Promise<Project[]> {
         const projects = await this.prismaService.project.findMany({
             where: {
