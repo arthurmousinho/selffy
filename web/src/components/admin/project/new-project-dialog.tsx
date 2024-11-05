@@ -106,7 +106,7 @@ export function NewProjectDialog(props: NewProjectDialogProps) {
 
     return (
         <Dialog>
-            <DialogTrigger>
+            <DialogTrigger asChild>
                 {props.children}
             </DialogTrigger>
             <DialogContent className="overflow-y-scroll max-h-[90vh] max-w-[50vw]">
