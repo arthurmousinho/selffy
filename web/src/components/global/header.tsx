@@ -19,7 +19,9 @@ export function Header() {
     function getTitle() {
         const pathname = location.pathname;
         const firstRoute = pathname.split('/');
-        const mainRoute = `/${firstRoute[1]}`;
+        const mainRoute = `/app/${firstRoute[2]}`;
+
+        console.log(mainRoute)
       
         const titles: { [key: string]: string } = {
           '/app/dashboard': 'Dashboard',
