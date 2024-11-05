@@ -3,18 +3,12 @@ import { ProjectCard } from "@/components/projects/project-card";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
+import { getUserProjects, ProjectProps } from "@/hooks/use-project";
 import { Folder, Plus } from "lucide-react";
-
 
 export function Projects() {
 
-    const projects = [
-        { title: "MyChaty", icon: "💬", color: "#86efac" },
-        { title: "ExamChecker", icon: "💊", color: "#f9a8d4" },
-        { title: "DevBooks", icon: "📚", color: "#93c5fd" },
-        { title: "Better", icon: "🕹️", color: "#facc15" },
-        { title: "Maple", icon: "✅", color: "#a5b4fc" },
-    ];
+    const query = getUserProjects(1,10)
 
     return (
         <main className="grid grid-cols-1 gap-4">
@@ -46,15 +40,16 @@ export function Projects() {
                 </CardContent>
             </Card>
             {
-                projects.map((project, index) => (
+                query?.data?.projects.map((project: ProjectProps, index: number) => (
                     <ProjectCard
                         key={index}
                         title={project.title}
                         icon={project.icon}
                         color={project.color}
+                        revenue={project.revenue}
                     />
                 ))
-            }
+            } 
         </main>
     )
 }

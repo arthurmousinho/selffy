@@ -15,12 +15,14 @@ import {
 import { CheckCircle, DollarSign, Folder, MoreVertical, Pencil, Pin, Trash } from "lucide-react";
 import { Link } from "react-router-dom";
 import { Button } from "../ui/button";
+import { formatCurrency } from "@/utils/format-currency";
 
 
 interface ProjectCardProps {
     title: string;
     icon: string;
     color: string;
+    revenue: number; 
 }
 
 export function ProjectCard(props: ProjectCardProps) {
@@ -154,7 +156,9 @@ export function ProjectCard(props: ProjectCardProps) {
                                 <h2 className="font-semibold">Revenue</h2>
                                 <DollarSign size={20} className="text-primary" />
                             </header>
-                            <span className="font-bold text-2xl">R$ 12.500,00</span>
+                            <span className="font-bold text-2xl">
+                                {formatCurrency(props.revenue)}
+                            </span>
                             <span className="text-sm text-muted-foreground">
                                 +R$ 3.200,00 since last month
                             </span>

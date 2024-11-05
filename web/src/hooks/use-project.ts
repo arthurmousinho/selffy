@@ -3,6 +3,7 @@ import { useToast } from "./use-toast";
 import { axios } from "@/lib/axios";
 import { queryClient } from "@/main";
 import { PageableMeta } from "@/types/pageable.type";
+import { decodeToken } from "./use-token";
 
 
 export interface ProjectProps {
@@ -29,6 +30,23 @@ export function getAllProjects(page: number, limit: number) {
         queryKey: ['projects', page, limit],
         queryFn: async () => {
             const response = await axios.get(`/projects?page=${page}&limit=${limit}`);
+            return response.data as GetAllProjectsResponse;
+        }
+    })
+
+    return query;
+}
+
+export function getUserProjects(page: number, limit: number) {
+    const ownerId = decodeToken()?.sub;
+    if (!ownerId) {
+        return;
+    }
+
+    const query = useQuery({
+        queryKey: ['projects', ownerId, page, limit],
+        queryFn: async () => {
+            const response = await axios.get(`/projects/owner/${ownerId}?page=${page}&limit=${limit}`);
             return response.data as GetAllProjectsResponse;
         }
     })
