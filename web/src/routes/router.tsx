@@ -20,6 +20,8 @@ import { AdminCosts } from "@/pages/admin/admin-costs";
 import { AuthzGuard } from "./guards/authz-guard";
 import { AdminSettings } from "@/pages/admin/admin-settings";
 import { Home } from "@/pages/home/home";
+import { ProjectTasks } from "@/pages/projects/project-tasks";
+import { ProjectCosts } from "@/pages/projects/project-costs";
 
 export const ROUTER = createBrowserRouter([
     {
@@ -38,6 +40,8 @@ export const ROUTER = createBrowserRouter([
             { path: 'projects', element: <Projects /> },
             { path: 'priorities', element: <Priorities /> },
             { path: 'projects/:id', element: <ProjectDashboard /> },
+            { path: 'projects/:id/tasks', element: <ProjectTasks /> },
+            { path: 'projects/:id/costs', element: <ProjectCosts /> },
             { path: 'notifications', element: <Notifications /> },
             { path: 'settings', element: <Settings /> },
         ]

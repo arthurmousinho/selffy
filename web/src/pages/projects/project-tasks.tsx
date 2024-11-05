@@ -4,13 +4,6 @@ import {
     TableCell,
     TableRow,
 } from "@/components/ui/table"
-import { TaskBadge } from "../tasks/task-badge";
-import {
-    DropdownMenu,
-    DropdownMenuContent,
-    DropdownMenuItem,
-    DropdownMenuTrigger
-} from "../ui/dropdown-menu";
 import {
     Check,
     ChevronLeft,
@@ -24,9 +17,6 @@ import {
     Plus,
     Trash
 } from "lucide-react"
-import { Button } from "../ui/button";
-import { Input } from "../ui/input";
-import { Card, CardContent, CardFooter, CardHeader } from "../ui/card";
 import {
     Select,
     SelectContent,
@@ -36,8 +26,14 @@ import {
 } from "@/components/ui/select"
 import { Label } from "@/components/ui/label";
 import { getMockTasks } from "@/mocks/get-tasks";
+import { Card, CardHeader, CardFooter, CardContent } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import { TaskBadge } from "@/components/tasks/task-badge";
 
-export function ProjectTasksTable() {
+
+export function ProjectTasks() {
     return (
         <Card>
             <CardHeader className="flex flex-row items-center justify-between border-b">
@@ -48,7 +44,7 @@ export function ProjectTasksTable() {
                         </span>
                     </div>
                     <h2 className="font-semibold text-xl">
-                        Tasks
+                        Project Tasks
                     </h2>
                 </div>
                 <div className="flex items-center gap-2">

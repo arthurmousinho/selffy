@@ -1,10 +1,9 @@
-import { ProjectCostsTable } from "@/components/projects/project-costs-table";
-import { ProjectTasksTable } from "@/components/projects/project-tasks-table";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger, } from "@/components/ui/tooltip";
-import { CheckCircle, DollarSign, HandCoinsIcon, Pen, Pin, Trash } from "lucide-react";
+import { ArrowUpRight, CheckCircle, DollarSign, HandCoinsIcon, Pen, Pin, Trash } from "lucide-react";
+import { Link } from "react-router-dom";
 import { CartesianGrid, XAxis, Area, AreaChart, Bar, BarChart, Rectangle } from "recharts";
 
 export function ProjectDashboard() {
@@ -106,16 +105,24 @@ export function ProjectDashboard() {
                     <CardHeader className="flex flex-col items-start gap-2 justify-start">
                         <header className="flex flex-row items-center justify-between w-full">
                             <h2 className="font-semibold">
-                                Completed Tasks
+                                Tasks
                             </h2>
                             <CheckCircle size={20} className="text-primary" />
                         </header>
                         <span className="font-bold text-2xl">
-                            97 Tasks
+                            97/120 Tasks
                         </span>
-                        <span className="text-sm text-muted-foreground">
-                            +16 since last month
-                        </span>
+                        <footer className="w-full flex flex-row items-center justify-between">
+                            <span className="text-sm text-muted-foreground">
+                                +16 since last month
+                            </span>
+                            <Link to={'tasks'}>
+                                <Button variant={'link'} className="flex items-center gap-1 p-0 m-0 w-auto h-auto">
+                                    See all
+                                    <ArrowUpRight size={20} />
+                                </Button>
+                            </Link>
+                        </footer>
                     </CardHeader>
                 </Card>
                 <Card>
@@ -137,9 +144,17 @@ export function ProjectDashboard() {
                             <HandCoinsIcon size={20} className="text-primary" />
                         </header>
                         <span className="font-bold text-2xl">R$ 2.500,00</span>
-                        <span className="text-sm text-muted-foreground">
-                            Total profit: R$ 9.800,00
-                        </span>
+                        <footer className="w-full flex flex-row items-center justify-between">
+                            <span className="text-sm text-muted-foreground">
+                                Total Profit: R$ 9.800,00
+                            </span>
+                            <Link to={'costs'}>
+                                <Button variant={'link'} className="flex items-center gap-1 p-0 m-0 w-auto h-auto">
+                                    See all
+                                    <ArrowUpRight size={20} />
+                                </Button>
+                            </Link>
+                        </footer>
                     </CardHeader>
                 </Card>
             </section>
@@ -230,8 +245,6 @@ export function ProjectDashboard() {
                     </CardContent>
                 </Card>
             </section>
-            <ProjectTasksTable />
-            <ProjectCostsTable />
         </main>
     )
 }
