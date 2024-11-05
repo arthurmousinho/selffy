@@ -51,7 +51,11 @@ export class CreateTaskUseCase {
     }
 
     private async checkProjectById(id: string) {
-        const project = await this.findProjectByIdUseCase.execute(id);
+    
+        const project = await this.findProjectByIdUseCase.execute({
+            requestUserId: '1',
+            projectId: id
+        });
 
         if (project.getStatus() === 'FINISHED') {
             throw new ProjectAlreadyFinishedError();

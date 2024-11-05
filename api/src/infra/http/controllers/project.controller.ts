@@ -1,7 +1,6 @@
 import { Body, Controller, Delete, Get, Param, Post, Put, Query, UseGuards, UsePipes, ValidationPipe } from "@nestjs/common";
 import { CreateProjectBody } from "../dtos/project/create-project.dto";
 import { CreateProjectUseCase } from "@application/use-cases/project/create-project/create-project.usecase";
-import { FindUserByIdUseCase } from "@application/use-cases/user/find-user-by-id/find-user-by-id.usecase";
 import { FindAllProjectsUseCase } from "@application/use-cases/project/find-all-projects/find-all-projects.usecase";
 import { ProjectViewModel } from "../view-models/project.viewmodel";
 import { DeleteProjectUseCase } from "@application/use-cases/project/delete-project/delete-project.usecase";
@@ -15,6 +14,7 @@ import { ApiTags } from "@nestjs/swagger";
 import { UserFromToken } from "../decorators/user-from-token.decorator";
 import { FindProjectsByOwnerIdUseCase } from "@application/use-cases/project/find-projects-by-owner-id/find-projects-by-owner-id.usecase";
 import { RoleGuard } from "../guards/role.guard";
+import { FindProjectByIdUseCase } from "@application/use-cases/project/find-project-by-id/find-project-by-id.usecase";
 
 @ApiTags('Projects')
 @UseGuards(JwtAuthGuard)
@@ -27,8 +27,9 @@ export class ProjectController {
         private findAllProjectsUseCase: FindAllProjectsUseCase,
         private deleteProjectUseCase: DeleteProjectUseCase,
         private updateProjectUseCase: UpdateProjectUseCase,
-        private searchProjectByTitle: SearchProjectByTitleUseCase,
-        private findProjectsByStatus: FindProjectsByStatusUseCase,
+        private searchProjectByTitleUseCase: SearchProjectByTitleUseCase,
+        private findProjectsByStatusUseCase: FindProjectsByStatusUseCase,
+        private findProjectByIdUseCase: FindProjectByIdUseCase
     ) { }
 
     @Get()
@@ -42,6 +43,23 @@ export class ProjectController {
             projects: pageableProjects.data.map(ProjectViewModel.toHTTP),
             meta: pageableProjects.meta
         };
+    }
+
+    @Get(':id')
+    public async getProjectById(
+        @Param('id') id: string,
+        @UserFromToken() userFromToken: UserFromToken,
+    ) {
+        const project = await this.findProjectByIdUseCase.execute({
+            requestUserId: userFromToken.id,
+            projectId: id
+        });
+
+        if (project) {
+            return {
+                project: ProjectViewModel.toHTTP(project)
+            };
+        }
     }
 
     @Get('/owner/:id')
@@ -102,7 +120,7 @@ export class ProjectController {
         @Query('page') page = 1,
         @Query('limit') limit = 10
     ) {
-        const pageableProjectsFound = await this.searchProjectByTitle.execute({
+        const pageableProjectsFound = await this.searchProjectByTitleUseCase.execute({
             title,
             page: Number(page),
             limit: Number(limit)
@@ -117,7 +135,7 @@ export class ProjectController {
     @UsePipes(new ValidationPipe({ transform: true }))
     public async findProjectByStatus(@Param() params: FindProjectsByStatusParams) {
         const { status } = params;
-        const projectsFound = await this.findProjectsByStatus.execute(status);
+        const projectsFound = await this.findProjectsByStatusUseCase.execute(status);
         return { projects: projectsFound.map(ProjectViewModel.toHTTP) };
     }
 

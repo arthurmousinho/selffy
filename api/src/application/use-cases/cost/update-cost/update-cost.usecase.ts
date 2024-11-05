@@ -26,7 +26,10 @@ export class UpdateCostUseCase {
             throw new CostNotFoundError();
         }
 
-        const project = await this.findProjectByIdUseCase.execute(projectId);
+        const project = await this.findProjectByIdUseCase.execute({
+            requestUserId: cost.getProject().getOwner().getId(),
+            projectId
+        });
 
         cost.setTitle(title);
         cost.setValue(value);

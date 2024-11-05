@@ -40,7 +40,10 @@ export class CostController {
     @Post()
     public async createCost(@Body() body: CreateCostBody) {
         const { title, value, projectId } = body;
-        const project = await this.findProjectByIdUseCase.execute(projectId);
+        const project = await this.findProjectByIdUseCase.execute({
+            projectId,
+            requestUserId: 'any-user-id'
+        });
         await this.createCostUseCase.execute({
             title,
             value,
