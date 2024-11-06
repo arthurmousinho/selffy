@@ -2,6 +2,7 @@ import { randomUUID } from "crypto";
 import { Replace } from "src/utils/replace";
 import { User } from "../user/user.entity";
 import { Task } from "../task/task.entity";
+import { Cost } from "../cost/cost.entity";
 
 export type ProjectStatus = 'IN_PROGRESS' | 'FINISHED';
 
@@ -16,6 +17,7 @@ export interface ProjectProps {
     tasks: Task[];
     status: ProjectStatus;
     owner: User;
+    costs: Cost[]
 }
 
 export class Project {
@@ -24,11 +26,12 @@ export class Project {
     private props: ProjectProps;
 
     constructor(
-        props: Replace<ProjectProps, { 
-            createdAt?: Date, 
-            status?: ProjectStatus, 
+        props: Replace<ProjectProps, {
+            createdAt?: Date,
+            status?: ProjectStatus,
             updatedAt?: Date,
-            tasks?: Task[]
+            tasks?: Task[],
+            costs?: Cost[]
         }>,
         id?: string,
     ) {
@@ -38,7 +41,8 @@ export class Project {
             status: props.status ?? 'IN_PROGRESS',
             createdAt: props.createdAt ?? new Date(),
             updatedAt: props.updatedAt ?? new Date(),
-            tasks: []
+            tasks: [],
+            costs: []
         }
     }
 
@@ -109,6 +113,19 @@ export class Project {
     public removeTask(task: Task) {
         const index = this.props.tasks.indexOf(task);
         this.props.tasks.splice(index, 1);
+    }
+
+    public getCosts() {
+        return this.props.costs;
+    }
+
+    public removeCost(cost: Cost) {
+        const index = this.props.costs.indexOf(cost);
+        this.props.costs.splice(index, 1);
+    }
+
+    public addCosts(cost: Cost) {
+        this.props.costs.push(cost);
     }
 
     public getStatus() {
