@@ -12,12 +12,14 @@ import { TaskModule } from '@application/use-cases/task/task.module';
 import { TaskController } from './controllers/task.controller';
 import { JwtService } from '@nestjs/jwt';
 import { AppController } from './controllers/app.controller';
+import { AuthorizationModule } from '@application/services/authorization.module';
 
 @Module({
   providers: [
     JwtService
   ],
   imports: [
+    AuthorizationModule,
     DatabaseModule,
     UserModule,
     ProjectModule,
