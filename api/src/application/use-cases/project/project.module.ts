@@ -15,12 +15,10 @@ import { GetProjectsGrowthUseCase } from './get-projects-growth/get-projects-gro
 import { FindProjectsByOwnerIdUseCase } from './find-projects-by-owner-id/find-projects-by-owner-id.usecase';
 import { UserModule } from '../user/user.module';
 import { CountProjectsByOwnerIdUseCase } from './count-projects-by-owner-id/count-projects-by-owner-id.usecase';
-import { AuthorizationModule } from '@application/services/authorization.module';
 
 @Module({
     imports: [
-        UserModule,
-        AuthorizationModule
+        UserModule
     ],
     providers: [
         CreateProjectUseCase,

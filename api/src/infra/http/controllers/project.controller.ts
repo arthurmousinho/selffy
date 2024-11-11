@@ -15,7 +15,6 @@ import { UserFromToken } from "../decorators/user-from-token.decorator";
 import { FindProjectsByOwnerIdUseCase } from "@application/use-cases/project/find-projects-by-owner-id/find-projects-by-owner-id.usecase";
 import { RoleGuard } from "../guards/role.guard";
 import { FindProjectByIdUseCase } from "@application/use-cases/project/find-project-by-id/find-project-by-id.usecase";
-import { ProjectAuthorizationService } from "@application/services/project-authorization.service";
 
 @ApiTags('Projects')
 @UseGuards(JwtAuthGuard)
@@ -32,7 +31,6 @@ export class ProjectController {
         private findProjectsByStatusUseCase: FindProjectsByStatusUseCase,
         private findProjectByIdUseCase: FindProjectByIdUseCase,
 
-        private projectAuthorizationService: ProjectAuthorizationService
     ) { }
 
     @Get()
@@ -88,16 +86,12 @@ export class ProjectController {
         @UserFromToken() userFromToken: UserFromToken,
     ) {
         body.ownerId = body.ownerId ?? userFromToken.id;
-
-        await this.projectAuthorizationService.checkCreateAbility({
-            requestUserId: userFromToken.id,
-            ownerId: body.ownerId,
+        const project = await this.createProjectUseCase.execute({
+            ...body,
+            requestUserId: userFromToken.id
         });
-
-        const project = await this.createProjectUseCase.execute(body);
         return { project: ProjectViewModel.toHTTP(project) };
     }
-
 
     @Delete(':id')
     public async delete(
