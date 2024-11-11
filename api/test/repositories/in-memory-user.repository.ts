@@ -1,5 +1,5 @@
-import { Role, User } from "@application/entities/user/user.entity";
-import { UserRepository } from "src/application/repositories/user.repository";
+import { Role, User } from "src/domain/entities/user/user.entity";
+import { UserRepository } from "src/domain/repositories/user.repository";
 
 export class InMemoryUserRepository implements UserRepository {
 

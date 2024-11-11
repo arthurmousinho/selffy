@@ -1,4 +1,4 @@
-import { TaskRepository } from '@application/repositories/task.repository';
+import { TaskRepository } from '@domain/repositories/task.repository';
 import { CountTasksByStatusUseCase } from './count-tasks-by-status.usecase';
 
 describe('CountTasksByStatusUseCase', () => {

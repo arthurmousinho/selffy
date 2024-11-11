@@ -1,4 +1,4 @@
-import { TaskRepository } from "@application/repositories/task.repository";
+import { TaskRepository } from "@domain/repositories/task.repository";
 import { Injectable } from "@nestjs/common";
 import { subDays, subWeeks, subMonths } from 'date-fns';
 

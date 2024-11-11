@@ -1,6 +1,6 @@
-import { Task, TaskPriority, TaskStatus } from "@application/entities/task/task.entity";
-import { TaskRepository } from "@application/repositories/task.repository";
-import { Pageable } from "@application/types/pageable.type";
+import { Task, TaskPriority, TaskStatus } from "src/domain/entities/task/task.entity";
+import { TaskRepository } from "@domain/repositories/task.repository";
+import { Pageable } from "@application/shared/pageable.type";
 
 export class InMemoryTaskRepository implements TaskRepository {
 
@@ -89,5 +89,5 @@ export class InMemoryTaskRepository implements TaskRepository {
             (task) => task.getCreatedAt() > date
         ).length;
     }
-    
+
 }

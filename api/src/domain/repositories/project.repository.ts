@@ -1,5 +1,5 @@
-import { Project, ProjectStatus } from "@application/entities/project/project.entity";
-import { Pageable } from "@application/types/pageable.type";
+import { Project, ProjectStatus } from "src/domain/entities/project/project.entity";
+import { Pageable } from "@application/shared/pageable.type";
 
 export abstract class ProjectRepository {
     abstract create(project: Project): Promise<void>;

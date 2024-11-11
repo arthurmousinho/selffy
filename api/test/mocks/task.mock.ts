@@ -1,4 +1,4 @@
-import { TaskPriority, TaskStatus } from "@application/entities/task/task.entity";
+import { TaskPriority, TaskStatus } from "src/domain/entities/task/task.entity";
 
 function getRandomDueDate(): Date {
     const today = new Date();

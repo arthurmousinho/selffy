@@ -1,6 +1,6 @@
 import { ProjectNotFoundError } from "@application/errors/project/project-not-found.error";
 import { UnauthorizedUserError } from "@application/errors/user/unauthorized-user.error";
-import { ProjectRepository } from "@application/repositories/project.repository";
+import { ProjectRepository } from "@domain/repositories/project.repository";
 import { FindUserByIdUseCase } from "@application/use-cases/user/find-user-by-id/find-user-by-id.usecase";
 import { Injectable } from "@nestjs/common";
 

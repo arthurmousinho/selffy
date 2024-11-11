@@ -1,7 +1,7 @@
 import { makeUser } from "@test/factories/user.factory";
 import { InMemoryUserRepository } from "@test/repositories/in-memory-user.repository";
 import { FindAllUsersUseCase } from "./find-all-users.usecase";
-import { UserRepository } from "@application/repositories/user.repository";
+import { UserRepository } from "@domain/repositories/user.repository";
 
 describe('Find All Users UseCase', () => {
     

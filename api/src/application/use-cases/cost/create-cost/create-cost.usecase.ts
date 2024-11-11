@@ -1,7 +1,7 @@
-import { Cost } from "@application/entities/cost/cost.entity";
-import { Project } from "@application/entities/project/project.entity";
-import { CostRepository } from "@application/repositories/cost.repository";
+import { Cost } from "src/domain/entities/cost/cost.entity";
+import { Project } from "src/domain/entities/project/project.entity";
 import { Injectable } from "@nestjs/common";
+import { CostRepository } from "@domain/repositories/cost.repository";
 
 interface CreateCostUseCaseRequest {
     title: string;

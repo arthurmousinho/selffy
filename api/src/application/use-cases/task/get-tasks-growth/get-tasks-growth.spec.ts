@@ -1,4 +1,4 @@
-import { TaskRepository } from "@application/repositories/task.repository";
+import { TaskRepository } from "@domain/repositories/task.repository";
 import { GetTasksGrowthUseCase } from "./get-tasks-growth.usecase"; // Adjust the import path as necessary
 import { subDays, subWeeks, subMonths } from 'date-fns';
 

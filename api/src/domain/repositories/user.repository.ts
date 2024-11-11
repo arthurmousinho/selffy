@@ -1,5 +1,5 @@
-import { Pageable } from "@application/types/pageable.type";
-import { Role, User } from "../entities/user/user.entity";
+import { Pageable } from "@application/shared/pageable.type";
+import { Role, User } from "@domain/entities/user/user.entity";
 
 export abstract class UserRepository {
     abstract create(user: User): Promise<void>;

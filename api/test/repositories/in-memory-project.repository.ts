@@ -1,6 +1,6 @@
-import { Project, ProjectStatus } from "@application/entities/project/project.entity";
-import { ProjectRepository } from "@application/repositories/project.repository";
-import { Pageable } from "@application/types/pageable.type";
+import { Project, ProjectStatus } from "src/domain/entities/project/project.entity";
+import { ProjectRepository } from "@domain/repositories/project.repository";
+import { Pageable } from "@application/shared/pageable.type";
 
 export class InMemoryProjectRepository implements ProjectRepository {
 

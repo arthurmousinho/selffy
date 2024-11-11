@@ -1,4 +1,4 @@
-import { Role, User } from "@application/entities/user/user.entity";
+import { Role, User } from "src/domain/entities/user/user.entity";
 import { randomUUID } from "crypto";
 
 export function makeUser(props?: { id?: string, email?: string, name?: string, role?: Role }): User {

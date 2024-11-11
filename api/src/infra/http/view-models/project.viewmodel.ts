@@ -1,7 +1,7 @@
-import { Project } from "@application/entities/project/project.entity";
+import { Project } from "src/domain/entities/project/project.entity";
 
 export class ProjectViewModel {
-    
+
     static toHTTP(project: Project) {
         return {
             id: project.getId(),

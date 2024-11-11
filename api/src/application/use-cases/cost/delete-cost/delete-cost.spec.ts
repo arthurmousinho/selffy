@@ -1,5 +1,5 @@
 import { CostNotFoundError } from "@application/errors/cost/cost-not-found.error";
-import { CostRepository } from "@application/repositories/cost.repository";
+import { CostRepository } from "@domain/repositories/cost.repository";
 import { makeCost } from "@test/factories/cost.factory";
 import { InMemoryCostRepository } from "@test/repositories/in-memory-cost.repository";
 import { DeleteCostUseCase } from "./delete-cost.usecase";
@@ -10,7 +10,7 @@ describe('Delete Cos tUseCase', () => {
     let costRepository: CostRepository;
 
     beforeEach(() => {
-        costRepository = new InMemoryCostRepository(); 
+        costRepository = new InMemoryCostRepository();
         deleteCostUseCase = new DeleteCostUseCase(costRepository);
     });
 

@@ -1,4 +1,4 @@
-import { CostRepository } from '@application/repositories/cost.repository';
+import { CostRepository } from '@domain/repositories/cost.repository';
 import { CountCostsUseCase } from './count-costs.usecase';
 
 describe('CountCostsUseCase', () => {

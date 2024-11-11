@@ -1,14 +1,14 @@
 import { SearchUserByNameUseCase } from "./search-user-by-name.usecase";
-import { UserRepository } from "@application/repositories/user.repository";
+import { UserRepository } from "@domain/repositories/user.repository";
 import { InMemoryUserRepository } from "@test/repositories/in-memory-user.repository";
-import { User } from "@application/entities/user/user.entity";
+import { User } from "src/domain/entities/user/user.entity";
 
 describe('SearchUserByNameUseCase', () => {
     let searchUserByNameUseCase: SearchUserByNameUseCase;
     let userRepository: UserRepository;
 
     beforeEach(() => {
-        userRepository = new InMemoryUserRepository(); 
+        userRepository = new InMemoryUserRepository();
         searchUserByNameUseCase = new SearchUserByNameUseCase(userRepository);
     });
 

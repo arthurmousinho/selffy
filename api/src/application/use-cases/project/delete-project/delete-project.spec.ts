@@ -3,7 +3,7 @@ import { UnauthorizedUserError } from "@application/errors/user/unauthorized-use
 import { makeProject } from "@test/factories/project.factory";
 import { InMemoryProjectRepository } from "@test/repositories/in-memory-project.repository";
 import { DeleteProjectUseCase } from "./delete-project.usecase";
-import { ProjectRepository } from "@application/repositories/project.repository";
+import { ProjectRepository } from "@domain/repositories/project.repository";
 import { FindUserByIdUseCase } from "@application/use-cases/user/find-user-by-id/find-user-by-id.usecase";
 import { makeUser } from "@test/factories/user.factory";
 

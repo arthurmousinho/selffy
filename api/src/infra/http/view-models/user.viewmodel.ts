@@ -1,4 +1,4 @@
-import { User } from "@application/entities/user/user.entity";
+import { User } from "src/domain/entities/user/user.entity";
 
 export class UserViewModel {
 

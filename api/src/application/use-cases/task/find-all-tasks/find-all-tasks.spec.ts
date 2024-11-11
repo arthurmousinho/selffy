@@ -1,6 +1,6 @@
 import { InMemoryTaskRepository } from "@test/repositories/in-memory-task.repository";
 import { FindAllTasksUseCase } from "./find-all-tasks.usecase";
-import { TaskRepository } from "@application/repositories/task.repository";
+import { TaskRepository } from "@domain/repositories/task.repository";
 import { makeTask } from "@test/factories/task.factory";
 
 describe('Find All Tasks UseCase', () => {

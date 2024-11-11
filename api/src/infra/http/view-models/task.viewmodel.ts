@@ -1,7 +1,7 @@
-import { Task } from "@application/entities/task/task.entity";
+import { Task } from "src/domain/entities/task/task.entity";
 
 export class TaskViewModel {
-    
+
     static toHTTP(task: Task) {
         return {
             id: task.getId(),

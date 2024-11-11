@@ -1,7 +1,7 @@
-import { UserRepository } from '@application/repositories/user.repository';
+import { UserRepository } from '@domain/repositories/user.repository';
 import { CreateUserUseCase } from '@application/use-cases/user/create-user/create-user.usecase';
 import { Injectable } from '@nestjs/common';
-import { MOCK_USERS } from 'src/mocks/user.mock';
+import { MOCK_USERS } from '@test/mocks/user.mock';
 
 @Injectable()
 export class UserSeeder {

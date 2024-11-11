@@ -1,7 +1,7 @@
-import { Task, TaskPriority } from "@application/entities/task/task.entity";
+import { Task, TaskPriority } from "src/domain/entities/task/task.entity";
 import { ProjectAlreadyFinishedError } from "@application/errors/project/project-already-finished.error";
 import { TaskDueDateInPastError } from "@application/errors/task/task-due-date-in-past.error";
-import { TaskRepository } from "@application/repositories/task.repository";
+import { TaskRepository } from "@domain/repositories/task.repository";
 import { FindProjectByIdUseCase } from "@application/use-cases/project/find-project-by-id/find-project-by-id.usecase";
 import { Injectable } from "@nestjs/common";
 
@@ -51,7 +51,7 @@ export class CreateTaskUseCase {
     }
 
     private async checkProjectById(id: string) {
-    
+
         const project = await this.findProjectByIdUseCase.execute({
             requestUserId: '1',
             projectId: id

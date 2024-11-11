@@ -1,5 +1,5 @@
 import { randomUUID } from "crypto";
-import { Replace } from "src/utils/replace";
+import { Replace } from "utils/replace";
 import { User } from "../user/user.entity";
 import { Task } from "../task/task.entity";
 import { Cost } from "../cost/cost.entity";

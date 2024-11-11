@@ -1,4 +1,4 @@
-import { Project } from "@application/entities/project/project.entity";
+import { Project } from "src/domain/entities/project/project.entity";
 import { Project as RawProject } from "@prisma/client";
 import { User as RawUser } from "@prisma/client";
 import { PrismaUserMapper } from "./prisma-user.mapper";

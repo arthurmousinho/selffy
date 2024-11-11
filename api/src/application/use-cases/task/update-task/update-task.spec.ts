@@ -1,10 +1,10 @@
-import { TaskRepository } from "@application/repositories/task.repository";
+import { TaskRepository } from "@domain/repositories/task.repository";
 import { UpdateTaskUseCase } from "./update-task.usecase";
 import { InMemoryTaskRepository } from "@test/repositories/in-memory-task.repository";
 import { makeTask } from "@test/factories/task.factory";
 import { TaskNotFoundError } from "@application/errors/task/task-not-found.error";
 import { FindProjectByIdUseCase } from "@application/use-cases/project/find-project-by-id/find-project-by-id.usecase";
-import { ProjectRepository } from "@application/repositories/project.repository";
+import { ProjectRepository } from "@domain/repositories/project.repository";
 import { InMemoryProjectRepository } from "@test/repositories/in-memory-project.repository";
 import { makeProject } from "@test/factories/project.factory";
 import { CreateProjectUseCase } from "@application/use-cases/project/create-project/create-project.usecase";

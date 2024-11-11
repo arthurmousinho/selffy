@@ -1,6 +1,6 @@
 import { makeProject } from "@test/factories/project.factory";
 import { FindProjectsByOwnerIdUseCase } from "./find-projects-by-owner-id.usecase";
-import { ProjectRepository } from "@application/repositories/project.repository";
+import { ProjectRepository } from "@domain/repositories/project.repository";
 import { InMemoryProjectRepository } from "@test/repositories/in-memory-project.repository";
 import { makeUser } from "@test/factories/user.factory";
 

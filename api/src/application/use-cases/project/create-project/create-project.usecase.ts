@@ -1,7 +1,7 @@
-import { Project } from "@application/entities/project/project.entity";
-import { ProjectRepository } from "@application/repositories/project.repository";
-import { FindUserByIdUseCase } from "@application/use-cases/user/find-user-by-id/find-user-by-id.usecase";
+import { Project } from "src/domain/entities/project/project.entity";
 import { Injectable } from "@nestjs/common";
+import { FindUserByIdUseCase } from "@application/use-cases/user/find-user-by-id/find-user-by-id.usecase";
+import { ProjectRepository } from "@domain/repositories/project.repository";
 
 interface CreateProjectRequest {
     ownerId: string;
@@ -14,7 +14,7 @@ interface CreateProjectRequest {
 
 @Injectable()
 export class CreateProjectUseCase {
-    
+
     constructor(
         private readonly projectRepository: ProjectRepository,
         private readonly findUserByIdUseCase: FindUserByIdUseCase,

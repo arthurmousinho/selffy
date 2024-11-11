@@ -1,6 +1,6 @@
 import { makeProject } from "@test/factories/project.factory";
 import { FindAllProjectsUseCase } from "./find-all-projects.usecase";
-import { ProjectRepository } from "@application/repositories/project.repository";
+import { ProjectRepository } from "@domain/repositories/project.repository";
 import { InMemoryProjectRepository } from "@test/repositories/in-memory-project.repository";
 
 describe('Find All Projects UseCase', () => {
@@ -45,12 +45,12 @@ describe('Find All Projects UseCase', () => {
         await projectRepository.create(project2);
         await projectRepository.create(project3);
 
-        const result = await findAllProjectsUseCase.execute(1, 2); 
+        const result = await findAllProjectsUseCase.execute(1, 2);
 
         expect(result.meta.total).toBe(3);
         expect(result.meta.page).toBe(1);
         expect(result.meta.totalPages).toBe(2);
-        expect(result.data.length).toBe(2); 
+        expect(result.data.length).toBe(2);
     });
 
 });

@@ -1,4 +1,4 @@
-import { UserRepository } from "@application/repositories/user.repository";
+import { UserRepository } from "@domain/repositories/user.repository";
 import { CreateUserUseCase } from "./create-user.usecase";
 import { InMemoryUserRepository } from "@test/repositories/in-memory-user.repository";
 import { UserAlreadyExistsError } from "@application/errors/user/user-already-exists.error";

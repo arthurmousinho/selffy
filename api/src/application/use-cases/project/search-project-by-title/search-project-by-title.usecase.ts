@@ -1,6 +1,6 @@
-import { Project } from "@application/entities/project/project.entity";
-import { ProjectRepository } from "@application/repositories/project.repository";
-import { Pageable } from "@application/types/pageable.type";
+import { Project } from "src/domain/entities/project/project.entity";
+import { ProjectRepository } from "@domain/repositories/project.repository";
+import { Pageable } from "@application/shared/pageable.type";
 import { Injectable } from "@nestjs/common";
 
 interface SearchProjectByTitleUseCaseRequest {

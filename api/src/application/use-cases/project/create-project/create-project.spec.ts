@@ -1,4 +1,4 @@
-import { ProjectRepository } from "@application/repositories/project.repository";
+import { ProjectRepository } from "@domain/repositories/project.repository";
 import { CreateProjectUseCase } from "./create-project.usecase";
 import { InMemoryProjectRepository } from "@test/repositories/in-memory-project.repository";
 import { FindUserByIdUseCase } from "@application/use-cases/user/find-user-by-id/find-user-by-id.usecase";
@@ -6,7 +6,7 @@ import { makeUser } from "@test/factories/user.factory";
 import { UserNotFoundError } from "@application/errors/user/user-not-found.error";
 
 describe('CreateProjectUseCase', () => {
-    
+
     let createProjectUseCase: CreateProjectUseCase;
     let projectRepository: ProjectRepository;
     let findUserByIdUseCase: FindUserByIdUseCase;

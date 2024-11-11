@@ -1,5 +1,5 @@
 import { TaskNotFoundError } from "@application/errors/task/task-not-found.error";
-import { TaskRepository } from "@application/repositories/task.repository";
+import { TaskRepository } from "@domain/repositories/task.repository";
 import { Injectable } from "@nestjs/common";
 
 @Injectable()

@@ -1,8 +1,8 @@
-import { Task } from "@application/entities/task/task.entity";
+import { Task } from "src/domain/entities/task/task.entity";
 import { ProjectAlreadyFinishedError } from "@application/errors/project/project-already-finished.error";
 import { TaskDueDateInPastError } from "@application/errors/task/task-due-date-in-past.error";
 import { TaskNotFoundError } from "@application/errors/task/task-not-found.error";
-import { TaskRepository } from "@application/repositories/task.repository";
+import { TaskRepository } from "@domain/repositories/task.repository";
 import { FindProjectByIdUseCase } from "@application/use-cases/project/find-project-by-id/find-project-by-id.usecase";
 import { Injectable } from "@nestjs/common";
 import { TaskPriority, TaskStatus } from "@prisma/client";
@@ -26,7 +26,7 @@ export class UpdateTaskUseCase {
     ) { }
 
     public async execute(request: UpdateTaskUseCaseRequest) {
-        const [ taskFound ] = await Promise.all([
+        const [taskFound] = await Promise.all([
             this.getTaskById(request.id),
             this.checkProjectById(request.projectId)
         ]);

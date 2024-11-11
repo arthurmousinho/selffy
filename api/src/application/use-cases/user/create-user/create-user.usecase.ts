@@ -1,6 +1,6 @@
-import { Role, User } from "@application/entities/user/user.entity";
+import { Role, User } from "src/domain/entities/user/user.entity";
 import { UserAlreadyExistsError } from "@application/errors/user/user-already-exists.error";
-import { UserRepository } from "@application/repositories/user.repository";
+import { UserRepository } from "@domain/repositories/user.repository";
 import { Injectable } from "@nestjs/common";
 import * as bcrypt from 'bcryptjs';
 
@@ -20,7 +20,7 @@ export class CreateUserUseCase {
 
     constructor(
         private userRepository: UserRepository,
-    ) {}
+    ) { }
 
     public async execute(request: CreateUserRequest): Promise<CreateUserResponse> {
         const { name, email, password, role } = request;
@@ -40,7 +40,7 @@ export class CreateUserUseCase {
         });
 
         await this.userRepository.create(newUser);
-        
+
         return { user: newUser };
     }
 

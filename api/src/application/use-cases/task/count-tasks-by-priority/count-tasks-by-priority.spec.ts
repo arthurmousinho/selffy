@@ -1,4 +1,4 @@
-import { TaskRepository } from '@application/repositories/task.repository';
+import { TaskRepository } from '@domain/repositories/task.repository';
 import { CountTasksByPriorityUseCase } from './count-tasks-by-priority.usecase';
 
 describe('CountTasksByPriorityUseCase', () => {

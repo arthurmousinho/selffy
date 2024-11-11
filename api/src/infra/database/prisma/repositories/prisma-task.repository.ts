@@ -1,9 +1,9 @@
-import { TaskRepository } from "@application/repositories/task.repository";
+import { TaskRepository } from "@domain/repositories/task.repository";
 import { PrismaService } from "../prisma.service";
-import { Task, TaskPriority, TaskStatus } from "@application/entities/task/task.entity";
+import { Task, TaskPriority, TaskStatus } from "src/domain/entities/task/task.entity";
 import { PrismaTaskMapper } from "../mappers/prisma-task.mapper";
 import { Injectable } from "@nestjs/common";
-import { Pageable } from "@application/types/pageable.type";
+import { Pageable } from "@application/shared/pageable.type";
 
 @Injectable()
 export class PrismaTaskRepository implements TaskRepository {

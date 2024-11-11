@@ -1,6 +1,6 @@
 import { CostNotFoundError } from "@application/errors/cost/cost-not-found.error";
-import { CostRepository } from "@application/repositories/cost.repository";
 import { FindProjectByIdUseCase } from "@application/use-cases/project/find-project-by-id/find-project-by-id.usecase";
+import { CostRepository } from "@domain/repositories/cost.repository";
 import { Injectable } from "@nestjs/common";
 
 interface UpdateCostUseCaseRequest {

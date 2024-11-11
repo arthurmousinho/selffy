@@ -1,5 +1,5 @@
-import { Task, TaskPriority, TaskStatus } from "@application/entities/task/task.entity";
-import { Pageable } from "@application/types/pageable.type";
+import { Task, TaskPriority, TaskStatus } from "src/domain/entities/task/task.entity";
+import { Pageable } from "@application/shared/pageable.type";
 
 export abstract class TaskRepository {
     abstract create(task: Task): Promise<void>;

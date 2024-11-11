@@ -1,7 +1,7 @@
-import { Cost } from "@application/entities/cost/cost.entity";
-import { CostRepository } from "@application/repositories/cost.repository";
-import { Pageable } from "@application/types/pageable.type";
+import { Cost } from "src/domain/entities/cost/cost.entity";
+import { Pageable } from "@application/shared/pageable.type";
 import { Injectable } from "@nestjs/common";
+import { CostRepository } from "@domain/repositories/cost.repository";
 
 interface SearchCostsByTitleUseCaseRequest {
     title: string;

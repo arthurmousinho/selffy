@@ -1,6 +1,6 @@
-import { User } from "@application/entities/user/user.entity";
-import { UserRepository } from "@application/repositories/user.repository";
-import { Pageable } from "@application/types/pageable.type";
+import { User } from "src/domain/entities/user/user.entity";
+import { UserRepository } from "@domain/repositories/user.repository";
+import { Pageable } from "@application/shared/pageable.type";
 import { Injectable } from "@nestjs/common";
 
 @Injectable()

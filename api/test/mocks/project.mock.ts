@@ -1,15 +1,15 @@
-import { ProjectStatus } from "@application/entities/project/project.entity";
+import { ProjectStatus } from "src/domain/entities/project/project.entity";
 
 function getRandomColor() {
     const colors = [
-        '#fca5a5', 
-        '#7dd3fc', 
-        '#fcd34d', 
-        '#f9a8d4', 
-        '#86efac', 
-        '#fda4af', 
-        '#d8b4fe', 
-        '#fdba74', 
+        '#fca5a5',
+        '#7dd3fc',
+        '#fcd34d',
+        '#f9a8d4',
+        '#86efac',
+        '#fda4af',
+        '#d8b4fe',
+        '#fdba74',
         '#93c5fd'
     ];
     return colors[Math.floor(Math.random() * colors.length)];

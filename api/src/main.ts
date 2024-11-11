@@ -1,7 +1,7 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
-import { Seeder } from '@application/seeders/seeder';
+import { Seeder } from '@infra/database/seeders/seeder';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 
 async function bootstrap() {
@@ -11,7 +11,7 @@ async function bootstrap() {
   await seeder.seed();
 
   const config = new DocumentBuilder()
-    .setTitle('Selffy API') 
+    .setTitle('Selffy API')
     .setDescription('Selffy REST API documentation')
     .setVersion('1.0')
     .build();

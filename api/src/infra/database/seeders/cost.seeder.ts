@@ -1,49 +1,51 @@
-import { TaskRepository } from '@application/repositories/task.repository';
+import { CostRepository } from '@domain/repositories/cost.repository';
+import { CountCostsUseCase } from '@application/use-cases/cost/count-costs/count-costs.usecase';
 import { FindAllProjectsUseCase } from '@application/use-cases/project/find-all-projects/find-all-projects.usecase';
-import { CountTasksUseCase } from '@application/use-cases/task/count-tasks/count-tasks.usecase';
+import { PrismaCostMapper } from '@infra/database/prisma/mappers/prisma-cost.mapper';
 import { PrismaProjectMapper } from '@infra/database/prisma/mappers/prisma-project.mapper';
-import { PrismaTaskMapper } from '@infra/database/prisma/mappers/prisma-task.mapper';
+import { PrismaUserMapper } from '@infra/database/prisma/mappers/prisma-user.mapper';
 import { Injectable } from '@nestjs/common';
 import { randomUUID } from 'crypto';
-import { MOCK_TASKS } from 'src/mocks/task.mock';
+import { MOCK_COSTS } from '@test/mocks/cost.mock';
 
 @Injectable()
-export class TaskSeeder {
+export class CostSeeder {
 
     constructor(
-        private taskRepository: TaskRepository,
-        private countTasksUseCase: CountTasksUseCase,
+        private costRepository: CostRepository,
+        private countCostsUseCase: CountCostsUseCase,
         private findAllProjectsUseCase: FindAllProjectsUseCase,
     ) { }
 
     public async run() {
-        const count = await this.countTasksUseCase.execute();
+        const count = await this.countCostsUseCase.execute();
         if (count > 0) {
             return;
         }
 
-        const taskInstances = await Promise.all(MOCK_TASKS.map(
+        const costInstances = await Promise.all(MOCK_COSTS.map(
             async (cost) => {
-                
+
                 const randomProject = await this.getRandomProject();
                 const randomProjectMappedToPrisma = PrismaProjectMapper.toPrisma(randomProject);
+                const randomProjectOwnerMappedToPrisma = PrismaUserMapper.toPrisma(randomProject.getOwner());
 
-                return PrismaTaskMapper.toDomain({
+                return PrismaCostMapper.toDomain({
                     id: randomUUID(),
                     title: cost.title,
-                    description: cost.description,
-                    completedAt: cost.completedAt,
-                    dueDate: cost.dueDate,
-                    priority: cost.priority,
-                    status: cost.status,
+                    value: cost.value,
                     createdAt: new Date(),
                     updatedAt: new Date(),
                     projectId: randomProjectMappedToPrisma.id,
+                    project: {
+                        ...randomProjectMappedToPrisma,
+                        owner: randomProjectOwnerMappedToPrisma,
+                    },
                 })
             }
         ));
 
-        await this.taskRepository.createMany(taskInstances);
+        await this.costRepository.createMany(costInstances);
 
     }
 

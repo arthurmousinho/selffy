@@ -1,4 +1,4 @@
-import { TaskRepository } from "@application/repositories/task.repository";
+import { TaskRepository } from "@domain/repositories/task.repository";
 import { FindTaskByIdUseCase } from "./find-task-by-id.usecase";
 import { InMemoryTaskRepository } from "@test/repositories/in-memory-task.repository";
 import { TaskNotFoundError } from "@application/errors/task/task-not-found.error";

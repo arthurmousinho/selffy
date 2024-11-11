@@ -1,4 +1,4 @@
-import { UserRepository } from "@application/repositories/user.repository";
+import { UserRepository } from "@domain/repositories/user.repository";
 import { UpdateUserUseCase } from "./update-user.usecase";
 import { InMemoryUserRepository } from "@test/repositories/in-memory-user.repository";
 import { makeUser } from "@test/factories/user.factory";

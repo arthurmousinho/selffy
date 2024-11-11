@@ -1,6 +1,6 @@
-import { Cost } from "@application/entities/cost/cost.entity";
-import { CostRepository } from "@application/repositories/cost.repository";
-import { Pageable } from "@application/types/pageable.type";
+import { Cost } from "src/domain/entities/cost/cost.entity";
+import { CostRepository } from "@domain/repositories/cost.repository";
+import { Pageable } from "@application/shared/pageable.type";
 
 export class InMemoryCostRepository implements CostRepository {
 
@@ -58,7 +58,7 @@ export class InMemoryCostRepository implements CostRepository {
             }
         }
     }
-    
+
     public async count(): Promise<number> {
         return this.costs.length;
     }

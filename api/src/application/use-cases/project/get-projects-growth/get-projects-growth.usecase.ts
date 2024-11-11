@@ -1,4 +1,4 @@
-import { ProjectRepository } from "@application/repositories/project.repository";
+import { ProjectRepository } from "@domain/repositories/project.repository";
 import { Injectable } from "@nestjs/common";
 import { subDays, subWeeks, subMonths } from 'date-fns';
 

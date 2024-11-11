@@ -1,5 +1,5 @@
-import { Cost } from "@application/entities/cost/cost.entity";
-import { Pageable } from "@application/types/pageable.type";
+import { Cost } from "src/domain/entities/cost/cost.entity";
+import { Pageable } from "@application/shared/pageable.type";
 
 export abstract class CostRepository {
     abstract create(cost: Cost): Promise<void>;

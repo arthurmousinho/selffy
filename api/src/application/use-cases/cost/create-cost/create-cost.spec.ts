@@ -1,6 +1,6 @@
 import { makeCost } from "@test/factories/cost.factory";
 import { CreateCostUseCase } from "./create-cost.usecase";
-import { CostRepository } from "@application/repositories/cost.repository";
+import { CostRepository } from "@domain/repositories/cost.repository";
 import { InMemoryCostRepository } from "@test/repositories/in-memory-cost.repository";
 
 describe('Create Cost UseCase', () => {

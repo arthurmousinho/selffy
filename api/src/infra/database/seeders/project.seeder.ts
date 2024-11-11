@@ -1,10 +1,10 @@
-import { ProjectRepository } from "@application/repositories/project.repository";
+import { ProjectRepository } from "@domain/repositories/project.repository";
 import { FindAllUsersUseCase } from "@application/use-cases/user/find-all-users/find-all-users.usecase";
 import { PrismaProjectMapper } from "@infra/database/prisma/mappers/prisma-project.mapper";
 import { PrismaUserMapper } from "@infra/database/prisma/mappers/prisma-user.mapper";
 import { Injectable } from "@nestjs/common";
 import { randomUUID } from "crypto";
-import { MOCK_PROJECTS } from "src/mocks/project.mock";
+import { MOCK_PROJECTS } from "@test/mocks/project.mock";
 
 @Injectable()
 export class ProjectSeeder {
@@ -41,7 +41,7 @@ export class ProjectSeeder {
             }
         ));
 
-        await this.projectRepository.createMany(projectsInstaces); 
+        await this.projectRepository.createMany(projectsInstaces);
     }
 
     private async getRandomUser() {

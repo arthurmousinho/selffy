@@ -1,7 +1,7 @@
 import { InMemoryCostRepository } from "@test/repositories/in-memory-cost.repository";
 import { FindAllCostsUseCase } from "./find-all-costs.usecase";
 import { makeCost } from "@test/factories/cost.factory";
-import { CostRepository } from "@application/repositories/cost.repository";
+import { CostRepository } from "@domain/repositories/cost.repository";
 
 describe('Find All Costs UseCase', () => {
 

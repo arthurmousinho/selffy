@@ -1,5 +1,5 @@
 import { UserNotFoundError } from "@application/errors/user/user-not-found.error";
-import { UserRepository } from "@application/repositories/user.repository";
+import { UserRepository } from "@domain/repositories/user.repository";
 import { makeUser } from "@test/factories/user.factory";
 import { InMemoryUserRepository } from "@test/repositories/in-memory-user.repository";
 import { DeleteUserUsecase } from "./delete-user.usecase";

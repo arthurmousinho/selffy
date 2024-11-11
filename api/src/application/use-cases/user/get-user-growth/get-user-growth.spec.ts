@@ -1,4 +1,4 @@
-import { UserRepository } from '@application/repositories/user.repository';
+import { UserRepository } from '@domain/repositories/user.repository';
 import { GetUserGrowthUseCase } from './get-user-growth.usecase';
 import { subDays, subWeeks, subMonths } from 'date-fns';
 

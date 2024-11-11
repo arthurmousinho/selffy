@@ -1,6 +1,6 @@
 import { InvalidUserCredentialsError } from "@application/errors/user/invalid-user-credentials.error";
 import { UserNotFoundError } from "@application/errors/user/user-not-found.error";
-import { UserRepository } from "@application/repositories/user.repository";
+import { UserRepository } from "@domain/repositories/user.repository";
 import * as bcrypt from 'bcryptjs';
 import { JwtService } from '@nestjs/jwt';
 import { Injectable } from "@nestjs/common";

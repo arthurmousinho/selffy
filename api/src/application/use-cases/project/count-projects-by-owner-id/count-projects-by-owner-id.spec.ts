@@ -1,5 +1,5 @@
+import { ProjectRepository } from "@domain/repositories/project.repository";
 import { CountProjectsByOwnerIdUseCase } from "./count-projects-by-owner-id.usecase";
-import { ProjectRepository } from "@application/repositories/project.repository";
 
 describe('CountProjectsByOwnerIdUseCase', () => {
     let countProjectsByOwnerIdUseCase: CountProjectsByOwnerIdUseCase;

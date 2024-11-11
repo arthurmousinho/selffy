@@ -1,5 +1,5 @@
 import { randomUUID } from "crypto";
-import { Replace } from "src/utils/replace";
+import { Replace } from "utils/replace";
 
 export type TaskPriority = 'LOW' | 'MEDIUM' | 'HIGH';
 export type TaskStatus = 'PENDING' | 'COMPLETED';
@@ -22,9 +22,9 @@ export class Task {
     private props: TaskProps;
 
     constructor(
-        props: Replace<TaskProps, { 
-            createdAt?: Date, 
-            status?: TaskStatus, 
+        props: Replace<TaskProps, {
+            createdAt?: Date,
+            status?: TaskStatus,
             completedAt?: Date | null,
             updatedAt?: Date
         }>,
@@ -79,7 +79,7 @@ export class Task {
     public getPriority() {
         return this.props.priority;
     }
-    
+
     public getProjectId() {
         return this.props.projectId;
     }
@@ -95,7 +95,7 @@ export class Task {
     public getCreatedAt() {
         return this.props.createdAt;
     }
-    
+
     public getUpdatedAt() {
         return this.props.updatedAt;
     }

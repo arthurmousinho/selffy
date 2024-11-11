@@ -1,4 +1,4 @@
-import { Cost } from "@application/entities/cost/cost.entity";
+import { Cost } from "src/domain/entities/cost/cost.entity";
 import { randomUUID } from "crypto";
 import { makeProject } from "./project.factory";
 

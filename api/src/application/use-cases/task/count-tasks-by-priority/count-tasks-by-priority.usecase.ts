@@ -1,5 +1,5 @@
-import { TaskPriority } from "@application/entities/task/task.entity";
-import { TaskRepository } from "@application/repositories/task.repository";
+import { TaskPriority } from "src/domain/entities/task/task.entity";
+import { TaskRepository } from "@domain/repositories/task.repository";
 import { Injectable } from "@nestjs/common";
 
 @Injectable()
@@ -13,5 +13,5 @@ export class CountTasksByPriorityUseCase {
         const countByPriority = await this.taskRepository.countByPriority(priority);
         return countByPriority
     }
- 
+
 }

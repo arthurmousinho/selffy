@@ -1,8 +1,8 @@
-import { CostRepository } from '@application/repositories/cost.repository';
+import { CostRepository } from '@domain/repositories/cost.repository';
 import { GetCostsTotalValueUseCase } from './get-costs-total-value.usecase';
 
 describe('GetTotalValueUseCase', () => {
-    
+
   let costRepository: CostRepository;
   let getCostsTotalValueUseCase: GetCostsTotalValueUseCase;
 

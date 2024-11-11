@@ -1,9 +1,9 @@
-import { UserRepository } from "@application/repositories/user.repository";
+import { UserRepository } from "@domain/repositories/user.repository";
 import { PrismaService } from "../prisma.service";
-import { Role, User } from "@application/entities/user/user.entity";
+import { Role, User } from "src/domain/entities/user/user.entity";
 import { PrismaUserMapper } from "../mappers/prisma-user.mapper";
 import { Injectable } from "@nestjs/common";
-import { Pageable } from "@application/types/pageable.type";
+import { Pageable } from "@application/shared/pageable.type";
 
 @Injectable()
 export class PrismaUserRepository implements UserRepository {
@@ -34,7 +34,7 @@ export class PrismaUserRepository implements UserRepository {
     }
 
     public async findManyByName(params: { name: string, page: number, limit: number }): Promise<Pageable<User>> {
-        const [ users, total ] = await Promise.all([
+        const [users, total] = await Promise.all([
             this.prismaService.user.findMany({
                 skip: (params.page - 1) * params.limit,
                 take: params.limit,

@@ -1,6 +1,6 @@
-import { Role, User } from "@application/entities/user/user.entity";
+import { Role, User } from "src/domain/entities/user/user.entity";
 import { UserNotFoundError } from "@application/errors/user/user-not-found.error";
-import { UserRepository } from "@application/repositories/user.repository";
+import { UserRepository } from "@domain/repositories/user.repository";
 import { Injectable } from "@nestjs/common";
 
 interface UpdateUserUseCaseRequest {
@@ -39,7 +39,7 @@ export class UpdateUserUseCase {
 
             await this.userRepository.update(userInstance);
             return;
-        } 
+        }
 
         userInstance = new User({
             name: request.name,
@@ -49,7 +49,7 @@ export class UpdateUserUseCase {
             createdAt: userExists.getCreatedAt(),
             updatedAt: new Date(),
         }, request.id);
-        
+
         await this.userRepository.update(userInstance);
 
     }

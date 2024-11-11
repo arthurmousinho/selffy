@@ -1,7 +1,7 @@
-import { Project, ProjectStatus } from "@application/entities/project/project.entity";
-import { User } from "@application/entities/user/user.entity";
+import { Project, ProjectStatus } from "src/domain/entities/project/project.entity";
+import { User } from "src/domain/entities/user/user.entity";
 import { ProjectNotFoundError } from "@application/errors/project/project-not-found.error";
-import { ProjectRepository } from "@application/repositories/project.repository";
+import { ProjectRepository } from "@domain/repositories/project.repository";
 import { Injectable } from "@nestjs/common";
 
 interface UpdateProjectUseCaseRequest {
@@ -20,7 +20,7 @@ export class UpdateProjectUseCase {
 
     constructor(
         private projectRepository: ProjectRepository
-    ) {}
+    ) { }
 
     public async execute(request: UpdateProjectUseCaseRequest) {
         const {

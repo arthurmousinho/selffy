@@ -1,9 +1,9 @@
-import { Project, ProjectStatus } from "@application/entities/project/project.entity";
-import { ProjectRepository } from "@application/repositories/project.repository";
+import { Project, ProjectStatus } from "src/domain/entities/project/project.entity";
+import { ProjectRepository } from "@domain/repositories/project.repository";
 import { Injectable } from "@nestjs/common";
 import { PrismaService } from "../prisma.service";
 import { PrismaProjectMapper } from "../mappers/prisma-project.mapper";
-import { Pageable } from "@application/types/pageable.type";
+import { Pageable } from "@application/shared/pageable.type";
 
 @Injectable()
 export class PrismaProjectRepository implements ProjectRepository {
@@ -165,7 +165,7 @@ export class PrismaProjectRepository implements ProjectRepository {
     }
 
     public async findByOwnerId(params: { ownerId: string; page: number; limit: number; }): Promise<Pageable<Project>> {
-        const [ projects, total ] = await Promise.all([
+        const [projects, total] = await Promise.all([
             this.prismaService.project.findMany({
                 where: {
                     ownerId: params.ownerId

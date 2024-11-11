@@ -2,7 +2,7 @@ import { TaskNotFoundError } from "@application/errors/task/task-not-found.error
 import { makeTask } from "@test/factories/task.factory";
 import { InMemoryTaskRepository } from "@test/repositories/in-memory-task.repository";
 import { DeleteTaskUseCase } from "./delete-task.usecase";
-import { TaskRepository } from "@application/repositories/task.repository";
+import { TaskRepository } from "@domain/repositories/task.repository";
 
 describe('Delete Task UseCase', () => {
 

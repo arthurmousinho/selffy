@@ -2,7 +2,7 @@ import { CostNotFoundError } from "@application/errors/cost/cost-not-found.error
 import { makeCost } from "@test/factories/cost.factory";
 import { InMemoryCostRepository } from "@test/repositories/in-memory-cost.repository";
 import { FindCostByIdUseCase } from "./find-cost-by-id.usecase";
-import { CostRepository } from "@application/repositories/cost.repository";
+import { CostRepository } from "@domain/repositories/cost.repository";
 
 describe('Find Cost By Id UseCase', () => {
 
@@ -10,7 +10,7 @@ describe('Find Cost By Id UseCase', () => {
     let costRepository: CostRepository;
 
     beforeEach(() => {
-        costRepository = new InMemoryCostRepository(); 
+        costRepository = new InMemoryCostRepository();
         findCostByIdUseCase = new FindCostByIdUseCase(costRepository);
     });
 

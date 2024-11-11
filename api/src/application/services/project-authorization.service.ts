@@ -1,10 +1,8 @@
-import { Project } from "@application/entities/project/project.entity";
-import { User } from "@application/entities/user/user.entity";
 import { MaximumProjectsExceededError } from "@application/errors/project/maximum-projects-exceeded.error";
 import { UnauthorizedUserError } from "@application/errors/user/unauthorized-user.error";
-import { ProjectRepository } from "@application/repositories/project.repository";
 import { FindUserByIdUseCase } from "@application/use-cases/user/find-user-by-id/find-user-by-id.usecase";
-import { HttpException, Injectable } from "@nestjs/common";
+import { Injectable } from "@nestjs/common";
+import { ProjectRepository } from "@domain/repositories/project.repository";
 
 interface CheckAbilityRequest {
     requestUserId: string;
@@ -20,7 +18,6 @@ export class ProjectAuthorizationService {
         private readonly findUserByIdUseCase: FindUserByIdUseCase,
         private readonly projectRepository: ProjectRepository
     ) { }
-
 
     public async checkCreateAbility(request: CheckAbilityRequest) {
         const requestUser = await this.findUserByIdUseCase.execute(request.requestUserId);

@@ -1,5 +1,5 @@
 import { CostNotFoundError } from "@application/errors/cost/cost-not-found.error";
-import { CostRepository } from "@application/repositories/cost.repository";
+import { CostRepository } from "@domain/repositories/cost.repository";
 import { Injectable } from "@nestjs/common";
 
 @Injectable()

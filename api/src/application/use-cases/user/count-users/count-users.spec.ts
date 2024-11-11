@@ -1,4 +1,4 @@
-import { UserRepository } from '@application/repositories/user.repository';
+import { UserRepository } from '@domain/repositories/user.repository';
 import { CountUsersUseCase } from './count-users.usecase';
 
 describe('Count Users UseCase', () => {

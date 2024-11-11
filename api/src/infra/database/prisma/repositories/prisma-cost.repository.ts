@@ -1,9 +1,9 @@
-import { CostRepository } from "@application/repositories/cost.repository";
+import { CostRepository } from "@domain/repositories/cost.repository";
 import { PrismaService } from "../prisma.service";
-import { Cost } from "@application/entities/cost/cost.entity";
+import { Cost } from "src/domain/entities/cost/cost.entity";
 import { PrismaCostMapper } from "../mappers/prisma-cost.mapper";
 import { Injectable } from "@nestjs/common";
-import { Pageable } from "@application/types/pageable.type";
+import { Pageable } from "@application/shared/pageable.type";
 
 @Injectable()
 export class PrismaCostRepository implements CostRepository {

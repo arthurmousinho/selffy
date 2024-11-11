@@ -1,15 +1,15 @@
 import { CostNotFoundError } from "@application/errors/cost/cost-not-found.error";
 import { makeCost } from "@test/factories/cost.factory";
 import { UpdateCostUseCase } from "./update-cost.usecase";
-import { CostRepository } from "@application/repositories/cost.repository";
 import { InMemoryCostRepository } from "@test/repositories/in-memory-cost.repository";
 import { FindProjectByIdUseCase } from "@application/use-cases/project/find-project-by-id/find-project-by-id.usecase";
-import { ProjectRepository } from "@application/repositories/project.repository";
 import { InMemoryProjectRepository } from "@test/repositories/in-memory-project.repository";
 import { makeProject } from "@test/factories/project.factory";
+import { ProjectRepository } from "@domain/repositories/project.repository";
+import { CostRepository } from "@domain/repositories/cost.repository";
 
 describe('Update Cost UseCase', () => {
-    
+
     let updateCostUseCase: UpdateCostUseCase;
     let findProjectByIdUseCase: FindProjectByIdUseCase;
 
@@ -17,7 +17,7 @@ describe('Update Cost UseCase', () => {
     let projectRepository: ProjectRepository;
 
     beforeEach(() => {
-        costRepository = new InMemoryCostRepository(); 
+        costRepository = new InMemoryCostRepository();
         projectRepository = new InMemoryProjectRepository();
 
         findProjectByIdUseCase = new FindProjectByIdUseCase(projectRepository);
@@ -25,7 +25,7 @@ describe('Update Cost UseCase', () => {
     });
 
     it('should throw an error if the cost does not exist', async () => {
-        const nonExistentCost = makeCost(); 
+        const nonExistentCost = makeCost();
 
         await expect(updateCostUseCase.execute({
             id: nonExistentCost.getId(),
@@ -49,7 +49,7 @@ describe('Update Cost UseCase', () => {
             id: existingCost.getId(),
             title: existingCost.getTitle(),
             value: updatedValue,
-            projectId: existingProject.getId() 
+            projectId: existingProject.getId()
         });
 
         const updatedCost = await costRepository.findById(existingCost.getId());

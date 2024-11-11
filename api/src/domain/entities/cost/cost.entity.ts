@@ -1,4 +1,4 @@
-import { Replace } from "@utils/replace";
+import { Replace } from "utils/replace";
 import { randomUUID } from "crypto";
 import { Project } from "../project/project.entity";
 
@@ -26,7 +26,7 @@ export class Cost {
             updatedAt: props.updatedAt ?? new Date()
         }
     }
-    
+
     public getId() {
         return this._id;
     }
@@ -54,7 +54,7 @@ export class Cost {
     public setProject(project: Project) {
         this.props.project = project;
     }
-    
+
     public getCreatedAt() {
         return this.props.createdAt;
     }

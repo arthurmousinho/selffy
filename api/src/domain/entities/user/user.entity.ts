@@ -1,5 +1,5 @@
 import { randomUUID } from "crypto";
-import { Replace } from "src/utils/replace";
+import { Replace } from "utils/replace";
 import { Project } from "../project/project.entity";
 
 export type Role = 'ADMIN' | 'FREE' | 'PREMIUM';

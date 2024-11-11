@@ -21,10 +21,21 @@
     "forceConsistentCasingInFileNames": false,
     "noFallthroughCasesInSwitch": false,
     "paths": {
-      "@application/*":["./src/application/*"],
-      "@utils/*":["./src/utils/*"],
-      "@infra/*":["./src/infra/*"],
-      "@test/*":["./test/*"]
+      "@application/*": [
+        "./src/application/*"
+      ],
+      "@utils/*": [
+        "utils/*"
+      ],
+      "@infra/*": [
+        "./src/infra/*"
+      ],
+      "@test/*": [
+        "./test/*"
+      ],
+      "@domain/*": [
+        "./src/domain/*"
+      ]
     }
   }
 }

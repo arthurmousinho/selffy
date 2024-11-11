@@ -1,4 +1,4 @@
-import { CostRepository } from '@application/repositories/cost.repository';
+import { CostRepository } from "@domain/repositories/cost.repository";
 import { InMemoryCostRepository } from '@test/repositories/in-memory-cost.repository';
 import { makeCost } from '@test/factories/cost.factory';
 import { SearchCostsByTitleUseCase } from './search-costs-by-title.usecase';

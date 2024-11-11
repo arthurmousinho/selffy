@@ -1,4 +1,4 @@
-import { Role } from "@application/entities/user/user.entity";
+import { Role } from "src/domain/entities/user/user.entity";
 import { randomUUID } from "crypto";
 
 function getRandomRole(): Role {

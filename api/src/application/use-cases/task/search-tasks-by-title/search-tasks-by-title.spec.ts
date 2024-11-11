@@ -1,5 +1,5 @@
 import { SearchTasksByTitleUseCase } from './search-tasks-by-title.usecase';
-import { TaskRepository } from '@application/repositories/task.repository';
+import { TaskRepository } from '@domain/repositories/task.repository';
 
 describe('SearchTasksByTitleUseCase', () => {
     

@@ -1,7 +1,7 @@
 import { FindProjectsByStatusUseCase } from './find-projects-by-status.usecase';
-import { ProjectRepository } from '@application/repositories/project.repository';
 import { InMemoryProjectRepository } from '@test/repositories/in-memory-project.repository';
 import { makeProject } from '@test/factories/project.factory';
+import { ProjectRepository } from '@domain/repositories/project.repository';
 
 describe('FindProjectsByStatusUseCase', () => {
     let findProjectsByStatusUseCase: FindProjectsByStatusUseCase;
@@ -13,13 +13,13 @@ describe('FindProjectsByStatusUseCase', () => {
     });
 
     it('should return projects with the specified status', async () => {
-        const inProgressProject = makeProject({ 
+        const inProgressProject = makeProject({
             title: 'In Progress Project',
             status: 'IN_PROGRESS'
         });
 
-        const finishedProject = makeProject({ 
-            title: 'Finished Project' ,
+        const finishedProject = makeProject({
+            title: 'Finished Project',
             status: 'FINISHED'
         });
 
