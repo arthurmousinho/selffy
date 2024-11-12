@@ -1,4 +1,4 @@
-import { Project, ProjectStatus } from "src/domain/entities/project/project.entity";
+import { Project, ProjectStatus } from "@domain/entities/project/project.entity";
 import { randomUUID } from "crypto";
 import { makeUser } from "./user.factory";
 import { Task } from "src/domain/entities/task/task.entity";

@@ -68,11 +68,13 @@ export class ProjectController {
         @Param('id') ownerId: string,
         @Query('page') page = 1,
         @Query('limit') limit = 10,
+        @UserFromToken() userFromToken: UserFromToken,
     ) {
         const pageableProjects = await this.findProjectsByOwnerIdUseCase.execute({
             ownerId,
             page: Number(page),
-            limit: Number(limit)
+            limit: Number(limit),
+            requestUserId: userFromToken.id
         });
         return {
             projects: pageableProjects.data.map(ProjectViewModel.toHTTP),
