@@ -3,10 +3,16 @@ import { UnauthorizedUserError } from "@application/errors/user/unauthorized-use
 import { ProjectRepository } from "@domain/repositories/project.repository";
 import { FindUserByIdUseCase } from "@application/use-cases/user/find-user-by-id/find-user-by-id.usecase";
 import { Injectable } from "@nestjs/common";
+import { User } from "@domain/entities/user/user.entity";
 
 interface FindProjectByIdRequest {
     requestUserId: string;
     projectId: string;
+}
+
+interface CheckAbilityRequest {
+    requestUser: User;
+    projectOwnerId: string;
 }
 
 @Injectable()
@@ -20,21 +26,31 @@ export class FindProjectByIdUseCase {
     public async execute(request: FindProjectByIdRequest) {
         const { requestUserId, projectId } = request;
 
-        const requstUser = await this.findUserByIdUseCase.execute(requestUserId);
+        const [ requestUser, project ] = await Promise.all([
+            await this.findUserByIdUseCase.execute(requestUserId),
+            await this.projectRepository.findById(projectId),
+        ])
 
-        const isAdminUser = requstUser.getRole() === 'ADMIN';
-        const isOwner = requstUser.getId() === projectId;
-
-        if (isAdminUser || isOwner) {
-            const project = await this.projectRepository.findById(projectId);
-            if (!project) {
-                throw new ProjectNotFoundError();
-            }
-
-            return project;
+        if (!project) {
+            throw new ProjectNotFoundError();
         }
 
-        throw new UnauthorizedUserError();
+        await this.checkAbility({ 
+            requestUser, 
+            projectOwnerId: project.getOwner().getId() 
+        });
+
+        return project;
+    }
+
+    private async checkAbility(checkRequest: CheckAbilityRequest) {
+        const { requestUser, projectOwnerId } = checkRequest;
+        const isAdminUser = requestUser.getRole() === 'ADMIN';
+        const isOwner = requestUser.getId() === projectOwnerId;
+
+        if (!isAdminUser && !isOwner) {
+            throw new UnauthorizedUserError();
+        }
     }
 
 }
