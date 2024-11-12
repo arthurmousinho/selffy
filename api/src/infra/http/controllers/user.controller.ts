@@ -12,6 +12,7 @@ import { UpdateUserUseCase } from "@application/use-cases/user/update-user/updat
 import { JwtAuthGuard } from "../guards/jwt-auth.guard";
 import { ApiTags } from "@nestjs/swagger";
 import { RoleGuard } from "../guards/role.guard";
+import { FindUserByIdUseCase } from "@application/use-cases/user/find-user-by-id/find-user-by-id.usecase";
 
 @ApiTags('Users')
 @Controller('users')
@@ -23,7 +24,8 @@ export class UserController {
         private findAllUsersUseCase: FindAllUsersUseCase,
         private deleteUserUserCase: DeleteUserUsecase,
         private searchUserByNameUseCase: SearchUserByNameUseCase,
-        private updateUserUseCase: UpdateUserUseCase
+        private updateUserUseCase: UpdateUserUseCase,
+        private findUserByIdUseCase: FindUserByIdUseCase
     ) { }
 
     @Get()
@@ -55,6 +57,13 @@ export class UserController {
             users: pageableUsers.data.map(UserViewModel.toHTTP),
             meta: pageableUsers.meta
         };
+    }
+
+    @Get('/:id')
+    @UseGuards(JwtAuthGuard)
+    public async getById(@Param('id') id: string) {
+        const user = await this.findUserByIdUseCase.execute(id);
+        return { user: UserViewModel.toHTTP(user) };
     }
 
     @Post('/signup')
