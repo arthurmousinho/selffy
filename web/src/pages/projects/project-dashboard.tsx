@@ -2,11 +2,18 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger, } from "@/components/ui/tooltip";
+import { getProjectById } from "@/hooks/use-project";
+import { formatCurrency } from "@/utils/format-currency";
 import { ArrowUpRight, CheckCircle, DollarSign, HandCoinsIcon, Pen, Pin, Trash } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { CartesianGrid, XAxis, Area, AreaChart, Bar, BarChart, Rectangle } from "recharts";
 
 export function ProjectDashboard() {
+
+    const idFromParam = useParams().id
+
+    const { data } = getProjectById(idFromParam || '')
+
 
     const chartData1 = [
         { day: "Monday", done: 186 },
@@ -57,12 +64,20 @@ export function ProjectDashboard() {
             <Card>
                 <CardHeader className="w-full h-auto flex flex-row items-center justify-between">
                     <header className="flex items-center gap-2">
-                        <div className="w-10 h-10 flex items-center justify-center rounded-xl bg-green-300">
-                            💬
+                        <div
+                            className="w-14 h-14 flex items-center justify-center rounded-xl"
+                            style={{ backgroundColor: data?.project.color }}
+                        >
+                            <span className="text-2xl">{data?.project.icon}</span>
                         </div>
-                        <h2 className="font-semibold">
-                            MyChaty
-                        </h2>
+                        <div className="space-y-2">
+                            <h2 className="font-semibold">
+                                {data?.project.title}
+                            </h2>
+                            <span className="text-sm text-muted-foreground">
+                                {data?.project.description}
+                            </span>
+                        </div>
                     </header>
                     <div className="space-x-4">
                         <TooltipProvider>
@@ -131,7 +146,9 @@ export function ProjectDashboard() {
                             <h2 className="font-semibold">Revenue</h2>
                             <DollarSign size={20} className="text-primary" />
                         </header>
-                        <span className="font-bold text-2xl">R$ 12.500,00</span>
+                        <span className="font-bold text-2xl">
+                            {formatCurrency(data?.project.revenue || 0)}
+                        </span>
                         <span className="text-sm text-muted-foreground">
                             +R$ 3.200,00 since last month
                         </span>

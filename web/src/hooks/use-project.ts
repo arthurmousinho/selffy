@@ -170,3 +170,14 @@ export function getInProgressProjects() {
     });
     return query;
 }
+
+export function getProjectById(id: string) {
+    const query = useQuery({
+        queryKey: ['projects', id],
+        queryFn: async () => {
+            const response = await axios.get(`/projects/${id}`);
+            return response.data as { project: ProjectProps };
+        }
+    });
+    return query;
+}
