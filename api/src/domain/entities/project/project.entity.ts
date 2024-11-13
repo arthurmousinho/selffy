@@ -41,8 +41,8 @@ export class Project {
             status: props.status ?? 'IN_PROGRESS',
             createdAt: props.createdAt ?? new Date(),
             updatedAt: props.updatedAt ?? new Date(),
-            tasks: [],
-            costs: []
+            tasks: props.tasks ?? [],
+            costs: props.costs ?? []
         }
     }
 

@@ -11,7 +11,11 @@ export class ProjectViewModel {
             icon: project.getIcon(),
             color: project.getColor(),
             status: project.getStatus(),
-            tasks: project.getTasks(),
+            tasks: project.getTasks().map(task => ({
+                id: task.getId(),
+                title: task.getTitle(),
+                status: task.getStatus(),
+            })),
             ownerId: project.getOwner().getId(),
             createdAt: project.getCreatedAt(),
             updatedAt: project.getUpdatedAt()

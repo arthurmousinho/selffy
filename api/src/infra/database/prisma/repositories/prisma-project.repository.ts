@@ -32,12 +32,14 @@ export class PrismaProjectRepository implements ProjectRepository {
                 id
             },
             include: {
-                owner: true
+                owner: true,
+                tasks: true
             }
         });
         if (!project) {
             return null;
         }
+
         return PrismaProjectMapper.toDomain(project);
     }
 
@@ -50,7 +52,8 @@ export class PrismaProjectRepository implements ProjectRepository {
                     createdAt: 'desc'
                 },
                 include: {
-                    owner: true
+                    owner: true,
+                    tasks: true
                 }
             }),
             this.prismaService.project.count()
@@ -113,7 +116,8 @@ export class PrismaProjectRepository implements ProjectRepository {
                     createdAt: 'desc'
                 },
                 include: {
-                    owner: true
+                    owner: true,
+                    tasks: true
                 }
             }),
             this.prismaService.project.count({
@@ -158,7 +162,8 @@ export class PrismaProjectRepository implements ProjectRepository {
                 status
             },
             include: {
-                owner: true
+                owner: true,
+                tasks: true
             }
         });
         return projects.map(PrismaProjectMapper.toDomain);
@@ -176,7 +181,8 @@ export class PrismaProjectRepository implements ProjectRepository {
                     createdAt: 'desc'
                 },
                 include: {
-                    owner: true
+                    owner: true,
+                    tasks: true
                 }
             }),
             this.prismaService.project.count({
