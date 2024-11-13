@@ -68,6 +68,12 @@ export class InMemoryTaskRepository implements TaskRepository {
         }
     }
 
+    public async findManyByProjectId(projectId: string): Promise<Task[]> {
+        return this.tasks.filter(
+            (task) => task.getProjectId() === projectId
+        );
+    }
+
     public async count(): Promise<number> {
         return this.tasks.length;
     }

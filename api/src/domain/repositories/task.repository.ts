@@ -9,6 +9,7 @@ export abstract class TaskRepository {
     abstract update(task: Task): Promise<void>;
     abstract delete(id: string): Promise<void>;
     abstract findManyByTitle(params: { title: string, page: number, limit: number }): Promise<Pageable<Task>>;
+    abstract findManyByProjectId(projectId: string): Promise<Task[]>;
     abstract count(): Promise<number>;
     abstract countByStatus(status: TaskStatus): Promise<number>;
     abstract countByPriority(priority: TaskPriority): Promise<number>;

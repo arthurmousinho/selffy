@@ -112,6 +112,15 @@ export class PrismaTaskRepository implements TaskRepository {
         };
     }
 
+    public async findManyByProjectId(projectId: string): Promise<Task[]> {
+        const tasks = await this.prismaService.task.findMany({
+            where: {
+                projectId
+            }
+        })
+        return tasks.map(PrismaTaskMapper.toDomain)
+    }
+
     public async count(): Promise<number> {
         const count = await this.prismaService.task.count()
         return count
