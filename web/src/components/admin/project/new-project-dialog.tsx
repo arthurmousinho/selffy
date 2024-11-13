@@ -31,6 +31,9 @@ import {
 import { getAllUsers, UserProps } from "@/hooks/use-user";
 import { createProject } from "@/hooks/use-project";
 import { decodeToken } from "@/hooks/use-token";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { SmileIcon } from "lucide-react";
+import EmojiPicker, { EmojiClickData } from "emoji-picker-react";
 
 const colorOptions = [
     { label: "Red", class: "bg-red-300", hex: "#fca5a5" },
@@ -52,6 +55,7 @@ interface NewProjectDialogProps {
 export function NewProjectDialog(props: NewProjectDialogProps) {
 
     const [selectedColor, setSelectedColor] = useState<string | null>(null);
+    const [selectedEmoji, setSelectedEmoji] = useState<string | null>(null);
 
     const { data: getAllUsersData } = props.adminMode ? getAllUsers(1, 10) : { data: null };
     const { mutate: createProjectFn } = createProject();
@@ -169,15 +173,29 @@ export function NewProjectDialog(props: NewProjectDialogProps) {
                                     control={form.control}
                                     name="icon"
                                     render={({ field }) => (
-                                        <FormItem>
+                                        <FormItem className="flex flex-col">
                                             <FormLabel>Icon</FormLabel>
-                                            <FormControl>
-                                                <Input
-                                                    {...field}
-                                                    placeholder="Ex: 🚀"
-                                                    type="emoji"
-                                                />
-                                            </FormControl>
+                                            <Popover>
+                                                <PopoverTrigger asChild onClick={(e) => e.stopPropagation()}>
+                                                    <FormControl>
+                                                        <Button
+                                                            variant={"outline"}
+                                                            className={`w-full pl-3 text-left font-normal ${!selectedEmoji && "text-muted-foreground"}`}
+                                                        >
+                                                            {selectedEmoji ? selectedEmoji : <span>Select an emoji</span>}
+                                                            <SmileIcon className="ml-auto h-4 w-4 opacity-50" />
+                                                        </Button>
+                                                    </FormControl>
+                                                </PopoverTrigger>
+                                                <PopoverContent className="w-auto p-0" align="start">
+                                                    <EmojiPicker
+                                                        onEmojiClick={(emoji: EmojiClickData) => {
+                                                            setSelectedEmoji(emoji.emoji);
+                                                            field.onChange(emoji.emoji);
+                                                        }}
+                                                    />
+                                                </PopoverContent>
+                                            </Popover>
                                             <FormMessage />
                                         </FormItem>
                                     )}
