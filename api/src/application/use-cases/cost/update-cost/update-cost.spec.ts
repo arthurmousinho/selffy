@@ -7,20 +7,27 @@ import { InMemoryProjectRepository } from "@test/repositories/in-memory-project.
 import { makeProject } from "@test/factories/project.factory";
 import { ProjectRepository } from "@domain/repositories/project.repository";
 import { CostRepository } from "@domain/repositories/cost.repository";
+import { UserRepository } from "@domain/repositories/user.repository";
+import { InMemoryUserRepository } from "@test/repositories/in-memory-user.repository";
+import { FindUserByIdUseCase } from "@application/use-cases/user/find-user-by-id/find-user-by-id.usecase";
 
 describe('Update Cost UseCase', () => {
 
     let updateCostUseCase: UpdateCostUseCase;
     let findProjectByIdUseCase: FindProjectByIdUseCase;
+    let findUserByIdUseCase: FindUserByIdUseCase;
 
     let costRepository: CostRepository;
     let projectRepository: ProjectRepository;
+    let userRepository: UserRepository;
 
     beforeEach(() => {
         costRepository = new InMemoryCostRepository();
         projectRepository = new InMemoryProjectRepository();
+        userRepository = new InMemoryUserRepository();
 
-        findProjectByIdUseCase = new FindProjectByIdUseCase(projectRepository);
+        findUserByIdUseCase = new FindUserByIdUseCase(userRepository);
+        findProjectByIdUseCase = new FindProjectByIdUseCase(projectRepository, findUserByIdUseCase);
         updateCostUseCase = new UpdateCostUseCase(costRepository, findProjectByIdUseCase);
     });
 

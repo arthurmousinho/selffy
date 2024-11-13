@@ -1,4 +1,4 @@
-import { ProjectRepository } from "@application/repositories/project.repository";
+import { ProjectRepository } from "@domain/repositories/project.repository";
 import { UpdateProjectUseCase } from "./update-project.usecase";
 import { InMemoryProjectRepository } from "@test/repositories/in-memory-project.repository";
 import { makeProject } from "@test/factories/project.factory";

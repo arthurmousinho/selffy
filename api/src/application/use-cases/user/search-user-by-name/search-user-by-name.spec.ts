@@ -1,7 +1,7 @@
 import { SearchUserByNameUseCase } from "./search-user-by-name.usecase";
 import { UserRepository } from "@domain/repositories/user.repository";
 import { InMemoryUserRepository } from "@test/repositories/in-memory-user.repository";
-import { User } from "src/domain/entities/user/user.entity";
+import { User } from "@domain/entities/user/user.entity";
 
 describe('SearchUserByNameUseCase', () => {
     let searchUserByNameUseCase: SearchUserByNameUseCase;

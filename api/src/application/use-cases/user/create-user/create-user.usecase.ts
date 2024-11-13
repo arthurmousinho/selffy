@@ -1,4 +1,4 @@
-import { Role, User } from "src/domain/entities/user/user.entity";
+import { Role, User } from "@domain/entities/user/user.entity";
 import { UserAlreadyExistsError } from "@application/errors/user/user-already-exists.error";
 import { UserRepository } from "@domain/repositories/user.repository";
 import { Injectable } from "@nestjs/common";

@@ -1,4 +1,4 @@
-import { ProjectRepository } from "@application/repositories/project.repository";
+import { ProjectRepository } from "@domain/repositories/project.repository";
 import { GetProjectsGrowthUseCase } from "./get-projects-growth.usecase"; // Adjust the import path as necessary
 import { subDays, subWeeks, subMonths } from 'date-fns';
 

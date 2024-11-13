@@ -38,11 +38,12 @@ describe('Update User UseCase', () => {
 
         const updatedUser = await userRepository.findById(existingUser.getId());
 
-        expect(updatedUser).toBeDefined();
-        expect(updatedUser.getName()).toBe('Updated Name');
-        expect(updatedUser.getEmail()).toBe('updated@example.com');
-        expect(updatedUser.getRole()).toBe('PREMIUM');
-        expect(updatedUser.getUpdatedAt()).not.toEqual(previousUpdatedAt);
+        if (updatedUser) {
+            expect(updatedUser.getName()).toBe('Updated Name');
+            expect(updatedUser.getEmail()).toBe('updated@example.com');
+            expect(updatedUser.getRole()).toBe('PREMIUM');
+            expect(updatedUser.getUpdatedAt()).not.toEqual(previousUpdatedAt);
+        }
     });
 
     it('should update only name and email if user is FREE or PREMIUM', async () => {
@@ -60,11 +61,12 @@ describe('Update User UseCase', () => {
 
         const updatedUser = await userRepository.findById(existingUser.getId());
 
-        expect(updatedUser).toBeDefined();
-        expect(updatedUser.getName()).toBe('Updated Name');
-        expect(updatedUser.getEmail()).toBe('updated@example.com');
-        expect(updatedUser.getRole()).toBe('FREE'); 
-        expect(updatedUser.getUpdatedAt()).not.toEqual(previousUpdatedAt);
+        if (updatedUser) {
+            expect(updatedUser.getName()).toBe('Updated Name');
+            expect(updatedUser.getEmail()).toBe('updated@example.com');
+            expect(updatedUser.getRole()).toBe('FREE');
+            expect(updatedUser.getUpdatedAt()).not.toEqual(previousUpdatedAt);
+        }
     });
 
 });

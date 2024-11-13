@@ -1,4 +1,4 @@
-import { Project, ProjectStatus } from "src/domain/entities/project/project.entity";
+import { Project, ProjectStatus } from "@domain/entities/project/project.entity";
 import { User } from "src/domain/entities/user/user.entity";
 import { ProjectNotFoundError } from "@application/errors/project/project-not-found.error";
 import { ProjectRepository } from "@domain/repositories/project.repository";

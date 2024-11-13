@@ -1,6 +1,6 @@
 import { makeProject } from "@test/factories/project.factory";
 import { GetTotalRevenueUseCase } from "./get-total-revenue.usecase";
-import { ProjectRepository } from "@application/repositories/project.repository";
+import { ProjectRepository } from "@domain/repositories/project.repository";
 import { InMemoryProjectRepository } from "@test/repositories/in-memory-project.repository";
 
 describe('Get TotalRevenue UseCase', () => {
