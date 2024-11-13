@@ -9,6 +9,7 @@ import { UpdateTaskUseCase } from "@application/use-cases/task/update-task/updat
 import { SearchTasksByTitleUseCase } from "@application/use-cases/task/search-tasks-by-title/search-tasks-by-title.usecase";
 import { JwtAuthGuard } from "../guards/jwt-auth.guard";
 import { ApiTags } from "@nestjs/swagger";
+import { UserFromToken } from "../decorators/user-from-token.decorator";
 
 @ApiTags('Tasks')
 @UseGuards(JwtAuthGuard)
@@ -53,8 +54,16 @@ export class TaskController {
     }
 
     @Post()
-    public async createTask(@Body() body: CreateTaskBody) {
-        await this.createTaskUseCase.execute(body);
+    public async createTask(
+        @Body() body: CreateTaskBody,
+        @UserFromToken() userFromToken: UserFromToken,
+    ) {
+        console.log('controller')
+        const task = await this.createTaskUseCase.execute({
+            ...body,
+            requestUserId: userFromToken.id
+        });
+        return task;
     }
 
     @Put()

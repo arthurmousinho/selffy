@@ -1,4 +1,4 @@
-import { Task, TaskPriority } from "src/domain/entities/task/task.entity";
+import { Task, TaskPriority } from "@domain/entities/task/task.entity";
 import { randomUUID } from "crypto";
 
 export function makeTask(props?: {
