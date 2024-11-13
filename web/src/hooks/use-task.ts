@@ -4,8 +4,8 @@ import { axios } from "@/lib/axios";
 import { queryClient } from "@/main";
 import { PageableMeta } from "@/types/pageable.type";
 
-type TaskStatus = "PENDING" | "COMPLETED";
-type TaskPriority = "LOW" | "MEDIUM" | "HIGH";
+export type TaskStatus = "PENDING" | "COMPLETED" | "IN_PROGRESS";
+export type TaskPriority = "LOW" | "MEDIUM" | "HIGH";
 
 export interface TaskProps {
     id: string;
@@ -135,5 +135,18 @@ export function searchTasksByTitle(props: { title?: string, page?: number, limit
         staleTime: 5000
     });
 
+    return query;
+}
+
+export function getTasksByProjectId(id: string) {
+    const query = useQuery({
+        queryKey: ['tasks', id],
+        queryFn: async () => {
+            const response = await axios.get(`/tasks/project/${id}`);
+            return response.data as GetAllTasksResponse;
+        },
+        enabled: !!id,
+        staleTime: 5000
+    });
     return query;
 }
