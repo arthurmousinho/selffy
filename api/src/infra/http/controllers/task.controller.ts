@@ -67,8 +67,14 @@ export class TaskController {
     }
 
     @Put()
-    public async updateTask(@Body() body: UpdateTaskBody) {
-        await this.updateTaskUseCase.execute(body);
+    public async updateTask(
+        @Body() body: UpdateTaskBody,
+        @UserFromToken() userFromToken: UserFromToken,
+    ) {
+        await this.updateTaskUseCase.execute({
+            ...body,
+            requestUserId: userFromToken.id
+        });
     }
 
     @Delete(':id')

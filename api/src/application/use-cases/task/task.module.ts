@@ -11,10 +11,12 @@ import { CountTasksByStatusUseCase } from './count-tasks-by-status/count-tasks-b
 import { CountTasksUseCase } from './count-tasks/count-tasks.usecase';
 import { GetTasksInsightsUseCase } from './get-tasks-insights/get-tasks-insights.usecase';
 import { GetTasksGrowthUseCase } from './get-tasks-growth/get-tasks-growth.usecase';
+import { UserModule } from '../user/user.module';
 
 @Module({
     imports: [
-        ProjectModule
+        ProjectModule,
+        UserModule
     ],
     providers: [
         CreateTaskUseCase,
