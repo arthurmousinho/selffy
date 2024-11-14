@@ -23,6 +23,7 @@ interface NewTaskDialogProps {
 }
 
 export function NewTaskDialog(props: NewTaskDialogProps) {
+    
     const formSchema = z.object({
         title: z.string({ message: "Title is required" }).min(1, { message: "Title is required" }),
         description: z.string({ message: "Description is required" }).min(1, { message: "Description is required" }),

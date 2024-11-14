@@ -92,7 +92,6 @@ export function Header() {
                                     <Link
                                         rel="noreferrer noopener"
                                         to="/auth/signup"
-                                        target="_blank"
                                         className={`${buttonVariants({
                                             variant: "default",
                                         })}`}
@@ -123,8 +122,7 @@ export function Header() {
                     <div className="hidden md:flex gap-2">
                         <Link
                             rel="noreferrer noopener"
-                            to="/auth/signup"
-                            target="_blank"
+                            to="/auth/signin"
                             className={`${buttonVariants({
                                 variant: "ghost",
                             })}`}
@@ -134,7 +132,6 @@ export function Header() {
                         <Link
                             rel="noreferrer noopener"
                             to="/auth/signup"
-                            target="_blank"
                             className={`${buttonVariants({
                                 variant: "default",
                             })}`}

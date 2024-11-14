@@ -131,7 +131,7 @@ export function ProjectDashboard() {
                             <span className="text-sm text-muted-foreground">
                                 +16 since last month
                             </span>
-                            <Link to={'tasks'}>
+                            <Link to={'tasks'} state={{ project: data?.project }}>
                                 <Button variant={'link'} className="flex items-center gap-1 p-0 m-0 w-auto h-auto">
                                     See all
                                     <ArrowUpRight size={20} />

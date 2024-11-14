@@ -17,14 +17,14 @@ interface TaskCardProps {
 export function TaskCard(props: TaskCardProps) {
     return (
         <Link to={props.id}>
-            <Card>
+            <Card className="flex flex-row justify-between items-center">
                 <CardHeader className="flex flex-row items-center gap-2">
                     <TaskBadge priority={props.priority} />
                     <h2 className="font-semibold">
                         {props.title}
                     </h2>
                 </CardHeader>
-                <CardFooter className="flex items-center justify-between">
+                <CardFooter className="flex items-center gap-4 justify-between py-0">
                     {
                         props.status === 'PENDING' ? (
                             <Badge variant={'outline'} className=" bg-slate-50 text-slate-400">
