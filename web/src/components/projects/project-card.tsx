@@ -23,12 +23,14 @@ export function ProjectCard(props: ProjectCardProps) {
                     >
                         {props.icon}
                     </div>
-                    <h2 className="font-semibold">
+                    <h2 className="font-semibold line-clamp-1">
                         {props.title}
                     </h2>
                 </CardHeader>
-                <CardContent className="text-sm text-muted-foreground">
-                    {props.description}
+                <CardContent>
+                    <span className="text-sm text-muted-foreground leading-relaxed line-clamp-3 min-h-[70px]">
+                        {props.description}
+                    </span>
                 </CardContent>
                 <CardFooter>
                     {
