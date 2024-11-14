@@ -10,6 +10,7 @@ import { CostRepository } from "@domain/repositories/cost.repository";
 import { UserRepository } from "@domain/repositories/user.repository";
 import { InMemoryUserRepository } from "@test/repositories/in-memory-user.repository";
 import { FindUserByIdUseCase } from "@application/use-cases/user/find-user-by-id/find-user-by-id.usecase";
+import { makeUser } from "@test/factories/user.factory";
 
 describe('Update Cost UseCase', () => {
 
@@ -45,10 +46,13 @@ describe('Update Cost UseCase', () => {
     });
 
     it('should update the cost if it exists', async () => {
-        const existingCost = makeCost();
-        const existingProject = makeProject();
+        const user = makeUser();
+        await userRepository.create(user);
 
+        const existingProject = makeProject({ owner: user });
         await projectRepository.create(existingProject);
+
+        const existingCost = makeCost({ project: existingProject });
         await costRepository.create(existingCost);
 
         const updatedValue = 1800;

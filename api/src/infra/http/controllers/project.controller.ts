@@ -15,6 +15,7 @@ import { UserFromToken } from "../decorators/user-from-token.decorator";
 import { FindProjectsByOwnerIdUseCase } from "@application/use-cases/project/find-projects-by-owner-id/find-projects-by-owner-id.usecase";
 import { RoleGuard } from "../guards/role.guard";
 import { FindProjectByIdUseCase } from "@application/use-cases/project/find-project-by-id/find-project-by-id.usecase";
+import { GetProjectDashboardUseCase } from "@application/use-cases/project/get-project-dashboard/get-project-dashboard.usecase";
 
 @ApiTags('Projects')
 @UseGuards(JwtAuthGuard)
@@ -30,7 +31,7 @@ export class ProjectController {
         private searchProjectByTitleUseCase: SearchProjectByTitleUseCase,
         private findProjectsByStatusUseCase: FindProjectsByStatusUseCase,
         private findProjectByIdUseCase: FindProjectByIdUseCase,
-
+        private getProjectDashboardUseCase: GetProjectDashboardUseCase,
     ) { }
 
     @Get()
@@ -44,6 +45,18 @@ export class ProjectController {
             projects: pageableProjects.data.map(ProjectViewModel.toHTTP),
             meta: pageableProjects.meta
         };
+    }
+
+    @Get('/dashboard/:id')
+    public async getProjectDashboard(
+        @Param('id') id: string,
+        @UserFromToken() userFromToken: UserFromToken,
+    ) {
+        const projectDashboard = await this.getProjectDashboardUseCase.execute({
+            projectId: id,
+            requestUserId: userFromToken.id
+        });
+        return projectDashboard;
     }
 
     @Get(':id')

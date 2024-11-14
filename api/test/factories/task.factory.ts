@@ -1,4 +1,4 @@
-import { Task, TaskPriority } from "@domain/entities/task/task.entity";
+import { Task, TaskPriority, TaskStatus } from "@domain/entities/task/task.entity";
 import { randomUUID } from "crypto";
 
 export function makeTask(props?: {
@@ -6,7 +6,8 @@ export function makeTask(props?: {
     description?: string,
     dueDate?: Date,
     priority?: TaskPriority,
-    projectId?: string
+    projectId?: string,
+    status?: TaskStatus,
 }) {
     const taskId = randomUUID();
 
@@ -16,6 +17,7 @@ export function makeTask(props?: {
         dueDate: props?.dueDate ?? new Date('2024-12-31'),
         priority: props?.priority ?? 'MEDIUM',
         projectId: props?.projectId ?? randomUUID(),
+        status: props?.status ?? 'PENDING',
     }, taskId);
 
     return newTask;

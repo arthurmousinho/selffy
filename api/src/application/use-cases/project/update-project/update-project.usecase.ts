@@ -1,5 +1,5 @@
 import { Project, ProjectStatus } from "@domain/entities/project/project.entity";
-import { User } from "src/domain/entities/user/user.entity";
+import { User } from "@domain/entities/user/user.entity";
 import { ProjectNotFoundError } from "@application/errors/project/project-not-found.error";
 import { ProjectRepository } from "@domain/repositories/project.repository";
 import { Injectable } from "@nestjs/common";
