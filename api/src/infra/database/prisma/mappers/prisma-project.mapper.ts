@@ -50,8 +50,6 @@ export class PrismaProjectMapper {
             tasks
         }, raw.id)
 
-        console.log(project.getTasks())
-
         return project;
     }
 

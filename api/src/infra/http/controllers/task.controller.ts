@@ -72,7 +72,6 @@ export class TaskController {
         @Body() body: CreateTaskBody,
         @UserFromToken() userFromToken: UserFromToken,
     ) {
-        console.log('controller')
         const task = await this.createTaskUseCase.execute({
             ...body,
             requestUserId: userFromToken.id
