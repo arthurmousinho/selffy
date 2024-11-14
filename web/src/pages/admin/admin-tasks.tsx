@@ -89,7 +89,7 @@ export function AdminTasks() {
                         <RefreshCcw size={20} />
                         Refresh
                     </Button>
-                    <NewTaskDialog>
+                    <NewTaskDialog adminMode={true}>
                         <Button className="flex items-center gap-2">
                             <Plus size={20} />
                             New Task
@@ -154,7 +154,7 @@ export function AdminTasks() {
                                         </DetailsDialog>
                                     </TableCell>
                                     <TableCell className="text-right">
-                                        <EditTaskDialog data={task}>
+                                        <EditTaskDialog data={task} adminMode={true}>
                                             <Button className="text-muted-foreground" variant={'outline'}>
                                                 <Pencil size={20} />
                                             </Button>

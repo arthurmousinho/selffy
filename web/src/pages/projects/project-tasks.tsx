@@ -42,7 +42,10 @@ export function ProjectTasks() {
                         </div>
                     </header>
                     <nav>
-                        <NewTaskDialog>
+                        <NewTaskDialog
+                            projectId={projectData?.project.id}
+                            adminMode={false}
+                        >
                             <Button className="flex items-center gap-2">
                                 <Plus />
                                 New Task
@@ -90,7 +93,7 @@ export function ProjectTasks() {
                                         </span>
                                     </TableCell>
                                     <TableCell className="text-right">
-                                        <EditTaskDialog data={task}>
+                                        <EditTaskDialog data={task} adminMode={false}>
                                             <Button className="text-muted-foreground" variant={'outline'}>
                                                 <Pencil size={20} />
                                             </Button>

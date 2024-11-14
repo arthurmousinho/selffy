@@ -19,11 +19,13 @@ import { Label } from '@/components/ui/label'
 import { createTask } from '@/hooks/use-task'
 
 interface NewTaskDialogProps {
-    children: React.ReactNode
+    children: React.ReactNode;
+    adminMode: boolean;
+    projectId?: string;
 }
 
 export function NewTaskDialog(props: NewTaskDialogProps) {
-    
+
     const formSchema = z.object({
         title: z.string({ message: "Title is required" }).min(1, { message: "Title is required" }),
         description: z.string({ message: "Description is required" }).min(1, { message: "Description is required" }),
@@ -39,10 +41,15 @@ export function NewTaskDialog(props: NewTaskDialogProps) {
         },
     })
 
-    const { data: getInProgressProjectsData } = getInProgressProjects();
+    const { data: getInProgressProjectsData } = props.adminMode ? getInProgressProjects() : { data: null };
     const { mutate: createTaskFn } = createTask();
 
+    if (!props.adminMode) {
+        form.setValue("projectId", props.projectId || "");
+    }
+
     function onSubmit(values: z.infer<typeof formSchema>) {
+        console.log('oi')
         createTaskFn({
             title: values.title,
             description: values.description,
@@ -162,30 +169,34 @@ export function NewTaskDialog(props: NewTaskDialogProps) {
                                 </FormItem>
                             )}
                         />
-                        <FormField
-                            control={form.control}
-                            name="projectId"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel>Project</FormLabel>
-                                    <Select onValueChange={field.onChange} defaultValue={field.value}>
-                                        <FormControl>
-                                            <SelectTrigger>
-                                                <SelectValue placeholder="Select a project" />
-                                            </SelectTrigger>
-                                        </FormControl>
-                                        <SelectContent>
-                                            {getInProgressProjectsData?.projects.map((project: ProjectProps) => (
-                                                <SelectItem key={project.id} value={project.id}>
-                                                    {project.title}
-                                                </SelectItem>
-                                            ))}
-                                        </SelectContent>
-                                    </Select>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
+                        {
+                            props.adminMode && (
+                                <FormField
+                                    control={form.control}
+                                    name="projectId"
+                                    render={({ field }) => (
+                                        <FormItem>
+                                            <FormLabel>Project</FormLabel>
+                                            <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                                <FormControl>
+                                                    <SelectTrigger>
+                                                        <SelectValue placeholder="Select a project" />
+                                                    </SelectTrigger>
+                                                </FormControl>
+                                                <SelectContent>
+                                                    {getInProgressProjectsData?.projects.map((project: ProjectProps) => (
+                                                        <SelectItem key={project.id} value={project.id}>
+                                                            {project.title}
+                                                        </SelectItem>
+                                                    ))}
+                                                </SelectContent>
+                                            </Select>
+                                            <FormMessage />
+                                        </FormItem>
+                                    )}
+                                />
+                            )
+                        }
                         <Button type="submit" className="w-full">Save</Button>
                     </form>
                 </Form>

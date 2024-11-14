@@ -21,9 +21,11 @@ import { TaskProps, updateTask } from '@/hooks/use-task'
 interface EditTaskDialogProps {
     children: React.ReactNode;
     data: TaskProps;
+    adminMode: boolean;
 }
 
 export function EditTaskDialog(props: EditTaskDialogProps) {
+
     const formSchema = z.object({
         title: z.string({ required_error: "Title is required" }).min(1, { message: "Title is required" }),
         description: z.string({ required_error: "Description is required" }).min(1, { message: "Description is required" }),
@@ -45,7 +47,11 @@ export function EditTaskDialog(props: EditTaskDialogProps) {
         }
     })
 
-    const { data: getInProgressProjectsData } = getInProgressProjects();
+    if (!props.adminMode) {
+        form.setValue("projectId", props.data.projectId);
+    }
+
+    const { data: getInProgressProjectsData } = props.adminMode ? getInProgressProjects() : { data: null };
     const { mutate: updateTaskFn } = updateTask();
 
     function onSubmit(values: z.infer<typeof formSchema>) {
@@ -196,30 +202,34 @@ export function EditTaskDialog(props: EditTaskDialogProps) {
                                 </FormItem>
                             )}
                         />
-                        <FormField
-                            control={form.control}
-                            name="projectId"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel>Project</FormLabel>
-                                    <Select onValueChange={field.onChange} defaultValue={field.value}>
-                                        <FormControl>
-                                            <SelectTrigger>
-                                                <SelectValue placeholder="Select a project" />
-                                            </SelectTrigger>
-                                        </FormControl>
-                                        <SelectContent>
-                                            {getInProgressProjectsData?.projects.map((project: ProjectProps) => (
-                                                <SelectItem key={project.id} value={project.id}>
-                                                    {project.title}
-                                                </SelectItem>
-                                            ))}
-                                        </SelectContent>
-                                    </Select>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
+                        {
+                            props.adminMode && (
+                                <FormField
+                                    control={form.control}
+                                    name="projectId"
+                                    render={({ field }) => (
+                                        <FormItem>
+                                            <FormLabel>Project</FormLabel>
+                                            <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                                <FormControl>
+                                                    <SelectTrigger>
+                                                        <SelectValue placeholder="Select a project" />
+                                                    </SelectTrigger>
+                                                </FormControl>
+                                                <SelectContent>
+                                                    {getInProgressProjectsData?.projects.map((project: ProjectProps) => (
+                                                        <SelectItem key={project.id} value={project.id}>
+                                                            {project.title}
+                                                        </SelectItem>
+                                                    ))}
+                                                </SelectContent>
+                                            </Select>
+                                            <FormMessage />
+                                        </FormItem>
+                                    )}
+                                />
+                            )
+                        }
                         <Button type="submit" className="w-full">Save</Button>
                     </form>
                 </Form>

@@ -14,7 +14,6 @@ export function ProjectDashboard() {
 
     const { data } = getProjectById(idFromParam || '')
 
-
     const chartData1 = [
         { day: "Monday", done: 186 },
         { day: "Tuesday", done: 305 },
@@ -70,13 +69,10 @@ export function ProjectDashboard() {
                         >
                             <span className="text-2xl">{data?.project.icon}</span>
                         </div>
-                        <div className="space-y-2">
-                            <h2 className="font-semibold">
+                        <div className="space-y-0 w-[500px]">
+                            <h2 className="font-semibold text-2xl">
                                 {data?.project.title}
                             </h2>
-                            <span className="text-sm text-muted-foreground">
-                                {data?.project.description}
-                            </span>
                         </div>
                     </header>
                     <div className="space-x-4">

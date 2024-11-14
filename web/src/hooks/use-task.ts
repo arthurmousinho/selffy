@@ -4,7 +4,7 @@ import { axios } from "@/lib/axios";
 import { queryClient } from "@/main";
 import { PageableMeta } from "@/types/pageable.type";
 
-export type TaskStatus = "PENDING" | "COMPLETED" | "IN_PROGRESS";
+export type TaskStatus = "PENDING" | "COMPLETED";
 export type TaskPriority = "LOW" | "MEDIUM" | "HIGH";
 
 export interface TaskProps {
