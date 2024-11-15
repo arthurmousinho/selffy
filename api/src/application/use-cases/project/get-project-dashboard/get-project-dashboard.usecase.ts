@@ -33,7 +33,7 @@ export class GetProjectDashboardUseCase {
         const lowPriorityTasks = project.getTasks().filter(task => task.getPriority() === 'LOW').length;
 
         const totalCostsValue = project.getCosts().reduce((acc, cost) => acc + cost.getValue(), 0);
-        const totalProfit = totalCostsValue - project.getRevenue();
+        const totalProfit = project.getRevenue() - totalCostsValue;
 
         return {
             title: projectTitle,

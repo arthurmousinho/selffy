@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger, } from "@/components/ui/tooltip";
-import { getProjectById } from "@/hooks/use-project";
+import { getProjectDashboard } from "@/hooks/use-project";
 import { formatCurrency } from "@/utils/format-currency";
 import { ArrowUpRight, CheckCircle, DollarSign, HandCoinsIcon, Pen, Pin, Trash } from "lucide-react";
 import { Link, useParams } from "react-router-dom";
@@ -10,9 +10,8 @@ import { CartesianGrid, XAxis, Area, AreaChart, Bar, BarChart, Rectangle } from 
 
 export function ProjectDashboard() {
 
-    const idFromParam = useParams().id
-
-    const { data } = getProjectById(idFromParam || '')
+    const projectIdFromParam = useParams().id || '';
+    const { data } = getProjectDashboard(projectIdFromParam);
 
     const chartData1 = [
         { day: "Monday", done: 186 },
@@ -32,9 +31,9 @@ export function ProjectDashboard() {
     } satisfies ChartConfig
 
     const chartData = [
-        { priority: "HIGH", tasksAmount: 187, fill: "#fecaca" },
-        { priority: "MEDIUM", tasksAmount: 200, fill: "#fde68a" },
-        { priority: "LOW", tasksAmount: 275, fill: "#bae6fd" }
+        { priority: "HIGH", tasksAmount: data?.tasks.highPriority, fill: "#fecaca" },
+        { priority: "MEDIUM", tasksAmount: data?.tasks.mediumPriority, fill: "#fde68a" },
+        { priority: "LOW", tasksAmount: data?.tasks.lowPriority, fill: "#bae6fd" }
     ]
 
     const chartConfig = {
@@ -65,13 +64,13 @@ export function ProjectDashboard() {
                     <header className="flex items-center gap-2">
                         <div
                             className="w-14 h-14 flex items-center justify-center rounded-xl"
-                            style={{ backgroundColor: data?.project.color }}
+                            style={{ backgroundColor: data?.color }}
                         >
-                            <span className="text-2xl">{data?.project.icon}</span>
+                            <span className="text-2xl">{data?.icon}</span>
                         </div>
                         <div className="space-y-0 w-[500px]">
                             <h2 className="font-semibold text-2xl">
-                                {data?.project.title}
+                                {data?.title}
                             </h2>
                         </div>
                     </header>
@@ -121,13 +120,13 @@ export function ProjectDashboard() {
                             <CheckCircle size={20} className="text-primary" />
                         </header>
                         <span className="font-bold text-2xl">
-                            97/120 Tasks
+                            {data?.tasks.completed}/{data?.tasks.total} Tasks
                         </span>
                         <footer className="w-full flex flex-row items-center justify-between">
                             <span className="text-sm text-muted-foreground">
                                 +16 since last month
                             </span>
-                            <Link to={'tasks'} state={{ project: data?.project }}>
+                            <Link to={'tasks'} state={{ project: data }}>
                                 <Button variant={'link'} className="flex items-center gap-1 p-0 m-0 w-auto h-auto">
                                     See all
                                     <ArrowUpRight size={20} />
@@ -143,7 +142,7 @@ export function ProjectDashboard() {
                             <DollarSign size={20} className="text-primary" />
                         </header>
                         <span className="font-bold text-2xl">
-                            {formatCurrency(data?.project.revenue || 0)}
+                            {formatCurrency(data?.revenue || 0)}
                         </span>
                         <span className="text-sm text-muted-foreground">
                             +R$ 3.200,00 since last month
@@ -156,10 +155,12 @@ export function ProjectDashboard() {
                             <h2 className="font-semibold">Cost</h2>
                             <HandCoinsIcon size={20} className="text-primary" />
                         </header>
-                        <span className="font-bold text-2xl">R$ 2.500,00</span>
+                        <span className="font-bold text-2xl">
+                            {formatCurrency(data?.costs.totalValue || 0)}
+                        </span>
                         <footer className="w-full flex flex-row items-center justify-between">
                             <span className="text-sm text-muted-foreground">
-                                Total Profit: R$ 9.800,00
+                                Total Profit: {formatCurrency(data?.costs.totalProfit || 0)}
                             </span>
                             <Link to={'costs'}>
                                 <Button variant={'link'} className="flex items-center gap-1 p-0 m-0 w-auto h-auto">

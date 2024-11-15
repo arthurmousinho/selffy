@@ -181,3 +181,32 @@ export function getProjectById(id: string) {
     });
     return query;
 }
+
+interface GetProjectDashboardResponse {
+    title: string;
+    color: string;
+    icon: string;
+    revenue: number;
+    tasks: {
+        total: number;
+        completed: number;
+        highPriority: number;
+        mediumPriority: number;
+        lowPriority: number;
+    };
+    costs: {
+        totalValue: number;
+        totalProfit: number;
+    }
+}
+
+export function getProjectDashboard(id: string) {
+    const query = useQuery({
+        queryKey: ['projects', id, 'dashboard'],
+        queryFn: async () => {
+            const response = await axios.get(`/projects/dashboard/${id}`);
+            return response.data as GetProjectDashboardResponse;
+        }
+    });
+    return query;
+}
