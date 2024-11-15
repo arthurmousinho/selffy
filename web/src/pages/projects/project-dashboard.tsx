@@ -1,17 +1,26 @@
+import { DeleteAlertDialog } from "@/components/global/delete-alert-dialog";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger, } from "@/components/ui/tooltip";
-import { getProjectDashboard } from "@/hooks/use-project";
+import { deleteProject, getProjectDashboard } from "@/hooks/use-project";
 import { formatCurrency } from "@/utils/format-currency";
 import { ArrowUpRight, CheckCircle, DollarSign, HandCoinsIcon, Pen, Pin, Trash } from "lucide-react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { CartesianGrid, XAxis, Area, AreaChart, Bar, BarChart, Rectangle } from "recharts";
 
 export function ProjectDashboard() {
 
     const projectIdFromParam = useParams().id || '';
+    const navigate = useNavigate();
+
     const { data } = getProjectDashboard(projectIdFromParam);
+    const { mutate: deleteProjectFn } = deleteProject();
+
+    function handleDeleteProject() {
+        deleteProjectFn(projectIdFromParam);
+        navigate('/app/projects');
+    }
 
     const chartData1 = [
         { day: "Monday", done: 186 },
@@ -98,9 +107,11 @@ export function ProjectDashboard() {
                             </Tooltip>
                             <Tooltip>
                                 <TooltipTrigger>
-                                    <Button variant={'outline'} className="flex items-center text-muted-foreground">
-                                        <Trash size={20} />
-                                    </Button>
+                                    <DeleteAlertDialog onDelete={handleDeleteProject}>
+                                        <Button variant={'outline'} className="flex items-center text-muted-foreground">
+                                            <Trash size={20} />
+                                        </Button>
+                                    </DeleteAlertDialog>
                                 </TooltipTrigger>
                                 <TooltipContent side="bottom">
                                     <p>Delete</p>

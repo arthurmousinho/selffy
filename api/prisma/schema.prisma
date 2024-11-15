@@ -37,7 +37,7 @@ model Project {
   tasks       Task[]
   ownerId     String
   owner       User          @relation(fields: [ownerId], references: [id])
-  costs       Cost[]
+  costs       Cost[]        
 }
 
 enum ProjectStatus {
@@ -60,7 +60,7 @@ model Task {
   status      TaskStatus
   dueDate     DateTime
   priority    TaskPriority
-  project     Project      @relation(fields: [projectId], references: [id])
+  project     Project      @relation(fields: [projectId], references: [id], onDelete: Cascade)
   projectId   String
 }
 
@@ -77,6 +77,6 @@ model Cost {
   createdAt DateTime
   updatedAt DateTime
 
-  project   Project @relation(fields: [projectId], references: [id])
+  project   Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
   projectId String
 }
