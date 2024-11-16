@@ -11,10 +11,12 @@ import {
 import { useLocation } from "react-router-dom";
 import { Logo } from "./logo";
 import { QuickSearchDialog } from "./quick-search-dialog";
+import { decodeToken } from "@/hooks/use-token";
 
 export function Header() {
 
     const location = useLocation();
+    const tokenData = decodeToken();
 
     function getTitle() {
         const pathname = location.pathname;
@@ -47,7 +49,10 @@ export function Header() {
                     <DropdownMenu>
                         <DropdownMenuTrigger className="rounded-full">
                             <Avatar>
-                                <AvatarFallback>AM</AvatarFallback>
+                                <AvatarFallback>
+                                    {tokenData?.name?.split(' ')[0].charAt(0)}
+                                    {tokenData?.name?.split(' ')[1].charAt(0)}
+                                </AvatarFallback>
                             </Avatar>
                         </DropdownMenuTrigger>
                         <DropdownMenuContent className="mr-4 w-[150px]">

@@ -5,6 +5,7 @@ import { UserRole } from './use-user';
 export interface TokenProps {
     sub: string;
     email: string;
+    name: string;
     role: UserRole;
     iat: number;
     exp: number;

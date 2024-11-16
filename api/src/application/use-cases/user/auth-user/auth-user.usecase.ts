@@ -35,6 +35,7 @@ export class AuthUserUseCase {
             {
                 sub: user.getId(),
                 email: user.getEmail(),
+                name: user.getName(),
                 role: user.getRole()
             },
             {
