@@ -25,6 +25,7 @@ export class GetProjectDashboardUseCase {
         const projectRevenue = project.getRevenue();
         const projectColor = project.getColor();
         const projectIcon = project.getIcon();
+        const projectDescription = project.getDescription();
 
         const completedTasks = project.getTasks().filter(task => task.getStatus() === 'COMPLETED').length;
         const totalTasks = project.getTasks().length;
@@ -40,6 +41,7 @@ export class GetProjectDashboardUseCase {
             color: projectColor,
             icon: projectIcon,
             revenue: projectRevenue,
+            description: projectDescription,
             tasks: {
                 total: totalTasks,
                 completed: completedTasks,
