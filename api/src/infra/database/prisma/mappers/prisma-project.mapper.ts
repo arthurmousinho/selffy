@@ -2,10 +2,10 @@ import { Project } from "src/domain/entities/project/project.entity";
 import { Project as RawProject } from "@prisma/client";
 import { User as RawUser } from "@prisma/client";
 import { Task as RawTask } from "@prisma/client";
+import { Cost as RawCost } from "@prisma/client";
 import { PrismaUserMapper } from "./prisma-user.mapper";
-import { Task } from "@domain/entities/task/task.entity";
-import { makeTask } from "@test/factories/task.factory";
 import { PrismaTaskMapper } from "./prisma-task.mapper";
+import { PrismaCostMapper } from "./prisma-cost.mapper";
 
 export class PrismaProjectMapper {
 
@@ -24,7 +24,12 @@ export class PrismaProjectMapper {
         }
     }
 
-    public static toDomain(raw: RawProject & { owner: RawUser } & { tasks?: RawTask[] }): Project {
+    public static toDomain(
+        raw: RawProject &
+        { owner: RawUser } &
+        { tasks?: RawTask[] } &
+        { costs?: RawCost[] }
+    ): Project {
         const owner = PrismaUserMapper.toDomain({
             id: raw.owner.id,
             name: raw.owner.name,
@@ -34,7 +39,7 @@ export class PrismaProjectMapper {
             updatedAt: raw.owner.updatedAt,
             role: raw.owner.role,
         });
- 
+
         const tasks = raw.tasks?.map(PrismaTaskMapper.toDomain);
 
         const project = new Project({
@@ -47,8 +52,17 @@ export class PrismaProjectMapper {
             status: raw.status,
             icon: raw.icon,
             color: raw.color,
-            tasks
+            tasks,
         }, raw.id)
+
+        const costs = raw.costs?.map(cost => PrismaCostMapper.toDomain({
+            ...cost,
+            project
+        }));
+
+        if (costs) {
+            costs.map(cost => project.addCosts(cost));
+        }
 
         return project;
     }

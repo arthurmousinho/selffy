@@ -4,6 +4,7 @@ import { Cost } from "src/domain/entities/cost/cost.entity";
 import { PrismaCostMapper } from "../mappers/prisma-cost.mapper";
 import { Injectable } from "@nestjs/common";
 import { Pageable } from "@application/shared/pageable.type";
+import { PrismaProjectMapper } from "../mappers/prisma-project.mapper";
 
 @Injectable()
 export class PrismaCostRepository implements CostRepository {
@@ -46,7 +47,10 @@ export class PrismaCostRepository implements CostRepository {
         ]);
 
         return {
-            data: costs.map(PrismaCostMapper.toDomain),
+            data: costs.map(cost => PrismaCostMapper.toDomain({
+                ...cost,
+                project: PrismaProjectMapper.toDomain(cost.project)
+            })),
             meta: {
                 total,
                 page,
@@ -74,7 +78,10 @@ export class PrismaCostRepository implements CostRepository {
             return null;
         }
 
-        return PrismaCostMapper.toDomain(cost);
+        return PrismaCostMapper.toDomain({
+            ...cost,
+            project: PrismaProjectMapper.toDomain(cost.project)
+        });
     }
 
     public async update(cost: Cost): Promise<void> {
@@ -125,7 +132,10 @@ export class PrismaCostRepository implements CostRepository {
         ])
 
         return {
-            data: costs.map(PrismaCostMapper.toDomain),
+            data: costs.map(cost => PrismaCostMapper.toDomain({
+                ...cost,
+                project: PrismaProjectMapper.toDomain(cost.project)
+            })),
             meta: {
                 total,
                 page: params.page,
@@ -148,7 +158,10 @@ export class PrismaCostRepository implements CostRepository {
                 }
             }
         });
-        return costs.map(PrismaCostMapper.toDomain);
+        return costs.map(cost => PrismaCostMapper.toDomain({
+            ...cost,
+            project: PrismaProjectMapper.toDomain(cost.project)
+        }));
     }
 
     public async count(): Promise<number> {

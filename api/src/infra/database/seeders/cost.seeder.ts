@@ -28,8 +28,7 @@ export class CostSeeder {
 
                 const randomProject = await this.getRandomProject();
                 const randomProjectMappedToPrisma = PrismaProjectMapper.toPrisma(randomProject);
-                const randomProjectOwnerMappedToPrisma = PrismaUserMapper.toPrisma(randomProject.getOwner());
-
+            
                 return PrismaCostMapper.toDomain({
                     id: randomUUID(),
                     title: cost.title,
@@ -37,10 +36,7 @@ export class CostSeeder {
                     createdAt: new Date(),
                     updatedAt: new Date(),
                     projectId: randomProjectMappedToPrisma.id,
-                    project: {
-                        ...randomProjectMappedToPrisma,
-                        owner: randomProjectOwnerMappedToPrisma,
-                    },
+                    project: randomProject,
                 })
             }
         ));
