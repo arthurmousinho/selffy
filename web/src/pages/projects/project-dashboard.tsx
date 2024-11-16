@@ -1,3 +1,4 @@
+import { EditProjectDialog } from "@/components/admin/project/edit-project.dialog";
 import { DeleteAlertDialog } from "@/components/global/delete-alert-dialog";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -16,6 +17,14 @@ export function ProjectDashboard() {
 
     const { data } = getProjectDashboard(projectIdFromParam);
     const { mutate: deleteProjectFn } = deleteProject();
+
+    if (!data) {
+        return (
+            <div>
+                <h1>Loading...</h1>
+            </div>
+        )
+    }
 
     function handleDeleteProject() {
         deleteProjectFn(projectIdFromParam);
@@ -73,13 +82,13 @@ export function ProjectDashboard() {
                     <header className="flex items-center gap-2">
                         <div
                             className="w-14 h-14 flex items-center justify-center rounded-xl"
-                            style={{ backgroundColor: data?.color }}
+                            style={{ backgroundColor: data?.project.color }}
                         >
-                            <span className="text-2xl">{data?.icon}</span>
+                            <span className="text-2xl">{data?.project.icon}</span>
                         </div>
                         <div className="space-y-0 w-[500px]">
                             <h2 className="font-semibold text-2xl">
-                                {data?.title}
+                                {data?.project.title}
                             </h2>
                         </div>
                     </header>
@@ -97,9 +106,14 @@ export function ProjectDashboard() {
                             </Tooltip>
                             <Tooltip>
                                 <TooltipTrigger>
-                                    <Button variant={'outline'} className="flex items-center text-muted-foreground">
-                                        <Pen size={20} />
-                                    </Button>
+                                    <EditProjectDialog 
+                                        data={{ ...data.project }}
+                                        adminMode={false}
+                                    >
+                                        <Button variant={'outline'} className="flex items-center text-muted-foreground">
+                                            <Pen size={20} />
+                                        </Button>
+                                    </EditProjectDialog>
                                 </TooltipTrigger>
                                 <TooltipContent side="bottom">
                                     <p>Edit</p>
@@ -153,7 +167,7 @@ export function ProjectDashboard() {
                             <DollarSign size={20} className="text-primary" />
                         </header>
                         <span className="font-bold text-2xl">
-                            {formatCurrency(data?.revenue || 0)}
+                            {formatCurrency(data?.project.revenue || 0)}
                         </span>
                         <span className="text-sm text-muted-foreground">
                             +R$ 3.200,00 since last month

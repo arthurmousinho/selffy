@@ -37,13 +37,13 @@ describe('GetProjectDashboardUseCase', () => {
         const tasks = [
             makeTask({ status: 'COMPLETED', priority: 'HIGH' }),
             makeTask({ status: 'COMPLETED', priority: 'MEDIUM' }),
-            makeTask({ status: 'PENDING', priority: 'LOW' })
+            makeTask({ status: 'PENDING', priority: 'LOW' }),
         ];
         tasks.forEach(task => project.addTask(task));
 
         const costs = [
             makeCost({ value: 100 }),
-            makeCost({ value: 200 })
+            makeCost({ value: 200 }),
         ];
         costs.forEach(cost => project.addCosts(cost));
 
@@ -51,21 +51,34 @@ describe('GetProjectDashboardUseCase', () => {
 
         const result = await getProjectDashboardUseCase.execute({
             projectId: project.getId(),
-            requestUserId: owner.getId()
+            requestUserId: owner.getId(),
         });
 
-        expect(result.title).toBe(project.getTitle());
-        expect(result.color).toBe(project.getColor());
-        expect(result.icon).toBe(project.getIcon());
-        expect(result.revenue).toBe(project.getRevenue());
-        expect(result.description).toBe(project.getDescription());
-        expect(result.tasks.total).toBe(3);
-        expect(result.tasks.completed).toBe(2);
-        expect(result.tasks.highPriority).toBe(1);
-        expect(result.tasks.mediumPriority).toBe(1);
-        expect(result.tasks.lowPriority).toBe(1);
-        expect(result.costs.totalValue).toBe(300);
-        expect(result.costs.totalProfit).toBe(project.getRevenue() - 300);
+        expect(result.project).toEqual({
+            id: project.getId(),
+            ownerId: owner.getId(),
+            status: project.getStatus(),
+            title: project.getTitle(),
+            color: project.getColor(),
+            icon: project.getIcon(),
+            revenue: project.getRevenue(),
+            description: project.getDescription(),
+            createdAt: project.getCreatedAt(),
+            updatedAt: project.getUpdatedAt(),
+        });
+
+        expect(result.tasks).toEqual({
+            total: 3,
+            completed: 2,
+            highPriority: 1,
+            mediumPriority: 1,
+            lowPriority: 1,
+        });
+
+        expect(result.costs).toEqual({
+            totalValue: 300,
+            totalProfit: project.getRevenue() - 300,
+        });
     });
 
     it('should throw UnauthorizedUserError if the user does not have permission', async () => {
@@ -80,18 +93,18 @@ describe('GetProjectDashboardUseCase', () => {
 
         await expect(getProjectDashboardUseCase.execute({
             projectId: project.getId(),
-            requestUserId: unauthorizedUser.getId()
+            requestUserId: unauthorizedUser.getId(),
         })).rejects.toThrow(UnauthorizedUserError);
     });
 
-    it('should throw an error if the project does not exist', async () => {
+    it('should throw ProjectNotFoundError if the project does not exist', async () => {
         const user = makeUser();
         await userRepository.create(user);
 
         await expect(getProjectDashboardUseCase.execute({
             projectId: 'non-existent-project-id',
-            requestUserId: user.getId()
-        })).rejects.toThrowError(ProjectNotFoundError);
+            requestUserId: user.getId(),
+        })).rejects.toThrow(ProjectNotFoundError);
     });
 
     it('should return correct data for a project with no tasks or costs', async () => {
@@ -103,16 +116,34 @@ describe('GetProjectDashboardUseCase', () => {
 
         const result = await getProjectDashboardUseCase.execute({
             projectId: project.getId(),
-            requestUserId: owner.getId()
+            requestUserId: owner.getId(),
         });
 
-        expect(result.tasks.total).toBe(0);
-        expect(result.tasks.completed).toBe(0);
-        expect(result.tasks.highPriority).toBe(0);
-        expect(result.tasks.mediumPriority).toBe(0);
-        expect(result.tasks.lowPriority).toBe(0);
-        expect(result.costs.totalValue).toBe(0);
-        expect(result.costs.totalProfit).toBe(project.getRevenue());
+        expect(result.project).toEqual({
+            id: project.getId(),
+            ownerId: owner.getId(),
+            status: project.getStatus(),
+            title: project.getTitle(),
+            color: project.getColor(),
+            icon: project.getIcon(),
+            revenue: project.getRevenue(),
+            description: project.getDescription(),
+            createdAt: project.getCreatedAt(),
+            updatedAt: project.getUpdatedAt(),
+        });
+
+        expect(result.tasks).toEqual({
+            total: 0,
+            completed: 0,
+            highPriority: 0,
+            mediumPriority: 0,
+            lowPriority: 0,
+        });
+
+        expect(result.costs).toEqual({
+            totalValue: 0,
+            totalProfit: project.getRevenue(),
+        });
     });
 
 });

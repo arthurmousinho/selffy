@@ -21,12 +21,6 @@ export class GetProjectDashboardUseCase {
             requestUserId
         });
 
-        const projectTitle = project.getTitle();
-        const projectRevenue = project.getRevenue();
-        const projectColor = project.getColor();
-        const projectIcon = project.getIcon();
-        const projectDescription = project.getDescription();
-
         const completedTasks = project.getTasks().filter(task => task.getStatus() === 'COMPLETED').length;
         const totalTasks = project.getTasks().length;
         const highPriorityTasks = project.getTasks().filter(task => task.getPriority() === 'HIGH').length;
@@ -37,11 +31,18 @@ export class GetProjectDashboardUseCase {
         const totalProfit = project.getRevenue() - totalCostsValue;
 
         return {
-            title: projectTitle,
-            color: projectColor,
-            icon: projectIcon,
-            revenue: projectRevenue,
-            description: projectDescription,
+            project: {
+                id: project.getId(),
+                ownerId: project.getOwner().getId(),
+                status: project.getStatus(),
+                title: project.getTitle(),
+                color: project.getColor(),
+                icon: project.getIcon(),
+                revenue: project.getRevenue(),
+                description: project.getDescription(),
+                createdAt: project.getCreatedAt(),
+                updatedAt: project.getUpdatedAt(),
+            },
             tasks: {
                 total: totalTasks,
                 completed: completedTasks,
@@ -53,7 +54,7 @@ export class GetProjectDashboardUseCase {
                 totalValue: totalCostsValue,
                 totalProfit,
             }
-        };
+        }
     }
 
 }

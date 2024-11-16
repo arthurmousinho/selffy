@@ -183,10 +183,7 @@ export function getProjectById(id: string) {
 }
 
 interface GetProjectDashboardResponse {
-    title: string;
-    color: string;
-    icon: string;
-    revenue: number;
+    project: ProjectProps;
     tasks: {
         total: number;
         completed: number;

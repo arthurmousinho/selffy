@@ -21,7 +21,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
-import { useState } from "react";
+import { ReactNode, useState } from "react";
 import {
     Select,
     SelectContent,
@@ -32,6 +32,7 @@ import {
 import { getAllUsers, UserProps } from "@/hooks/use-user";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
+import { decodeToken } from "@/hooks/use-token";
 
 const colorOptions = [
     { label: "Red", class: "bg-red-300", hex: "#fca5a5" },
@@ -48,14 +49,15 @@ const colorOptions = [
 
 interface EditProjectDialogProps {
     data: ProjectProps;
-    children: React.ReactNode;
+    children: ReactNode;
+    adminMode: boolean;
 }
 
 export function EditProjectDialog(props: EditProjectDialogProps) {
 
     const [selectedColor, setSelectedColor] = useState<string>(props.data.color);
 
-    const { data: getAllUsersData } = getAllUsers();
+    const { data: getAllUsersData } = props.adminMode ? getAllUsers(1, 10) : { data: null };
     const { mutate: updateProjectFn } = updateProject();
 
     const formSchema = z.object({
@@ -110,6 +112,11 @@ export function EditProjectDialog(props: EditProjectDialogProps) {
             status: values.status,
             ownerId: values.ownerId,
         });
+    }
+
+    if (!props.adminMode) {
+        const userId = decodeToken()?.sub;
+        form.setValue("ownerId", userId ?? '');
     }
 
     return (
@@ -229,8 +236,8 @@ export function EditProjectDialog(props: EditProjectDialogProps) {
                                         <FormItem>
                                             <FormLabel>Status</FormLabel>
                                             <FormControl>
-                                                <RadioGroup 
-                                                    defaultValue={field.value} 
+                                                <RadioGroup
+                                                    defaultValue={field.value}
                                                     onValueChange={field.onChange}
                                                 >
                                                     <div className="flex items-center space-x-2">
@@ -247,39 +254,43 @@ export function EditProjectDialog(props: EditProjectDialogProps) {
                                         </FormItem>
                                     )}
                                 />
-                                <FormField
-                                    control={form.control}
-                                    name="ownerId"
-                                    render={({ field }) => (
-                                        <FormItem>
-                                            <FormLabel>Owner</FormLabel>
-                                            <FormControl>
-                                                <Select
-                                                    onValueChange={(value) => field.onChange(value)}
-                                                    defaultValue={field.value}
-                                                >
-                                                    <SelectTrigger>
-                                                        <SelectValue placeholder="Select the owner" />
-                                                    </SelectTrigger>
-                                                    <SelectContent>
-                                                        {
-                                                            getAllUsersData?.users?.map((user: UserProps) => (
-                                                                <SelectItem
-                                                                    key={user.id}
-                                                                    value={user.id}
-                                                                    className="cursor-pointer"
-                                                                >
-                                                                    {user.name}
-                                                                </SelectItem>
-                                                            ))
-                                                        }
-                                                    </SelectContent>
-                                                </Select>
-                                            </FormControl>
-                                            <FormMessage />
-                                        </FormItem>
-                                    )}
-                                />
+                                {
+                                    props.adminMode && (
+                                        <FormField
+                                            control={form.control}
+                                            name="ownerId"
+                                            render={({ field }) => (
+                                                <FormItem>
+                                                    <FormLabel>Owner</FormLabel>
+                                                    <FormControl>
+                                                        <Select
+                                                            onValueChange={(value) => field.onChange(value)}
+                                                            defaultValue={field.value}
+                                                        >
+                                                            <SelectTrigger>
+                                                                <SelectValue placeholder="Select the owner" />
+                                                            </SelectTrigger>
+                                                            <SelectContent>
+                                                                {
+                                                                    getAllUsersData?.users?.map((user: UserProps) => (
+                                                                        <SelectItem
+                                                                            key={user.id}
+                                                                            value={user.id}
+                                                                            className="cursor-pointer"
+                                                                        >
+                                                                            {user.name}
+                                                                        </SelectItem>
+                                                                    ))
+                                                                }
+                                                            </SelectContent>
+                                                        </Select>
+                                                    </FormControl>
+                                                    <FormMessage />
+                                                </FormItem>
+                                            )}
+                                        />
+                                    )
+                                }
                                 <Button className="w-full" type="submit">
                                     Save
                                 </Button>
