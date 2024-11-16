@@ -8,6 +8,7 @@ import { SearchCostsByTitleUseCase } from './search-costs-by-title/search-costs-
 import { CountCostsUseCase } from './count-costs/count-costs.usecase';
 import { GetCostsTotalValueUseCase } from './get-costs-total-value/get-costs-total-value.usecase';
 import { GetCostsInsightsUseCase } from './get-costs-insights/get-costs-insights.usecase';
+import { GetCostsByProjectIdUseCase } from './get-costs-by-project-id/get-costs-by-project-id.usecase';
 
 @Module({
     imports: [
@@ -21,7 +22,8 @@ import { GetCostsInsightsUseCase } from './get-costs-insights/get-costs-insights
         SearchCostsByTitleUseCase,
         CountCostsUseCase,
         GetCostsTotalValueUseCase,
-        GetCostsInsightsUseCase
+        GetCostsInsightsUseCase,
+        GetCostsByProjectIdUseCase
     ],
     exports: [
         CreateCostUseCase,
@@ -31,7 +33,8 @@ import { GetCostsInsightsUseCase } from './get-costs-insights/get-costs-insights
         SearchCostsByTitleUseCase,
         CountCostsUseCase,
         GetCostsTotalValueUseCase,
-        GetCostsInsightsUseCase
+        GetCostsInsightsUseCase,
+        GetCostsByProjectIdUseCase
     ]
 })
 

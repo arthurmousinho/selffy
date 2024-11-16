@@ -59,6 +59,10 @@ export class InMemoryCostRepository implements CostRepository {
         }
     }
 
+    public async findManyByProjectId(projectId: string): Promise<Cost[]> {
+        return this.costs.filter(cost => cost.getProject().getId() === projectId);
+    }
+
     public async count(): Promise<number> {
         return this.costs.length;
     }

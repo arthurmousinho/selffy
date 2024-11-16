@@ -135,6 +135,22 @@ export class PrismaCostRepository implements CostRepository {
         };
     }
 
+    public async findManyByProjectId(projectId: string): Promise<Cost[]> {
+        const costs = await this.prismaService.cost.findMany({
+            where: {
+                projectId
+            },
+            include: {
+                project: {
+                    include: {
+                        owner: true
+                    }
+                }
+            }
+        });
+        return costs.map(PrismaCostMapper.toDomain);
+    }
+
     public async count(): Promise<number> {
         const count = await this.prismaService.cost.count();
         return count;

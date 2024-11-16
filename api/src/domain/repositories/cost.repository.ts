@@ -9,6 +9,7 @@ export abstract class CostRepository {
     abstract update(cost: Cost): Promise<void>;
     abstract delete(id: string): Promise<void>;
     abstract findManyByTitle(params: { title: string, page: number, limit: number }): Promise<Pageable<Cost>>;
+    abstract findManyByProjectId(projectId: string): Promise<Cost[]>;
     abstract count(): Promise<number>;
     abstract sumValues(): Promise<number>;
 }

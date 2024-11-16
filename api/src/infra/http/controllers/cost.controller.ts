@@ -10,6 +10,8 @@ import { UpdateCostUseCase } from "@application/use-cases/cost/update-cost/updat
 import { SearchCostsByTitleUseCase } from "@application/use-cases/cost/search-costs-by-title/search-costs-by-title.usecase";
 import { JwtAuthGuard } from "../guards/jwt-auth.guard";
 import { ApiTags } from "@nestjs/swagger";
+import { UserFromToken } from "../decorators/user-from-token.decorator";
+import { GetCostsByProjectIdUseCase } from "@application/use-cases/cost/get-costs-by-project-id/get-costs-by-project-id.usecase";
 
 @ApiTags('Costs')
 @UseGuards(JwtAuthGuard)
@@ -22,7 +24,8 @@ export class CostController {
         private findProjectByIdUseCase: FindProjectByIdUseCase,
         private deleteCostUseCase: DeleteCostUseCase,
         private updateCostUseCase: UpdateCostUseCase,
-        private searchCostByTitle: SearchCostsByTitleUseCase
+        private searchCostByTitle: SearchCostsByTitleUseCase,
+        private getCostsByProjectIdUseCase: GetCostsByProjectIdUseCase,
     ) { }
 
     @Get()
@@ -37,12 +40,27 @@ export class CostController {
         };
     }
 
+    @Get('/project/:projectId')
+    public async getCostsByProjectId(
+        @Param('projectId') projectId: string,
+        @UserFromToken() userFromToken: UserFromToken,
+    ) {
+        const costs = await this.getCostsByProjectIdUseCase.execute({
+            requestUserId: userFromToken.id,
+            projectId
+        });
+        return { costs: costs.map(CostViewModel.toHTTP) };
+    }
+
     @Post()
-    public async createCost(@Body() body: CreateCostBody) {
+    public async createCost(
+        @Body() body: CreateCostBody,
+        @UserFromToken() userFromToken: UserFromToken,
+    ) {
         const { title, value, projectId } = body;
         const project = await this.findProjectByIdUseCase.execute({
             projectId,
-            requestUserId: 'any-user-id'
+            requestUserId: userFromToken.id
         });
         await this.createCostUseCase.execute({
             title,
