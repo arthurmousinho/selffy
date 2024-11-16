@@ -89,7 +89,7 @@ export function AdminCosts() {
                         <RefreshCcw size={20} />
                         Refresh
                     </Button>
-                    <NewCostDialog>
+                    <NewCostDialog adminMode={true}>
                         <Button className="flex items-center gap-2">
                             <Plus size={20} />
                             New Cost
@@ -124,7 +124,7 @@ export function AdminCosts() {
                                         </DetailsDialog>
                                     </TableCell>
                                     <TableCell className="text-right">
-                                        <EditCostDialog data={cost} >
+                                        <EditCostDialog data={cost} adminMode={true}>
                                             <Button className="text-muted-foreground" variant={'outline'}>
                                                 <Pencil size={20} />
                                             </Button>

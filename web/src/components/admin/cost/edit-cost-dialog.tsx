@@ -32,6 +32,7 @@ import { CostProps, updateCost } from "@/hooks/use-cost";
 interface EditCostDialogProps {
     data: CostProps;
     children: React.ReactNode;
+    adminMode: boolean;
 }
 
 export function EditCostDialog(props: EditCostDialogProps) {
@@ -60,7 +61,7 @@ export function EditCostDialog(props: EditCostDialogProps) {
         }
     })
 
-    const { data: getAllProjectsData } = getAllProjects();
+    const { data: getAllProjectsData } = props.adminMode ? getAllProjects(1, 10) : { data: null };
     const { mutate: updateCostFn } = updateCost();
 
     function onSubmit(values: z.infer<typeof formSchema>) {
@@ -120,39 +121,43 @@ export function EditCostDialog(props: EditCostDialogProps) {
                                         </FormItem>
                                     )}
                                 />
-                                <FormField
-                                    control={form.control}
-                                    name="projectId"
-                                    render={({ field }) => (
-                                        <FormItem>
-                                            <FormLabel>Project</FormLabel>
-                                            <FormControl>
-                                                <Select
-                                                    onValueChange={(value) => field.onChange(value)}
-                                                    defaultValue={field.value}
-                                                >
-                                                    <SelectTrigger>
-                                                        <SelectValue placeholder="Select the project" />
-                                                    </SelectTrigger>
-                                                    <SelectContent>
-                                                        {
-                                                            getAllProjectsData?.projects?.map((project: ProjectProps) => (
-                                                                <SelectItem
-                                                                    key={project.id}
-                                                                    value={project.id}
-                                                                    className="cursor-pointer"
-                                                                >
-                                                                    {project.title}
-                                                                </SelectItem>
-                                                            ))
-                                                        }
-                                                    </SelectContent>
-                                                </Select>
-                                            </FormControl>
-                                            <FormMessage />
-                                        </FormItem>
-                                    )}
-                                />
+                                {
+                                    props.adminMode && (
+                                        <FormField
+                                            control={form.control}
+                                            name="projectId"
+                                            render={({ field }) => (
+                                                <FormItem>
+                                                    <FormLabel>Project</FormLabel>
+                                                    <FormControl>
+                                                        <Select
+                                                            onValueChange={(value) => field.onChange(value)}
+                                                            defaultValue={field.value}
+                                                        >
+                                                            <SelectTrigger>
+                                                                <SelectValue placeholder="Select the project" />
+                                                            </SelectTrigger>
+                                                            <SelectContent>
+                                                                {
+                                                                    getAllProjectsData?.projects?.map((project: ProjectProps) => (
+                                                                        <SelectItem
+                                                                            key={project.id}
+                                                                            value={project.id}
+                                                                            className="cursor-pointer"
+                                                                        >
+                                                                            {project.title}
+                                                                        </SelectItem>
+                                                                    ))
+                                                                }
+                                                            </SelectContent>
+                                                        </Select>
+                                                    </FormControl>
+                                                    <FormMessage />
+                                                </FormItem>
+                                            )}
+                                        />
+                                    )
+                                }
                                 <Button className="w-full">
                                     Save
                                 </Button>

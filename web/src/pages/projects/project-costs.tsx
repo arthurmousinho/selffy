@@ -1,18 +1,23 @@
 import { useParams } from "react-router-dom";
 import { Card, CardHeader } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Plus } from "lucide-react";
+import { Pencil, Plus, Trash } from "lucide-react";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { getProjectById } from "@/hooks/use-project";
 import { NewCostDialog } from "@/components/admin/cost/new-cost-dialog";
-import { CostProps } from "@/hooks/use-cost";
+import { CostProps, deleteCost, getCostsByProjectId } from "@/hooks/use-cost";
 import { formatCurrency } from "@/utils/format-currency";
+import { EditCostDialog } from "@/components/admin/cost/edit-cost-dialog";
+import { DeleteAlertDialog } from "@/components/global/delete-alert-dialog";
 
 
 export function ProjectCosts() {
 
     const projectIdFromRoute = useParams().id;
+
     const { data: projectData } = getProjectById(projectIdFromRoute || '');
+    const { data: costsData } = getCostsByProjectId(projectIdFromRoute || '');
+    const { mutate: deleteCostFn } = deleteCost();
 
     return (
         <main className="space-y-4">
@@ -30,7 +35,7 @@ export function ProjectCosts() {
                                 {projectData?.project.title}' costs
                             </h2>
                             <span className="text-sm text-muted-foreground font-semibold">
-                                {projectData?.project.tasks} costs
+                                {costsData?.costs.length} costs
                             </span>
                         </div>
                     </header>
@@ -59,11 +64,27 @@ export function ProjectCosts() {
                             </TableRow>
                         </TableHeader>
                         <TableBody>
-                            {[].map((cost: CostProps) => (
+                            {costsData?.costs.map((cost: CostProps) => (
                                 <TableRow>
                                     <TableCell>{cost.title}</TableCell>
                                     <TableCell className="text-right">
                                         {formatCurrency(cost.value)}
+                                    </TableCell>
+                                    <TableCell className="text-right">
+                                        <EditCostDialog data={cost} adminMode={false}>
+                                            <Button className="text-muted-foreground" variant={'outline'}>
+                                                <Pencil size={20} />
+                                            </Button>
+                                        </EditCostDialog>
+                                    </TableCell>
+                                    <TableCell className="flex justify-end">
+                                        <DeleteAlertDialog
+                                            onDelete={() => deleteCostFn(cost.id)}
+                                        >
+                                            <Button className="text-muted-foreground" variant={'outline'}>
+                                                <Trash size={20} />
+                                            </Button>
+                                        </DeleteAlertDialog>
                                     </TableCell>
                                 </TableRow>
                             ))}

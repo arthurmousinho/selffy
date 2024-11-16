@@ -131,3 +131,16 @@ export function searchCostsByTitle(props: { title?: string, page?: number, limit
 
     return query;
 }
+
+export function getCostsByProjectId(projectId: string) {
+    const query = useQuery({
+        queryKey: ['costs', projectId],
+        queryFn: async () => {
+            const response = await axios.get(`/costs/project/${projectId}`);
+            return response.data as GetAllCostsResponse;
+        },
+        enabled: !!projectId
+    });
+
+    return query;
+}
