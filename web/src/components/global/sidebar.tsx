@@ -17,7 +17,7 @@ const sidebarLinks = [
     { to: '/app/priorities', label: 'Priorities', icon: <Star size={20} className="text-black" /> },
     { to: '/app/notifications', label: 'Notifications', icon: <Bell size={20} className="text-black" /> },
     { to: '/app/settings', label: 'Settings', icon: <Settings size={20} className="text-black" /> },
-    { to: '/app/auth/signin', label: 'Exit', icon: <LogOut size={20} className="text-black" /> },
+    { to: '/auth/signin', label: 'Exit', icon: <LogOut size={20} className="text-black" /> },
 ];
 
 const pinnedProjects = [
