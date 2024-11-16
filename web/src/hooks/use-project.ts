@@ -13,7 +13,7 @@ export interface ProjectProps {
     revenue: number;
     icon: string;
     status: 'IN_PROGRESS' | 'FINISHED';
-    tasks: any[];
+    tasks: number;
     color: string;
     ownerId: string;
     createdAt: Date;

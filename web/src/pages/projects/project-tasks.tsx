@@ -37,7 +37,7 @@ export function ProjectTasks() {
                                 {projectData?.project.title}' tasks
                             </h2>
                             <span className="text-sm text-muted-foreground font-semibold">
-                                {tasksData?.tasks.length} tasks
+                                {projectData?.project.tasks} tasks
                             </span>
                         </div>
                     </header>
