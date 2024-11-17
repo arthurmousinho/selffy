@@ -11,7 +11,6 @@ import { UnauthorizedUserError } from "@application/errors/user/unauthorized-use
 import { ProjectNotFoundError } from "@application/errors/project/project-not-found.error";
 
 describe('GetProjectDashboardUseCase', () => {
-    
     let getProjectDashboardUseCase: GetProjectDashboardUseCase;
     let findProjectByIdUseCase: FindProjectByIdUseCase;
     let findUserByIdUseCase: FindUserByIdUseCase;
@@ -35,8 +34,16 @@ describe('GetProjectDashboardUseCase', () => {
         const project = makeProject({ owner });
 
         const tasks = [
-            makeTask({ status: 'COMPLETED', priority: 'HIGH' }),
-            makeTask({ status: 'COMPLETED', priority: 'MEDIUM' }),
+            makeTask({
+                status: 'COMPLETED',
+                priority: 'HIGH',
+                completedAt: new Date('2024-11-13T10:00:00Z'), // Wednesday
+            }),
+            makeTask({
+                status: 'COMPLETED',
+                priority: 'MEDIUM',
+                completedAt: new Date('2024-11-12T10:00:00Z'), // Tuesday
+            }),
             makeTask({ status: 'PENDING', priority: 'LOW' }),
         ];
         tasks.forEach(task => project.addTask(task));
@@ -73,6 +80,15 @@ describe('GetProjectDashboardUseCase', () => {
             highPriority: 1,
             mediumPriority: 1,
             lowPriority: 1,
+            productivity: {
+                Sunday: 0,
+                Monday: 0,
+                Tuesday: 1,
+                Wednesday: 1,
+                Thursday: 0,
+                Friday: 0,
+                Saturday: 0,
+            },
         });
 
         expect(result.costs).toEqual({
@@ -138,6 +154,15 @@ describe('GetProjectDashboardUseCase', () => {
             highPriority: 0,
             mediumPriority: 0,
             lowPriority: 0,
+            productivity: {
+                Sunday: 0,
+                Monday: 0,
+                Tuesday: 0,
+                Wednesday: 0,
+                Thursday: 0,
+                Friday: 0,
+                Saturday: 0,
+            },
         });
 
         expect(result.costs).toEqual({
@@ -146,4 +171,41 @@ describe('GetProjectDashboardUseCase', () => {
         });
     });
 
+    it('should handle tasks without completedAt gracefully', async () => {
+        const owner = makeUser();
+        await userRepository.create(owner);
+
+        const project = makeProject({ owner });
+
+        const tasks = [
+            makeTask({
+                status: 'COMPLETED',
+                priority: 'HIGH',
+                // No completedAt date
+            }),
+            makeTask({
+                status: 'COMPLETED',
+                priority: 'MEDIUM',
+                completedAt: new Date('2024-11-12T10:00:00Z'), // Tuesday
+            }),
+        ];
+        tasks.forEach(task => project.addTask(task));
+
+        await projectRepository.create(project);
+
+        const result = await getProjectDashboardUseCase.execute({
+            projectId: project.getId(),
+            requestUserId: owner.getId(),
+        });
+
+        expect(result.tasks.productivity).toEqual({
+            Sunday: 0,
+            Monday: 0,
+            Tuesday: 1,
+            Wednesday: 0,
+            Thursday: 0,
+            Friday: 0,
+            Saturday: 0,
+        });
+    });
 });

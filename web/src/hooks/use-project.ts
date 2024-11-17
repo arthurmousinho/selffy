@@ -190,6 +190,15 @@ interface GetProjectDashboardResponse {
         highPriority: number;
         mediumPriority: number;
         lowPriority: number;
+        productivity: {
+            Sunday: number;
+            Monday: number;
+            Tuesday: number;
+            Wednesday: number;
+            Thursday: number;
+            Friday: number;
+            Saturday: number;
+        }
     };
     costs: {
         totalValue: number;

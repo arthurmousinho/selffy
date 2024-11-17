@@ -8,6 +8,7 @@ export function makeTask(props?: {
     priority?: TaskPriority,
     projectId?: string,
     status?: TaskStatus,
+    completedAt?: Date,
 }) {
     const taskId = randomUUID();
 
@@ -18,6 +19,7 @@ export function makeTask(props?: {
         priority: props?.priority ?? 'MEDIUM',
         projectId: props?.projectId ?? randomUUID(),
         status: props?.status ?? 'PENDING',
+        completedAt: props?.completedAt ?? null,
     }, taskId);
 
     return newTask;

@@ -32,18 +32,18 @@ export function ProjectDashboard() {
     }
 
     const chartData1 = [
-        { day: "Monday", done: 186 },
-        { day: "Tuesday", done: 305 },
-        { day: "Wednesday", done: 237 },
-        { day: "Thursday", done: 73 },
-        { day: "Friday", done: 209 },
-        { day: "Saturday", done: 214 },
-        { day: "Sunday", done: 150 }
+        { day: "Monday", done: data.tasks.productivity.Monday },
+        { day: "Tuesday", done: data.tasks.productivity.Tuesday },
+        { day: "Wednesday", done: data.tasks.productivity.Wednesday },
+        { day: "Thursday", done: data.tasks.productivity.Thursday },
+        { day: "Friday", done: data.tasks.productivity.Friday },
+        { day: "Saturday", done: data.tasks.productivity.Saturday },
+        { day: "Sunday", done: data.tasks.productivity.Sunday },
     ];
 
     const chartConfig1 = {
         done: {
-            label: "Completed Tasks: ",
+            label: "Completed Tasks:  ",
             color: "#86efac",
         },
     } satisfies ChartConfig
