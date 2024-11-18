@@ -1,5 +1,6 @@
 import { Folder } from "lucide-react";
 import { Card, CardHeader } from "../ui/card";
+import NumberTicker from "../ui/number-ticker";
 
 interface ActiveProjectsCardProps {
     count: number;
@@ -14,7 +15,7 @@ export function ActiveProjectsCard(props: ActiveProjectsCardProps) {
                     <Folder size={20} className="text-primary" />
                 </header>
                 <span className="font-bold text-2xl">
-                    {props.count} Projects
+                    <NumberTicker value={props.count} direction="up" /> Projects
                 </span>
                 <span className="text-sm text-muted-foreground">
                     +1 since last month

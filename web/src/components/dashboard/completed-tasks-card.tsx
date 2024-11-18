@@ -1,5 +1,6 @@
 import { CheckCircle } from "lucide-react";
 import { Card, CardHeader } from "../ui/card";
+import NumberTicker from "../ui/number-ticker";
 
 interface CompletedTasksCardProps {
     count: number;
@@ -16,7 +17,7 @@ export function CompletedTasksCard(props: CompletedTasksCardProps) {
                     <CheckCircle size={20} className="text-primary" />
                 </header>
                 <span className="font-bold text-2xl">
-                    {props.count} Tasks
+                    <NumberTicker value={props.count} direction="up" /> Tasks
                 </span>
                 <span className="text-sm text-muted-foreground">
                     +16 since last month
