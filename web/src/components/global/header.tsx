@@ -12,6 +12,7 @@ import { useLocation } from "react-router-dom";
 import { Logo } from "./logo";
 import { QuickSearchDialog } from "./quick-search-dialog";
 import { decodeToken } from "@/hooks/use-token";
+import { BackButton } from "./back-button";
 
 export function Header() {
 
@@ -40,9 +41,12 @@ export function Header() {
                 <Logo />
             </CardHeader>
             <CardContent className="w-full flex flex-row items-center justify-between p-0 px-6">
-                <h1 className="text-xl font-bold">
-                    {getTitle()}
-                </h1>
+                <div className="flex items-center gap-4">
+                    <BackButton />
+                    <h1 className="text-xl font-bold">
+                        {getTitle()}
+                    </h1>
+                </div>
                 <div className="flex flex-row items-center gap-6">
                     <QuickSearchDialog />
                     <Separator orientation="vertical" className="h-10" />
