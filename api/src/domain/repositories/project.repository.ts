@@ -10,7 +10,7 @@ export abstract class ProjectRepository {
     abstract delete(id: string): Promise<void>;
     abstract count(): Promise<number>;
     abstract findManyByTitle(params: { title: string, page: number, limit: number }): Promise<Pageable<Project>>;
-    abstract findByOwnerId(params: { ownerId: string, page: number, limit: number }): Promise<Pageable<Project>>;
+    abstract findByOwnerId(ownerId: string): Promise<Project[]>;
     abstract findByStatus(status: ProjectStatus): Promise<Project[]>;
     abstract countByStatus(status: ProjectStatus): Promise<number>;
     abstract countByOwnerId(ownerId: string): Promise<number>;

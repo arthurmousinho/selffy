@@ -1,6 +1,9 @@
 import { User } from "src/domain/entities/user/user.entity";
 import { User as RawUser } from "@prisma/client";
-
+import { Project as RawProject } from "@prisma/client";
+import { Task as RawTask } from "@prisma/client";
+import { Project } from "@domain/entities/project/project.entity";
+import { PrismaTaskMapper } from "./prisma-task.mapper";
 
 export class PrismaUserMapper {
 
@@ -16,15 +19,40 @@ export class PrismaUserMapper {
         };
     }
 
-    public static toDomain(raw: RawUser): User {
-        return new User({
+    public static toDomain(
+        raw: RawUser &
+        { projects?: (RawProject & { tasks?: RawTask[] })[] }
+    ): User {
+        const user = new User({
             name: raw.name,
             email: raw.email,
             password: raw.password,
             role: raw.role,
             createdAt: raw.createdAt,
             updatedAt: raw.updatedAt,
-        }, raw.id)
+        }, raw.id);
+
+        const projects = raw.projects?.map((project) => {
+            const mappedProject = new Project({
+                title: project.title,
+                createdAt: project.createdAt,
+                updatedAt: project.updatedAt,
+                owner: user,
+                revenue: project.revenue,
+                description: project.description,
+                status: project.status,
+                icon: project.icon,
+                color: project.color,
+            }, project.id);
+
+            const tasks = project.tasks?.map(PrismaTaskMapper.toDomain);
+            tasks?.map((task) => mappedProject.addTask(task));
+
+            return mappedProject;
+        });
+
+        projects?.map(project => user.addProject(project));
+        return user;
     }
 
 }

@@ -70,6 +70,13 @@ export class PrismaUserRepository implements UserRepository {
         const user = await this.prismaService.user.findUnique({
             where: {
                 id
+            },
+            include: {
+                projects: {
+                    include: {
+                        tasks: true
+                    }
+                }
             }
         });
         if (!user) {

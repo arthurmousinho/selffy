@@ -5,8 +5,6 @@ import { ProjectRepository } from "@domain/repositories/project.repository";
 import { Injectable } from "@nestjs/common";
 
 interface FindProjectsByOwnerIdUseCaseRequest {
-    page: number;
-    limit: number;
     ownerId: string;
     requestUserId: string;
 }
@@ -32,11 +30,7 @@ export class FindProjectsByOwnerIdUseCase {
 
         await this.checkAbility({ requestUser, owner });
 
-        const pageableProjects = await this.projectRepository.findByOwnerId({
-            ownerId: owner.getId(),
-            page: request.page,
-            limit: request.limit,
-        });
+        const pageableProjects = await this.projectRepository.findByOwnerId(owner.getId());
 
         return pageableProjects;
     }

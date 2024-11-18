@@ -83,15 +83,12 @@ export class ProjectController {
         @Query('limit') limit = 10,
         @UserFromToken() userFromToken: UserFromToken,
     ) {
-        const pageableProjects = await this.findProjectsByOwnerIdUseCase.execute({
+        const projects = await this.findProjectsByOwnerIdUseCase.execute({
             ownerId,
-            page: Number(page),
-            limit: Number(limit),
             requestUserId: userFromToken.id
         });
         return {
-            projects: pageableProjects.data.map(ProjectViewModel.toHTTP),
-            meta: pageableProjects.meta
+            projects: projects.map(ProjectViewModel.toHTTP),
         };
     }
 

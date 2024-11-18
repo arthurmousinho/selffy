@@ -13,6 +13,8 @@ import { JwtAuthGuard } from "../guards/jwt-auth.guard";
 import { ApiTags } from "@nestjs/swagger";
 import { RoleGuard } from "../guards/role.guard";
 import { FindUserByIdUseCase } from "@application/use-cases/user/find-user-by-id/find-user-by-id.usecase";
+import { GetUserDashboardUseCase } from "@application/use-cases/user/get-user-dashboard/get-user-dashboard.usecase";
+import { UserFromToken } from "../decorators/user-from-token.decorator";
 
 @ApiTags('Users')
 @Controller('users')
@@ -25,7 +27,8 @@ export class UserController {
         private deleteUserUserCase: DeleteUserUsecase,
         private searchUserByNameUseCase: SearchUserByNameUseCase,
         private updateUserUseCase: UpdateUserUseCase,
-        private findUserByIdUseCase: FindUserByIdUseCase
+        private findUserByIdUseCase: FindUserByIdUseCase,
+        private getUserDashboardUseCase: GetUserDashboardUseCase
     ) { }
 
     @Get()
@@ -39,6 +42,18 @@ export class UserController {
             users: pageblaUsers.data.map(UserViewModel.toHTTP),
             meta: pageblaUsers.meta
         };
+    }
+
+    @Get('/dashboard/:id')
+    public async getUserDashboard(
+        @Param('id') id: string,
+        @UserFromToken() userFromToken: UserFromToken
+    ) {
+        const dashboard = await this.getUserDashboardUseCase.execute({
+            requestUserId: userFromToken.id,
+            ownerId: id
+        });
+        return dashboard;
     }
 
     @Get('/name/:name')

@@ -11,7 +11,7 @@ import { CountUsersUseCase } from './count-users/count-users.usecase';
 import { JwtService } from '@nestjs/jwt';
 import { GetUserGrowthUseCase } from './get-user-growth/get-user-growth.usecase';
 import { GetUsersInsightsUseCase } from './get-users-insights/get-users-insights.usecase';
-
+import { GetUserDashboardUseCase } from './get-user-dashboard/get-user-dashboard.usecase';
 @Module({
     providers: [
         JwtService,
@@ -24,7 +24,8 @@ import { GetUsersInsightsUseCase } from './get-users-insights/get-users-insights
         FindUserByIdUseCase,
         CountUsersUseCase,
         GetUserGrowthUseCase,
-        GetUsersInsightsUseCase
+        GetUsersInsightsUseCase,
+        GetUserDashboardUseCase
     ],
     exports: [
         CreateUserUseCase,
@@ -36,7 +37,8 @@ import { GetUsersInsightsUseCase } from './get-users-insights/get-users-insights
         FindUserByIdUseCase,
         CountUsersUseCase,
         GetUserGrowthUseCase,
-        GetUsersInsightsUseCase
+        GetUsersInsightsUseCase,
+        GetUserDashboardUseCase
     ]
 })
 
