@@ -9,20 +9,40 @@ import {
     ChartTooltipContent
 } from "@/components/ui/chart"
 
-export function ProjectRankingCard() {
+interface ProjectRankingCardProps {
+    ranking: {
+        title: string;
+        completedTasks: number;
+        pendingTasks: number;
+    }[]
+}
+
+export function ProjectRankingCard(props: ProjectRankingCardProps) {
 
     const chartData1 = [
-        { team: "MyChaty", done: 186, pending: 80 },
-        { team: "ExamChecker", done: 305, pending: 200 },
-        { team: "DevBooks", done: 205, pending: 200 },
+        {
+            projectTitle: props.ranking[0]?.title || "",
+            completedTasks: props.ranking[0]?.completedTasks || 0,
+            pendingTasks: props.ranking[0]?.pendingTasks || 0
+        },
+        {
+            projectTitle: props.ranking[1]?.title || "",
+            completedTasks: props.ranking[1]?.completedTasks || 0,
+            pendingTasks: props.ranking[1]?.pendingTasks || 0
+        },
+        {
+            projectTitle: props.ranking[2]?.title || "",
+            completedTasks: props.ranking[2]?.completedTasks || 0,
+            pendingTasks: props.ranking[2]?.pendingTasks || 0
+        }
     ];
 
     const chartConfig1 = {
-        done: {
-            label: "Done",
+        completedTasks: {
+            label: "Completed",
             color: "hsl(var(--primary))",
         },
-        pending: {
+        pendingTasks: {
             label: "Pending",
             color: "#93C5FD",
         }
@@ -41,14 +61,14 @@ export function ProjectRankingCard() {
                     <BarChart accessibilityLayer data={chartData1}>
                         <CartesianGrid vertical={false} />
                         <XAxis
-                            dataKey="team"
+                            dataKey="projectTitle"
                             tickLine={false}
                             tickMargin={10}
                             axisLine={false}
                         />
                         <ChartTooltip content={<ChartTooltipContent />} />
-                        <Bar dataKey="pending" fill="var(--color-pending)" radius={4} />
-                        <Bar dataKey="done" fill="var(--color-done)" radius={4} />
+                        <Bar dataKey="pendingTasks" fill="var(--color-pendingTasks)" radius={4} />
+                        <Bar dataKey="completedTasks" fill="var(--color-completedTasks)" radius={4} />
                         <ChartLegend content={<ChartLegendContent />} />
                     </BarChart>
                 </ChartContainer>

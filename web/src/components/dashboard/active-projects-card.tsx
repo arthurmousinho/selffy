@@ -1,7 +1,11 @@
 import { Folder } from "lucide-react";
 import { Card, CardHeader } from "../ui/card";
 
-export function ActiveProjectsCard() {
+interface ActiveProjectsCardProps {
+    count: number;
+}
+
+export function ActiveProjectsCard(props: ActiveProjectsCardProps) {
     return (
         <Card>
             <CardHeader className="flex flex-col items-start gap-2 justify-start">
@@ -9,7 +13,9 @@ export function ActiveProjectsCard() {
                     <h2 className="font-semibold">Active Projects</h2>
                     <Folder size={20} className="text-primary" />
                 </header>
-                <span className="font-bold text-2xl">5 Projects</span>
+                <span className="font-bold text-2xl">
+                    {props.count} Projects
+                </span>
                 <span className="text-sm text-muted-foreground">
                     +1 since last month
                 </span>

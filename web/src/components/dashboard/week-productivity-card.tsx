@@ -7,20 +7,32 @@ import {
     ChartTooltipContent
 } from "@/components/ui/chart"
 
-export function WeekProductivityCard() {
+interface WeekProductivityCardProps {
+    data: {
+        Sunday: number;
+        Monday: number;
+        Tuesday: number;
+        Wednesday: number;
+        Thursday: number;
+        Friday: number;
+        Saturday: number;
+    }
+}
+
+export function WeekProductivityCard(props: WeekProductivityCardProps) {
 
     const chartData2 = [
-        { day: "Monday", done: 186 },
-        { day: "Tuesday", done: 305 },
-        { day: "Wednesday", done: 237 },
-        { day: "Thursday", done: 73 },
-        { day: "Friday", done: 209 },
-        { day: "Saturday", done: 214 },
-        { day: "Sunday", done: 150 }
+        { day: "Monday", completedTasks: props.data.Monday },
+        { day: "Tuesday", completedTasks: props.data.Tuesday },
+        { day: "Wednesday", completedTasks: props.data.Wednesday },
+        { day: "Thursday", completedTasks: props.data.Thursday },
+        { day: "Friday", completedTasks: props.data.Friday },
+        { day: "Saturday", completedTasks: props.data.Saturday },
+        { day: "Sunday", completedTasks: props.data.Sunday },
     ];
 
     const chartConfig2 = {
-        done: {
+        completedTasks: {
             label: "Completed Tasks: ",
             color: "hsl(var(--primary))",
         },
@@ -57,11 +69,11 @@ export function WeekProductivityCard() {
                             content={<ChartTooltipContent indicator="dot" hideLabel />}
                         />
                         <Area
-                            dataKey="done"
+                            dataKey="completedTasks"
                             type="linear"
-                            fill="var(--color-done)"
+                            fill="var(--color-completedTasks)"
                             fillOpacity={0.4}
-                            stroke="var(--color-done)"
+                            stroke="var(--color-completedTasks)"
                         />
                     </AreaChart>
                 </ChartContainer>

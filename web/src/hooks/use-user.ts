@@ -4,7 +4,7 @@ import { useToast } from "./use-toast";
 import { useNavigate } from "react-router-dom";
 import { jwtDecode } from 'jwt-decode';
 import { axios } from "@/lib/axios";
-import { saveToken, TokenProps } from "./use-token";
+import { decodeToken, saveToken, TokenProps } from "./use-token";
 import { PageableMeta } from "@/types/pageable.type";
 import { HttpError } from "@/types/http-error.type";
 
@@ -212,5 +212,38 @@ export function authUser() {
         }
     });
 
+    return query;
+}
+
+interface GetUserDashboardResponse {
+    completedTasks: number;
+    activeProjects: number;
+    totalRevenue: number;
+    projectRanking: {
+        title: string;
+        completedTasks: number;
+        pendingTasks: number;
+    }[],
+    weekProductivity: {
+        Sunday: number;
+        Monday: number;
+        Tuesday: number;
+        Wednesday: number;
+        Thursday: number;
+        Friday: number;
+        Saturday: number;
+    }
+}
+
+export function getUserDashboard() {
+    const userId = decodeToken()?.sub;
+
+    const query = useQuery({
+        queryKey: ['users', 'dashboard'],
+        queryFn: async () => {
+            const response = await axios.get(`/users/dashboard/${userId}`);
+            return response.data as GetUserDashboardResponse;
+        }
+    });
     return query;
 }

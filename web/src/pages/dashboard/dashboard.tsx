@@ -4,18 +4,22 @@ import { TotalRevenueCard } from "@/components/dashboard/total-revenue-card";
 import { ProjectRankingCard } from "@/components/dashboard/project-ranking-card";
 import { WeekProductivityCard } from "@/components/dashboard/week-productivity-card";
 import { InProgressProjectCard } from "@/components/dashboard/in-progress-project-card";
+import { getUserDashboard } from "@/hooks/use-user";
 
 export function Dashboard() {
+
+    const { data: dashboard } = getUserDashboard();
+
     return (
         <main className="space-y-6">
             <section className="grid grid-cols-3 gap-4">
-                <CompletedTasksCard />
-                <ActiveProjectsCard />
-                <TotalRevenueCard />
+                <CompletedTasksCard count={dashboard?.completedTasks || 0} />
+                <ActiveProjectsCard count={dashboard?.activeProjects || 0} />
+                <TotalRevenueCard total={dashboard?.totalRevenue || 0} />
             </section>
             <section className="grid grid-cols-2 gap-4">
-                <ProjectRankingCard />
-                <WeekProductivityCard />
+                <ProjectRankingCard ranking={dashboard?.projectRanking || []} />
+                <WeekProductivityCard data={dashboard?.weekProductivity || {} as any} />
             </section>
             <section>
                 <div className="grid grid-cols-3 gap-4">
