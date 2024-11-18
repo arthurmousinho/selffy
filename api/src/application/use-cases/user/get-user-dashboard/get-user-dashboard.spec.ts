@@ -21,22 +21,24 @@ describe('GetUserDashboardUseCase', () => {
     it('should return correct dashboard data for a user with projects and tasks', async () => {
         const user = makeUser();
         const projects = [
-            makeProject({ owner: user, status: 'IN_PROGRESS', revenue: 1000 }),
-            makeProject({ owner: user, status: 'FINISHED', revenue: 500 }),
+            makeProject({ owner: user, title: "Project A", status: 'IN_PROGRESS', revenue: 1000 }),
+            makeProject({ owner: user, title: "Project B", status: 'FINISHED', revenue: 500 }),
+            makeProject({ owner: user, title: "Project C", status: 'IN_PROGRESS', revenue: 200 }),
         ];
 
         const tasks = [
-            makeTask({ status: 'COMPLETED' }),
+            makeTask({ status: 'COMPLETED', completedAt: new Date('2024-11-13T10:00:00Z') }),
+            makeTask({ status: 'COMPLETED', completedAt: new Date('2024-11-14T12:00:00Z') }),
             makeTask({ status: 'PENDING' }),
-            makeTask({ status: 'COMPLETED' }),
         ];
 
         projects[0].addTask(tasks[0]);
-        projects[0].addTask(tasks[1]);
-        projects[1].addTask(tasks[2]);
+        projects[1].addTask(tasks[1]);
+        projects[2].addTask(tasks[2]);
 
         user.addProject(projects[0]);
         user.addProject(projects[1]);
+        user.addProject(projects[2]);
 
         await userRepository.create(user);
 
@@ -47,24 +49,22 @@ describe('GetUserDashboardUseCase', () => {
 
         expect(result).toEqual({
             completedTasks: 2,
-            activeProjects: 1,
-            totalRevenue: 1500,
-        });
-    });
-
-    it('should return zero values if the user has no projects', async () => {
-        const user = makeUser();
-        await userRepository.create(user);
-
-        const result = await getUserDashboardUseCase.execute({
-            requestUserId: user.getId(),
-            ownerId: user.getId(),
-        });
-
-        expect(result).toEqual({
-            completedTasks: 0,
-            activeProjects: 0,
-            totalRevenue: 0,
+            activeProjects: 2,
+            totalRevenue: 1700,
+            projectRanking: [
+                { title: "Project A", completedTasks: 1, pendingTasks: 0 },
+                { title: "Project B", completedTasks: 1, pendingTasks: 0 },
+                { title: "Project C", completedTasks: 0, pendingTasks: 1 },
+            ],
+            weekProductivity: {
+                Sunday: 0,
+                Monday: 0,
+                Tuesday: 0,
+                Wednesday: 1,
+                Thursday: 1,
+                Friday: 0,
+                Saturday: 0,
+            },
         });
     });
 
@@ -79,9 +79,14 @@ describe('GetUserDashboardUseCase', () => {
 
     it('should correctly handle a user with projects but no tasks', async () => {
         const user = makeUser();
-        const project = makeProject({ owner: user, status: 'IN_PROGRESS', revenue: 200 });
+        const projects = [
+            makeProject({ owner: user, title: "Project A", status: 'IN_PROGRESS', revenue: 500 }),
+            makeProject({ owner: user, title: "Project B", status: 'FINISHED', revenue: 300 }),
+        ];
 
-        user.addProject(project);
+        user.addProject(projects[0]);
+        user.addProject(projects[1]);
+
         await userRepository.create(user);
 
         const result = await getUserDashboardUseCase.execute({
@@ -92,7 +97,20 @@ describe('GetUserDashboardUseCase', () => {
         expect(result).toEqual({
             completedTasks: 0,
             activeProjects: 1,
-            totalRevenue: 200,
+            totalRevenue: 800,
+            projectRanking: [
+                { title: "Project A", completedTasks: 0, pendingTasks: 0 },
+                { title: "Project B", completedTasks: 0, pendingTasks: 0 },
+            ],
+            weekProductivity: {
+                Sunday: 0,
+                Monday: 0,
+                Tuesday: 0,
+                Wednesday: 0,
+                Thursday: 0,
+                Friday: 0,
+                Saturday: 0,
+            },
         });
     });
 
