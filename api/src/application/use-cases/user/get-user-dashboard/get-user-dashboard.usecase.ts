@@ -1,6 +1,7 @@
 import { Injectable } from "@nestjs/common";
 import { FindUserByIdUseCase } from "../find-user-by-id/find-user-by-id.usecase";
 import { Project } from "@domain/entities/project/project.entity";
+import { Task } from "@domain/entities/task/task.entity";
 
 interface GetUserDashboardUseCaseRequest {
     requestUserId: string;
@@ -42,17 +43,18 @@ export class GetUserDashboardUseCase {
         ).length;
 
         const totalRevenue = userProjects.reduce(
-            (sum, project) => sum + (project.getRevenue() || 0),
-            0
+            (sum, project) => sum + (project.getRevenue() || 0), 0
         );
 
         const projectRanking = this.getProjectRanking(userProjects);
+        const weekProductivity = this.getWeekProductivity(userProjects);
 
         return {
             completedTasks,
             activeProjects,
             totalRevenue,
             projectRanking,
+            weekProductivity
         };
     }
 
@@ -76,6 +78,32 @@ export class GetUserDashboardUseCase {
             .slice(0, 3);
 
         return rankingPodium;
+    }
+
+    private getWeekProductivity(projects: Project[]) {
+        const allTasks: Task[] = [];
+        projects.map(project => allTasks.push(...project.getTasks()));
+
+        const daysOfWeek = [
+            'Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday',
+        ];
+
+        const initialProductivity = daysOfWeek.reduce(
+            (acc, day) => ({ ...acc, [day]: 0 }), {}
+        );
+
+        return allTasks
+            .filter(task => task.getStatus() === 'COMPLETED')
+            .reduce((acc, task) => {
+                const taskCompletedAt = task.getCompletedAt()
+
+                if (!taskCompletedAt) {
+                    return acc;
+                }
+                const completedDay = daysOfWeek[new Date(taskCompletedAt).getDay()];
+                acc[completedDay]++;
+                return acc;
+            }, initialProductivity);
     }
 
 }
