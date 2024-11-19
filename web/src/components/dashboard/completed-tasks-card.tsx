@@ -4,6 +4,7 @@ import NumberTicker from "../ui/number-ticker";
 
 interface CompletedTasksCardProps {
     count: number;
+    growth: number;
 }
 
 export function CompletedTasksCard(props: CompletedTasksCardProps) {
@@ -20,7 +21,7 @@ export function CompletedTasksCard(props: CompletedTasksCardProps) {
                     <NumberTicker value={props.count} direction="up" /> Tasks
                 </span>
                 <span className="text-sm text-muted-foreground">
-                    +16 since last month
+                    +{props.growth} since last month
                 </span>
             </CardHeader>
         </Card>

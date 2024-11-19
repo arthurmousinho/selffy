@@ -55,7 +55,7 @@ export function Header() {
                             <Avatar>
                                 <AvatarFallback>
                                     {tokenData?.name?.split(' ')[0].charAt(0)}
-                                    {tokenData?.name?.split(' ')[1].charAt(0)}
+                                    {tokenData?.name?.split(' ')[1]?.charAt(0) || ''}
                                 </AvatarFallback>
                             </Avatar>
                         </DropdownMenuTrigger>

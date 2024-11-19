@@ -217,8 +217,11 @@ export function authUser() {
 
 interface GetUserDashboardResponse {
     completedTasks: number;
+    completedTasksMonthlyGrowth: number;
     activeProjects: number;
+    activeProjectsMonthlyGrowth: number;
     totalRevenue: number;
+    totalProfit: number;
     projectRanking: {
         title: string;
         completedTasks: number;

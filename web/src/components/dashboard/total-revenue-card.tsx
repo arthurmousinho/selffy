@@ -1,9 +1,11 @@
 import { DollarSign } from "lucide-react";
 import { Card, CardHeader } from "../ui/card";
 import NumberTicker from "../ui/number-ticker";
+import { formatCurrency } from "@/utils/format-currency";
 
 interface TotalRevenueCardProps {
     total: number;
+    profit: number;
 }
 
 export function TotalRevenueCard(props: TotalRevenueCardProps) {
@@ -23,7 +25,7 @@ export function TotalRevenueCard(props: TotalRevenueCardProps) {
                     />
                 </span>
                 <span className="text-sm text-muted-foreground">
-                    +R$ 3.200,00 since last month
+                    Total profit: {formatCurrency(props.profit)}
                 </span>
             </CardHeader>
         </Card>

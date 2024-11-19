@@ -13,9 +13,18 @@ export function Dashboard() {
     return (
         <main className="space-y-6">
             <section className="grid grid-cols-3 gap-4">
-                <CompletedTasksCard count={dashboard?.completedTasks || 0} />
-                <ActiveProjectsCard count={dashboard?.activeProjects || 0} />
-                <TotalRevenueCard total={dashboard?.totalRevenue || 0} />
+                <CompletedTasksCard
+                    count={dashboard?.completedTasks || 0}
+                    growth={dashboard?.completedTasksMonthlyGrowth || 0}
+                />
+                <ActiveProjectsCard
+                    count={dashboard?.activeProjects || 0}
+                    growth={dashboard?.activeProjectsMonthlyGrowth || 0}
+                />
+                <TotalRevenueCard
+                    total={dashboard?.totalRevenue || 0}
+                    profit={dashboard?.totalProfit || 0}
+                />
             </section>
             <section className="grid grid-cols-2 gap-4">
                 <ProjectRankingCard ranking={dashboard?.projectRanking || []} />
@@ -23,32 +32,32 @@ export function Dashboard() {
             </section>
             <section>
                 <div className="grid grid-cols-3 gap-4">
-                    <InProgressProjectCard 
+                    <InProgressProjectCard
                         title="MyChaty"
                         icon="💬"
                         color="#86efac"
                     />
-                    <InProgressProjectCard 
+                    <InProgressProjectCard
                         title="Better"
                         icon="🕹️"
                         color="#fca5a5"
                     />
-                    <InProgressProjectCard 
+                    <InProgressProjectCard
                         title="Maple"
                         icon="✅"
                         color="#fdba74"
                     />
-                    <InProgressProjectCard 
+                    <InProgressProjectCard
                         title="DevBooks"
                         icon="📚"
                         color="#67e8f9"
                     />
-                    <InProgressProjectCard 
+                    <InProgressProjectCard
                         title="ExamChecker"
                         icon="💊"
                         color="#f9a8d4"
                     />
-                    <InProgressProjectCard 
+                    <InProgressProjectCard
                         title="Boleto Facil"
                         icon="🤑"
                         color="#fca5a5"

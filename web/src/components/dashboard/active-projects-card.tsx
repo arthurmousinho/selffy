@@ -4,6 +4,7 @@ import NumberTicker from "../ui/number-ticker";
 
 interface ActiveProjectsCardProps {
     count: number;
+    growth: number;
 }
 
 export function ActiveProjectsCard(props: ActiveProjectsCardProps) {
@@ -18,7 +19,7 @@ export function ActiveProjectsCard(props: ActiveProjectsCardProps) {
                     <NumberTicker value={props.count} direction="up" /> Projects
                 </span>
                 <span className="text-sm text-muted-foreground">
-                    +1 since last month
+                    +{props.growth} since last month
                 </span>
             </CardHeader>
         </Card>
