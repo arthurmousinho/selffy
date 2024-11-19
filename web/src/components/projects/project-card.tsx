@@ -1,7 +1,6 @@
 import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
-import { Badge } from "../ui/badge";
 import { Link } from "react-router-dom";
-
+import { ProjectBadge } from "./project-badge";
 
 interface ProjectCardProps {
     id: string;
@@ -33,17 +32,9 @@ export function ProjectCard(props: ProjectCardProps) {
                     </span>
                 </CardContent>
                 <CardFooter>
-                    {
-                        props.status === 'FINISHED' ? (
-                            <Badge variant={'outline'} className=" bg-slate-50 text-slate-400">
-                                Finished
-                            </Badge>
-                        ) : (
-                            <Badge variant={'secondary'} className=" bg-green-50 text-green-400">
-                                In Progress
-                            </Badge>
-                        )
-                    }
+                    <ProjectBadge 
+                        status={props.status}
+                    />
                 </CardFooter>
             </Card>
         </Link>

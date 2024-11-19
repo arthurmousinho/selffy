@@ -2,7 +2,7 @@ import { deleteTask, getTasksByProjectId } from "@/hooks/use-task";
 import { useParams } from "react-router-dom";
 import { Card, CardHeader } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Calendar, Pencil, Plus, Trash } from "lucide-react";
+import { Calendar, Folder, Pencil, Plus, Trash } from "lucide-react";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { TaskBadge } from "@/components/tasks/task-badge";
 import { Badge } from "@/components/ui/badge";
@@ -11,6 +11,7 @@ import { NewTaskDialog } from "@/components/admin/task/new-task-dialog";
 import { EditTaskDialog } from "@/components/admin/task/edit-task-dialog";
 import { DeleteAlertDialog } from "@/components/global/delete-alert-dialog";
 import { getProjectById } from "@/hooks/use-project";
+import { TaskDetailsDialog } from "@/components/tasks/task-details-dialog";
 
 
 export function ProjectTasks() {
@@ -62,6 +63,7 @@ export function ProjectTasks() {
                                 <TableHead>Title</TableHead>
                                 <TableHead className="text-right">Status</TableHead>
                                 <TableHead className="text-right">Due date</TableHead>
+                                <TableHead className="text-right">Details</TableHead>
                                 <TableHead className="text-right">Edit</TableHead>
                                 <TableHead className="text-right">Delete</TableHead>
                             </TableRow>
@@ -91,6 +93,13 @@ export function ProjectTasks() {
                                         <span>
                                             {formatDueDate(task.dueDate)}
                                         </span>
+                                    </TableCell>
+                                    <TableCell className="text-right">
+                                        <TaskDetailsDialog data={task}>
+                                            <Button className="text-muted-foreground" variant={'outline'}>
+                                                <Folder size={20} />
+                                            </Button>
+                                        </TaskDetailsDialog>
                                     </TableCell>
                                     <TableCell className="text-right">
                                         <EditTaskDialog data={task} adminMode={false}>
