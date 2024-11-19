@@ -1,9 +1,10 @@
-import { CheckCheck, FolderOpen, HandCoins, Home, LogOut, Settings, UsersRound } from "lucide-react";
+import { CheckCheck, FolderOpen, HandCoins, Home, LayoutGrid, LogOut, Settings, UsersRound } from "lucide-react";
 import { NavLink } from "react-router-dom";
 import { Card, CardContent } from "../ui/card";
 
 const sidebarLinks = [
     { to: '/admin/dashboard', label: 'Dashboard', icon: <Home size={20} className="text-black" /> },
+    { to: '/app/dashboard', label: 'Application', icon: <LayoutGrid size={20} className="text-black" /> },
     { to: '/admin/users', label: 'Users', icon: <UsersRound size={20} className="text-black" /> },
     { to: '/admin/projects', label: 'Projects', icon: <FolderOpen size={20} className="text-black" /> },
     { to: '/admin/costs', label: 'Costs', icon: <HandCoins size={20} className="text-black" /> },
