@@ -124,7 +124,7 @@ export class Project {
         this.props.costs.splice(index, 1);
     }
 
-    public addCosts(cost: Cost) {
+    public addCost(cost: Cost) {
         this.props.costs.push(cost);
     }
 

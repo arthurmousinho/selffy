@@ -61,7 +61,7 @@ export class PrismaProjectMapper {
         }));
 
         if (costs) {
-            costs.map(cost => project.addCosts(cost));
+            costs.map(cost => project.addCost(cost));
         }
 
         return project;

@@ -3,6 +3,7 @@ import { randomUUID } from "crypto";
 import { makeUser } from "./user.factory";
 import { Task } from "src/domain/entities/task/task.entity";
 import { User } from "src/domain/entities/user/user.entity";
+import { Cost } from "@domain/entities/cost/cost.entity";
 
 export function makeProject(props?: {
     title?: string,
@@ -12,7 +13,9 @@ export function makeProject(props?: {
     status?: ProjectStatus,
     owner?: User,
     color?: string,
-    icon?: string
+    icon?: string,
+    createdAt?: Date,
+    costs?: Cost[],
 }) {
     const projectId = randomUUID();
     const projectOwner = props?.owner ?? makeUser();
@@ -25,7 +28,9 @@ export function makeProject(props?: {
         owner: projectOwner,
         status: props?.status ?? "IN_PROGRESS",
         color: props?.color ?? "#000000",
-        icon: props?.icon ?? "👍🏻"
+        icon: props?.icon ?? "👍🏻",
+        createdAt: props?.createdAt ?? new Date(),
+        costs: props?.costs ?? [],
     }, projectId);
 
     return project;

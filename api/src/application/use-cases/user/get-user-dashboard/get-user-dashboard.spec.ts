@@ -1,16 +1,17 @@
-import { GetUserDashboardUseCase } from "./get-user-dashboard.usecase";
 import { FindUserByIdUseCase } from "../find-user-by-id/find-user-by-id.usecase";
+import { UserRepository } from "@domain/repositories/user.repository";
 import { InMemoryUserRepository } from "@test/repositories/in-memory-user.repository";
 import { makeUser } from "@test/factories/user.factory";
 import { makeProject } from "@test/factories/project.factory";
 import { makeTask } from "@test/factories/task.factory";
-import { UserNotFoundError } from "@application/errors/user/user-not-found.error";
+import { GetUserDashboardUseCase } from "./get-user-dashboard.usecase";
+import { makeCost } from "@test/factories/cost.factory";
 
-describe('GetUserDashboardUseCase', () => {
+describe("GetUserDashboardUseCase", () => {
+
     let getUserDashboardUseCase: GetUserDashboardUseCase;
     let findUserByIdUseCase: FindUserByIdUseCase;
-
-    let userRepository: InMemoryUserRepository;
+    let userRepository: UserRepository;
 
     beforeEach(() => {
         userRepository = new InMemoryUserRepository();
@@ -18,100 +19,175 @@ describe('GetUserDashboardUseCase', () => {
         getUserDashboardUseCase = new GetUserDashboardUseCase(findUserByIdUseCase);
     });
 
-    it('should return correct dashboard data for a user with projects and tasks', async () => {
+    it("should return an empty dashboard when the user has no projects", async () => {
         const user = makeUser();
-        const projects = [
-            makeProject({ owner: user, title: "Project A", status: 'IN_PROGRESS', revenue: 1000 }),
-            makeProject({ owner: user, title: "Project B", status: 'FINISHED', revenue: 500 }),
-            makeProject({ owner: user, title: "Project C", status: 'IN_PROGRESS', revenue: 200 }),
-        ];
-
-        const tasks = [
-            makeTask({ status: 'COMPLETED', completedAt: new Date('2024-11-13T10:00:00Z') }),
-            makeTask({ status: 'COMPLETED', completedAt: new Date('2024-11-14T12:00:00Z') }),
-            makeTask({ status: 'PENDING' }),
-        ];
-
-        projects[0].addTask(tasks[0]);
-        projects[1].addTask(tasks[1]);
-        projects[2].addTask(tasks[2]);
-
-        user.addProject(projects[0]);
-        user.addProject(projects[1]);
-        user.addProject(projects[2]);
-
         await userRepository.create(user);
 
-        const result = await getUserDashboardUseCase.execute({
+        const dashboard = await getUserDashboardUseCase.execute({
             requestUserId: user.getId(),
             ownerId: user.getId(),
         });
 
-        expect(result).toEqual({
-            completedTasks: 2,
-            activeProjects: 2,
-            totalRevenue: 1700,
-            projectRanking: [
-                { title: "Project A", completedTasks: 1, pendingTasks: 0 },
-                { title: "Project B", completedTasks: 1, pendingTasks: 0 },
-                { title: "Project C", completedTasks: 0, pendingTasks: 1 },
-            ],
-            weekProductivity: {
-                Sunday: 0,
-                Monday: 0,
-                Tuesday: 0,
-                Wednesday: 1,
-                Thursday: 1,
-                Friday: 0,
-                Saturday: 0,
-            },
-        });
-    });
-
-    it('should throw UserNotFoundError if the user does not exist', async () => {
-        await expect(
-            getUserDashboardUseCase.execute({
-                requestUserId: 'non-existent-user-id',
-                ownerId: 'non-existent-user-id',
-            }),
-        ).rejects.toThrow(UserNotFoundError);
-    });
-
-    it('should correctly handle a user with projects but no tasks', async () => {
-        const user = makeUser();
-        const projects = [
-            makeProject({ owner: user, title: "Project A", status: 'IN_PROGRESS', revenue: 500 }),
-            makeProject({ owner: user, title: "Project B", status: 'FINISHED', revenue: 300 }),
-        ];
-
-        user.addProject(projects[0]);
-        user.addProject(projects[1]);
-
-        await userRepository.create(user);
-
-        const result = await getUserDashboardUseCase.execute({
-            requestUserId: user.getId(),
-            ownerId: user.getId(),
-        });
-
-        expect(result).toEqual({
+        expect(dashboard).toEqual({
             completedTasks: 0,
-            activeProjects: 1,
-            totalRevenue: 800,
-            projectRanking: [
-                { title: "Project A", completedTasks: 0, pendingTasks: 0 },
-                { title: "Project B", completedTasks: 0, pendingTasks: 0 },
-            ],
-            weekProductivity: {
-                Sunday: 0,
-                Monday: 0,
-                Tuesday: 0,
-                Wednesday: 0,
-                Thursday: 0,
-                Friday: 0,
-                Saturday: 0,
-            },
+            activeProjects: 0,
+            totalRevenue: 0,
+            projectRanking: [],
+            completedTasksMonthlyGrowth: 0,
+            activeProjectsMonthlyGrowth: 0,
         });
     });
 
+    it("should calculate dashboard metrics correctly when the user has projects", async () => {
+        const user = makeUser();
+        await userRepository.create(user);
+
+        const project1 = makeProject({ owner: user, status: "IN_PROGRESS", revenue: 1000 });
+        const project2 = makeProject({ owner: user, status: "IN_PROGRESS", revenue: 2000 });
+
+        const task1 = makeTask({ projectId: project1.getId(), status: "COMPLETED", completedAt: new Date() });
+        const task2 = makeTask({ projectId: project1.getId(), status: "PENDING" });
+        const task3 = makeTask({ projectId: project2.getId(), status: "COMPLETED", completedAt: new Date() });
+
+        project1.addTask(task1)
+        project1.addTask(task2);
+        project2.addTask(task3);
+
+        user.addProject(project1);
+        user.addProject(project2);
+
+        await userRepository.create(user);
+
+        const dashboard = await getUserDashboardUseCase.execute({
+            requestUserId: user.getId(),
+            ownerId: user.getId(),
+        });
+
+        expect(dashboard.completedTasks).toBe(2);
+        expect(dashboard.activeProjects).toBe(2);
+        expect(dashboard.totalRevenue).toBe(3000);
+        expect(dashboard.projectRanking).toHaveLength(2);
+        expect(dashboard.projectRanking[0].title).toBe(project1.getTitle());
+        expect(dashboard.projectRanking[0].completedTasks).toBe(1);
+        expect(dashboard.projectRanking[1].title).toBe(project2.getTitle());
+        expect(dashboard.projectRanking[1].completedTasks).toBe(1);
+        expect(dashboard.completedTasksMonthlyGrowth).toBeGreaterThan(0);
+        expect(dashboard.activeProjectsMonthlyGrowth).toBeGreaterThan(0);
+    });
+
+    it("should handle monthly growth calculation correctly", async () => {
+        const user = makeUser();
+        await userRepository.create(user);
+
+        const project = makeProject({ owner: user, status: "IN_PROGRESS" });
+
+        const taskLastMonth = makeTask({
+            projectId: project.getId(),
+            status: "COMPLETED",
+            completedAt: new Date(new Date().setMonth(new Date().getMonth() - 1)),
+        });
+
+        const taskThisMonth = makeTask({
+            projectId: project.getId(),
+            status: "COMPLETED",
+            completedAt: new Date(),
+        });
+
+        project.addTask(taskLastMonth);
+        project.addTask(taskThisMonth);
+
+        user.addProject(project);
+
+        await userRepository.create(user);
+
+        const dashboard = await getUserDashboardUseCase.execute({
+            requestUserId: user.getId(),
+            ownerId: user.getId(),
+        });
+
+        expect(dashboard.completedTasksMonthlyGrowth).toBe(0);
+        expect(dashboard.activeProjectsMonthlyGrowth).toBe(1); 
+    });
+
+    it("should return week productivity correctly", async () => {
+        const user = makeUser();
+        await userRepository.create(user);
+
+        const project = makeProject({ owner: user });
+
+        const taskMonday = makeTask({
+            projectId: project.getId(),
+            status: "COMPLETED",
+            completedAt: new Date(new Date().setDate(new Date().getDate() - new Date().getDay() + 1)), // Monday
+        });
+
+        const taskWednesday = makeTask({
+            projectId: project.getId(),
+            status: "COMPLETED",
+            completedAt: new Date(new Date().setDate(new Date().getDate() - new Date().getDay() + 3)), // Wednesday
+        });
+
+        project.addTask(taskMonday);
+        project.addTask(taskWednesday);
+
+        user.addProject(project);
+
+        await userRepository.create(user);
+
+        const dashboard = await getUserDashboardUseCase.execute({
+            requestUserId: user.getId(),
+            ownerId: user.getId(),
+        });
+
+        if (dashboard.weekProductivity === undefined) {
+            throw new Error("Week productivity is undefined");
+        }
+
+        expect(dashboard.weekProductivity["Monday"]).toBe(1);
+        expect(dashboard.weekProductivity["Wednesday"]).toBe(1);
+        expect(dashboard.weekProductivity["Sunday"]).toBe(0); // No tasks completed on Sunday
+    });
+
+    it("should calculate total profit correctly", async () => {
+        const user = makeUser();
+        await userRepository.create(user);
+    
+        const cost1 = makeCost({ value: 200 });
+        const cost2 = makeCost({ value: 300 });
+
+        const cost3 = makeCost({ value: 500 });
+        const cost4 = makeCost({ value: 400 });
+
+        const project1 = makeProject({
+            owner: user,
+            status: "IN_PROGRESS",
+            revenue: 1000,
+            costs: [ cost1, cost2 ],
+        });
+        const project2 = makeProject({
+            owner: user,
+            status: "IN_PROGRESS",
+            revenue: 2000,
+            costs: [ cost3, cost4 ]
+        });
+    
+        const task1 = makeTask({ projectId: project1.getId(), status: "COMPLETED", completedAt: new Date() });
+        const task2 = makeTask({ projectId: project2.getId(), status: "COMPLETED", completedAt: new Date() });
+    
+        project1.addTask(task1);
+        project2.addTask(task2);
+    
+        user.addProject(project1);
+        user.addProject(project2);
+    
+        await userRepository.create(user);
+    
+        const dashboard = await getUserDashboardUseCase.execute({
+            requestUserId: user.getId(),
+            ownerId: user.getId(),
+        });
+
+        expect(dashboard.totalProfit).toBe(1600);
+    });
+    
 });

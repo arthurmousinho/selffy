@@ -74,7 +74,8 @@ export class PrismaUserRepository implements UserRepository {
             include: {
                 projects: {
                     include: {
-                        tasks: true
+                        tasks: true,
+                        costs: true
                     }
                 }
             }
