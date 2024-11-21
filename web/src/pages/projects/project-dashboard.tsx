@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger, } from "@/components/ui/tooltip";
-import { deleteProject, getProjectDashboard } from "@/hooks/use-project";
+import { deleteProject, getProjectDashboard, pinProject } from "@/hooks/use-project";
 import { formatCurrency } from "@/utils/format-currency";
 import { ArrowUpRight, CheckCircle, DollarSign, HandCoinsIcon, Pen, Pin, Trash } from "lucide-react";
 import { Link, useNavigate, useParams } from "react-router-dom";
@@ -17,6 +17,7 @@ export function ProjectDashboard() {
 
     const { data } = getProjectDashboard(projectIdFromParam);
     const { mutate: deleteProjectFn } = deleteProject();
+    const { mutate: pinProjectFn } = pinProject();
 
     if (!data) {
         return (
@@ -96,7 +97,12 @@ export function ProjectDashboard() {
                         <TooltipProvider>
                             <Tooltip>
                                 <TooltipTrigger>
-                                    <Button variant={'outline'} className="flex items-center text-muted-foreground">
+                                    <Button
+                                        variant={'outline'}
+                                        className={`${data?.project.isPinned ? 'border-primary text-primary': 'text-muted-foreground'} flex items-center 
+                                        `}
+                                        onClick={() => pinProjectFn(projectIdFromParam)}
+                                    >
                                         <Pin size={20} />
                                     </Button>
                                 </TooltipTrigger>
@@ -106,7 +112,7 @@ export function ProjectDashboard() {
                             </Tooltip>
                             <Tooltip>
                                 <TooltipTrigger>
-                                    <EditProjectDialog 
+                                    <EditProjectDialog
                                         data={{ ...data.project }}
                                         adminMode={false}
                                     >

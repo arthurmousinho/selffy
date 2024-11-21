@@ -19,13 +19,7 @@ export function Projects() {
             {
                 query?.data?.projects.map((project: ProjectProps) => (
                     <ProjectCard
-                        key={project.id}
-                        id={project.id}
-                        title={project.title}
-                        icon={project.icon}
-                        color={project.color}
-                        description={project.description}
-                        status={project.status}
+                        {...project}
                     />
                 ))
             }

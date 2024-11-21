@@ -10,6 +10,7 @@ import {
 import { Separator } from "../ui/separator";
 import { NavLink } from "react-router-dom";
 import { ProjectPin } from "../projects/project-pin";
+import { getPinnedProjects } from "@/hooks/use-project";
 
 const sidebarLinks = [
     { to: '/app/dashboard', label: 'Dashboard', icon: <Home size={20} className="text-black" /> },
@@ -20,14 +21,11 @@ const sidebarLinks = [
     { to: '/auth/signin', label: 'Exit', icon: <LogOut size={20} className="text-black" /> },
 ];
 
-const pinnedProjects = [
-    { title: 'MyChaty', icon: '💬', color: '#86efac' },
-    { title: 'ExamChecker', icon: '💊', color: '#f9a8d4' },
-    { title: 'DevBooks', icon: '📚', color: '#60a5fa' },
-    { title: 'Boleto Facil', icon: '🤑', color: '#c084fc' },
-]
-
 export function Sidebar() {
+
+    const { data: pinnedProjectsData } = getPinnedProjects();
+
+
     return (
         <Card className="h-screen rounded-none min-w-[20%] border-t-0">
             <CardContent className="pt-4 px-2 flex flex-col gap-2">
@@ -57,10 +55,10 @@ export function Sidebar() {
                     </span>
                 </div>
                 {
-                    pinnedProjects.map((project, index) => (
+                    pinnedProjectsData?.projects.map((project, index) => (
                         <ProjectPin
                             key={index}
-                            id={project.title.toLowerCase().replace(' ', '-')}
+                            id={project.id}
                             title={project.title}
                             icon={project.icon}
                             color={project.color}

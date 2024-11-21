@@ -5,7 +5,6 @@ import { queryClient } from "@/main";
 import { PageableMeta } from "@/types/pageable.type";
 import { decodeToken } from "./use-token";
 
-
 export interface ProjectProps {
     id: string;
     title: string;
@@ -18,6 +17,7 @@ export interface ProjectProps {
     ownerId: string;
     createdAt: Date;
     updatedAt: Date;
+    isPinned: boolean;
 }
 
 export interface GetAllProjectsResponse {
@@ -212,6 +212,43 @@ export function getProjectDashboard(id: string) {
         queryFn: async () => {
             const response = await axios.get(`/projects/dashboard/${id}`);
             return response.data as GetProjectDashboardResponse;
+        }
+    });
+    return query;
+}
+
+export function getPinnedProjects() {
+    const ownerId = decodeToken()?.sub;
+
+    const query = useQuery({
+        queryKey: ['projects', 'pinned'],
+        queryFn: async () => {
+            const response = await axios.get(`/projects/pinned/owner/${ownerId}`);
+            return response.data as GetAllProjectsResponse;
+        }
+    });
+
+    return query;
+}
+
+export function pinProject() {
+    const { toast } = useToast();
+    const query = useMutation({
+        mutationFn: async (id: string) => {
+            return await axios.patch(`/projects/pin/${id}`);
+        },
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ['projects', 'pinned'] });
+            toast({
+                title: "✅ Success",
+                description: "Project was pinned successfully",
+            });
+        },
+        onError: () => {
+            toast({
+                title: "❌ Error",
+                description: "Something went wrong",
+            });
         }
     });
     return query;

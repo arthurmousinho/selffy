@@ -53,6 +53,7 @@ export class GetProjectDashboardUseCase {
                 description: project.getDescription(),
                 createdAt: project.getCreatedAt(),
                 updatedAt: project.getUpdatedAt(),
+                isPinned: project.getIsPinned(),
             },
             tasks: {
                 total: totalTasks,
