@@ -16,7 +16,7 @@ import { FindProjectsByOwnerIdUseCase } from "@application/use-cases/project/fin
 import { RoleGuard } from "../guards/role.guard";
 import { FindProjectByIdUseCase } from "@application/use-cases/project/find-project-by-id/find-project-by-id.usecase";
 import { GetProjectDashboardUseCase } from "@application/use-cases/project/get-project-dashboard/get-project-dashboard.usecase";
-import { PinProjectUseCase } from "@application/use-cases/project/pin-project/pin-project.usecase";
+import { ToogleProjectPinUseCase } from "@application/use-cases/project/toggle-project-pin/toggle-project-pin.usecase";
 import { GetPinnedProjectsByOwnerIdUseCase } from "@application/use-cases/project/get-pinned-projects-by-owner-id/get-pinned-projects-by-owner-id.usecase";
 
 @ApiTags('Projects')
@@ -34,8 +34,8 @@ export class ProjectController {
         private findProjectsByStatusUseCase: FindProjectsByStatusUseCase,
         private findProjectByIdUseCase: FindProjectByIdUseCase,
         private getProjectDashboardUseCase: GetProjectDashboardUseCase,
-        private pinProjectUseCase: PinProjectUseCase,
-        private getPinnedProjectsByOwnerIdUseCase: GetPinnedProjectsByOwnerIdUseCase,
+        private getPinnedProjectByOwnerId: GetPinnedProjectsByOwnerIdUseCase,
+        private toggleProjectPinUseCase: ToogleProjectPinUseCase
     ) { }
 
     @Get()
@@ -155,7 +155,7 @@ export class ProjectController {
         @Param('id') ownerId: string,
         @UserFromToken() userFromToken: UserFromToken,
     ) {
-        const projects = await this.getPinnedProjectsByOwnerIdUseCase.execute({
+        const projects = await this.getPinnedProjectByOwnerId.execute({
             ownerId,
             requestUserId: userFromToken.id
         });
@@ -169,7 +169,7 @@ export class ProjectController {
         @Param('id') id: string,
         @UserFromToken() userFromToken: UserFromToken,
     ) {
-        await this.pinProjectUseCase.execute({
+        await this.toggleProjectPinUseCase.execute({
             projectId: id,
             requestUserId: userFromToken.id
         });
