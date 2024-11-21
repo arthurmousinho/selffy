@@ -21,6 +21,7 @@ export class PrismaProjectMapper {
             status: project.getStatus(),
             icon: project.getIcon(),
             color: project.getColor(),
+            isPinned: project.getIsPinned(),
         }
     }
 
@@ -53,6 +54,7 @@ export class PrismaProjectMapper {
             icon: raw.icon,
             color: raw.color,
             tasks,
+            isPinned: raw.isPinned,
         }, raw.id)
 
         const costs = raw.costs?.map(cost => PrismaCostMapper.toDomain({

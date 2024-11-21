@@ -37,6 +37,7 @@ export class ProjectSeeder {
                     updatedAt: new Date(),
                     owner: randomUserMappedToPrisma,
                     ownerId: randomUserMappedToPrisma.id,
+                    isPinned: false,
                 });
             }
         ));

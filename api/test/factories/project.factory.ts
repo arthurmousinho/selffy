@@ -16,6 +16,7 @@ export function makeProject(props?: {
     icon?: string,
     createdAt?: Date,
     costs?: Cost[],
+    isPinned?: boolean,
 }) {
     const projectId = randomUUID();
     const projectOwner = props?.owner ?? makeUser();
@@ -31,6 +32,7 @@ export function makeProject(props?: {
         icon: props?.icon ?? "👍🏻",
         createdAt: props?.createdAt ?? new Date(),
         costs: props?.costs ?? [],
+        isPinned: props?.isPinned ?? false,
     }, projectId);
 
     return project;

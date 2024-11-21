@@ -13,6 +13,7 @@ describe('Project', () => {
         expect(project.getStatus()).toBe('IN_PROGRESS');
         expect(project.getTasks().length).toBe(0);
         expect(project.getCosts().length).toBe(0);
+        expect(project.getIsPinned()).toBe(false);
     });
 
     it('should allow updating the project title', () => {
@@ -73,12 +74,24 @@ describe('Project', () => {
         const project = makeProject();
         const cost = makeCost();
 
-        project.addCosts(cost);
+        project.addCost(cost);
         expect(project.getCosts().length).toBe(1);
         expect(project.getCosts()[0]).toBe(cost);
 
         project.removeCost(cost);
         expect(project.getCosts().length).toBe(0);
+    });
+
+    it('should set and get the isPinned property', () => {
+        const project = makeProject();
+
+        expect(project.getIsPinned()).toBe(false);
+
+        project.setIsPinned(true);
+        expect(project.getIsPinned()).toBe(true);
+
+        project.setIsPinned(false);
+        expect(project.getIsPinned()).toBe(false);
     });
 
 });

@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Post, Put, Query, UseGuards, UsePipes, ValidationPipe } from "@nestjs/common";
+import { Body, Controller, Delete, Get, Param, Patch, Post, Put, Query, UseGuards, UsePipes, ValidationPipe } from "@nestjs/common";
 import { CreateProjectBody } from "../dtos/project/create-project.dto";
 import { CreateProjectUseCase } from "@application/use-cases/project/create-project/create-project.usecase";
 import { FindAllProjectsUseCase } from "@application/use-cases/project/find-all-projects/find-all-projects.usecase";
@@ -16,6 +16,7 @@ import { FindProjectsByOwnerIdUseCase } from "@application/use-cases/project/fin
 import { RoleGuard } from "../guards/role.guard";
 import { FindProjectByIdUseCase } from "@application/use-cases/project/find-project-by-id/find-project-by-id.usecase";
 import { GetProjectDashboardUseCase } from "@application/use-cases/project/get-project-dashboard/get-project-dashboard.usecase";
+import { PinProjectUseCase } from "@application/use-cases/project/pin-project/pin-project.usecase";
 
 @ApiTags('Projects')
 @UseGuards(JwtAuthGuard)
@@ -32,6 +33,7 @@ export class ProjectController {
         private findProjectsByStatusUseCase: FindProjectsByStatusUseCase,
         private findProjectByIdUseCase: FindProjectByIdUseCase,
         private getProjectDashboardUseCase: GetProjectDashboardUseCase,
+        private pinProjectUseCase: PinProjectUseCase,
     ) { }
 
     @Get()
@@ -144,6 +146,17 @@ export class ProjectController {
         const { status } = params;
         const projectsFound = await this.findProjectsByStatusUseCase.execute(status);
         return { projects: projectsFound.map(ProjectViewModel.toHTTP) };
+    }
+
+    @Patch('/pin/:id') 
+    public async pinProject(
+        @Param('id') id: string,
+        @UserFromToken() userFromToken: UserFromToken,
+    ) {
+        await this.pinProjectUseCase.execute({
+            projectId: id,
+            requestUserId: userFromToken.id
+        });
     }
 
 }

@@ -18,6 +18,7 @@ export interface ProjectProps {
     status: ProjectStatus;
     owner: User;
     costs: Cost[]
+    isPinned: boolean;
 }
 
 export class Project {
@@ -31,7 +32,8 @@ export class Project {
             status?: ProjectStatus,
             updatedAt?: Date,
             tasks?: Task[],
-            costs?: Cost[]
+            costs?: Cost[],
+            isPinned?: boolean
         }>,
         id?: string,
     ) {
@@ -42,7 +44,8 @@ export class Project {
             createdAt: props.createdAt ?? new Date(),
             updatedAt: props.updatedAt ?? new Date(),
             tasks: props.tasks ?? [],
-            costs: props.costs ?? []
+            costs: props.costs ?? [],
+            isPinned: props.isPinned ?? false,
         }
     }
 
@@ -142,6 +145,14 @@ export class Project {
 
     public setOwnerId(owner: User) {
         this.props.owner = owner;
+    }
+
+    public getIsPinned() {
+        return this.props.isPinned;
+    }
+
+    public setIsPinned(isPinned: boolean) {
+        this.props.isPinned = isPinned;
     }
 
 }

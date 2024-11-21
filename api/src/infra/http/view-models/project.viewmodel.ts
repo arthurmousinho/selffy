@@ -15,7 +15,8 @@ export class ProjectViewModel {
             costs: project.getCosts().length,
             ownerId: project.getOwner().getId(),
             createdAt: project.getCreatedAt(),
-            updatedAt: project.getUpdatedAt()
+            updatedAt: project.getUpdatedAt(),
+            isPinned: project.getIsPinned(),
         }
     }
 
