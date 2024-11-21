@@ -17,6 +17,7 @@ import { UserModule } from '../user/user.module';
 import { CountProjectsByOwnerIdUseCase } from './count-projects-by-owner-id/count-projects-by-owner-id.usecase';
 import { GetProjectDashboardUseCase } from './get-project-dashboard/get-project-dashboard.usecase';
 import { PinProjectUseCase } from './pin-project/pin-project.usecase';
+import { GetPinnedProjectsByOwnerIdUseCase } from './get-pinned-projects-by-owner-id/get-pinned-projects-by-owner-id.usecase';
 
 @Module({
     imports: [
@@ -38,7 +39,8 @@ import { PinProjectUseCase } from './pin-project/pin-project.usecase';
         FindProjectsByOwnerIdUseCase,
         CountProjectsByOwnerIdUseCase,
         GetProjectDashboardUseCase,
-        PinProjectUseCase
+        PinProjectUseCase,
+        GetPinnedProjectsByOwnerIdUseCase
     ],
     exports: [
         CreateProjectUseCase,
@@ -56,7 +58,8 @@ import { PinProjectUseCase } from './pin-project/pin-project.usecase';
         FindProjectsByOwnerIdUseCase,
         CountProjectsByOwnerIdUseCase,
         GetProjectDashboardUseCase,
-        PinProjectUseCase
+        PinProjectUseCase,
+        GetPinnedProjectsByOwnerIdUseCase
     ]
 })
 

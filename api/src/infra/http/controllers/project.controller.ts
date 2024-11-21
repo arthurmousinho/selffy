@@ -17,6 +17,7 @@ import { RoleGuard } from "../guards/role.guard";
 import { FindProjectByIdUseCase } from "@application/use-cases/project/find-project-by-id/find-project-by-id.usecase";
 import { GetProjectDashboardUseCase } from "@application/use-cases/project/get-project-dashboard/get-project-dashboard.usecase";
 import { PinProjectUseCase } from "@application/use-cases/project/pin-project/pin-project.usecase";
+import { GetPinnedProjectsByOwnerIdUseCase } from "@application/use-cases/project/get-pinned-projects-by-owner-id/get-pinned-projects-by-owner-id.usecase";
 
 @ApiTags('Projects')
 @UseGuards(JwtAuthGuard)
@@ -34,6 +35,7 @@ export class ProjectController {
         private findProjectByIdUseCase: FindProjectByIdUseCase,
         private getProjectDashboardUseCase: GetProjectDashboardUseCase,
         private pinProjectUseCase: PinProjectUseCase,
+        private getPinnedProjectsByOwnerIdUseCase: GetPinnedProjectsByOwnerIdUseCase,
     ) { }
 
     @Get()
@@ -148,7 +150,21 @@ export class ProjectController {
         return { projects: projectsFound.map(ProjectViewModel.toHTTP) };
     }
 
-    @Patch('/pin/:id') 
+    @Get('/pinned/owner/:id')
+    public async getUserPinnedProjects(
+        @Param('id') ownerId: string,
+        @UserFromToken() userFromToken: UserFromToken,
+    ) {
+        const projects = await this.getPinnedProjectsByOwnerIdUseCase.execute({
+            ownerId,
+            requestUserId: userFromToken.id
+        });
+        return {
+            projects: projects.map(ProjectViewModel.toHTTP)
+        };
+    }
+
+    @Patch('/pin/:id')
     public async pinProject(
         @Param('id') id: string,
         @UserFromToken() userFromToken: UserFromToken,
