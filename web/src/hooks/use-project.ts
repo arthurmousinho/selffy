@@ -231,7 +231,7 @@ export function getPinnedProjects() {
     return query;
 }
 
-export function pinProject() {
+export function togglePinProject() {
     const { toast } = useToast();
     const query = useMutation({
         mutationFn: async (id: string) => {
@@ -241,7 +241,7 @@ export function pinProject() {
             queryClient.invalidateQueries({ queryKey: ['projects', 'pinned'] });
             toast({
                 title: "✅ Success",
-                description: "Project was pinned successfully",
+                description: "Project was pinned status was updated",
             });
         },
         onError: () => {
