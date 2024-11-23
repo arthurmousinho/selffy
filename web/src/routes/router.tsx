@@ -22,6 +22,7 @@ import { AdminSettings } from "@/pages/admin/admin-settings";
 import { Home } from "@/pages/home/home";
 import { ProjectTasks } from "@/pages/projects/project-tasks";
 import { ProjectCosts } from "@/pages/projects/project-costs";
+import { ProjectForm } from "@/pages/projects/project-form";
 
 export const ROUTER = createBrowserRouter([
     {
@@ -39,7 +40,9 @@ export const ROUTER = createBrowserRouter([
             { path: 'dashboard', element: <Dashboard /> },
             { path: 'projects', element: <Projects /> },
             { path: 'priorities', element: <Priorities /> },
+            { path: 'projects/new', element: <ProjectForm /> },
             { path: 'projects/:id', element: <ProjectDashboard /> },
+            { path: 'projects/:id/edit', element: <ProjectForm /> },
             { path: 'projects/:id/tasks', element: <ProjectTasks /> },
             { path: 'projects/:id/costs', element: <ProjectCosts /> },
             { path: 'notifications', element: <Notifications /> },
