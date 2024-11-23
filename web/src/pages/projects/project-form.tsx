@@ -19,7 +19,7 @@ import EmojiPicker, { EmojiClickData } from "emoji-picker-react";
 import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
 import { decodeToken } from "@/hooks/use-token";
-import { useParams } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 
 const colorOptions = [
     { label: "Sky", class: "bg-sky-300", hex: "#7dd3fc" },
@@ -36,6 +36,9 @@ const projectStatus = [
 ];
 
 export function ProjectForm() {
+
+    const isOnAdminPage = useLocation().pathname.includes("/admin/projects");
+
     const [selectedColor, setSelectedColor] = useState<string | null>(null);
     const [selectedEmoji, setSelectedEmoji] = useState<string | null>(null);
     const [selectStatus, setSelectStatus] = useState<"IN_PROGRESS" | "FINISHED">("IN_PROGRESS");
@@ -68,15 +71,26 @@ export function ProjectForm() {
             .string()
             .min(1, { message: "Color is required" }),
         status: z
+            .enum(["IN_PROGRESS", "FINISHED"], { message: "Status is required" }),
+        ownerId: z
             .string()
-            .min(1, { message: "Status is required" }),
+            .min(1, { message: "Owner is required" })
+            .uuid({ message: "Owner must be a valid UUID" })
     });
 
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
+        defaultValues: {
+            status: "IN_PROGRESS",
+        },
     });
 
     useEffect(() => {
+        const userId = decodeToken()?.sub || '';
+        if (!isOnAdminPage) {
+            form.setValue("ownerId", userId);
+        }
+
         if (projectData) {
             setSelectStatus(projectData.project.status || "IN_PROGRESS");
             setSelectedEmoji(projectData.project.icon || "");
@@ -88,25 +102,21 @@ export function ProjectForm() {
             form.setValue("icon", projectData.project.icon);
             form.setValue("color", projectData.project.color);
             form.setValue("status", projectData.project.status);
+            form.setValue("ownerId", projectData.project.ownerId);
         }
     }, [projectData, form]);
 
     function onSubmit(values: z.infer<typeof formSchema>) {
-        const userId = decodeToken()?.sub || '';
-
         if (projectId) {
             updateProjectFn({
                 id: projectId,
                 ...values,
-                ownerId: userId,
-                status: selectStatus,
             });
             return;
         }
 
         createProjectFn({
-            ...values,
-            ownerId: userId,
+            ...values
         });
 
         setSelectedColor(null);
@@ -209,37 +219,41 @@ export function ProjectForm() {
                             />
                         </section>
                         <section className="flex flex-row items-center gap-4 justify-between">
-                            <FormField
-                                control={form.control}
-                                name="status"
-                                render={({ field }) => (
-                                    <FormItem className="w-full">
-                                        <FormLabel>Status</FormLabel>
-                                        <FormControl>
-                                            <div className="grid grid-cols-1 gap-4">
-                                                {projectStatus.map((status, index) => (
-                                                    <Button
-                                                        type="button"
-                                                        key={index}
-                                                        variant={"outline"}
-                                                        className={`flex items-center gap-2 justify-start transition-all ${selectStatus === status.value
-                                                            ? `ring-2 ring-offset-2 ring-default`
-                                                            : ""
-                                                            }`}
-                                                        onClick={() => {
-                                                            setSelectStatus(status.value as "IN_PROGRESS" | "FINISHED");
-                                                            field.onChange(status.value);
-                                                        }}
-                                                    >
-                                                        {status.label}
-                                                    </Button>
-                                                ))}
-                                            </div>
-                                        </FormControl>
-                                        <FormMessage />
-                                    </FormItem>
-                                )}
-                            />
+                            {
+                                projectData && (
+                                    <FormField
+                                        control={form.control}
+                                        name="status"
+                                        render={({ field }) => (
+                                            <FormItem className="w-full">
+                                                <FormLabel>Status</FormLabel>
+                                                <FormControl>
+                                                    <div className="grid grid-cols-1 gap-4">
+                                                        {projectStatus.map((status, index) => (
+                                                            <Button
+                                                                type="button"
+                                                                key={index}
+                                                                variant={"outline"}
+                                                                className={`flex items-center gap-2 justify-start transition-all ${selectStatus === status.value
+                                                                    ? `ring-2 ring-offset-2 ring-default`
+                                                                    : ""
+                                                                    }`}
+                                                                onClick={() => {
+                                                                    setSelectStatus(status.value as "IN_PROGRESS" | "FINISHED");
+                                                                    field.onChange(status.value);
+                                                                }}
+                                                            >
+                                                                {status.label}
+                                                            </Button>
+                                                        ))}
+                                                    </div>
+                                                </FormControl>
+                                                <FormMessage />
+                                            </FormItem>
+                                        )}
+                                    />
+                                )
+                            }
                             <FormField
                                 control={form.control}
                                 name="color"
@@ -276,6 +290,27 @@ export function ProjectForm() {
                                 )}
                             />
                         </section>
+                        {
+                            isOnAdminPage && (
+                                <FormField
+                                    control={form.control}
+                                    name="ownerId"
+                                    render={({ field }) => (
+                                        <FormItem>
+                                            <FormLabel>Owner Id</FormLabel>
+                                            <FormControl>
+                                                <Input
+                                                    placeholder="Ex: a22c6e97-5e30-4f37-8aa2-4e03b192b510"
+                                                    {...field}
+                                                    type="text"
+                                                />
+                                            </FormControl>
+                                            <FormMessage />
+                                        </FormItem>
+                                    )}
+                                />
+                            )
+                        }
                         <footer className="flex justify-end">
                             <Button type="submit">
                                 Save Project

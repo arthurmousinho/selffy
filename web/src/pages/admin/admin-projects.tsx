@@ -21,12 +21,11 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { DetailsDialog } from "@/components/global/details-dialog";
 import { formatCurrency } from "@/utils/format-currency";
-import { NewProjectDialog } from "@/components/admin/project/new-project-dialog";
 import { deleteProject, getAllProjects, GetAllProjectsResponse, searchProjectsByTitle } from "@/hooks/use-project";
 import { DeleteAlertDialog } from "@/components/global/delete-alert-dialog";
-import { EditProjectDialog } from "@/components/admin/project/edit-project.dialog";
 import { useEffect, useState } from "react";
 import { Paginator } from "@/components/global/paginator";
+import { Link } from "react-router-dom";
 
 export function AdminProjects() {
 
@@ -82,12 +81,12 @@ export function AdminProjects() {
                         <RefreshCcw size={20} />
                         Refresh
                     </Button>
-                    <NewProjectDialog adminMode={true}>
+                    <Link to={'new'}>
                         <Button className="flex items-center gap-2">
                             <Plus size={20} />
                             New Project
                         </Button>
-                    </NewProjectDialog>
+                    </Link>
                 </div>
             </CardHeader>
             <CardContent className="pt-4">
@@ -109,7 +108,7 @@ export function AdminProjects() {
                                 <TableRow key={project.id}>
                                     <TableCell>{project.title}</TableCell>
                                     <TableCell>{formatCurrency(project.revenue)}</TableCell>
-                                    <TableCell className="text-left">{project.tasks.length} tasks</TableCell>
+                                    <TableCell className="text-left">{project.tasks} tasks</TableCell>
                                     <TableCell className="text-left">
                                         {
                                             project.status === 'FINISHED' ?
@@ -133,11 +132,11 @@ export function AdminProjects() {
                                         </DetailsDialog>
                                     </TableCell>
                                     <TableCell className="text-right">
-                                        <EditProjectDialog data={project}>
+                                        <Link to={`${project.id}/edit`}>
                                             <Button className="text-muted-foreground" variant={'outline'}>
                                                 <Pencil size={20} />
                                             </Button>
-                                        </EditProjectDialog>
+                                        </Link>
                                     </TableCell>
                                     <TableCell className="flex justify-end">
                                         <DeleteAlertDialog onDelete={() => deleteProjectFn(project.id)}>

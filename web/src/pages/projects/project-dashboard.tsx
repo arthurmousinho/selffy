@@ -1,4 +1,3 @@
-import { EditProjectDialog } from "@/components/admin/project/edit-project.dialog";
 import { DeleteAlertDialog } from "@/components/global/delete-alert-dialog";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -126,14 +125,11 @@ export function ProjectDashboard() {
                             </Tooltip>
                             <Tooltip>
                                 <TooltipTrigger>
-                                    <EditProjectDialog
-                                        data={{ ...data.project }}
-                                        adminMode={false}
-                                    >
+                                    <Link to={"edit"}>
                                         <Button variant={'outline'} className="flex items-center text-muted-foreground">
                                             <Pen size={20} />
                                         </Button>
-                                    </EditProjectDialog>
+                                    </Link>
                                 </TooltipTrigger>
                                 <TooltipContent side="bottom">
                                     <p>Edit</p>

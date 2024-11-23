@@ -60,6 +60,8 @@ export const ROUTER = createBrowserRouter([
             { path: 'dashboard', element: <AdminDashboard /> },
             { path: 'users', element: <AdminUsers /> },
             { path: 'projects', element: <AdminProjects /> },
+            { path: 'projects/new', element: <ProjectForm /> },
+            { path: 'projects/:id/edit', element: <ProjectForm /> },
             { path: 'costs', element: <AdminCosts /> },
             { path: 'tasks', element: <AdminTasks /> },
             { path: 'settings', element: <AdminSettings /> },
