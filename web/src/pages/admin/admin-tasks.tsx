@@ -25,12 +25,11 @@ import {
 } from "@/components/ui/table"
 import { Badge } from "@/components/ui/badge";
 import { DetailsDialog } from "@/components/global/details-dialog";
-import { NewTaskDialog } from "@/components/admin/task/new-task-dialog";
 import { deleteTask, getAllTasks, GetAllTasksResponse, searchTasksByTitle, TaskProps } from "@/hooks/use-task";
 import { DeleteAlertDialog } from "@/components/global/delete-alert-dialog";
-import { EditTaskDialog } from "@/components/admin/task/edit-task-dialog";
 import { useEffect, useState } from "react";
 import { Paginator } from "@/components/global/paginator";
+import { Link } from "react-router-dom";
 
 export function AdminTasks() {
 
@@ -50,7 +49,7 @@ export function AdminTasks() {
 
     useEffect(() => {
         if (!searchTerm && getAllTasksData) {
-            setData(getAllTasksData); 
+            setData(getAllTasksData);
         }
         if (searchTasksByTitleData) {
             setData(searchTasksByTitleData);
@@ -89,12 +88,12 @@ export function AdminTasks() {
                         <RefreshCcw size={20} />
                         Refresh
                     </Button>
-                    <NewTaskDialog adminMode={true}>
+                    <Link to={'new'}>
                         <Button className="flex items-center gap-2">
                             <Plus size={20} />
                             New Task
                         </Button>
-                    </NewTaskDialog>
+                    </Link>
                 </div>
             </CardHeader>
             <CardContent className="pt-4">
@@ -154,11 +153,11 @@ export function AdminTasks() {
                                         </DetailsDialog>
                                     </TableCell>
                                     <TableCell className="text-right">
-                                        <EditTaskDialog data={task} adminMode={true}>
+                                        <Link to={`${task.id}/edit`}>
                                             <Button className="text-muted-foreground" variant={'outline'}>
                                                 <Pencil size={20} />
                                             </Button>
-                                        </EditTaskDialog>
+                                        </Link>
                                     </TableCell>
                                     <TableCell className="flex justify-end">
                                         <DeleteAlertDialog

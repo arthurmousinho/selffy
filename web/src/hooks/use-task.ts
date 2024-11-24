@@ -150,3 +150,16 @@ export function getTasksByProjectId(id: string) {
     });
     return query;
 }
+
+export function getTaskById(id: string) {
+    const query = useQuery({
+        queryKey: ['tasks', id],
+        queryFn: async () => {
+            const response = await axios.get(`/tasks/${id}`);
+            return response.data as { task: TaskProps };
+        },
+        enabled: !!id,
+        staleTime: 5000
+    });
+    return query;
+}

@@ -19,14 +19,14 @@ import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
 import { format } from "date-fns";
 import { Calendar } from "@/components/ui/calendar";
-import { createTask, TaskPriority, TaskStatus, updateTask } from "@/hooks/use-task";
+import { createTask, getTaskById, TaskPriority, TaskStatus, updateTask } from "@/hooks/use-task";
 import { TaskBadge } from "@/components/tasks/task-badge";
-import { useLocation, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 
 
 const taskStatus = [
     { label: "Pending", value: "PENDING" },
-    { label: "Completed ", value: "COMPLETED" },
+    { label: "Completed", value: "COMPLETED" },
 ];
 
 const taskPriorities = [
@@ -36,6 +36,8 @@ const taskPriorities = [
 ];
 
 export function TaskForm() {
+
+    const navigate = useNavigate(); 
 
     const isOnAdminPage = useLocation().pathname.includes("/admin/tasks");
 
@@ -47,6 +49,8 @@ export function TaskForm() {
 
     const { mutate: createTaskFn } = createTask();
     const { mutate: updateTaskFn } = updateTask();
+
+    const { data: taskData } = getTaskById(taskId);
 
     const formSchema = z.object({
         title: z
@@ -63,31 +67,46 @@ export function TaskForm() {
             .enum(["LOW", "MEDIUM", "HIGH"], { required_error: "Priority is required" }),
         projectId: z
             .string({ required_error: "Project is required" }),
-    })
+    });
 
     const form = useForm<z.infer<typeof formSchema>>({
-        resolver: zodResolver(formSchema)
+        resolver: zodResolver(formSchema),
+        defaultValues: {
+            status: "PENDING",
+            priority: "LOW",
+        }
     });
 
     useEffect(() => {
-        if (isOnAdminPage) {
-            form.setValue("projectId", projectId);
+        if (taskData) {
+            setSelectStatus(taskData.task.status);
+            setSelectPriority(taskData.task.priority);
+
+            form.setValue("title", taskData.task.title);
+            form.setValue("description", taskData.task.description);
+            form.setValue("dueDate", new Date(taskData.task.dueDate));
+            form.setValue("status", taskData.task.status);
+            form.setValue("priority", taskData.task.priority);
+            form.setValue("projectId", taskData.task.projectId);
         }
-    }, [form]);
+    }, [form, taskData, isOnAdminPage, projectId]);
 
     function onSubmit(values: z.infer<typeof formSchema>) {
-        if (taskId) {
+        if (taskData) {
             updateTaskFn({
                 id: taskId,
                 ...values,
             });
-            return;
+        }
+        else {
+            createTaskFn({
+                ...values,
+                projectId,
+            });
         }
 
-        createTaskFn({
-            ...values,
-            projectId,
-        });
+        form.reset();
+        navigate(-1);
     }
 
     return (
@@ -213,38 +232,40 @@ export function TaskForm() {
                             )}
                         />
                         <section className="flex flex-row items-center gap-4 justify-between">
-                            <FormField
-                                control={form.control}
-                                name="status"
-                                render={({ field }) => (
-                                    <FormItem className="w-full">
-                                        <FormLabel>Status</FormLabel>
-                                        <FormControl>
-                                            <div className="grid grid-cols-2 gap-4">
-                                                {taskStatus.map((status, index) => (
-                                                    <Button
-                                                        type="button"
-                                                        key={index}
-                                                        variant={"outline"}
-                                                        className={`flex items-center gap-2 justify-start transition-all ${selectStatus === status.value && `ring-2 ring-offset-2 ring-default`}`}
-                                                        onClick={() => {
-                                                            setSelectStatus(status.value as TaskStatus);
-                                                            field.onChange(status.value);
-                                                        }}
-                                                    >
-                                                        <div className={`w-2 h-2 rounded-full ${status.value === "COMPLETED" ? 'bg-green-500' : 'bg-slate-500'
-                                                            }`} />
-                                                        <span className={`${status.value === 'COMPLETED' ? 'text-green-500' : 'text-slate-500'}`}>
-                                                            {status.label}
-                                                        </span>
-                                                    </Button>
-                                                ))}
-                                            </div>
-                                        </FormControl>
-                                        <FormMessage />
-                                    </FormItem>
-                                )}
-                            />
+                            {taskData && (
+                                <FormField
+                                    control={form.control}
+                                    name="status"
+                                    render={({ field }) => (
+                                        <FormItem className="w-full">
+                                            <FormLabel>Status</FormLabel>
+                                            <FormControl>
+                                                <div className="grid grid-cols-2 gap-4">
+                                                    {taskStatus.map((status, index) => (
+                                                        <Button
+                                                            type="button"
+                                                            key={index}
+                                                            variant={"outline"}
+                                                            className={`flex items-center gap-2 justify-start transition-all ${selectStatus === status.value && `ring-2 ring-offset-2 ring-default`}`}
+                                                            onClick={() => {
+                                                                setSelectStatus(status.value as TaskStatus);
+                                                                field.onChange(status.value);
+                                                            }}
+                                                        >
+                                                            <div className={`w-2 h-2 rounded-full ${status.value === "COMPLETED" ? 'bg-green-500' : 'bg-slate-500'
+                                                                }`} />
+                                                            <span className={`${status.value === 'COMPLETED' ? 'text-green-500' : 'text-slate-500'}`}>
+                                                                {status.label}
+                                                            </span>
+                                                        </Button>
+                                                    ))}
+                                                </div>
+                                            </FormControl>
+                                            <FormMessage />
+                                        </FormItem>
+                                    )}
+                                />
+                            )}
                             {isOnAdminPage && (
                                 <FormField
                                     control={form.control}
@@ -257,6 +278,7 @@ export function TaskForm() {
                                                     placeholder="Ex: a22c6e97-5e30-4f37-8aa2-4e03b192b510"
                                                     {...field}
                                                     type="text"
+                                                    defaultValue={field.value}
                                                 />
                                             </FormControl>
                                             <FormMessage />

@@ -1,5 +1,5 @@
 import { deleteTask, getTasksByProjectId } from "@/hooks/use-task";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { Card, CardHeader } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Calendar, Folder, Pencil, Plus, Trash } from "lucide-react";
@@ -7,12 +7,9 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { TaskBadge } from "@/components/tasks/task-badge";
 import { Badge } from "@/components/ui/badge";
 import { formatDueDate } from "@/utils/format-due-date";
-import { NewTaskDialog } from "@/components/admin/task/new-task-dialog";
-import { EditTaskDialog } from "@/components/admin/task/edit-task-dialog";
 import { DeleteAlertDialog } from "@/components/global/delete-alert-dialog";
 import { getProjectById } from "@/hooks/use-project";
 import { TaskDetailsDialog } from "@/components/tasks/task-details-dialog";
-
 
 export function ProjectTasks() {
 
@@ -43,15 +40,12 @@ export function ProjectTasks() {
                         </div>
                     </header>
                     <nav>
-                        <NewTaskDialog
-                            projectId={projectData?.project.id}
-                            adminMode={false}
-                        >
+                        <Link to={'new'}>
                             <Button className="flex items-center gap-2">
                                 <Plus />
                                 New Task
                             </Button>
-                        </NewTaskDialog>
+                        </Link>
                     </nav>
                 </CardHeader>
             </Card>
@@ -102,11 +96,11 @@ export function ProjectTasks() {
                                         </TaskDetailsDialog>
                                     </TableCell>
                                     <TableCell className="text-right">
-                                        <EditTaskDialog data={task} adminMode={false}>
+                                        <Link to={`${task.id}/edit`}>
                                             <Button className="text-muted-foreground" variant={'outline'}>
                                                 <Pencil size={20} />
                                             </Button>
-                                        </EditTaskDialog>
+                                        </Link>
                                     </TableCell>
                                     <TableCell className="flex justify-end">
                                         <DeleteAlertDialog
