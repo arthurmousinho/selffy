@@ -11,6 +11,7 @@ import { JwtAuthGuard } from "../guards/jwt-auth.guard";
 import { ApiTags } from "@nestjs/swagger";
 import { UserFromToken } from "../decorators/user-from-token.decorator";
 import { GetTasksByProjectIdUseCase } from "@application/use-cases/task/get-tasks-by-project-id/get-tasks-by-project-id.usecase";
+import { FindTaskByIdUseCase } from "@application/use-cases/task/find-task-by-id/find-task-by-id.usecase";
 
 @ApiTags('Tasks')
 @UseGuards(JwtAuthGuard)
@@ -23,11 +24,15 @@ export class TaskController {
         private deleteTaskUseCase: DeleteTaskUseCase,
         private updateTaskUseCase: UpdateTaskUseCase,
         private searchTasksByTitleUseCase: SearchTasksByTitleUseCase,
-        private getTasksByProjectIdUseCase: GetTasksByProjectIdUseCase
+        private getTasksByProjectIdUseCase: GetTasksByProjectIdUseCase,
+        private findTaskByIdUseCase: FindTaskByIdUseCase
     ) { }
 
     @Get()
-    public async getAllTasks(@Query('page') page = 1, @Query('limit') limit = 10) {
+    public async getAllTasks(
+        @Query('page') page = 1,
+        @Query('limit') limit = 10
+    ) {
         const pageableTasks = await this.findAllTasksUseCase.execute(
             Number(page),
             Number(limit)
@@ -65,6 +70,12 @@ export class TaskController {
             projectId
         });
         return { tasks: tasks.map(TaskViewModel.toHTTP) };
+    }
+
+    @Get(':id')
+    public async getTaskById(@Param('id') id: string) {
+        const task = await this.findTaskByIdUseCase.execute(id);
+        return { task: TaskViewModel.toHTTP(task) };
     }
 
     @Post()

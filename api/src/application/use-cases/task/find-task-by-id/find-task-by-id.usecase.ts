@@ -1,6 +1,8 @@
 import { TaskNotFoundError } from "@application/errors/task/task-not-found.error";
 import { TaskRepository } from "@domain/repositories/task.repository";
+import { Injectable } from "@nestjs/common";
 
+@Injectable()
 export class FindTaskByIdUseCase {
 
     constructor(
