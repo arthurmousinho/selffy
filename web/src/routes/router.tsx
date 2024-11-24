@@ -23,6 +23,7 @@ import { Home } from "@/pages/home/home";
 import { ProjectTasks } from "@/pages/projects/project-tasks";
 import { ProjectCosts } from "@/pages/projects/project-costs";
 import { ProjectForm } from "@/pages/projects/project-form";
+import { TaskForm } from "@/pages/tasks/task-form";
 
 export const ROUTER = createBrowserRouter([
     {
@@ -44,6 +45,8 @@ export const ROUTER = createBrowserRouter([
             { path: 'projects/:id', element: <ProjectDashboard /> },
             { path: 'projects/:id/edit', element: <ProjectForm /> },
             { path: 'projects/:id/tasks', element: <ProjectTasks /> },
+            { path: 'projects/:id/tasks/new', element: <TaskForm /> },
+            { path: 'projects/:id/tasks/:taskId/edit', element: <TaskForm /> },
             { path: 'projects/:id/costs', element: <ProjectCosts /> },
             { path: 'notifications', element: <Notifications /> },
             { path: 'settings', element: <Settings /> },
@@ -64,6 +67,8 @@ export const ROUTER = createBrowserRouter([
             { path: 'projects/:id/edit', element: <ProjectForm /> },
             { path: 'costs', element: <AdminCosts /> },
             { path: 'tasks', element: <AdminTasks /> },
+            { path: 'tasks/new', element: <TaskForm /> },
+            { path: 'tasks/:taskId/edit', element: <TaskForm /> },
             { path: 'settings', element: <AdminSettings /> },
         ]
     },
