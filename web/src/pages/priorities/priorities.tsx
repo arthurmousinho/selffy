@@ -16,6 +16,7 @@ import {
 } from "lucide-react"
 import { formatDueDate } from "@/utils/format-due-date";
 import { TaskBadge } from "@/components/tasks/task-badge";
+import { Link } from "react-router-dom";
 
 
 export function Priorities() {
@@ -58,18 +59,23 @@ export function Priorities() {
                         <TableBody>
                             {data.tasks.high.map(task => (
                                 <TableRow>
-                                    <TableCell className="flex items-center gap-2 text-sm">
-                                        <TaskBadge priority="HIGH" />
-                                        <span>
-                                            {task.title}
-                                        </span>
-                                    </TableCell>
-                                    <TableCell className="text-right text-sm text-muted-foreground">
-                                        <div className="flex flex-row items-center justify-end w-full gap-2">
-                                            <Calendar size={20} />
-                                            {formatDueDate(new Date(task.dueDate))}
-                                        </div>
-                                    </TableCell>
+                                    <Link
+                                        to={`/app/projects/${task.projectId}/tasks/${task.id}/edit`}
+                                        className="w-full flex flex-row justify-between items-center"
+                                    >
+                                        <TableCell className="flex items-center gap-2 text-sm">
+                                            <TaskBadge priority="HIGH" />
+                                            <span>
+                                                {task.title}
+                                            </span>
+                                        </TableCell>
+                                        <TableCell className="text-right text-sm text-muted-foreground">
+                                            <div className="flex flex-row items-center justify-end w-full gap-2">
+                                                <Calendar size={20} />
+                                                {formatDueDate(new Date(task.dueDate))}
+                                            </div>
+                                        </TableCell>
+                                    </Link>
                                 </TableRow>
                             ))}
                         </TableBody>
@@ -102,18 +108,23 @@ export function Priorities() {
                         <TableBody>
                             {data.tasks.medium.map(task => (
                                 <TableRow>
-                                    <TableCell className="flex items-center gap-2 text-sm">
-                                        <TaskBadge priority="MEDIUM" />
-                                        <span>
-                                            {task.title}
-                                        </span>
-                                    </TableCell>
-                                    <TableCell className="text-right text-sm text-muted-foreground">
-                                        <div className="flex flex-row items-center justify-end w-full gap-2">
-                                            <Calendar size={20} />
-                                            {formatDueDate(new Date(task.dueDate))}
-                                        </div>
-                                    </TableCell>
+                                    <Link
+                                        to={`/app/projects/${task.projectId}/tasks/${task.id}/edit`}
+                                        className="w-full flex flex-row justify-between items-center"
+                                    >
+                                        <TableCell className="flex items-center gap-2 text-sm">
+                                            <TaskBadge priority="MEDIUM" />
+                                            <span>
+                                                {task.title}
+                                            </span>
+                                        </TableCell>
+                                        <TableCell className="text-right text-sm text-muted-foreground">
+                                            <div className="flex flex-row items-center justify-end w-full gap-2">
+                                                <Calendar size={20} />
+                                                {formatDueDate(new Date(task.dueDate))}
+                                            </div>
+                                        </TableCell>
+                                    </Link>
                                 </TableRow>
                             ))}
                         </TableBody>
@@ -146,24 +157,30 @@ export function Priorities() {
                         <TableBody>
                             {data.tasks.low.map(task => (
                                 <TableRow>
-                                    <TableCell className="flex items-center gap-2 text-sm">
-                                        <TaskBadge priority="LOW" />
-                                        <span>
-                                            {task.title}
-                                        </span>
-                                    </TableCell>
-                                    <TableCell className="text-right text-sm text-muted-foreground">
-                                        <div className="flex flex-row items-center justify-end w-full gap-2">
-                                            <Calendar size={20} />
-                                            {formatDueDate(new Date(task.dueDate))}
-                                        </div>
-                                    </TableCell>
+                                    <Link
+                                        to={`/app/projects/${task.projectId}/tasks/${task.id}/edit`}
+                                        className="w-full flex flex-row justify-between items-center"
+                                    >
+                                        <TableCell className="flex items-center gap-2 text-sm">
+                                            <TaskBadge priority="LOW" />
+                                            <span>
+                                                {task.title}
+                                            </span>
+                                        </TableCell>
+                                        <TableCell className="text-right text-sm text-muted-foreground">
+                                            <div className="flex flex-row items-center justify-end w-full gap-2">
+                                                <Calendar size={20} />
+                                                {formatDueDate(new Date(task.dueDate))}
+                                            </div>
+                                        </TableCell>
+                                    </Link>
                                 </TableRow>
                             ))}
                         </TableBody>
                     </Table>
                 </CardContent>
             </Card>
+
         </main>
     )
 }
