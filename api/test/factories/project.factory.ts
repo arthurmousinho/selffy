@@ -6,6 +6,7 @@ import { User } from "src/domain/entities/user/user.entity";
 import { Cost } from "@domain/entities/cost/cost.entity";
 
 export function makeProject(props?: {
+    id?: string,
     title?: string,
     description?: string,
     revenue?: number,
@@ -18,7 +19,7 @@ export function makeProject(props?: {
     costs?: Cost[],
     isPinned?: boolean,
 }) {
-    const projectId = randomUUID();
+    const projectId = props?.id ?? randomUUID();
     const projectOwner = props?.owner ?? makeUser();
 
     const project = new Project({

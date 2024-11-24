@@ -1,9 +1,11 @@
 import { Task, TaskPriority, TaskStatus } from "src/domain/entities/task/task.entity";
 import { TaskRepository } from "@domain/repositories/task.repository";
 import { Pageable } from "@application/shared/pageable.type";
+import { InMemoryProjectRepository } from "./in-memory-project.repository";
 
 export class InMemoryTaskRepository implements TaskRepository {
 
+    private projectRepository = new InMemoryProjectRepository();
     private tasks: Task[] = [];
 
     public async create(task: any): Promise<void> {
@@ -25,6 +27,16 @@ export class InMemoryTaskRepository implements TaskRepository {
                 totalPages: Math.ceil(this.tasks.length / limit)
             }
         }
+    }
+
+    public async findByUserId(userId: string): Promise<Task[]> {
+        const projects = await this.projectRepository.findAll(1, 1000);
+
+        console.log(projects);
+
+        const userProjects = projects.data.filter(project => project.getOwner().getId() === userId);
+        const userTasks = userProjects.map(project => project.getTasks()).flat();
+        return userTasks;
     }
 
     public async findById(id: string): Promise<Task | null> {

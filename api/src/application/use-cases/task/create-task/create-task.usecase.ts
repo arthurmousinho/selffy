@@ -47,7 +47,7 @@ export class CreateTaskUseCase {
             title,
             dueDate,
             priority,
-            projectId,
+            projectId: project.getId(),
             description,
             completedAt: null
         });

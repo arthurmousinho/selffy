@@ -12,6 +12,7 @@ import { ApiTags } from "@nestjs/swagger";
 import { UserFromToken } from "../decorators/user-from-token.decorator";
 import { GetTasksByProjectIdUseCase } from "@application/use-cases/task/get-tasks-by-project-id/get-tasks-by-project-id.usecase";
 import { FindTaskByIdUseCase } from "@application/use-cases/task/find-task-by-id/find-task-by-id.usecase";
+import { GetUserTasksGroupedByPriorityUseCase } from "@application/use-cases/task/get-user-tasks-grouped-by-priority/get-user-tasks-grouped-by-priority.usecase";
 
 @ApiTags('Tasks')
 @UseGuards(JwtAuthGuard)
@@ -25,7 +26,8 @@ export class TaskController {
         private updateTaskUseCase: UpdateTaskUseCase,
         private searchTasksByTitleUseCase: SearchTasksByTitleUseCase,
         private getTasksByProjectIdUseCase: GetTasksByProjectIdUseCase,
-        private findTaskByIdUseCase: FindTaskByIdUseCase
+        private findTaskByIdUseCase: FindTaskByIdUseCase,
+        private getUserTasksGroupedByPriorityUseCase: GetUserTasksGroupedByPriorityUseCase
     ) { }
 
     @Get()
@@ -76,6 +78,18 @@ export class TaskController {
     public async getTaskById(@Param('id') id: string) {
         const task = await this.findTaskByIdUseCase.execute(id);
         return { task: TaskViewModel.toHTTP(task) };
+    }
+
+    @Get('/user/:id/priorities')
+    public async getUserTasksByPriorities(
+        @Param('id') userId: string,
+        @UserFromToken() userFromToken: UserFromToken
+    ) {
+        const tasks = await this.getUserTasksGroupedByPriorityUseCase.execute({
+            requestUserId: userFromToken.id,
+            userId: userId
+        });
+        return { tasks };
     }
 
     @Post()

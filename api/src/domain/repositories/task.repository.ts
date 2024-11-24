@@ -6,6 +6,7 @@ export abstract class TaskRepository {
     abstract createMany(tasks: Task[]): Promise<void>;
     abstract findAll(page: number, limit: number): Promise<Pageable<Task>>;
     abstract findById(id: string): Promise<Task | null>;
+    abstract findByUserId(userId: string): Promise<Task[]>;
     abstract update(task: Task): Promise<void>;
     abstract delete(id: string): Promise<void>;
     abstract findManyByTitle(params: { title: string, page: number, limit: number }): Promise<Pageable<Task>>;

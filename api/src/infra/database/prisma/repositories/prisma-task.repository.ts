@@ -49,6 +49,17 @@ export class PrismaTaskRepository implements TaskRepository {
         }
     }
 
+    public async findByUserId(userId: string): Promise<Task[]> {
+        const tasks = await this.prismaService.task.findMany({
+            where: {
+                project: {
+                    ownerId: userId
+                }
+            }
+        })
+        return tasks.map(PrismaTaskMapper.toDomain)
+    }
+
     public async findById(id: string): Promise<Task | null> {
         const task = await this.prismaService.task.findUnique({
             where: {

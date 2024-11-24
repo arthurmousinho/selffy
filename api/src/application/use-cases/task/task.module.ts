@@ -13,6 +13,7 @@ import { GetTasksInsightsUseCase } from './get-tasks-insights/get-tasks-insights
 import { GetTasksGrowthUseCase } from './get-tasks-growth/get-tasks-growth.usecase';
 import { UserModule } from '../user/user.module';
 import { GetTasksByProjectIdUseCase } from './get-tasks-by-project-id/get-tasks-by-project-id.usecase';
+import { GetUserTasksGroupedByPriorityUseCase } from './get-user-tasks-grouped-by-priority/get-user-tasks-grouped-by-priority.usecase';
 
 @Module({
     imports: [
@@ -31,7 +32,8 @@ import { GetTasksByProjectIdUseCase } from './get-tasks-by-project-id/get-tasks-
         CountTasksUseCase,
         GetTasksInsightsUseCase,
         GetTasksGrowthUseCase,
-        GetTasksByProjectIdUseCase
+        GetTasksByProjectIdUseCase,
+        GetUserTasksGroupedByPriorityUseCase
     ],
     exports: [
         CreateTaskUseCase,
@@ -45,7 +47,8 @@ import { GetTasksByProjectIdUseCase } from './get-tasks-by-project-id/get-tasks-
         CountTasksUseCase,
         GetTasksInsightsUseCase,
         GetTasksGrowthUseCase,
-        GetTasksByProjectIdUseCase
+        GetTasksByProjectIdUseCase,
+        GetUserTasksGroupedByPriorityUseCase
     ]
 })
 
