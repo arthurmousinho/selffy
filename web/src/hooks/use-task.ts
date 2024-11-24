@@ -3,6 +3,7 @@ import { useToast } from "./use-toast";
 import { axios } from "@/lib/axios";
 import { queryClient } from "@/main";
 import { PageableMeta } from "@/types/pageable.type";
+import { decodeToken } from "./use-token";
 
 export type TaskStatus = "PENDING" | "COMPLETED";
 export type TaskPriority = "LOW" | "MEDIUM" | "HIGH";
@@ -159,6 +160,27 @@ export function getTaskById(id: string) {
             return response.data as { task: TaskProps };
         },
         enabled: !!id,
+        staleTime: 5000
+    });
+    return query;
+}
+
+export function getUserTasksByUserIdGroupedByPriorities() {
+    const userId = decodeToken()?.sub;
+
+    const query = useQuery({
+        queryKey: ['tasks'],
+        queryFn: async () => {
+            const response = await axios.get(`/tasks/user/${userId}/priorities`);
+            return response.data as {
+                tasks: {
+                    high: TaskProps[];
+                    medium: TaskProps[];
+                    low: TaskProps[];
+                }
+            };
+        },
+        enabled: !!userId,
         staleTime: 5000
     });
     return query;
