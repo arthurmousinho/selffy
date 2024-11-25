@@ -22,7 +22,10 @@ export class GetUserDashboardUseCase {
     ) { }
 
     public async execute(request: GetUserDashboardUseCaseRequest) {
-        const user = await this.findUserByIdUseCase.execute(request.ownerId);
+        const user = await this.findUserByIdUseCase.execute({
+            userId: request.ownerId,
+            requestUserId: request.requestUserId,
+        });
         const userProjects = user.getProjects();
 
         if (!userProjects || userProjects.length === 0) {

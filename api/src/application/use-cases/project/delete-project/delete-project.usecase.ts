@@ -25,7 +25,10 @@ export class DeleteProjectUseCase {
             throw new ProjectNotFoundError();
         }
 
-        const requestUser = await this.findUserByIdUseCase.execute(requestUserId);
+        const requestUser = await this.findUserByIdUseCase.execute({
+            userId: requestUserId,
+            requestUserId
+        });
         if (requestUser.getRole() === 'ADMIN') {
             await this.projectRepository.delete(projectId);
             return;

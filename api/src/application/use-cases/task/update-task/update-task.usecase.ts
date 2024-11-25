@@ -40,7 +40,10 @@ export class UpdateTaskUseCase {
         const [ taskFound, project, requestUser ] = await Promise.all([
             this.getTaskById(request.id),
             this.checkProjectById(request.projectId, request.requestUserId),
-            this.findUserByIdUseCase.execute(request.requestUserId)
+            this.findUserByIdUseCase.execute({
+                userId: request.requestUserId,
+                requestUserId: request.requestUserId,
+            })
         ]);
 
         this.checkDueDate(request.dueDate);

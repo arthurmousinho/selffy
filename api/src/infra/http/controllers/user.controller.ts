@@ -76,8 +76,14 @@ export class UserController {
 
     @Get('/:id')
     @UseGuards(JwtAuthGuard)
-    public async getById(@Param('id') id: string) {
-        const user = await this.findUserByIdUseCase.execute(id);
+    public async getById(
+        @Param('id') id: string,
+        @UserFromToken() userFromToken: UserFromToken
+    ) {
+        const user = await this.findUserByIdUseCase.execute({
+            userId: id,
+            requestUserId: userFromToken.id
+        });
         return { user: UserViewModel.toHTTP(user) };
     }
 

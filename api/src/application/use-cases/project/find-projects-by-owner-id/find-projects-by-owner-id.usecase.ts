@@ -26,8 +26,14 @@ export class FindProjectsByOwnerIdUseCase {
 
     public async execute(request: FindProjectsByOwnerIdUseCaseRequest) {
         const [requestUser, owner] = await Promise.all([
-            await this.findUserByIdUseCase.execute(request.requestUserId),
-            await this.findUserByIdUseCase.execute(request.ownerId),
+            this.findUserByIdUseCase.execute({
+                userId: request.requestUserId,
+                requestUserId: request.requestUserId
+            }),
+            this.findUserByIdUseCase.execute({
+                userId: request.ownerId,
+                requestUserId: request.requestUserId
+            }),
         ])
 
         await this.checkAbility({ requestUser, owner });

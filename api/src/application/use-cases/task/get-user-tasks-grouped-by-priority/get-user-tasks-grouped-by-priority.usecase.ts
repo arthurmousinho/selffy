@@ -19,7 +19,7 @@ export class GetUserTasksGroupedByPriorityUseCase {
 
     public async execute(request: Request) {
         await this.checkAbility(request);
-        
+
         const userTasks = await this.taskRepository.findByUserId(request.userId);
         const pendingTasks = userTasks.filter(task => task.getStatus() === 'PENDING');
 
@@ -36,8 +36,14 @@ export class GetUserTasksGroupedByPriorityUseCase {
 
     public async checkAbility(request: Request) {
         const [requestUser, user] = await Promise.all([
-            this.findUserByIdUseCase.execute(request.requestUserId),
-            this.findUserByIdUseCase.execute(request.userId)
+            this.findUserByIdUseCase.execute({
+                userId: request.requestUserId,
+                requestUserId: request.requestUserId,
+            }),
+            this.findUserByIdUseCase.execute({
+                userId: request.userId,
+                requestUserId: request.requestUserId,
+            })
         ]);
 
         if (requestUser.getRole() === 'ADMIN') {

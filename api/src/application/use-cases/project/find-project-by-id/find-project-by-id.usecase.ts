@@ -27,7 +27,10 @@ export class FindProjectByIdUseCase {
         const { requestUserId, projectId } = request;
 
         const [ requestUser, project ] = await Promise.all([
-            this.findUserByIdUseCase.execute(requestUserId),
+            this.findUserByIdUseCase.execute({
+                userId: requestUserId,
+                requestUserId
+            }),
             this.projectRepository.findById(projectId),
         ])
 

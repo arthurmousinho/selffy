@@ -52,7 +52,7 @@ describe('GetProjectDashboardUseCase', () => {
             makeCost({ value: 100 }),
             makeCost({ value: 200 }),
         ];
-        costs.forEach(cost => project.addCosts(cost));
+        costs.forEach(cost => project.addCost(cost));
 
         await projectRepository.create(project);
 
