@@ -173,18 +173,68 @@ export class PrismaProjectRepository implements ProjectRepository {
         return projects.map(PrismaProjectMapper.toDomain);
     }
 
-    public async findByOwnerId(ownerId: string): Promise<Project[]> {
-        const projects = await this.prismaService.project.findMany({
-            where: {
-                ownerId
+    public async findByOwnerId(params: {
+        ownerId: string;
+        page?: number;
+        limit?: number;
+    }): Promise<Pageable<Project>> {
+        if (!params.page || !params.limit) {
+            const projects = await this.prismaService.project.findMany({
+                where: {
+                    ownerId: params.ownerId,
+                },
+                orderBy: {
+                    createdAt: 'desc',
+                },
+                include: {
+                    owner: true,
+                    tasks: true,
+                    costs: true,
+                },
+            });
+            return {
+                data: projects.map(PrismaProjectMapper.toDomain),
+                meta: {
+                    total: projects.length,
+                    page: 1,
+                    limit: projects.length,
+                    totalPages: 1,
+                },
+            };;
+        }
+
+        const [projects, total] = await Promise.all([
+            this.prismaService.project.findMany({
+                where: {
+                    ownerId: params.ownerId,
+                },
+                skip: (params.page - 1) * params.limit,
+                take: params.limit,
+                orderBy: {
+                    createdAt: 'desc',
+                },
+                include: {
+                    owner: true,
+                    tasks: true,
+                    costs: true,
+                },
+            }),
+            this.prismaService.project.count({
+                where: {
+                    ownerId: params.ownerId,
+                },
+            }),
+        ]);
+
+        return {
+            data: projects.map(PrismaProjectMapper.toDomain),
+            meta: {
+                total,
+                page: params.page,
+                limit: params.limit,
+                totalPages: Math.ceil(total / params.limit),
             },
-            include: {
-                owner: true,
-                tasks: true,
-                costs: true
-            }
-        });
-        return projects.map(PrismaProjectMapper.toDomain);
+        };
     }
 
     public async sumRevenues() {

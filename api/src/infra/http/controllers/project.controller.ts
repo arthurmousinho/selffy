@@ -83,16 +83,19 @@ export class ProjectController {
     @Get('/owner/:id')
     public async getUserProjects(
         @Param('id') ownerId: string,
-        @Query('page') page = 1,
-        @Query('limit') limit = 10,
+        @Query('page') page: string,
+        @Query('limit') limit: string,
         @UserFromToken() userFromToken: UserFromToken,
     ) {
         const projects = await this.findProjectsByOwnerIdUseCase.execute({
             ownerId,
-            requestUserId: userFromToken.id
+            requestUserId: userFromToken.id,
+            page: page ? Number(page) : undefined,
+            limit: limit ? Number(limit) : undefined
         });
         return {
-            projects: projects.map(ProjectViewModel.toHTTP),
+            projects: projects.data.map(ProjectViewModel.toHTTP),
+            meta: projects.meta
         };
     }
 

@@ -5,6 +5,8 @@ import { ProjectRepository } from "@domain/repositories/project.repository";
 import { Injectable } from "@nestjs/common";
 
 interface FindProjectsByOwnerIdUseCaseRequest {
+    page?: number;
+    limit?: number;
     ownerId: string;
     requestUserId: string;
 }
@@ -23,14 +25,18 @@ export class FindProjectsByOwnerIdUseCase {
     ) { }
 
     public async execute(request: FindProjectsByOwnerIdUseCaseRequest) {
-        const [ requestUser, owner ] = await Promise.all([
+        const [requestUser, owner] = await Promise.all([
             await this.findUserByIdUseCase.execute(request.requestUserId),
             await this.findUserByIdUseCase.execute(request.ownerId),
         ])
 
         await this.checkAbility({ requestUser, owner });
 
-        const pageableProjects = await this.projectRepository.findByOwnerId(owner.getId());
+        const pageableProjects = await this.projectRepository.findByOwnerId({
+            ownerId: request.ownerId,
+            page: request.page,
+            limit: request.limit
+        });
 
         return pageableProjects;
     }

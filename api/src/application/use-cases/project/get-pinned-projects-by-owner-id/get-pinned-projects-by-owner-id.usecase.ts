@@ -15,7 +15,7 @@ export class GetPinnedProjectsByOwnerIdUseCase {
 
     public async execute(request: GetPinnedProjectsByOwnerIdUseCaseProps) {
         const projects = await this.findProjectsByOwnerIdUseCase.execute(request);
-        return projects.filter(project => project.getIsPinned() === true);
+        return projects.data.filter(project => project.getIsPinned() === true);
     }
 
 }
