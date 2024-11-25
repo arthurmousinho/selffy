@@ -2,18 +2,20 @@ import { ProjectCard } from "@/components/projects/project-card";
 import { Button } from "@/components/ui/button";
 import { getUserProjects, ProjectProps } from "@/hooks/use-project";
 import { Plus } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
 export function Projects() {
 
-    const [limit, setLimit] = useState(10);
+    const [page, setPage] = useState(1);
+    const [data, setData] = useState<ProjectProps[]>([]);
 
-    const query = getUserProjects(1, limit);
+    const query = getUserProjects(page, 10);
 
-    async function handleLoadMore() {
-        setLimit(limit + 5);
-    }
+    useEffect(() => {
+        const newProjects = query?.data?.projects || [];
+        setData(prev => [...prev, ...newProjects]);
+    }, [query?.data]);
 
     return (
         <main className="flex flex-col gap-4">
@@ -24,24 +26,22 @@ export function Projects() {
                         Create Project
                     </Button>
                 </Link>
-                {query?.data?.projects.map((project: ProjectProps) => (
+                {data.map((project: ProjectProps) => (
                     <ProjectCard
                         {...project}
                     />
                 ))}
             </div>
-            {query?.data && query.data.projects.length >= 10 && (
-                <footer className="w-full flex justify-center">
-                    <Button
-                        variant={'outline'}
-                        onClick={handleLoadMore}
-                        disabled={query?.data?.meta.page === query?.data?.meta.totalPages}
-                        className="border-primary bg-transparent text-primary"
-                    >
-                        Load more projects
-                    </Button>
-                </footer>
-            )}
+            <footer className="flex w-full justify-center">
+                <Button
+                    variant={'outline'}
+                    onClick={() => setPage(page + 1)}
+                    disabled={query?.data?.meta.page === query?.data?.meta.totalPages}
+                    className="bg-transparent text-muted-foreground"
+                >
+                    Load more projects
+                </Button>
+            </footer>
         </main>
     )
 }
