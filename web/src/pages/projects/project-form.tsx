@@ -63,10 +63,8 @@ export function ProjectForm() {
             .positive({ message: "Revenue must be a positive number" })
             .min(1, { message: "Revenue is required" }),
         icon: z
-            .string()
-            .trim()
-            .min(1, { message: "Icon is required" })
-            .max(2, { message: "Only one character allowed" }),
+            .string({ message: "Icon is required" })
+            .trim(),
         color: z
             .string()
             .min(1, { message: "Color is required" }),
@@ -107,6 +105,7 @@ export function ProjectForm() {
     }, [projectData, form]);
 
     function onSubmit(values: z.infer<typeof formSchema>) {
+        console.log(values);
         if (projectId) {
             updateProjectFn({
                 id: projectId,
@@ -193,7 +192,7 @@ export function ProjectForm() {
                                         <FormLabel className="pb-2">Icon</FormLabel>
                                         <Popover>
                                             <PopoverTrigger asChild>
-                                                <FormControl>
+                                                <FormControl defaultValue={field.value}>
                                                     <Button
                                                         variant={"outline"}
                                                         className={`w-full pl-3 text-left font-normal ${!selectedEmoji && "text-muted-foreground"

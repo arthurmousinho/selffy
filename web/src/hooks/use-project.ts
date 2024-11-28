@@ -4,6 +4,7 @@ import { axios } from "@/lib/axios";
 import { queryClient } from "@/main";
 import { PageableMeta } from "@/types/pageable.type";
 import { decodeToken } from "./use-token";
+import { useNavigate } from "react-router-dom";
 
 export interface ProjectProps {
     id: string;
@@ -65,16 +66,21 @@ interface CreateProjectProps {
 
 export function createProject() {
     const { toast } = useToast();
+    const navigate = useNavigate();
+
     const query = useMutation({
         mutationFn: async (newProject: CreateProjectProps) => {
-            return await axios.post('/projects', newProject);
+            const response = await axios.post('/projects', newProject);
+            const project = response.data.project as ProjectProps;
+            return project;
         },
-        onSuccess: () => {
+        onSuccess: (project: ProjectProps) => {
             queryClient.invalidateQueries({ queryKey: ['projects'] });
+            navigate(`/app/projects/${project.id}`);
             toast({
                 title: "✅ Success",
                 description: "Project was created successfully",
-            })
+            });
         },
         onError: () => {
             toast({
@@ -89,12 +95,15 @@ export function createProject() {
 
 export function deleteProject() {
     const { toast } = useToast();
+    const navigate = useNavigate();
+
     const query = useMutation({
         mutationFn: async (id: string) => {
             return await axios.delete(`/projects/${id}`);
         },
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ['projects'] });
+            navigate('/app/projects');
             toast({
                 title: "✅ Success",
                 description: "Project was deleted successfully",

@@ -7,13 +7,12 @@ import { deleteProject, getProjectDashboard, togglePinProject } from "@/hooks/us
 import { formatCurrency } from "@/utils/format-currency";
 import { ArrowUpRight, CheckCircle, DollarSign, HandCoinsIcon, Pen, Pin, Trash } from "lucide-react";
 import { useEffect, useState } from "react";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { CartesianGrid, XAxis, Area, AreaChart, Bar, BarChart, Rectangle } from "recharts";
 
 export function ProjectDashboard() {
 
     const projectIdFromParam = useParams().id || '';
-    const navigate = useNavigate();
 
     const { data } = getProjectDashboard(projectIdFromParam);
     const { mutate: deleteProjectFn } = deleteProject();
@@ -33,11 +32,6 @@ export function ProjectDashboard() {
                 <h1>Loading...</h1>
             </div>
         )
-    }
-
-    function handleDeleteProject() {
-        deleteProjectFn(projectIdFromParam);
-        navigate('/app/projects');
     }
 
     const chartData1 = [
@@ -137,7 +131,7 @@ export function ProjectDashboard() {
                             </Tooltip>
                             <Tooltip>
                                 <TooltipTrigger>
-                                    <DeleteAlertDialog onDelete={handleDeleteProject}>
+                                    <DeleteAlertDialog onDelete={() => deleteProjectFn(projectIdFromParam)}>
                                         <Button variant={'outline'} className="flex items-center text-muted-foreground">
                                             <Trash size={20} />
                                         </Button>
