@@ -4,6 +4,7 @@ import { axios } from "@/lib/axios";
 import { queryClient } from "@/main";
 import { PageableMeta } from "@/types/pageable.type";
 import { decodeToken } from "./use-token";
+import { useNavigate } from "react-router-dom";
 
 export type TaskStatus = "PENDING" | "COMPLETED";
 export type TaskPriority = "LOW" | "MEDIUM" | "HIGH";
@@ -46,12 +47,16 @@ interface CreateTaskProps {
 
 export function createTask() {
     const { toast } = useToast();
+    const navigate = useNavigate();
+
     const query = useMutation({
         mutationFn: async (data: CreateTaskProps) => {
+            console.log(data)
             return await axios.post('/tasks', data);
         },
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ['tasks'] });
+            navigate(-1);
             toast({
                 title: "✅ Success",
                 description: "Task was created successfully",

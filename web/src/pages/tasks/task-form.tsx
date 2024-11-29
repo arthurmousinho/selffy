@@ -21,7 +21,7 @@ import { format } from "date-fns";
 import { Calendar } from "@/components/ui/calendar";
 import { createTask, getTaskById, TaskPriority, TaskStatus, updateTask } from "@/hooks/use-task";
 import { TaskBadge } from "@/components/tasks/task-badge";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 
 
 const taskStatus = [
@@ -36,8 +36,6 @@ const taskPriorities = [
 ];
 
 export function TaskForm() {
-
-    const navigate = useNavigate(); 
 
     const isOnAdminPage = useLocation().pathname.includes("/admin/tasks");
 
@@ -66,7 +64,7 @@ export function TaskForm() {
         priority: z
             .enum(["LOW", "MEDIUM", "HIGH"], { required_error: "Priority is required" }),
         projectId: z
-            .string({ required_error: "Project is required" }),
+            .string({ message: "Project Id is required" }),
     });
 
     const form = useForm<z.infer<typeof formSchema>>({
@@ -74,6 +72,7 @@ export function TaskForm() {
         defaultValues: {
             status: "PENDING",
             priority: "LOW",
+            projectId: projectId,
         }
     });
 
@@ -87,7 +86,7 @@ export function TaskForm() {
             form.setValue("dueDate", new Date(taskData.task.dueDate));
             form.setValue("status", taskData.task.status);
             form.setValue("priority", taskData.task.priority);
-            form.setValue("projectId", taskData.task.projectId);
+            form.setValue("projectId", taskData.task.projectId || projectId);
         }
     }, [form, taskData, isOnAdminPage, projectId]);
 
@@ -96,17 +95,14 @@ export function TaskForm() {
             updateTaskFn({
                 id: taskId,
                 ...values,
+                projectId,
             });
         }
         else {
             createTaskFn({
                 ...values,
-                projectId,
             });
         }
-
-        form.reset();
-        navigate(-1);
     }
 
     return (
