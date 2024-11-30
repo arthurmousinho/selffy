@@ -261,3 +261,38 @@ export function getUserById(id: string) {
     });
     return query;
 }
+
+interface ChangeUserPasswordProps {
+    userId: string;
+    currentPassword: string;
+    newPassword: string;
+}   
+
+export function changePassword() {
+    const { toast } = useToast();
+
+    const query = useMutation({
+        mutationFn: async (data: ChangeUserPasswordProps) => {
+            const response = await axios.patch(`/users/change-password/${data.userId}`, {
+                currentPassword: data.currentPassword,
+                newPassword: data.newPassword
+            });
+            return response.data
+        },
+        onSuccess: () => {
+            toast({
+                title: '✅ Success',
+                description: 'Password was changed successfully'
+            });
+        },
+        onError: (error: any) => {
+            const responseData: HttpError = error.response.data;
+            toast({
+                title: `❌ Error: ${responseData.statusCode}`,
+                description: responseData.message,
+            });
+        }
+    });
+
+    return query;
+}

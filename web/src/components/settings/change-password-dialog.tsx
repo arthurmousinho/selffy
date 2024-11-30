@@ -20,12 +20,17 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { Input } from "@/components/ui/input";
 import { Button } from "../ui/button";
+import { decodeToken } from "@/hooks/use-token";
+import { changePassword } from "@/hooks/use-user";
 
 interface ChangePasswordDialogProps {
     children: ReactNode;
 }
 
 export function ChangePasswordDialog(props: ChangePasswordDialogProps) {
+
+    const userId = decodeToken()?.sub || '';
+    const { mutate: changePasswordFn } = changePassword();
 
     const formSchema = z.object({
         currentPassword: z
@@ -43,7 +48,13 @@ export function ChangePasswordDialog(props: ChangePasswordDialogProps) {
     });
 
     function onSubmit(values: z.infer<typeof formSchema>) {
-        console.log(values)
+        changePasswordFn({
+            userId,
+            currentPassword: values.currentPassword,
+            newPassword: values.newPassword
+        });
+        form.setValue('currentPassword', '');
+        form.setValue('newPassword', '');
     }
 
     return (
@@ -54,7 +65,7 @@ export function ChangePasswordDialog(props: ChangePasswordDialogProps) {
             <DialogContent>
                 <DialogHeader className="space-y-4">
                     <DialogTitle>
-                       Reset Password
+                        Change Password
                     </DialogTitle>
                     <DialogDescription>
                         <Form {...form}>

@@ -1,5 +1,5 @@
 import { CreateUserUseCase } from "@application/use-cases/user/create-user/create-user.usecase";
-import { Body, Controller, Delete, Get, Param, Post, Put, Query, Request, UseGuards } from "@nestjs/common";
+import { Body, Controller, Delete, Get, Param, Patch, Post, Put, Query, Request, UseGuards } from "@nestjs/common";
 import { SignUpUserBody } from "../dtos/user/signup-user-body.dto";
 import { LoginUserBody } from "../dtos/user/login-user-body.dto";
 import { AuthUserUseCase } from "@application/use-cases/user/auth-user/auth-user.usecase";
@@ -15,6 +15,8 @@ import { RoleGuard } from "../guards/role.guard";
 import { FindUserByIdUseCase } from "@application/use-cases/user/find-user-by-id/find-user-by-id.usecase";
 import { GetUserDashboardUseCase } from "@application/use-cases/user/get-user-dashboard/get-user-dashboard.usecase";
 import { UserFromToken } from "../decorators/user-from-token.decorator";
+import { ChangeUserPasswordUseCase } from "@application/use-cases/user/change-user-password/change-user-password.usecase";
+import { ChangeUserPasswordBody } from "../dtos/user/change-user-password.dto";
 
 @ApiTags('Users')
 @Controller('users')
@@ -28,7 +30,8 @@ export class UserController {
         private searchUserByNameUseCase: SearchUserByNameUseCase,
         private updateUserUseCase: UpdateUserUseCase,
         private findUserByIdUseCase: FindUserByIdUseCase,
-        private getUserDashboardUseCase: GetUserDashboardUseCase
+        private getUserDashboardUseCase: GetUserDashboardUseCase,
+        private changeUserPasswordUseCase: ChangeUserPasswordUseCase
     ) { }
 
     @Get()
@@ -125,6 +128,21 @@ export class UserController {
             name,
             email,
             role
+        });
+    }
+
+    @Patch('/change-password/:id')
+    @UseGuards(JwtAuthGuard)
+    public async resetPassword(
+        @Param('id') id: string,
+        @UserFromToken() userFromToken: UserFromToken,
+        @Body() body: ChangeUserPasswordBody,
+    ) { 
+        await this.changeUserPasswordUseCase.execute({
+            userId: id,
+            requestUserId: userFromToken.id,
+            currentPassword: body.currentPassword,
+            newPassword: body.newPassword
         });
     }
 
