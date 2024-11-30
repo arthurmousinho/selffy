@@ -250,3 +250,14 @@ export function getUserDashboard() {
     });
     return query;
 }
+
+export function getUserById(id: string) {
+    const query = useQuery({
+        queryKey: ['users', 'user'],
+        queryFn: async () => {
+            const response = await axios.get(`/users/${id}`);
+            return response.data.user as UserProps;
+        }
+    });
+    return query;
+}

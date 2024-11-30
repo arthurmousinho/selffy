@@ -1,5 +1,5 @@
 import { PreferencesSettings } from "@/components/settings/preferencesSettings";
-import { ProfileSettings } from "@/components/settings/profileSettings";
+import { ProfileSettings } from "@/components/settings/profile-settings";
 
 export function Settings() {
     return (
