@@ -12,6 +12,7 @@ model User {
   name      String
   email     String    @unique
   password  String
+  avatarUrl String?
   createdAt DateTime
   updatedAt DateTime
   projects  Project[]
@@ -32,7 +33,7 @@ model Project {
   ownerId     String
   owner       User          @relation(fields: [ownerId], references: [id])
   costs       Cost[]
-  isPinned    Boolean @default(false)
+  isPinned    Boolean       @default(false)
 }
 
 model Task {

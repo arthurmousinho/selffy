@@ -1,5 +1,5 @@
 import { CreateUserUseCase } from "@application/use-cases/user/create-user/create-user.usecase";
-import { Body, Controller, Delete, Get, Param, Patch, Post, Put, Query, Request, UseGuards } from "@nestjs/common";
+import { BadRequestException, Body, Controller, Delete, Get, Param, Patch, Post, Put, Query, Request, UploadedFile, UseGuards, UseInterceptors } from "@nestjs/common";
 import { SignUpUserBody } from "../dtos/user/signup-user-body.dto";
 import { LoginUserBody } from "../dtos/user/login-user-body.dto";
 import { AuthUserUseCase } from "@application/use-cases/user/auth-user/auth-user.usecase";
@@ -17,6 +17,8 @@ import { GetUserDashboardUseCase } from "@application/use-cases/user/get-user-da
 import { UserFromToken } from "../decorators/user-from-token.decorator";
 import { ChangeUserPasswordUseCase } from "@application/use-cases/user/change-user-password/change-user-password.usecase";
 import { ChangeUserPasswordBody } from "../dtos/user/change-user-password.dto";
+import { UploadUserAvatarUseCase } from "@application/use-cases/user/upload-user-avatar/upload-user-avatar.usecase";
+import { FileInterceptor } from "@nestjs/platform-express";
 
 @ApiTags('Users')
 @Controller('users')
@@ -31,7 +33,8 @@ export class UserController {
         private updateUserUseCase: UpdateUserUseCase,
         private findUserByIdUseCase: FindUserByIdUseCase,
         private getUserDashboardUseCase: GetUserDashboardUseCase,
-        private changeUserPasswordUseCase: ChangeUserPasswordUseCase
+        private changeUserPasswordUseCase: ChangeUserPasswordUseCase,
+        private uploadUserAvatarUseCase: UploadUserAvatarUseCase,
     ) { }
 
     @Get()
@@ -137,7 +140,7 @@ export class UserController {
         @Param('id') id: string,
         @UserFromToken() userFromToken: UserFromToken,
         @Body() body: ChangeUserPasswordBody,
-    ) { 
+    ) {
         await this.changeUserPasswordUseCase.execute({
             userId: id,
             requestUserId: userFromToken.id,
@@ -151,6 +154,27 @@ export class UserController {
     @UseGuards(JwtAuthGuard, new RoleGuard('ADMIN'))
     public async delete(@Param('id') id: string) {
         await this.deleteUserUserCase.execute(id);
+    }
+
+    @Post('/upload-avatar/:id')
+    @UseGuards(JwtAuthGuard)
+    @UseInterceptors(FileInterceptor('file', {
+        limits: { fileSize: 2 * 1024 * 1024 },
+    }))
+    public async uploadAvatar(
+        @UploadedFile() file: Express.Multer.File,
+        @Param('id') id: string,
+        @UserFromToken() userFromToken: UserFromToken
+    ) {
+        if (!file) {
+            throw new BadRequestException('File is required')
+        }
+        const avatarURL = await this.uploadUserAvatarUseCase.execute({
+            file,
+            userId: id,
+            requestUserId: userFromToken.id
+        });
+        return { avatarURL };
     }
 
 }

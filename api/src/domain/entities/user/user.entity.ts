@@ -12,6 +12,7 @@ export interface UserProps {
     updatedAt: Date;
     projects: Project[];
     role: Role;
+    avatarUrl: string | undefined;
 }
 
 export class User {
@@ -25,7 +26,7 @@ export class User {
             createdAt?: Date,
             updatedAt?: Date,
             projects?: Project[],
-            role?: Role
+            role?: Role,
         }>,
         id?: string,
     ) {
@@ -73,6 +74,14 @@ export class User {
 
     public getRole() {
         return this.props.role;
+    }
+
+    public getAvatarUrl() {
+        return this.props.avatarUrl;
+    }
+    
+    public setAvatarUrl(url: string) {
+        this.props.avatarUrl = url;
     }
 
     public getCreatedAt() {

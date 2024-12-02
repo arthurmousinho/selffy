@@ -12,8 +12,13 @@ import { JwtService } from '@nestjs/jwt';
 import { GetUserGrowthUseCase } from './get-user-growth/get-user-growth.usecase';
 import { GetUsersInsightsUseCase } from './get-users-insights/get-users-insights.usecase';
 import { GetUserDashboardUseCase } from './get-user-dashboard/get-user-dashboard.usecase';import { ChangeUserPasswordUseCase } from './change-user-password/change-user-password.usecase';
-;
+import { UploadUserAvatarUseCase } from './upload-user-avatar/upload-user-avatar.usecase';
+import { DatabaseModule } from '@infra/database/database.module';
+
 @Module({
+    imports: [
+        DatabaseModule
+    ],
     providers: [
         JwtService,
         CreateUserUseCase,
@@ -27,7 +32,8 @@ import { GetUserDashboardUseCase } from './get-user-dashboard/get-user-dashboard
         GetUserGrowthUseCase,
         GetUsersInsightsUseCase,
         GetUserDashboardUseCase,
-        ChangeUserPasswordUseCase
+        ChangeUserPasswordUseCase,
+        UploadUserAvatarUseCase
     ],
     exports: [
         CreateUserUseCase,
@@ -41,7 +47,8 @@ import { GetUserDashboardUseCase } from './get-user-dashboard/get-user-dashboard
         GetUserGrowthUseCase,
         GetUsersInsightsUseCase,
         GetUserDashboardUseCase,
-        ChangeUserPasswordUseCase
+        ChangeUserPasswordUseCase,
+        UploadUserAvatarUseCase
     ]
 })
 
