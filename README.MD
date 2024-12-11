@@ -1,13 +1,13 @@
 <div style="display: flex; align-items: center; justify-content: start; flex-direction: row; gap: 10px;">
 <p align="left">
-  <img src="./docs/logo-icon.svg" width="50" />
+  <img src="./.github/logo-icon.svg" width="50" />
 </p>
 <h1>
 Selffy 
 </h1>
 </div>
 
-![preview](./docs/preview.png)
+![preview](./.github/preview.png)
 
 ## About
 Selffy is a comprehensive platform designed to help you manage all your personal and professional freelance projects seamlessly in one place. With Selffy, you can streamline your workflow, stay organized, and efficiently track your progress, ensuring you never miss a deadline. 
