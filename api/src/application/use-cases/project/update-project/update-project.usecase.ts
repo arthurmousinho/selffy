@@ -46,6 +46,7 @@ export class UpdateProjectUseCase {
             role: projectExists.getOwner().getRole(),
             createdAt: projectExists.getOwner().getCreatedAt(),
             updatedAt: projectExists.getOwner().getUpdatedAt(),
+            avatarUrl: projectExists.getOwner().getAvatarUrl() ?? null,
         }, ownerId);
 
         const projectInstance = new Project({

@@ -10,7 +10,7 @@ export class SupabaseStorageService implements StorageService {
     private BUCKET = 'selffy-bucket';
 
     public async uploadFile(file: Express.Multer.File, userEmail: string) {
-        const filePath = `${userEmail}/${file.originalname}`;
+        const filePath = `${userEmail}`;
 
         const { data, error } = await supabase.storage
             .from(this.BUCKET)

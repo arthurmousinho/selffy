@@ -9,6 +9,7 @@ export interface TokenProps {
     role: UserRole;
     iat: number;
     exp: number;
+    avatarUrl: string | null;
 }
 
 const cookieKey = 'selffy_token';

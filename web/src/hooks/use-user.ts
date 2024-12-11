@@ -18,6 +18,7 @@ export interface UserProps {
     createdAt: string;
     updatedAt: string;
     role: UserRole;
+    avatarUrl: string | null;
 }
 
 export interface GetAllUsersResponse {
@@ -266,7 +267,7 @@ interface ChangeUserPasswordProps {
     userId: string;
     currentPassword: string;
     newPassword: string;
-}   
+}
 
 export function changePassword() {
     const { toast } = useToast();
@@ -294,5 +295,38 @@ export function changePassword() {
         }
     });
 
+    return query;
+}
+
+export function uploadUserAvatar() {
+    const { toast } = useToast();
+    const userId = decodeToken()?.sub;
+    const query = useMutation({
+        mutationFn: async (formData: FormData) => {
+            const response = await axios.post(
+                `/users/upload-avatar/${userId}`,
+                formData,
+                {
+                    headers: {
+                        'Content-Type': 'multipart/form-data'
+                    }
+                }
+            );
+            return response.data;
+        },
+        onSuccess: () => {
+            toast({
+                title: '✅ Success',
+                description: 'Avatar was uploaded successfully'
+            });
+        },
+        onError: (error: any) => {
+            const responseData: HttpError = error.response.data;
+            toast({
+                title: `❌ Error: ${responseData.statusCode}`,
+                description: responseData.message,
+            });
+        }
+    });
     return query;
 }

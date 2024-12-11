@@ -19,6 +19,7 @@ export class PrismaUserMapper {
             role: user.getRole(),
             createdAt: user.getCreatedAt(),
             updatedAt: user.getUpdatedAt(),
+            avatarUrl: user.getAvatarUrl() ?? null,
         };
     }
 
@@ -33,6 +34,7 @@ export class PrismaUserMapper {
             role: raw.role,
             createdAt: raw.createdAt,
             updatedAt: raw.updatedAt,
+            avatarUrl: raw.avatarUrl,
         }, raw.id);
 
         const projects = raw.projects?.map((project) => {

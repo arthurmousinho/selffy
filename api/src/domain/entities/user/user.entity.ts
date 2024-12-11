@@ -12,7 +12,7 @@ export interface UserProps {
     updatedAt: Date;
     projects: Project[];
     role: Role;
-    avatarUrl: string | undefined;
+    avatarUrl?: string | null;
 }
 
 export class User {
@@ -27,6 +27,7 @@ export class User {
             updatedAt?: Date,
             projects?: Project[],
             role?: Role,
+            avatarUrl?: string | null,
         }>,
         id?: string,
     ) {
@@ -36,7 +37,8 @@ export class User {
             role: props.role ?? 'FREE',
             createdAt: props.createdAt ?? new Date(),
             updatedAt: props.updatedAt ?? new Date(),
-            projects: props.projects ?? []
+            projects: props.projects ?? [],
+            avatarUrl: props.avatarUrl ?? null
         };
     }
 

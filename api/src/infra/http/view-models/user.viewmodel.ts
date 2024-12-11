@@ -10,7 +10,8 @@ export class UserViewModel {
             role: user.getRole(),
             password: user.getPassword(),
             createdAt: user.getCreatedAt(),
-            updatedAt: user.getUpdatedAt()
+            updatedAt: user.getUpdatedAt(),
+            avatarUrl: user.getAvatarUrl(),
         }
     }
 

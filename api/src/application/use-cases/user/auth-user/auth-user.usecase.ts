@@ -36,7 +36,8 @@ export class AuthUserUseCase {
                 sub: user.getId(),
                 email: user.getEmail(),
                 name: user.getName(),
-                role: user.getRole()
+                role: user.getRole(),
+                avatarUrl: user.getAvatarUrl()
             },
             {
                 secret: process.env.JWT_SECRET,

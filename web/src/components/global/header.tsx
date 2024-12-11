@@ -1,5 +1,5 @@
 import { LogOut, Settings, UserRound } from "lucide-react";
-import { Avatar, AvatarFallback } from "../ui/avatar";
+import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { Card, CardContent, CardHeader } from "../ui/card";
 import { Separator } from "../ui/separator";
 import {
@@ -57,6 +57,10 @@ export function Header() {
                                     {tokenData?.name?.split(' ')[0].charAt(0)}
                                     {tokenData?.name?.split(' ')[1]?.charAt(0) || ''}
                                 </AvatarFallback>
+                                <AvatarImage 
+                                    src={tokenData?.avatarUrl || ''}
+                                    className="object-cover"
+                                />
                             </Avatar>
                         </DropdownMenuTrigger>
                         <DropdownMenuContent className="mr-4 w-[150px]">

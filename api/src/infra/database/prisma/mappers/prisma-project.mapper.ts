@@ -39,6 +39,7 @@ export class PrismaProjectMapper {
             createdAt: raw.owner.createdAt,
             updatedAt: raw.owner.updatedAt,
             role: raw.owner.role,
+            avatarUrl: raw.owner.avatarUrl,
         });
 
         const tasks = raw.tasks?.map(PrismaTaskMapper.toDomain);

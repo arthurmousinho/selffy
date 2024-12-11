@@ -36,7 +36,7 @@ export class CreateUserUseCase {
             name,
             email,
             password: hashedPassword,
-            role
+            role,
         });
 
         await this.userRepository.create(newUser);

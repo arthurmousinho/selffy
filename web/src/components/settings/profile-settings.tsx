@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import { Lock, Upload, UserRound } from "lucide-react";
+import { Lock, UserRound } from "lucide-react";
 import { getUserById } from "@/hooks/use-user";
 import { decodeToken } from "@/hooks/use-token";
 import { z } from "zod";
@@ -12,7 +12,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { useEffect } from "react";
 import { ChangePasswordDialog } from "./change-password-dialog";
-import { UploadAvatarDialog } from "./upload-avatar-dialog";
+import { UploadAvatarButton } from "./upload-avatar-button";
 
 export function ProfileSettings() {
 
@@ -79,12 +79,7 @@ export function ProfileSettings() {
                                             {data?.name?.split(' ')[1]?.charAt(0) || ''}
                                         </AvatarFallback>
                                     </Avatar>
-                                    <UploadAvatarDialog>
-                                        <Button variant={'outline'} className="flex items-center gap-2 text-muted-foreground" type="button">
-                                            <Upload size={20} />
-                                            Upload image
-                                        </Button>
-                                    </UploadAvatarDialog>
+                                    <UploadAvatarButton />
                                 </div>
                             </div>
                         )}
