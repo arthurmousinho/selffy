@@ -1,0 +1,1 @@
+export const OLLMA_MODEL_API_URL = process.env.AI_MODEL_API_URL || '';
