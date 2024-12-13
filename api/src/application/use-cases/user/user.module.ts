@@ -11,13 +11,15 @@ import { CountUsersUseCase } from './count-users/count-users.usecase';
 import { JwtService } from '@nestjs/jwt';
 import { GetUserGrowthUseCase } from './get-user-growth/get-user-growth.usecase';
 import { GetUsersInsightsUseCase } from './get-users-insights/get-users-insights.usecase';
-import { GetUserDashboardUseCase } from './get-user-dashboard/get-user-dashboard.usecase';import { ChangeUserPasswordUseCase } from './change-user-password/change-user-password.usecase';
+import { GetUserDashboardUseCase } from './get-user-dashboard/get-user-dashboard.usecase'; import { ChangeUserPasswordUseCase } from './change-user-password/change-user-password.usecase';
 import { UploadUserAvatarUseCase } from './upload-user-avatar/upload-user-avatar.usecase';
 import { DatabaseModule } from '@infra/database/database.module';
+import { ServicesModule } from '@infra/services/services.module';
 
 @Module({
     imports: [
-        DatabaseModule
+        DatabaseModule,
+        ServicesModule
     ],
     providers: [
         JwtService,

@@ -13,6 +13,8 @@ import { UserFromToken } from "../decorators/user-from-token.decorator";
 import { GetTasksByProjectIdUseCase } from "@application/use-cases/task/get-tasks-by-project-id/get-tasks-by-project-id.usecase";
 import { FindTaskByIdUseCase } from "@application/use-cases/task/find-task-by-id/find-task-by-id.usecase";
 import { GetUserTasksGroupedByPriorityUseCase } from "@application/use-cases/task/get-user-tasks-grouped-by-priority/get-user-tasks-grouped-by-priority.usecase";
+import { GenerateTaskDescriptionUseCase } from "@application/use-cases/task/generate-task-description/generate-task-description.usecase";
+import { GenerateTaskDescriptionBody } from "../dtos/task/generate-task-description.dto";
 
 @ApiTags('Tasks')
 @UseGuards(JwtAuthGuard)
@@ -27,7 +29,8 @@ export class TaskController {
         private searchTasksByTitleUseCase: SearchTasksByTitleUseCase,
         private getTasksByProjectIdUseCase: GetTasksByProjectIdUseCase,
         private findTaskByIdUseCase: FindTaskByIdUseCase,
-        private getUserTasksGroupedByPriorityUseCase: GetUserTasksGroupedByPriorityUseCase
+        private getUserTasksGroupedByPriorityUseCase: GetUserTasksGroupedByPriorityUseCase,
+        private generateTaskDescriptionUseCase: GenerateTaskDescriptionUseCase
     ) { }
 
     @Get()
@@ -102,6 +105,15 @@ export class TaskController {
             requestUserId: userFromToken.id
         });
         return task;
+    }
+
+    @Post('/generate-description')
+    public async generateTaskDescription(
+        @Body() body: GenerateTaskDescriptionBody,
+        @UserFromToken() userFromToken: UserFromToken,
+    ) {
+        const taskDescription = await this.generateTaskDescriptionUseCase.execute(body);
+        return { taskDescription };
     }
 
     @Put()

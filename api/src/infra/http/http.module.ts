@@ -12,7 +12,7 @@ import { TaskModule } from '@application/use-cases/task/task.module';
 import { TaskController } from './controllers/task.controller';
 import { JwtService } from '@nestjs/jwt';
 import { AppController } from './controllers/app.controller';
-import { SupabaseStorageService } from '@infra/database/supabase/supabase-storage.service';
+import { ServicesModule } from '@infra/services/services.module';
 
 @Module({
   providers: [
@@ -24,6 +24,7 @@ import { SupabaseStorageService } from '@infra/database/supabase/supabase-storag
     ProjectModule,
     CostModule,
     TaskModule,
+    ServicesModule
   ],
   controllers: [
     UserController,

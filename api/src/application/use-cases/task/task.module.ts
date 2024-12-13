@@ -14,11 +14,14 @@ import { GetTasksGrowthUseCase } from './get-tasks-growth/get-tasks-growth.useca
 import { UserModule } from '../user/user.module';
 import { GetTasksByProjectIdUseCase } from './get-tasks-by-project-id/get-tasks-by-project-id.usecase';
 import { GetUserTasksGroupedByPriorityUseCase } from './get-user-tasks-grouped-by-priority/get-user-tasks-grouped-by-priority.usecase';
+import { GenerateTaskDescriptionUseCase } from './generate-task-description/generate-task-description.usecase';
+import { ServicesModule } from '@infra/services/services.module';
 
 @Module({
     imports: [
         ProjectModule,
-        UserModule
+        UserModule,
+        ServicesModule
     ],
     providers: [
         CreateTaskUseCase,
@@ -33,7 +36,8 @@ import { GetUserTasksGroupedByPriorityUseCase } from './get-user-tasks-grouped-b
         GetTasksInsightsUseCase,
         GetTasksGrowthUseCase,
         GetTasksByProjectIdUseCase,
-        GetUserTasksGroupedByPriorityUseCase
+        GetUserTasksGroupedByPriorityUseCase,
+        GenerateTaskDescriptionUseCase
     ],
     exports: [
         CreateTaskUseCase,
@@ -48,7 +52,8 @@ import { GetUserTasksGroupedByPriorityUseCase } from './get-user-tasks-grouped-b
         GetTasksInsightsUseCase,
         GetTasksGrowthUseCase,
         GetTasksByProjectIdUseCase,
-        GetUserTasksGroupedByPriorityUseCase
+        GetUserTasksGroupedByPriorityUseCase,
+        GenerateTaskDescriptionUseCase
     ]
 })
 

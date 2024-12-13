@@ -8,8 +8,6 @@ import { CostRepository } from '@domain/repositories/cost.repository';
 import { PrismaCostRepository } from './prisma/repositories/prisma-cost.repository';
 import { TaskRepository } from '@domain/repositories/task.repository';
 import { PrismaTaskRepository } from './prisma/repositories/prisma-task.repository';
-import { StorageService } from '@domain/services/storage.service';
-import { SupabaseStorageService } from './supabase/supabase-storage.service';
 
 @Global()
 @Module({
@@ -19,14 +17,12 @@ import { SupabaseStorageService } from './supabase/supabase-storage.service';
     { provide: ProjectRepository, useClass: PrismaProjectRepository },
     { provide: CostRepository, useClass: PrismaCostRepository },
     { provide: TaskRepository, useClass: PrismaTaskRepository },
-    { provide: StorageService, useClass: SupabaseStorageService }
   ],
   exports: [
     UserRepository,
     ProjectRepository,
     CostRepository,
     TaskRepository,
-    StorageService
   ],
 })
 export class DatabaseModule { }
