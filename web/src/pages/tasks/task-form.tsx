@@ -1,5 +1,5 @@
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
-import { CalendarIcon, CheckCheck } from "lucide-react";
+import { CalendarIcon, CheckCheck, Sparkles } from "lucide-react";
 import { useEffect, useState } from "react";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -19,7 +19,7 @@ import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
 import { format } from "date-fns";
 import { Calendar } from "@/components/ui/calendar";
-import { createTask, getTaskById, TaskPriority, TaskStatus, updateTask } from "@/hooks/use-task";
+import { createTask, generateTaskDescription, getTaskById, TaskPriority, TaskStatus, updateTask } from "@/hooks/use-task";
 import { TaskBadge } from "@/components/tasks/task-badge";
 import { useLocation, useParams } from "react-router-dom";
 
@@ -47,9 +47,13 @@ export function TaskForm() {
 
     const { mutate: createTaskFn } = createTask();
     const { mutate: updateTaskFn } = updateTask();
+    const {
+        mutate: generateTaskDescriptionFn,
+        isPending: isGenerateTaskDescriptionPending,
+        data: generatedDescription,
+    } = generateTaskDescription();
 
     const { data: taskData } = getTaskById(taskId);
-
     const formSchema = z.object({
         title: z
             .string({ required_error: "Title is required" })
@@ -103,6 +107,19 @@ export function TaskForm() {
                 ...values,
             });
         }
+    }
+
+    useEffect(() => {
+        if (generatedDescription) {
+            form.setValue("description", generatedDescription);
+        }
+    }, [generatedDescription, form]);
+
+    function handleGenerateDescription() {
+        generateTaskDescriptionFn({
+            taskTitle: form.getValues("title"),
+            projectId: projectId,
+        });
     }
 
     return (
@@ -184,10 +201,28 @@ export function TaskForm() {
                             name="description"
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel>Description</FormLabel>
+                                    <header className="w-full flex items-center justify-between">
+                                        <FormLabel>Description</FormLabel>
+                                        <Button
+                                            variant={'link'}
+                                            className="flex items-center gap-2 p-0 m-0 h-auto"
+                                            type="button"
+                                            onClick={handleGenerateDescription}
+                                            disabled={isGenerateTaskDescriptionPending}
+                                        >
+                                            <Sparkles size={15} />
+                                            {
+                                                isGenerateTaskDescriptionPending ?
+                                                    <span>Generating...</span>
+                                                    :
+                                                    <span>Generate with AI</span>
+                                            }
+                                        </Button>
+                                    </header>
                                     <FormControl>
                                         <Textarea
                                             placeholder="Ex: In this task we will create the initial structure of the application"
+                                            className="min-h-[200px]"
                                             {...field}
                                         />
                                     </FormControl>

@@ -1,5 +1,5 @@
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
-import { Folder, SmileIcon, Sparkles } from "lucide-react";
+import { Folder, SmileIcon } from "lucide-react";
 import { useEffect, useState } from "react";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -157,17 +157,7 @@ export function ProjectForm() {
                             name="description"
                             render={({ field }) => (
                                 <FormItem>
-                                    <header className="w-full flex items-center justify-between">
-                                        <FormLabel>Description</FormLabel>
-                                        <Button 
-                                            variant={'link'} 
-                                            className="flex items-center gap-2 p-0 m-0 h-auto"
-                                            type="button"
-                                        >
-                                            <Sparkles size={15} />
-                                            Generate with AI
-                                        </Button>
-                                    </header>
+                                    <FormLabel>Description</FormLabel>
                                     <FormControl>
                                         <Textarea
                                             placeholder="Ex: A simple landing page for marketing company"

@@ -190,3 +190,40 @@ export function getUserTasksByUserIdGroupedByPriorities() {
     });
     return query;
 }
+
+interface GenerateTaskDescriptionProps {
+    taskTitle: string;
+    projectId: string;
+}
+
+export function generateTaskDescription() {
+    const { toast } = useToast();
+
+    const mutation = useMutation({
+        mutationFn: async (request: GenerateTaskDescriptionProps) => {
+            const projectResponse = await axios.get(`/projects/${request.projectId}`)
+            const projectDescription = projectResponse.data?.project.description;
+
+            const response = await axios.post('/tasks/generate-description', {
+                taskTitle: request.taskTitle,
+                projectDescription: projectDescription
+            });
+
+            return response.data.taskDescription;
+        },
+        onSuccess: () => {
+            toast({
+                title: "✅ Success",
+                description: "Task description was created successfully",
+            });
+        },
+        onError: () => {
+            toast({
+                title: "❌ Error",
+                description: "Something went wrong",
+            });
+        }
+    })
+
+    return mutation;
+}
