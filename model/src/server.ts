@@ -1,13 +1,10 @@
 import express from 'express';
-import { modelHealthRouter } from './routes/model-health';
-import { generateTaskDescriptionRouter } from './routes/generate-task-description';
+import { modelRouter } from './router';
 
 const app = express();
 
 app.use(express.json());
-
-app.use(modelHealthRouter);
-app.use(generateTaskDescriptionRouter);
+app.use(modelRouter);
 
 const PORT = process.env.PORT || 3333;
 
