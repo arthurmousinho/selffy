@@ -31,3 +31,13 @@ Clone the repository: ```https://github.com/arthurmousinho/selffy.git```
 - [Architeture Diagram](./docs/arch.tldr) Ps:. You need to have [tldraw extension](https://marketplace.visualstudio.com/items?itemName=tldraw-org.tldraw-vscode) in your vs-code to visualize the diagram
 - [Project Features](./docs/features.md)
 - [Project Roles Structure](./docs/rbac.md)
+
+## Contributions
+
+Contributions are welcome! Please follow these steps:
+
+1. Fork the repository.
+2. Create a branch for your feature or fix: ```git checkout -b my-feature```
+3. Commit your changes: ```git commit -m 'My new feature'```
+4.Push to the branch: ```git push origin my-feature```
+5.Open a Pull Request.

@@ -18,15 +18,21 @@ cd model
 npm install
 ```
 
-3. Install Ollama:
+3. Create a **.env** file in the root of the project and add the following variables:
+```python
+API_KEY="api-key"
+PORT=3333
+```
+
+4. Install Ollama:
 [https://github.com/ollama/ollama](https://github.com/ollama/ollama)
 
-4. Install Tinyllama:
+5. Install Tinyllama:
 ```bash
 ollama pull tinyllama
 ```
 
-5. Run the application:
+6. Run the application:
 ```bash
 npm run start
 ```

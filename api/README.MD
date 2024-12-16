@@ -27,7 +27,11 @@ docker-compose up -d
 4. Create a **.env** file in the root of the project and add the following variables:
 ```python
 DATABASE_URL="postgresql://docker:docker@localhost:5432/selffy-db"
-JWT_SECRET="secret"
+JWT_SECRET=""
+SUPABASE_URL=""
+SUPABASE_KEY=""
+AI_MODEL_API_URL="http://localhost:3333"
+AI_MODEL_API_KEY=""
 ```
 5. Add the migrations: 
 ```bash
