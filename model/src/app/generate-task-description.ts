@@ -21,5 +21,5 @@ export async function generateTaskDescription(props: Props) {
         prompt,
     });
 
-    return { response: modelResponseData.response }
+    return modelResponseData.response
 }

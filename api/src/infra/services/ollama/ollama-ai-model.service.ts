@@ -3,7 +3,7 @@ import { HttpService } from '@nestjs/axios';
 import { Injectable } from '@nestjs/common';
 import { AxiosResponse } from 'axios';
 import { Observable } from 'rxjs';
-import { OLLMA_MODEL_API_URL } from './ollama-client';
+import { OLLAMA_MODEL_API_KEY, OLLAMA_MODEL_API_URL } from './ollama-client';
 
 interface GenerateDescriptionRequest {
     taskTitle: string;
@@ -22,8 +22,13 @@ export class OllamaAIModelService implements AIModelService {
     public generateDescription(request: GenerateDescriptionRequest): 
     Observable<AxiosResponse<GenerateDescriptionResponse>> {
         return this.httpService.post(
-            `${OLLMA_MODEL_API_URL}/generate-task-description`, 
-            { ...request }
+            `${OLLAMA_MODEL_API_URL}/generate-task-description`, 
+            { ...request },
+            {
+                headers: {
+                    'x-api-key': OLLAMA_MODEL_API_KEY
+                }
+            }
         );
     }
 
