@@ -30,8 +30,8 @@ export class UploadUserAvatarUseCase {
             }),
         ]);
 
-        const path = await this.storageService.uploadFile(request.file, user.getEmail());
-        const avatarUrl = await this.storageService.getFileURL(path || '');
+        const path = await this.storageService.uploadFile(request.file, user.getId());
+        const avatarUrl = await this.storageService.getPublicUrl(path || '');
 
         user.setAvatarUrl(avatarUrl);
         user.update()
