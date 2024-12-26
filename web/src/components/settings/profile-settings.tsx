@@ -2,7 +2,7 @@ import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card"
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Lock, UserRound } from "lucide-react";
 import { getUserById } from "@/hooks/use-user";
 import { decodeToken } from "@/hooks/use-token";
@@ -78,6 +78,11 @@ export function ProfileSettings() {
                                             {data?.name?.split(' ')[0].charAt(0)}
                                             {data?.name?.split(' ')[1]?.charAt(0) || ''}
                                         </AvatarFallback>
+                                        <AvatarImage 
+                                            src={data?.avatarUrl || ''} 
+                                            alt={data?.name} 
+                                            className="object-cover"
+                                        />
                                     </Avatar>
                                     <UploadAvatarButton />
                                 </div>

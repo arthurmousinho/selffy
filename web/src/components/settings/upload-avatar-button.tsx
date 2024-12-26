@@ -1,16 +1,14 @@
-import { useState, useRef } from "react";
+import { useRef } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { Button } from "../ui/button";
 import { uploadUserAvatar } from "@/hooks/use-user";
 
 export function UploadAvatarButton() {
 
-    const [isUploading, setIsUploading] = useState(false);
-
     const fileInputRef = useRef<HTMLInputElement>(null);
 
     const { toast } = useToast();
-    const { mutate: uploadUserAvatarFn } = uploadUserAvatar();
+    const { mutate: uploadUserAvatarFn, isPending } = uploadUserAvatar();
 
     const handleFileSelect = async (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
@@ -38,14 +36,9 @@ export function UploadAvatarButton() {
             return;
         }
 
-        setIsUploading(true);
-        try {
-            const formData = new FormData();
-            formData.append("file", file);
-            uploadUserAvatarFn(formData);
-        } finally {
-            setIsUploading(false);
-        }
+        const formData = new FormData();
+        formData.append("file", file);
+        uploadUserAvatarFn(formData);
     };
 
     return (
@@ -58,13 +51,13 @@ export function UploadAvatarButton() {
                 onChange={handleFileSelect}
             />
             <Button
-                variant={'outline'} 
-                className="flex items-center gap-2 text-muted-foreground" 
+                variant={'outline'}
+                className="flex items-center gap-2 text-muted-foreground"
                 type="button"
                 onClick={() => fileInputRef.current?.click()}
-                disabled={isUploading}
+                disabled={isPending}
             >
-                {isUploading ? "Uploading..." : "Upload Avatar"}
+                {isPending ? "Uploading..." : "Upload Avatar"}
             </Button>
         </div>
     );
