@@ -30,6 +30,13 @@ export class UploadUserAvatarUseCase {
             }),
         ]);
 
+        const userAvatar = user.getAvatarUrl();
+        const publicId = userAvatar && this.extractPublicIdFromUrl(userAvatar);
+
+        if (publicId) {
+            await this.storageService.deleteFile(publicId);
+        }
+
         const path = await this.storageService.uploadFile(request.file, user.getId());
         const avatarUrl = await this.storageService.getPublicUrl(path || '');
 
@@ -39,6 +46,17 @@ export class UploadUserAvatarUseCase {
         await this.userRepository.update(user);
 
         return avatarUrl;
+    }
+
+    private extractPublicIdFromUrl(url: string): string | null {
+        try {
+            const parts = url.split('/');
+            const fileNameWithExtension = parts[parts.length - 1];
+            const [publicId] = fileNameWithExtension.split('.');
+            return publicId || null;
+        } catch {
+            return null;
+        }
     }
 
 }

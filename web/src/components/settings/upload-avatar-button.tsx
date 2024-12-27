@@ -2,6 +2,7 @@ import { useRef } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { Button } from "../ui/button";
 import { uploadUserAvatar } from "@/hooks/use-user";
+import { Loader } from "lucide-react";
 
 export function UploadAvatarButton() {
 
@@ -57,7 +58,13 @@ export function UploadAvatarButton() {
                 onClick={() => fileInputRef.current?.click()}
                 disabled={isPending}
             >
-                {isPending ? "Uploading..." : "Upload Avatar"}
+                {
+                    isPending ? 
+                    <span className="flex items-center gap-2">
+                        <Loader size={20} className="animate-spin" />
+                        Uploading
+                    </span> : 'Change Avatar'
+                }
             </Button>
         </div>
     );

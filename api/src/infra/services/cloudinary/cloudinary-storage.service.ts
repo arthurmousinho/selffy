@@ -8,19 +8,25 @@ export class CloudinaryStorageService implements StorageService {
     public async uploadFile(file: Express.Multer.File, userId: string): Promise<string> {
         return new Promise((resolve, reject) => {
             cloudinaryClient.uploader.upload_stream(
-                { 
+                {
                     folder: '',
                     filename_override: `${userId}`,
-                    unique_filename: true
+                    public_id: userId,
+                    unique_filename: true,
+                    transformation: [
+                        { width: 800, crop: 'limit' }, 
+                        { quality: 'auto' },
+                        { fetch_format: 'auto' }, 
+                    ],
                 },
                 (error, result) => {
                     if (error || !result) {
                         console.log(error);
                         return reject(`Erro ao fazer upload`);
                     }
-                    resolve(result.secure_url); 
+                    resolve(result.secure_url);
                 },
-            ).end(file.buffer); 
+            ).end(file.buffer);
         });
     }
 
@@ -37,18 +43,8 @@ export class CloudinaryStorageService implements StorageService {
         return cloudinaryClient.utils.private_download_url(path, '', options);
     }
 
-    public async deleteFile(path: string): Promise<void> {
-        return new Promise((resolve, reject) => {
-            cloudinaryClient.uploader.destroy(path, (error, result) => {
-                if (error) {
-                    return reject(`Erro ao excluir o arquivo: ${error.message}`);
-                }
-                if (result.result !== 'ok') {
-                    return reject(`Erro ao excluir: ${result.result}`);
-                }
-                resolve();
-            });
-        });
+    public async deleteFile(publicId: string): Promise<void> {
+        await cloudinaryClient.uploader.destroy(publicId);
     }
 
 }
