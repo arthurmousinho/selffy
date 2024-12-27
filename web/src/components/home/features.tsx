@@ -51,10 +51,10 @@ const features = [
         color: '#fca5a5'
     },
     {
-        title: 'Never miss your deadlines',
-        description: 'Stay on track and meet all your deadlines with timely reminders and scheduling.',
-        icon: '⏰',
-        color: '#fdba74'
+        title: 'AI tasks assistent',
+        description: 'Get personalized recommendations to help you stay productive',
+        icon: '🤖',
+        color: '#34d399'
     },
 ];
 

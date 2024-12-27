@@ -82,34 +82,33 @@ const pricingList: PricingProps[] = [
         title: "Free",
         popular: 0,
         price: 0,
-        description:
-            "Lorem ipsum dolor sit, amet ipsum consectetur adipisicing elit.",
+        description: "Perfect for individuals getting started with project management",
         buttonText: "Get Started",
         benefitList: [
-            "1 Team member",
-            "2 GB Storage",
-            "Upto 4 pages",
-            "Community support",
-            "lorem ipsum dolor",
+            "Up to 5 projects",
+            "Basic task management",
+            "Basic AI task descriptions",
+            "Project dashboard",
+            "Task tracking",
+            "Cost management"
         ],
     },
     {
         title: "Premium",
         popular: 1,
         price: 5,
-        description:
-            "Lorem ipsum dolor sit, amet ipsum consectetur adipisicing elit.",
+        description: "Unlock unlimited projects and advanced AI features",
         buttonText: "Start Free Trial",
         benefitList: [
-            "4 Team member",
-            "4 GB Storage",
-            "Upto 6 pages",
-            "Priority support",
-            "lorem ipsum dolor",
+            "Unlimited projects",
+            "Advanced AI task descriptions",
+            "AI-powered productivity insights",
+            "Project dashboard",
+            "Task tracking",
+            "Cost management"
         ],
     }
 ];
-
 export const Pricing = () => {
     return (
         <section className="flex items-center justify-between w-[1200px] flex-row gap-10">
