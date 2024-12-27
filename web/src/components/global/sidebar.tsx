@@ -1,6 +1,5 @@
 import { Card, CardContent } from "../ui/card";
 import {
-    Bell,
     Folder,
     Home,
     LogOut,
@@ -16,7 +15,6 @@ const sidebarLinks = [
     { to: '/app/dashboard', label: 'Dashboard', icon: <Home size={20} className="text-black" /> },
     { to: '/app/projects', label: 'Projects', icon: <Folder size={20} className="text-black" /> },
     { to: '/app/priorities', label: 'Priorities', icon: <Star size={20} className="text-black" /> },
-    { to: '/app/notifications', label: 'Notifications', icon: <Bell size={20} className="text-black" /> },
     { to: '/app/settings', label: 'Settings', icon: <Settings size={20} className="text-black" /> },
     { to: '/auth/signin', label: 'Exit', icon: <LogOut size={20} className="text-black" /> },
 ];

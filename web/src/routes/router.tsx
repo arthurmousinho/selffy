@@ -7,7 +7,6 @@ import { SignUp } from "@/pages/auth/signup";
 import { NotFound } from "@/pages/errors/notFound";
 import { Forbidden } from "@/pages/errors/forbidden";
 import { Projects } from "@/pages/projects/projects";
-import { Notifications } from "@/pages/notifications/notifications";
 import { Settings } from "@/pages/settings/settings";
 import { AdminLayout } from "@/layouts/admin-layout";
 import { AdminUsers } from "@/pages/admin/admin-users";
@@ -48,7 +47,6 @@ export const ROUTER = createBrowserRouter([
             { path: 'projects/:id/tasks/new', element: <TaskForm /> },
             { path: 'projects/:id/tasks/:taskId/edit', element: <TaskForm /> },
             { path: 'projects/:id/costs', element: <ProjectCosts /> },
-            { path: 'notifications', element: <Notifications /> },
             { path: 'settings', element: <Settings /> },
         ]
     },
