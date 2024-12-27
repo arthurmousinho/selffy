@@ -14,7 +14,7 @@ export function Projects() {
 
     useEffect(() => {
         const newProjects = query?.data?.projects || [];
-        setData(prev => [...prev, ...newProjects]);
+        setData(newProjects);
     }, [query?.data]);
 
     return (
@@ -33,14 +33,16 @@ export function Projects() {
                 ))}
             </div>
             <footer className="flex w-full justify-center">
-                <Button
-                    variant={'outline'}
-                    onClick={() => setPage(page + 1)}
-                    disabled={query?.data?.meta.page === query?.data?.meta.totalPages}
-                    className="bg-transparent text-muted-foreground"
-                >
-                    Load more projects
-                </Button>
+                {
+                    data.length > 0 && <Button
+                        variant={'outline'}
+                        onClick={() => setPage(page + 1)}
+                        disabled={query?.data?.meta.page === query?.data?.meta.totalPages}
+                        className="bg-transparent text-muted-foreground"
+                    >
+                        Load more projects
+                    </Button>
+                }
             </footer>
         </main>
     )
