@@ -1,4 +1,5 @@
 import { Module } from '@nestjs/common';
+
 import { CreateTaskUseCase } from './create-task/create-task.usecase';
 import { DeleteTaskUseCase } from './delete-task/delete-task.usecase';
 import { FindAllTasksUseCase } from './find-all-tasks/find-all-tasks.usecase';
@@ -16,6 +17,7 @@ import { GetTasksByProjectIdUseCase } from './get-tasks-by-project-id/get-tasks-
 import { GetUserTasksGroupedByPriorityUseCase } from './get-user-tasks-grouped-by-priority/get-user-tasks-grouped-by-priority.usecase';
 import { GenerateTaskDescriptionUseCase } from './generate-task-description/generate-task-description.usecase';
 import { ServicesModule } from '@infra/services/services.module';
+import { GenerateTaskGuideUseCase } from './generate-task-guide/generate-task-guide.usecase';
 
 @Module({
     imports: [
@@ -37,7 +39,8 @@ import { ServicesModule } from '@infra/services/services.module';
         GetTasksGrowthUseCase,
         GetTasksByProjectIdUseCase,
         GetUserTasksGroupedByPriorityUseCase,
-        GenerateTaskDescriptionUseCase
+        GenerateTaskDescriptionUseCase,
+        GenerateTaskGuideUseCase
     ],
     exports: [
         CreateTaskUseCase,
@@ -53,7 +56,8 @@ import { ServicesModule } from '@infra/services/services.module';
         GetTasksGrowthUseCase,
         GetTasksByProjectIdUseCase,
         GetUserTasksGroupedByPriorityUseCase,
-        GenerateTaskDescriptionUseCase
+        GenerateTaskDescriptionUseCase,
+        GenerateTaskGuideUseCase
     ]
 })
 
