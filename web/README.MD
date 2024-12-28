@@ -33,3 +33,6 @@ npm run dev
 ```
 
 > - ✅ The web app will be running on http://localhost:5173
+
+## Credits
+- [shadcn-landing-page](https://github.com/leoMirandaa/shadcn-landing-page)
