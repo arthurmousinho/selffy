@@ -22,7 +22,7 @@ import { Calendar } from "@/components/ui/calendar";
 import { createTask, generateTaskDescription, getTaskById, TaskPriority, TaskStatus, updateTask } from "@/hooks/use-task";
 import { TaskBadge } from "@/components/tasks/task-badge";
 import { useLocation, useParams } from "react-router-dom";
-
+import { AiAssistantSheet } from "@/components/tasks/ai-assistent-sheet";
 
 const taskStatus = [
     { label: "Pending", value: "PENDING" },
@@ -124,15 +124,18 @@ export function TaskForm() {
 
     return (
         <Card>
-            <CardHeader className="flex flex-row items-center gap-2 border-b">
-                <div className="w-10 h-10 flex border items-center justify-center rounded-xl">
-                    <span className="text-sm">
-                        <CheckCheck size={20} />
-                    </span>
-                </div>
-                <h2 className="text-lg font-semibold" style={{ margin: 0 }}>
-                    {taskId ? "Edit Task" : "Create Task"}
-                </h2>
+            <CardHeader className="flex flex-row items-center justify-between border-b">
+                <header className="flex items-center gap-2">
+                    <div className="w-10 h-10 flex border items-center justify-center rounded-xl">
+                        <span className="text-sm">
+                            <CheckCheck size={20} />
+                        </span>
+                    </div>
+                    <h2 className="text-lg font-semibold" style={{ margin: 0 }}>
+                        {taskId ? "Edit Task" : "Create Task"}
+                    </h2>
+                </header>
+                <AiAssistantSheet />
             </CardHeader>
             <CardContent className="pt-4">
                 <Form {...form}>
